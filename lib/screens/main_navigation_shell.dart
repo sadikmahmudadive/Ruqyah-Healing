@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../widgets/global_bottom_navbar.dart';
 import 'tabs/bookings_tab.dart';
@@ -46,14 +47,23 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentTab.index,
-        children: _tabPages.values.toList(),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
-      bottomNavigationBar: GlobalBottomNavBar(
-        currentTab: _currentTab,
-        onTabSelected: _handleTabSelected,
+      child: Scaffold(
+        body: IndexedStack(
+          index: _currentTab.index,
+          children: _tabPages.values.toList(),
+        ),
+        bottomNavigationBar: GlobalBottomNavBar(
+          currentTab: _currentTab,
+          onTabSelected: _handleTabSelected,
+        ),
       ),
     );
   }
