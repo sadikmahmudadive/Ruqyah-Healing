@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "968913433241",
+    "firebase_url": "https://ruqyah-healing-f1b46-default-rtdb.firebaseio.com",
+    "project_id": "ruqyah-healing-f1b46",
+    "storage_bucket": "ruqyah-healing-f1b46.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968913433241:android:f960285f701be8a2a2fe08",
+        "android_client_info": {
+          "package_name": "com.vertexhand.ruqyahhealing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968913433241-ki1ivmfbpr3e3eghf16228vcvourk8s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI5lQY4qRTfo_A98DBRRUL737Qwr5eHAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968913433241-ki1ivmfbpr3e3eghf16228vcvourk8s4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
