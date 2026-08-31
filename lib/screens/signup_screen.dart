@@ -9,6 +9,7 @@ import '../models/user_model.dart';
 import '../services/firebase_service.dart';
 import '../widgets/country_code_picker.dart';
 import '../widgets/google_logo.dart';
+import 'main_navigation_shell.dart';
 
 class SignUpScreen extends StatefulWidget {
   final VoidCallback? onSignUpSuccess;
@@ -130,9 +131,27 @@ class _SignUpScreenState extends State<SignUpScreen>
 
         if (mounted) {
           setState(() => _isLoading = false);
-          _showSnackBar('Account created successfully!');
           if (widget.onSignUpSuccess != null) {
             widget.onSignUpSuccess!();
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const MainNavigationShell(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 600),
+              ),
+              (route) => false,
+            );
           }
         }
       }

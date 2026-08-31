@@ -10,6 +10,7 @@ import '../models/user_model.dart';
 import '../services/firebase_service.dart';
 import '../widgets/country_code_picker.dart';
 import '../widgets/google_logo.dart';
+import 'main_navigation_shell.dart';
 import 'signup_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -262,19 +263,23 @@ class _SignInScreenState extends State<SignInScreen>
       if (widget.onSignInSuccess != null) {
         widget.onSignInSuccess!();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Signed in successfully!',
-              style: TextStyle(fontFamily: 'Inter'),
-            ),
-            backgroundColor: const Color(0xFF1E6B45),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            duration: const Duration(seconds: 2),
+        Navigator.of(context).pushAndRemoveUntil(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const MainNavigationShell(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeInOut,
+                ),
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 600),
           ),
+          (route) => false,
         );
       }
     }
