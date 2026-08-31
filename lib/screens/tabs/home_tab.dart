@@ -217,7 +217,7 @@ class _HomeTabState extends State<HomeTab> {
           ),
           const SizedBox(height: 12),
           Row(
-            crossAxisAlignment: CrossBaseline.alphabetic,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: const [
               Text(
