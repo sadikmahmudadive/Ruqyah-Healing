@@ -91,8 +91,9 @@ class _HomeTabState extends State<HomeTab> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   // Header Widget
   Widget _buildHeader(String userName) {

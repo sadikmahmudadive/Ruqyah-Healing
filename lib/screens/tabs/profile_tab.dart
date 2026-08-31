@@ -185,9 +185,9 @@ class ProfileTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                const Text(
+                Text(
                   subtitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
                     color: Color(0xFF6E7E77),
