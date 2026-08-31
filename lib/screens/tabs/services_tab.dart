@@ -51,7 +51,7 @@ class ServicesTab extends StatelessWidget {
             _buildServiceItem(
               title: 'Interactive 3D Body Mapping',
               description: 'Explore treatment nodes and Sunnah points.',
-              icon: Icons.3d_rotation_rounded,
+              icon: Icons.threed_rotation_rounded,
               tag: 'Interactive Tool',
             ),
           ],
