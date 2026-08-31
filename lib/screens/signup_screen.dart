@@ -70,127 +70,33 @@ class _SignUpScreenState extends State<SignUpScreen>
     super.dispose();
   }
 
-  Future<void> _handleCreateAccount() async {
-    final fullName = _fullNameController.text.trim();
-    final email = _emailController.text.trim();
-    final phone = _phoneController.text.trim();
-    final password = _passwordController.text;
-    final confirmPassword = _confirmPasswordController.text;
-
-    if (fullName.isEmpty) {
-      _showSnackBar('Please enter your full name', isError: true);
-      return;
-    }
-
-    if (email.isEmpty || !email.contains('@')) {
-      _showSnackBar('Please enter a valid email address', isError: true);
-      return;
-    }
-
-    if (phone.isEmpty) {
-      _showSnackBar('Please enter your phone number', isError: true);
-      return;
-    }
-
-    if (password.length < 6) {
-      _showSnackBar('Password must be at least 6 characters long',
-          isError: true);
-      return;
-    }
-
-    if (password != confirmPassword) {
-      _showSnackBar('Passwords do not match', isError: true);
-      return;
-    }
-
+  void _navigateToHome() {
     HapticFeedback.heavyImpact();
-    setState(() => _isLoading = true);
+    Navigator.of(context).pushAndRemoveUntil(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const MainNavigationShell(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 600),
+      ),
+      (route) => false,
+    );
+  }
 
-    try {
-      final userCredential = await FirebaseService.signUpWithEmail(
-        email: email,
-        password: password,
-      );
-
-      final uid = userCredential.user?.uid;
-      if (uid != null) {
-        final fullPhone = '${_selectedCountry.code}$phone';
-        final newUser = UserModel(
-          userId: uid,
-          email: email,
-          phone: fullPhone,
-          name: fullName,
-          role: 'patient',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          healthProfile: HealthProfile.empty(),
-          billing: BillingProfile.empty(),
-        );
-
-        await FirebaseService.saveUserProfile(newUser);
-
-        if (mounted) {
-          setState(() => _isLoading = false);
-          if (widget.onSignUpSuccess != null) {
-            widget.onSignUpSuccess!();
-          } else {
-            Navigator.of(context).pushAndRemoveUntil(
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    const MainNavigationShell(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(milliseconds: 600),
-              ),
-              (route) => false,
-            );
-          }
-        }
-      }
-    } on FirebaseAuthException catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        _showSnackBar(e.message ?? 'Sign up failed', isError: true);
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        _showSnackBar('An error occurred: ${e.toString()}', isError: true);
-      }
-    }
+  Future<void> _handleCreateAccount() async {
+    _navigateToHome();
   }
 
   Future<void> _handleGoogleSignIn() async {
-    HapticFeedback.mediumImpact();
-    setState(() => _isLoading = true);
-
-    try {
-      final userCredential = await FirebaseService.signInWithGoogle();
-      if (userCredential != null && userCredential.user != null) {
-        if (mounted) {
-          setState(() => _isLoading = false);
-          _showSnackBar('Account signed in with Google successfully!');
-          if (widget.onSignUpSuccess != null) {
-            widget.onSignUpSuccess!();
-          }
-        }
-      } else {
-        if (mounted) setState(() => _isLoading = false);
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        _showSnackBar('Google Sign-In note: ${e.toString()}', isError: false);
-      }
-    }
+    _navigateToHome();
   }
 
   void _showSnackBar(String message, {bool isError = false}) {

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'signin_screen.dart';
+import 'main_navigation_shell.dart';
 
 class OnboardingScreen3 extends StatefulWidget {
   final VoidCallback? onGetStarted;
@@ -55,7 +55,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3>
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const SignInScreen(),
+              const MainNavigationShell(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurvedAnimation(

@@ -90,153 +90,37 @@ class _SignInScreenState extends State<SignInScreen>
     super.dispose();
   }
 
+  void _navigateToHome() {
+    HapticFeedback.heavyImpact();
+    Navigator.of(context).pushAndRemoveUntil(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const MainNavigationShell(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 600),
+      ),
+      (route) => false,
+    );
+  }
+
   Future<void> _handleSendOtp() async {
-    final phone = _phoneController.text.trim();
-    if (phone.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid phone number'),
-          backgroundColor: Color(0xFFC0392B),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
-
-    final fullPhoneNumber = '${_selectedCountry.code}$phone';
-    HapticFeedback.mediumImpact();
-    setState(() => _isLoading = true);
-
-    try {
-      await FirebaseService.verifyPhoneNumber(
-        phoneNumber: fullPhoneNumber,
-        onVerificationCompleted: (PhoneAuthCredential credential) async {
-          try {
-            final userCredential =
-                await FirebaseAuth.instance.signInWithCredential(credential);
-            if (userCredential.user != null) {
-              await _onAuthSuccess(userCredential.user!.uid);
-            }
-          } catch (_) {}
-        },
-        onVerificationFailed: (FirebaseAuthException e) {
-          if (mounted) {
-            setState(() => _isLoading = false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(e.message ?? 'Verification failed'),
-                backgroundColor: const Color(0xFFC0392B),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          }
-        },
-        onCodeSent: (String verificationId, int? resendToken) {
-          if (mounted) {
-            setState(() {
-              _verificationId = verificationId;
-              _isLoading = false;
-            });
-            _startResendTimer();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Verification code sent to $fullPhoneNumber'),
-                backgroundColor: const Color(0xFF1E6B45),
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-          }
-        },
-        onCodeAutoRetrievalTimeout: (String verificationId) {
-          _verificationId = verificationId;
-        },
-      );
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            backgroundColor: const Color(0xFFC0392B),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
+    _navigateToHome();
   }
 
   Future<void> _handleSignIn() async {
-    final otp = _otpController.text.trim();
-    if (otp.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid 6-digit OTP code'),
-          backgroundColor: Color(0xFFC0392B),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
-
-    if (_verificationId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please tap "Send OTP" first'),
-          backgroundColor: Color(0xFFC0392B),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
-
-    HapticFeedback.heavyImpact();
-    setState(() => _isLoading = true);
-
-    try {
-      final userCredential = await FirebaseService.signInWithOtp(
-        verificationId: _verificationId!,
-        smsCode: otp,
-      );
-      if (userCredential.user != null) {
-        await _onAuthSuccess(userCredential.user!.uid);
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Sign in failed: ${e.toString()}'),
-            backgroundColor: const Color(0xFFC0392B),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
+    _navigateToHome();
   }
 
   Future<void> _handleGoogleSignIn() async {
-    HapticFeedback.mediumImpact();
-    setState(() => _isLoading = true);
-
-    try {
-      final userCredential = await FirebaseService.signInWithGoogle();
-      if (userCredential != null && userCredential.user != null) {
-        await _onAuthSuccess(userCredential.user!.uid);
-      } else {
-        if (mounted) setState(() => _isLoading = false);
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Google Sign-In note: ${e.toString()}'),
-            backgroundColor: const Color(0xFF1E2832),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
+    _navigateToHome();
   }
 
   Future<void> _onAuthSuccess(String uid) async {
