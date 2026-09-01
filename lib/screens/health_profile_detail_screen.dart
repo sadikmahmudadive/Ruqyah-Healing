@@ -1,7 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../widgets/global_bottom_navbar.dart';
+import 'main_navigation_shell.dart';
 
 class HealthProfileDetailScreen extends StatefulWidget {
   const HealthProfileDetailScreen({super.key});
@@ -122,6 +123,29 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               const SizedBox(height: 24),
             ],
           ),
+        ),
+        bottomNavigationBar: GlobalBottomNavBar(
+          currentTab: NavigationTab.home,
+          onTabSelected: (tab) {
+            Navigator.of(context).pushAndRemoveUntil(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    MainNavigationShell(initialTab: tab),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 300),
+              ),
+              (route) => false,
+            );
+          },
         ),
       ),
     );
