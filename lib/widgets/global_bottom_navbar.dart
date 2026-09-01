@@ -37,15 +37,15 @@ class GlobalBottomNavBar extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: Colors.black.withValues(alpha: 0.03),
             offset: const Offset(0, -4),
             blurRadius: 16,
           ),
         ],
       ),
       padding: EdgeInsets.only(
-        top: 10,
-        bottom: bottomPadding > 0 ? bottomPadding + 4 : 12,
+        top: 8,
+        bottom: bottomPadding > 0 ? bottomPadding + 4 : 10,
         left: 8,
         right: 8,
       ),
@@ -55,7 +55,7 @@ class GlobalBottomNavBar extends StatelessWidget {
           _buildNavItem(
             tab: NavigationTab.home,
             label: 'Home',
-            activeIcon: Icons.home,
+            activeIcon: Icons.home_rounded,
             inactiveIcon: Icons.home_outlined,
           ),
           _buildNavItem(
@@ -67,13 +67,13 @@ class GlobalBottomNavBar extends StatelessWidget {
           _buildNavItem(
             tab: NavigationTab.bookings,
             label: 'Bookings',
-            activeIcon: Icons.calendar_month,
+            activeIcon: Icons.calendar_month_rounded,
             inactiveIcon: Icons.calendar_today_outlined,
           ),
           _buildNavItem(
             tab: NavigationTab.learn,
             label: 'Learn',
-            activeIcon: Icons.menu_book_rounded,
+            activeIcon: Icons.menu_book_outlined,
             inactiveIcon: Icons.menu_book_outlined,
           ),
           _buildNavItem(
@@ -104,8 +104,8 @@ class GlobalBottomNavBar extends StatelessWidget {
             onTabSelected(tab);
           },
           borderRadius: BorderRadius.circular(12),
-          splashColor: activeColor.withValues(alpha: 0.10),
-          highlightColor: activeColor.withValues(alpha: 0.05),
+          splashColor: activeColor.withValues(alpha: 0.08),
+          highlightColor: activeColor.withValues(alpha: 0.04),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Column(
