@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../therapist_profile_screen.dart';
+
 class Therapist {
   final String id;
   final String name;
@@ -518,7 +520,6 @@ class _BookingsTabState extends State<BookingsTab> {
   // Therapist Practitioner Card
   Widget _buildTherapistCard(Therapist therapist) {
     return Container(
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -530,8 +531,34 @@ class _BookingsTabState extends State<BookingsTab> {
           ),
         ],
       ),
-      child: Column(
-        children: [
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    TherapistProfileScreen(therapist: therapist),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 400),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
           // Top Row: Avatar + Info + Verified Badge
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -742,7 +769,7 @@ class _BookingsTabState extends State<BookingsTab> {
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
