@@ -17,8 +17,7 @@ class ServicesTab extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: const Color(0xFFF5F7F6),
           elevation: 0,
-          scaffoldLineWidth: 0,
-          titlePadding: const EdgeInsets.only(left: 20),
+          titleSpacing: 20,
           title: const Text(
             'SERVICES',
             style: TextStyle(
