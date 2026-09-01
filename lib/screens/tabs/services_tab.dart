@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../widgets/ruqyah_dua_icon.dart';
 import '../video_consultation_screen.dart';
 
 class ServicesTab extends StatelessWidget {
@@ -57,7 +58,10 @@ class ServicesTab extends StatelessWidget {
                 title: 'RUQYAH',
                 description:
                     'Qur\'anic healing for protection and relief from spiritual distress.',
-                icon: Icons.cancel_outlined,
+                customIcon: const RuqyahDuaIcon(
+                  color: Color(0xFF0B4632),
+                  size: 28,
+                ),
                 iconBgColor: const Color(0xFFEBF7F0),
                 iconColor: const Color(0xFF0B4632),
                 onTap: () {
@@ -159,7 +163,8 @@ class ServicesTab extends StatelessWidget {
   Widget _buildMainServiceCard({
     required String title,
     required String description,
-    required IconData icon,
+    IconData? icon,
+    Widget? customIcon,
     required Color iconBgColor,
     required Color iconColor,
     required VoidCallback onTap,
@@ -195,11 +200,12 @@ class ServicesTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Center(
-                    child: Icon(
-                      icon,
-                      color: iconColor,
-                      size: 26,
-                    ),
+                    child: customIcon ??
+                        Icon(
+                          icon,
+                          color: iconColor,
+                          size: 26,
+                        ),
                   ),
                 ),
 

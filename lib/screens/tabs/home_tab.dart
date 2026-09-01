@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
+import '../../widgets/ruqyah_dua_icon.dart';
 import '../book_appointment_screen.dart';
 import '../health_profile_detail_screen.dart';
 import '../notification_screen.dart';
@@ -510,7 +511,10 @@ class _HomeTabState extends State<HomeTab> {
       children: [
         _buildServiceIconCard(
           label: 'Ruqyah',
-          icon: Icons.cancel_outlined,
+          customIcon: const RuqyahDuaIcon(
+            color: Color(0xFF0B4632),
+            size: 28,
+          ),
           bgColor: const Color(0xFFEBF7F0),
           iconColor: const Color(0xFF0B4632),
         ),
@@ -538,7 +542,8 @@ class _HomeTabState extends State<HomeTab> {
 
   Widget _buildServiceIconCard({
     required String label,
-    required IconData icon,
+    IconData? icon,
+    Widget? customIcon,
     required Color bgColor,
     required Color iconColor,
   }) {
@@ -548,7 +553,9 @@ class _HomeTabState extends State<HomeTab> {
           width: 64,
           height: 64,
           decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
-          child: Center(child: Icon(icon, color: iconColor, size: 26)),
+          child: Center(
+            child: customIcon ?? Icon(icon, color: iconColor, size: 26),
+          ),
         ),
         const SizedBox(height: 8),
         Text(
@@ -558,6 +565,11 @@ class _HomeTabState extends State<HomeTab> {
             fontSize: 12.5,
             fontWeight: FontWeight.w600,
             color: Color(0xFF15221D),
+          ),
+        ),
+      ],
+    );
+  }
           ),
         ),
       ],
