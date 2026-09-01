@@ -35,52 +35,51 @@ class _HomeNavIconPainter extends CustomPainter {
     final double scale = size.width / 24.0;
     canvas.scale(scale, scale);
 
-    final Paint paint = Paint()
+    final Paint fillPaint = Paint()
       ..color = color
-      ..style = isSelected ? PaintingStyle.fill : PaintingStyle.stroke
-      ..strokeWidth = isSelected ? 0.0 : 2.0
+      ..style = PaintingStyle.fill;
+
+    final Paint strokePaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
 
     if (isSelected) {
-      final Path filledPath = Path()
+      // Solid pentagon house block matching reference image
+      final Path houseBlock = Path()
         ..moveTo(12.0, 3.2)
-        ..lineTo(21.0, 10.2)
-        ..cubicTo(21.5, 10.6, 21.5, 11.2, 21.0, 11.6)
-        ..lineTo(20.2, 12.3)
-        ..cubicTo(19.8, 12.7, 19.2, 12.6, 18.8, 12.2)
-        ..lineTo(18.0, 11.5)
-        ..lineTo(18.0, 19.5)
-        ..cubicTo(18.0, 20.6, 17.1, 21.5, 16.0, 21.5)
-        ..lineTo(8.0, 21.5)
-        ..cubicTo(6.9, 21.5, 6.0, 20.6, 6.0, 19.5)
-        ..lineTo(6.0, 11.5)
-        ..lineTo(5.2, 12.2)
-        ..cubicTo(4.8, 12.6, 4.2, 12.7, 3.8, 12.3)
-        ..lineTo(3.0, 11.6)
-        ..cubicTo(2.5, 11.2, 2.5, 10.6, 3.0, 10.2)
+        ..lineTo(20.5, 9.2)
+        ..cubicTo(21.2, 9.7, 21.2, 10.4, 21.2, 11.0)
+        ..lineTo(21.2, 18.5)
+        ..cubicTo(21.2, 19.9, 20.1, 21.0, 18.7, 21.0)
+        ..lineTo(5.3, 21.0)
+        ..cubicTo(3.9, 21.0, 2.8, 19.9, 2.8, 18.5)
+        ..lineTo(2.8, 11.0)
+        ..cubicTo(2.8, 10.4, 2.8, 9.7, 3.5, 9.2)
         ..close();
-      canvas.drawPath(filledPath, paint);
+      canvas.drawPath(houseBlock, fillPaint);
     } else {
-      final Path outlinePath = Path()
+      // Outlined pentagon house with door cutout inside
+      final Path houseOutline = Path()
         ..moveTo(12.0, 3.5)
-        ..lineTo(20.0, 10.0)
-        ..lineTo(20.0, 19.5)
-        ..cubicTo(20.0, 20.3, 19.3, 21.0, 18.5, 21.0)
-        ..lineTo(5.5, 21.0)
-        ..cubicTo(4.7, 21.0, 4.0, 20.3, 4.0, 19.5)
-        ..lineTo(4.0, 10.0)
+        ..lineTo(20.2, 9.5)
+        ..lineTo(20.2, 18.5)
+        ..cubicTo(20.2, 19.9, 19.1, 21.0, 17.8, 21.0)
+        ..lineTo(6.2, 21.0)
+        ..cubicTo(4.9, 21.0, 3.8, 19.9, 3.8, 18.5)
+        ..lineTo(3.8, 9.5)
         ..close();
-      canvas.drawPath(outlinePath, paint);
+      canvas.drawPath(houseOutline, strokePaint);
 
-      // Inner door outline
       final Path doorPath = Path()
         ..moveTo(10.0, 21.0)
-        ..lineTo(10.0, 15.0)
-        ..cubicTo(10.0, 13.9, 10.9, 13.0, 12.0, 13.0)
-        ..cubicTo(13.1, 13.0, 14.0, 13.9, 14.0, 15.0)
+        ..lineTo(10.0, 15.2)
+        ..cubicTo(10.0, 14.1, 10.9, 13.2, 12.0, 13.2)
+        ..cubicTo(13.1, 13.2, 14.0, 14.1, 14.0, 15.2)
         ..lineTo(14.0, 21.0);
-      canvas.drawPath(doorPath, paint);
+      canvas.drawPath(doorPath, strokePaint);
     }
   }
 
@@ -130,9 +129,9 @@ class _ServicesNavIconPainter extends CustomPainter {
       ..style = isSelected ? PaintingStyle.fill : PaintingStyle.stroke
       ..strokeWidth = isSelected ? 0.0 : 2.0;
 
-    const double radius = 3.0;
+    const double radius = 3.5;
 
-    // 4 Bento Quadrants
+    // 4 Bento Quadrants matching reference image
     final RRect r1 = RRect.fromLTRBR(3.0, 3.0, 10.5, 10.5, const Radius.circular(radius));
     final RRect r2 = RRect.fromLTRBR(13.5, 3.0, 21.0, 10.5, const Radius.circular(radius));
     final RRect r3 = RRect.fromLTRBR(3.0, 13.5, 10.5, 21.0, const Radius.circular(radius));
@@ -196,16 +195,22 @@ class _BookingsNavIconPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.fill;
 
-    // Calendar Frame
+    // Calendar Card Frame
     final RRect calRect =
         RRect.fromLTRBR(3.5, 5.0, 20.5, 21.0, const Radius.circular(4.0));
 
     if (isSelected) {
       canvas.drawRRect(calRect, fillPaint);
-      // Top cut for hooks in white
+      // Top hooks cutouts in clear/white
       final Paint clearPaint = Paint()..color = const Color(0xFFFBFDFC);
-      canvas.drawCircle(const Offset(8.0, 4.0), 1.5, clearPaint);
-      canvas.drawCircle(const Offset(16.0, 4.0), 1.5, clearPaint);
+      canvas.drawRRect(
+        RRect.fromLTRBR(7.0, 2.5, 9.0, 6.5, const Radius.circular(1.0)),
+        clearPaint,
+      );
+      canvas.drawRRect(
+        RRect.fromLTRBR(15.0, 2.5, 17.0, 6.5, const Radius.circular(1.0)),
+        clearPaint,
+      );
     } else {
       canvas.drawRRect(calRect, strokePaint);
       // Top header line
@@ -216,12 +221,12 @@ class _BookingsNavIconPainter extends CustomPainter {
       );
       // Hooks
       canvas.drawLine(
-        const Offset(8.0, 3.0),
+        const Offset(8.0, 2.5),
         const Offset(8.0, 6.0),
         strokePaint,
       );
       canvas.drawLine(
-        const Offset(16.0, 3.0),
+        const Offset(16.0, 2.5),
         const Offset(16.0, 6.0),
         strokePaint,
       );
