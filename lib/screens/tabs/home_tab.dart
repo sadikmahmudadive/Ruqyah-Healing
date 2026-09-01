@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
+import '../notification_screen.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -177,6 +178,23 @@ class _HomeTabState extends State<HomeTab> {
             ),
             onPressed: () {
               HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const NotificationScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeInOut,
+                      ),
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 400),
+                ),
+              );
             },
           ),
         ),
