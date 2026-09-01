@@ -447,14 +447,98 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           // Days of Week Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildDayOfWeekText('SUN'),
-              _buildDayOfWeekText('MON'),
-              _buildDayOfWeekText('TUE'),
-              _buildDayOfWeekText('WED'),
-              _buildDayOfWeekText('THU'),
-              _buildDayOfWeekText('FRI'),
-              _buildDayOfWeekText('SAT'),
+            children: const [
+              SizedBox(
+                width: 32,
+                child: Text(
+                  'SUN',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF90A4AE),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 32,
+                child: Text(
+                  'MON',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF90A4AE),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 32,
+                child: Text(
+                  'TUE',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF90A4AE),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 32,
+                child: Text(
+                  'WED',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF90A4AE),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 32,
+                child: Text(
+                  'THU',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF90A4AE),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 32,
+                child: Text(
+                  'FRI',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF90A4AE),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 32,
+                child: Text(
+                  'SAT',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF90A4AE),
+                  ),
+                ),
+              ),
             ],
           ),
 
@@ -467,21 +551,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     );
   }
 
-  static Widget _buildDayOfWeekText(String day) {
-    return SizedBox(
-      width: 32,
-      child: Text(
-        day,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF90A4AE),
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildCalendarNavArrow({
     required IconData icon,
