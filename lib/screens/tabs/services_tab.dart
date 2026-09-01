@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../video_consultation_screen.dart';
@@ -114,7 +115,10 @@ class ServicesTab extends StatelessWidget {
                 title: 'ACUPUNCTURE',
                 description:
                     'Holistic healing practices to maintain physical balance and energy wellness.',
-                icon: Icons.show_chart_rounded,
+                customIcon: const AcupunctureIcon(
+                  color: Color(0xFF2980B9),
+                  size: 28,
+                ),
                 iconBgColor: const Color(0xFFE6F7FF),
                 iconColor: const Color(0xFF2980B9),
                 onTap: () {

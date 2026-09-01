@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../widgets/acupuncture_icon.dart';
 import '../widgets/global_bottom_navbar.dart';
 import '../widgets/hijama_cupping_icon.dart';
 import '../widgets/ruqyah_dua_icon.dart';
@@ -454,7 +455,10 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           ),
           _buildDivider(),
           _buildLogTile(
-            icon: Icons.bubble_chart_rounded,
+            customIcon: const AcupunctureIcon(
+              color: Color(0xFF2980B9),
+              size: 20,
+            ),
             iconBg: const Color(0xFFE6F7FF),
             iconColor: const Color(0xFF2980B9),
             title: 'Acupuncture Point Log',

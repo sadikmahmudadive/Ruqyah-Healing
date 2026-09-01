@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
+import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../book_appointment_screen.dart';
@@ -530,7 +531,10 @@ class _HomeTabState extends State<HomeTab> {
         ),
         _buildServiceIconCard(
           label: 'Acupuncture',
-          icon: Icons.show_chart_rounded,
+          customIcon: const AcupunctureIcon(
+            color: Color(0xFF2980B9),
+            size: 28,
+          ),
           bgColor: const Color(0xFFE6F7FF),
           iconColor: const Color(0xFF2980B9),
         ),
