@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../video_consultation_screen.dart';
+
 class ServicesTab extends StatelessWidget {
   const ServicesTab({super.key});
 
@@ -60,6 +62,25 @@ class ServicesTab extends StatelessWidget {
                 iconColor: const Color(0xFF0B4632),
                 onTap: () {
                   HapticFeedback.selectionClick();
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const VideoConsultationScreen(
+                        doctorName: 'Dr. Saifur Rahman',
+                      ),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
                 },
               ),
 
