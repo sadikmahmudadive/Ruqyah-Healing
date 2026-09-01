@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Modern Home Navigation Icon with refined geometry and clean active/inactive states
 class HomeNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -42,43 +43,59 @@ class _HomeNavIconPainter extends CustomPainter {
     final Paint strokePaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.75
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
 
     if (isSelected) {
-      // Solid pentagon house block matching reference image
-      final Path houseBlock = Path()
-        ..moveTo(12.0, 3.2)
-        ..lineTo(20.5, 9.2)
-        ..cubicTo(21.2, 9.7, 21.2, 10.4, 21.2, 11.0)
-        ..lineTo(21.2, 18.5)
-        ..cubicTo(21.2, 19.9, 20.1, 21.0, 18.7, 21.0)
-        ..lineTo(5.3, 21.0)
-        ..cubicTo(3.9, 21.0, 2.8, 19.9, 2.8, 18.5)
-        ..lineTo(2.8, 11.0)
-        ..cubicTo(2.8, 10.4, 2.8, 9.7, 3.5, 9.2)
+      // Solid Modern House with smooth gable apex and arched door cutout
+      final Path house = Path()
+        ..moveTo(12.0, 2.8)
+        ..cubicTo(12.5, 2.8, 13.0, 3.1, 13.4, 3.5)
+        ..lineTo(20.4, 9.2)
+        ..cubicTo(21.0, 9.7, 21.3, 10.4, 21.3, 11.2)
+        ..lineTo(21.3, 19.0)
+        ..cubicTo(21.3, 20.1, 20.4, 21.0, 19.3, 21.0)
+        ..lineTo(4.7, 21.0)
+        ..cubicTo(3.6, 21.0, 2.7, 20.1, 2.7, 19.0)
+        ..lineTo(2.7, 11.2)
+        ..cubicTo(2.7, 10.4, 3.0, 9.7, 3.6, 9.2)
+        ..lineTo(10.6, 3.5)
+        ..cubicTo(11.0, 3.1, 11.5, 2.8, 12.0, 2.8)
         ..close();
-      canvas.drawPath(houseBlock, fillPaint);
+
+      // Arched Door Cutout
+      final Path door = Path()
+        ..moveTo(9.5, 21.0)
+        ..lineTo(9.5, 15.2)
+        ..cubicTo(9.5, 13.8, 10.6, 12.8, 12.0, 12.8)
+        ..cubicTo(13.4, 12.8, 14.5, 13.8, 14.5, 15.2)
+        ..lineTo(14.5, 21.0)
+        ..close();
+
+      final Path combined = Path.combine(PathOperation.difference, house, door);
+      canvas.drawPath(combined, fillPaint);
     } else {
-      // Outlined pentagon house with door cutout inside
+      // Crisp Monoline Outline
       final Path houseOutline = Path()
-        ..moveTo(12.0, 3.5)
-        ..lineTo(20.2, 9.5)
-        ..lineTo(20.2, 18.5)
-        ..cubicTo(20.2, 19.9, 19.1, 21.0, 17.8, 21.0)
-        ..lineTo(6.2, 21.0)
-        ..cubicTo(4.9, 21.0, 3.8, 19.9, 3.8, 18.5)
-        ..lineTo(3.8, 9.5)
+        ..moveTo(12.0, 3.2)
+        ..lineTo(20.2, 9.7)
+        ..cubicTo(20.6, 10.0, 20.8, 10.5, 20.8, 11.0)
+        ..lineTo(20.8, 18.8)
+        ..cubicTo(20.8, 19.8, 20.0, 20.6, 19.0, 20.6)
+        ..lineTo(5.0, 20.6)
+        ..cubicTo(4.0, 20.6, 3.2, 19.8, 3.2, 18.8)
+        ..lineTo(3.2, 11.0)
+        ..cubicTo(3.2, 10.5, 3.4, 10.0, 3.8, 9.7)
         ..close();
       canvas.drawPath(houseOutline, strokePaint);
 
       final Path doorPath = Path()
-        ..moveTo(10.0, 21.0)
-        ..lineTo(10.0, 15.2)
-        ..cubicTo(10.0, 14.1, 10.9, 13.2, 12.0, 13.2)
-        ..cubicTo(13.1, 13.2, 14.0, 14.1, 14.0, 15.2)
-        ..lineTo(14.0, 21.0);
+        ..moveTo(9.8, 20.6)
+        ..lineTo(9.8, 15.5)
+        ..cubicTo(9.8, 14.3, 10.8, 13.4, 12.0, 13.4)
+        ..cubicTo(13.2, 13.4, 14.2, 14.3, 14.2, 15.5)
+        ..lineTo(14.2, 20.6);
       canvas.drawPath(doorPath, strokePaint);
     }
   }
@@ -89,6 +106,7 @@ class _HomeNavIconPainter extends CustomPainter {
   }
 }
 
+/// Modern Services Bento Grid Navigation Icon
 class ServicesNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -127,15 +145,21 @@ class _ServicesNavIconPainter extends CustomPainter {
     final Paint paint = Paint()
       ..color = color
       ..style = isSelected ? PaintingStyle.fill : PaintingStyle.stroke
-      ..strokeWidth = isSelected ? 0.0 : 2.0;
+      ..strokeWidth = isSelected ? 0.0 : 1.75
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
 
-    const double radius = 3.5;
+    const double radius = 3.2;
 
-    // 4 Bento Quadrants matching reference image
-    final RRect r1 = RRect.fromLTRBR(3.0, 3.0, 10.5, 10.5, const Radius.circular(radius));
-    final RRect r2 = RRect.fromLTRBR(13.5, 3.0, 21.0, 10.5, const Radius.circular(radius));
-    final RRect r3 = RRect.fromLTRBR(3.0, 13.5, 10.5, 21.0, const Radius.circular(radius));
-    final RRect r4 = RRect.fromLTRBR(13.5, 13.5, 21.0, 21.0, const Radius.circular(radius));
+    // 4 Modern Bento Rounded Quadrants
+    final RRect r1 =
+        RRect.fromLTRBR(3.2, 3.2, 10.8, 10.8, const Radius.circular(radius));
+    final RRect r2 =
+        RRect.fromLTRBR(13.2, 3.2, 20.8, 10.8, const Radius.circular(radius));
+    final RRect r3 =
+        RRect.fromLTRBR(3.2, 13.2, 10.8, 20.8, const Radius.circular(radius));
+    final RRect r4 =
+        RRect.fromLTRBR(13.2, 13.2, 20.8, 20.8, const Radius.circular(radius));
 
     canvas.drawRRect(r1, paint);
     canvas.drawRRect(r2, paint);
@@ -149,6 +173,7 @@ class _ServicesNavIconPainter extends CustomPainter {
   }
 }
 
+/// Modern Bookings / Calendar Navigation Icon
 class BookingsNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -187,7 +212,7 @@ class _BookingsNavIconPainter extends CustomPainter {
     final Paint strokePaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.75
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
 
@@ -195,41 +220,61 @@ class _BookingsNavIconPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.fill;
 
-    // Calendar Card Frame
     final RRect calRect =
-        RRect.fromLTRBR(3.5, 5.0, 20.5, 21.0, const Radius.circular(4.0));
+        RRect.fromLTRBR(3.2, 5.0, 20.8, 21.0, const Radius.circular(4.5));
 
     if (isSelected) {
       canvas.drawRRect(calRect, fillPaint);
-      // Top hooks cutouts in clear/white
-      final Paint clearPaint = Paint()..color = const Color(0xFFFBFDFC);
+
+      // Contrast header line & binder rings cutout in white
+      final Paint cutoutPaint = Paint()
+        ..color = Colors.white
+        ..style = PaintingStyle.fill;
+
       canvas.drawRRect(
-        RRect.fromLTRBR(7.0, 2.5, 9.0, 6.5, const Radius.circular(1.0)),
-        clearPaint,
+        RRect.fromLTRBR(6.8, 2.4, 9.2, 6.2, const Radius.circular(1.2)),
+        cutoutPaint,
       );
       canvas.drawRRect(
-        RRect.fromLTRBR(15.0, 2.5, 17.0, 6.5, const Radius.circular(1.0)),
-        clearPaint,
+        RRect.fromLTRBR(14.8, 2.4, 17.2, 6.2, const Radius.circular(1.2)),
+        cutoutPaint,
       );
+
+      // Clean date dots
+      final Paint dotPaint = Paint()..color = Colors.white;
+      canvas.drawCircle(const Offset(8.0, 13.0), 1.2, dotPaint);
+      canvas.drawCircle(const Offset(12.0, 13.0), 1.2, dotPaint);
+      canvas.drawCircle(const Offset(16.0, 13.0), 1.2, dotPaint);
+      canvas.drawCircle(const Offset(8.0, 17.0), 1.2, dotPaint);
+      canvas.drawCircle(const Offset(12.0, 17.0), 1.2, dotPaint);
+      canvas.drawCircle(const Offset(16.0, 17.0), 1.2, dotPaint);
     } else {
       canvas.drawRRect(calRect, strokePaint);
-      // Top header line
+
+      // Header separation line
       canvas.drawLine(
-        const Offset(3.5, 10.0),
-        const Offset(20.5, 10.0),
+        const Offset(3.2, 10.0),
+        const Offset(20.8, 10.0),
         strokePaint,
       );
-      // Hooks
+
+      // Binder Hooks
       canvas.drawLine(
-        const Offset(8.0, 2.5),
-        const Offset(8.0, 6.0),
+        const Offset(7.5, 2.4),
+        const Offset(7.5, 6.0),
         strokePaint,
       );
       canvas.drawLine(
-        const Offset(16.0, 2.5),
-        const Offset(16.0, 6.0),
+        const Offset(16.5, 2.4),
+        const Offset(16.5, 6.0),
         strokePaint,
       );
+
+      // Date dots
+      final Paint dotPaint = Paint()..color = color;
+      canvas.drawCircle(const Offset(8.0, 14.5), 1.1, dotPaint);
+      canvas.drawCircle(const Offset(12.0, 14.5), 1.1, dotPaint);
+      canvas.drawCircle(const Offset(16.0, 14.5), 1.1, dotPaint);
     }
   }
 
@@ -239,6 +284,7 @@ class _BookingsNavIconPainter extends CustomPainter {
   }
 }
 
+/// Modern Learn / Book of Wisdom Navigation Icon
 class LearnNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -277,7 +323,7 @@ class _LearnNavIconPainter extends CustomPainter {
     final Paint strokePaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.75
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
 
@@ -285,31 +331,48 @@ class _LearnNavIconPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.fill;
 
-    // Left Page
+    // Left Page Flow
     final Path leftPage = Path()
-      ..moveTo(12.0, 6.0)
-      ..cubicTo(9.0, 4.5, 5.0, 4.5, 3.0, 5.5)
-      ..lineTo(3.0, 19.5)
-      ..cubicTo(5.0, 18.5, 9.0, 18.5, 12.0, 20.0)
+      ..moveTo(12.0, 5.5)
+      ..cubicTo(9.0, 4.0, 4.8, 4.2, 2.8, 5.2)
+      ..cubicTo(2.4, 5.4, 2.2, 5.8, 2.2, 6.3)
+      ..lineTo(2.2, 18.5)
+      ..cubicTo(2.2, 19.0, 2.6, 19.4, 3.1, 19.3)
+      ..cubicTo(5.2, 18.5, 9.0, 18.5, 12.0, 19.8)
       ..close();
 
-    // Right Page
+    // Right Page Flow
     final Path rightPage = Path()
-      ..moveTo(12.0, 6.0)
-      ..cubicTo(15.0, 4.5, 19.0, 4.5, 21.0, 5.5)
-      ..lineTo(21.0, 19.5)
-      ..cubicTo(19.0, 18.5, 15.0, 18.5, 12.0, 20.0)
+      ..moveTo(12.0, 5.5)
+      ..cubicTo(15.0, 4.0, 19.2, 4.2, 21.2, 5.2)
+      ..cubicTo(21.6, 5.4, 21.8, 5.8, 21.8, 6.3)
+      ..lineTo(21.8, 18.5)
+      ..cubicTo(21.8, 19.0, 21.4, 19.4, 20.9, 19.3)
+      ..cubicTo(18.8, 18.5, 15.0, 18.5, 12.0, 19.8)
       ..close();
 
     if (isSelected) {
       canvas.drawPath(leftPage, fillPaint);
       canvas.drawPath(rightPage, fillPaint);
+
+      // Spine division in white
+      final Paint spinePaint = Paint()
+        ..color = Colors.white
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.4
+        ..strokeCap = StrokeCap.round;
+
+      canvas.drawLine(
+        const Offset(12.0, 6.0),
+        const Offset(12.0, 19.5),
+        spinePaint,
+      );
     } else {
       canvas.drawPath(leftPage, strokePaint);
       canvas.drawPath(rightPage, strokePaint);
       canvas.drawLine(
-        const Offset(12.0, 6.0),
-        const Offset(12.0, 20.0),
+        const Offset(12.0, 5.5),
+        const Offset(12.0, 19.8),
         strokePaint,
       );
     }
@@ -321,6 +384,7 @@ class _LearnNavIconPainter extends CustomPainter {
   }
 }
 
+/// Modern Profile / Avatar Navigation Icon
 class ProfileNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -359,7 +423,7 @@ class _ProfileNavIconPainter extends CustomPainter {
     final Paint strokePaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.75
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
 
@@ -367,21 +431,21 @@ class _ProfileNavIconPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.fill;
 
-    // Head circle
+    // Head Avatar
     final Offset headCenter = const Offset(12.0, 7.5);
-    const double headRadius = 4.0;
+    const double headRadius = 4.2;
 
     // Shoulders Arc
     final Path shouldersPath = Path()
-      ..moveTo(4.0, 20.5)
-      ..cubicTo(4.0, 16.5, 7.5, 14.0, 12.0, 14.0)
-      ..cubicTo(16.5, 14.0, 20.0, 16.5, 20.0, 20.5);
+      ..moveTo(3.6, 20.5)
+      ..cubicTo(3.6, 16.2, 7.2, 14.0, 12.0, 14.0)
+      ..cubicTo(16.8, 14.0, 20.4, 16.2, 20.4, 20.5);
 
     if (isSelected) {
       canvas.drawCircle(headCenter, headRadius, fillPaint);
       final Path closedShoulders = Path.from(shouldersPath)
-        ..lineTo(20.0, 21.0)
-        ..lineTo(4.0, 21.0)
+        ..lineTo(20.4, 21.0)
+        ..lineTo(3.6, 21.0)
         ..close();
       canvas.drawPath(closedShoulders, fillPaint);
     } else {

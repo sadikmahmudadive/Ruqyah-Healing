@@ -33,67 +33,70 @@ class _HomeTabState extends State<HomeTab> {
         backgroundColor: const Color(0xFFF5F7F6),
         body: SafeArea(
           child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 1. Top Bar Header (Avatar + Greeting + Notification Bell)
-              _buildHeader(userName),
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 12.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 1. Top Bar Header (Avatar + Greeting + Notification Bell)
+                _buildHeader(userName),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // 2. Bento Grid: Health Index (Left) & Next Appointment (Right)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: _buildHealthIndexCard()),
-                  const SizedBox(width: 14),
-                  Expanded(child: _buildNextAppointmentCard()),
-                ],
-              ),
-
-              const SizedBox(height: 18),
-
-              // 3. Audio Engine Card (Surah Al-Baqarah Player)
-              _buildAudioPlayerCard(),
-
-              const SizedBox(height: 24),
-
-              // 4. Holistic Services Section Title
-              const Text(
-                'Holistic Services',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                // 2. Bento Grid: Health Index (Left) & Next Appointment (Right)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: _buildHealthIndexCard()),
+                    const SizedBox(width: 14),
+                    Expanded(child: _buildNextAppointmentCard()),
+                  ],
                 ),
-              ),
 
-              const SizedBox(height: 14),
+                const SizedBox(height: 18),
 
-              // 5. Services Row (4 Items)
-              _buildServicesRow(),
+                // 3. Audio Engine Card (Surah Al-Baqarah Player)
+                _buildAudioPlayerCard(),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              // 6. Today's Prayer Times Card
-              _buildPrayerTimesCard(),
+                // 4. Holistic Services Section Title
+                const Text(
+                  'Holistic Services',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF15221D),
+                  ),
+                ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 14),
 
-              // 7. Featured Specialist Consultation Card
-              _buildSpecialistCard(),
+                // 5. Services Row (4 Items)
+                _buildServicesRow(),
 
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 24),
+
+                // 6. Today's Prayer Times Card
+                _buildPrayerTimesCard(),
+
+                const SizedBox(height: 20),
+
+                // 7. Featured Specialist Consultation Card
+                _buildSpecialistCard(),
+
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   // Header Widget
   Widget _buildHeader(String userName) {
@@ -105,10 +108,7 @@ class _HomeTabState extends State<HomeTab> {
           height: 48,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(
-              color: Colors.white,
-              width: 2.0,
-            ),
+            border: Border.all(color: Colors.white, width: 2.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.08),
@@ -160,10 +160,7 @@ class _HomeTabState extends State<HomeTab> {
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
-            border: Border.all(
-              color: const Color(0xFFE2E8E5),
-              width: 1.0,
-            ),
+            border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -252,10 +249,7 @@ class _HomeTabState extends State<HomeTab> {
             ],
           ),
           const SizedBox(height: 14),
-          Container(
-            height: 1,
-            color: const Color(0xFFE2E8E5),
-          ),
+          Container(height: 1, color: const Color(0xFFE2E8E5)),
           const SizedBox(height: 10),
           Text(
             'Overall physical & spiritual wellness',
@@ -321,10 +315,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
           ),
           const SizedBox(height: 14),
-          Container(
-            height: 1,
-            color: Colors.white.withValues(alpha: 0.15),
-          ),
+          Container(height: 1, color: Colors.white.withValues(alpha: 0.15)),
           const SizedBox(height: 10),
           const Text(
             'Dr. Salma Rahman',
@@ -413,9 +404,7 @@ class _HomeTabState extends State<HomeTab> {
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    _isPlaying
-                        ? Icons.pause_rounded
-                        : Icons.play_arrow_rounded,
+                    _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
                     color: Colors.white,
                     size: 28,
                   ),
@@ -510,17 +499,8 @@ class _HomeTabState extends State<HomeTab> {
         Container(
           width: 64,
           height: 64,
-          decoration: BoxDecoration(
-            color: bgColor,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Icon(
-              icon,
-              color: iconColor,
-              size: 26,
-            ),
-          ),
+          decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+          child: Center(child: Icon(icon, color: iconColor, size: 26)),
         ),
         const SizedBox(height: 8),
         Text(

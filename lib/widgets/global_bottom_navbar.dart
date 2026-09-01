@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,7 +17,7 @@ class GlobalBottomNavBar extends StatelessWidget {
   final ValueChanged<NavigationTab> onTabSelected;
 
   static const Color activeColor = Color(0xFF0B4632);
-  static const Color inactiveColor = Color(0xFF52625B);
+  static const Color inactiveColor = Color(0xFF869790);
 
   const GlobalBottomNavBar({
     super.key,
@@ -28,78 +29,84 @@ class GlobalBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFFBFDFC),
-        border: Border(
-          top: BorderSide(
-            color: const Color(0xFFE2E8E5).withValues(alpha: 0.80),
-            width: 1.0,
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.94),
+            border: Border(
+              top: BorderSide(
+                color: const Color(0xFFE8EEEC).withValues(alpha: 0.90),
+                width: 0.8,
+              ),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0A2218).withValues(alpha: 0.04),
+                offset: const Offset(0, -4),
+                blurRadius: 20,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          padding: EdgeInsets.only(
+            top: 8,
+            bottom: bottomPadding > 0 ? bottomPadding + 2 : 10,
+            left: 6,
+            right: 6,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(
+                tab: NavigationTab.home,
+                label: 'Home',
+                iconBuilder: (isSelected, color) => HomeNavIcon(
+                  isSelected: isSelected,
+                  color: color,
+                  size: 24,
+                ),
+              ),
+              _buildNavItem(
+                tab: NavigationTab.services,
+                label: 'Services',
+                iconBuilder: (isSelected, color) => ServicesNavIcon(
+                  isSelected: isSelected,
+                  color: color,
+                  size: 23,
+                ),
+              ),
+              _buildNavItem(
+                tab: NavigationTab.bookings,
+                label: 'Bookings',
+                iconBuilder: (isSelected, color) => BookingsNavIcon(
+                  isSelected: isSelected,
+                  color: color,
+                  size: 23,
+                ),
+              ),
+              _buildNavItem(
+                tab: NavigationTab.learn,
+                label: 'Learn',
+                iconBuilder: (isSelected, color) => LearnNavIcon(
+                  isSelected: isSelected,
+                  color: color,
+                  size: 23,
+                ),
+              ),
+              _buildNavItem(
+                tab: NavigationTab.profile,
+                label: 'Profile',
+                iconBuilder: (isSelected, color) => ProfileNavIcon(
+                  isSelected: isSelected,
+                  color: color,
+                  size: 23,
+                ),
+              ),
+            ],
           ),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            offset: const Offset(0, -4),
-            blurRadius: 16,
-          ),
-        ],
-      ),
-      padding: EdgeInsets.only(
-        top: 8,
-        bottom: bottomPadding > 0 ? bottomPadding + 4 : 10,
-        left: 8,
-        right: 8,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(
-            tab: NavigationTab.home,
-            label: 'Home',
-            iconBuilder: (isSelected, color) => HomeNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 23,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.services,
-            label: 'Services',
-            iconBuilder: (isSelected, color) => ServicesNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 22,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.bookings,
-            label: 'Bookings',
-            iconBuilder: (isSelected, color) => BookingsNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 22,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.learn,
-            label: 'Learn',
-            iconBuilder: (isSelected, color) => LearnNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 22,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.profile,
-            label: 'Profile',
-            iconBuilder: (isSelected, color) => ProfileNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 22,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -120,25 +127,33 @@ class GlobalBottomNavBar extends StatelessWidget {
             HapticFeedback.selectionClick();
             onTabSelected(tab);
           },
-          borderRadius: BorderRadius.circular(12),
-          splashColor: activeColor.withValues(alpha: 0.08),
-          highlightColor: activeColor.withValues(alpha: 0.04),
+          borderRadius: BorderRadius.circular(16),
+          splashColor: activeColor.withValues(alpha: 0.06),
+          highlightColor: Colors.transparent,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                iconBuilder(isSelected, color),
+                // Clean icon with subtle active scale transition
+                AnimatedScale(
+                  scale: isSelected ? 1.05 : 1.0,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOutCubic,
+                  child: iconBuilder(isSelected, color),
+                ),
                 const SizedBox(height: 4),
-                Text(
-                  label,
+                // Minimalist typography
+                AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 200),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11.5,
-                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                     color: color,
                     letterSpacing: 0.1,
                   ),
+                  child: Text(label),
                 ),
               ],
             ),

@@ -49,7 +49,8 @@ class ProfileTab extends StatelessWidget {
                         color: const Color(0xFF0B4632),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: const Color(0xFF2ECC71).withValues(alpha: 0.35),
+                          color: const Color(0xFF2ECC71)
+                              .withValues(alpha: 0.35),
                           width: 2.0,
                         ),
                       ),
@@ -71,7 +72,9 @@ class ProfileTab extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      currentUser?.email ?? currentUser?.phoneNumber ?? 'patient@ruqyahhealing.com',
+                      currentUser?.email ??
+                          currentUser?.phoneNumber ??
+                          'patient@ruqyahhealing.com',
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13.5,
@@ -130,7 +133,10 @@ class ProfileTab extends StatelessWidget {
                       );
                     }
                   },
-                  icon: const Icon(Icons.logout_rounded, color: Colors.redAccent),
+                  icon: const Icon(
+                    Icons.logout_rounded,
+                    color: Colors.redAccent,
+                  ),
                   label: const Text(
                     'Sign Out',
                     style: TextStyle(
@@ -196,10 +202,7 @@ class ProfileTab extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(
-            Icons.chevron_right_rounded,
-            color: Color(0xFF6E7E77),
-          ),
+          const Icon(Icons.chevron_right_rounded, color: Color(0xFF6E7E77)),
         ],
       ),
     );

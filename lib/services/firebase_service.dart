@@ -154,7 +154,9 @@ class FirebaseService {
   }
 
   static Future<void> updateHealthProfile(
-      String userId, HealthProfile profile) async {
+    String userId,
+    HealthProfile profile,
+  ) async {
     await _firestore.collection('users').doc(userId).update({
       'health_profile': profile.toMap(),
       'updated_at': DateTime.now().toIso8601String(),
@@ -175,8 +177,12 @@ class FirebaseService {
     }
     return query.snapshots().map((snapshot) {
       return snapshot.docs
-          .map((doc) => TherapistModel.fromMap(
-              doc.data() as Map<String, dynamic>, doc.id))
+          .map(
+            (doc) => TherapistModel.fromMap(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            ),
+          )
           .toList();
     });
   }
@@ -190,16 +196,17 @@ class FirebaseService {
   }
 
   static Stream<List<AppointmentModel>> getPatientAppointments(
-      String patientId) {
+    String patientId,
+  ) {
     return _firestore
         .collection('appointments')
         .where('patient_id', isEqualTo: patientId)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => AppointmentModel.fromMap(doc.data(), doc.id))
-          .toList();
-    });
+          return snapshot.docs
+              .map((doc) => AppointmentModel.fromMap(doc.data(), doc.id))
+              .toList();
+        });
   }
 
   // 4. Courses Collection (/courses/{course_id})
@@ -212,7 +219,9 @@ class FirebaseService {
   }
 
   static Future<void> saveCourseEnrollment(
-      String courseId, CourseEnrollment enrollment) async {
+    String courseId,
+    CourseEnrollment enrollment,
+  ) async {
     await _firestore
         .collection('courses')
         .doc(courseId)
