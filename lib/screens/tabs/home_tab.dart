@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
+import '../book_appointment_screen.dart';
 import '../notification_screen.dart';
 
 class HomeTab extends StatefulWidget {
@@ -766,6 +767,26 @@ class _HomeTabState extends State<HomeTab> {
               child: InkWell(
                 onTap: () {
                   HapticFeedback.mediumImpact();
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const BookAppointmentScreen(
+                        therapistName: 'Dr. Salma Rahman',
+                        basePrice: 1200,
+                      ),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: const Center(

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'book_appointment_screen.dart';
 import 'tabs/bookings_tab.dart';
 
 class TherapistProfileScreen extends StatefulWidget {
@@ -828,18 +829,24 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
         child: InkWell(
           onTap: () {
             HapticFeedback.heavyImpact();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Booking appointment with ${widget.therapist.name} for $_selectedSlot...',
-                  style: const TextStyle(fontFamily: 'Inter'),
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    BookAppointmentScreen(
+                  therapistName: widget.therapist.name,
+                  basePrice: widget.therapist.price,
                 ),
-                backgroundColor: const Color(0xFF0B4632),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                duration: const Duration(seconds: 2),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 400),
               ),
             );
           },
