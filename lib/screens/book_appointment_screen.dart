@@ -52,63 +52,70 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 38,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE2E8E5),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Select Therapy Service',
-              style: TextStyle(
-                fontFamily: 'Cinzel',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF15221D),
-              ),
-            ),
-            const SizedBox(height: 14),
-            ..._services.map((service) {
-              final isSelected = service == _selectedService;
-              return ListTile(
-                title: Text(
-                  service,
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 15,
-                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                    color: isSelected ? const Color(0xFF0B4632) : const Color(0xFF15221D),
+      builder: (context) => Material(
+        color: Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 38,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE2E8E5),
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                trailing: isSelected
-                    ? const Icon(Icons.check_circle_rounded, color: Color(0xFF0B4632))
-                    : null,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  setState(() {
-                    _selectedService = service;
-                  });
-                  Navigator.of(context).pop();
-                },
-              );
-            }),
-            const SizedBox(height: 10),
-          ],
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Select Therapy Service',
+                style: TextStyle(
+                  fontFamily: 'Cinzel',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF15221D),
+                ),
+              ),
+              const SizedBox(height: 14),
+              ..._services.map((service) {
+                final isSelected = service == _selectedService;
+                return ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  title: Text(
+                    service,
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 15,
+                      fontWeight:
+                          isSelected ? FontWeight.w700 : FontWeight.w500,
+                      color: isSelected
+                          ? const Color(0xFF0B4632)
+                          : const Color(0xFF15221D),
+                    ),
+                  ),
+                  trailing: isSelected
+                      ? const Icon(Icons.check_circle_rounded,
+                          color: Color(0xFF0B4632))
+                      : null,
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    setState(() {
+                      _selectedService = service;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                );
+              }),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
