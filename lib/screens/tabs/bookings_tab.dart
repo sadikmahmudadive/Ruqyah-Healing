@@ -773,6 +773,7 @@ class _BookingsTabState extends State<BookingsTab> {
       ),
     ),
   ),
+),
 );
 }
 }
