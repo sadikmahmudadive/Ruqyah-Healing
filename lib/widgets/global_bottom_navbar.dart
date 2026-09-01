@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'navbar_icons.dart';
+
 enum NavigationTab {
   home,
   services,
@@ -55,32 +57,47 @@ class GlobalBottomNavBar extends StatelessWidget {
           _buildNavItem(
             tab: NavigationTab.home,
             label: 'Home',
-            activeIcon: Icons.home_rounded,
-            inactiveIcon: Icons.home_outlined,
+            iconBuilder: (isSelected, color) => HomeNavIcon(
+              isSelected: isSelected,
+              color: color,
+              size: 23,
+            ),
           ),
           _buildNavItem(
             tab: NavigationTab.services,
             label: 'Services',
-            activeIcon: Icons.grid_view_rounded,
-            inactiveIcon: Icons.grid_view_outlined,
+            iconBuilder: (isSelected, color) => ServicesNavIcon(
+              isSelected: isSelected,
+              color: color,
+              size: 22,
+            ),
           ),
           _buildNavItem(
             tab: NavigationTab.bookings,
             label: 'Bookings',
-            activeIcon: Icons.calendar_month_rounded,
-            inactiveIcon: Icons.calendar_today_outlined,
+            iconBuilder: (isSelected, color) => BookingsNavIcon(
+              isSelected: isSelected,
+              color: color,
+              size: 22,
+            ),
           ),
           _buildNavItem(
             tab: NavigationTab.learn,
             label: 'Learn',
-            activeIcon: Icons.menu_book_outlined,
-            inactiveIcon: Icons.menu_book_outlined,
+            iconBuilder: (isSelected, color) => LearnNavIcon(
+              isSelected: isSelected,
+              color: color,
+              size: 22,
+            ),
           ),
           _buildNavItem(
             tab: NavigationTab.profile,
             label: 'Profile',
-            activeIcon: Icons.person_rounded,
-            inactiveIcon: Icons.person_outline_rounded,
+            iconBuilder: (isSelected, color) => ProfileNavIcon(
+              isSelected: isSelected,
+              color: color,
+              size: 22,
+            ),
           ),
         ],
       ),
@@ -90,10 +107,10 @@ class GlobalBottomNavBar extends StatelessWidget {
   Widget _buildNavItem({
     required NavigationTab tab,
     required String label,
-    required IconData activeIcon,
-    required IconData inactiveIcon,
+    required Widget Function(bool isSelected, Color color) iconBuilder,
   }) {
     final isSelected = currentTab == tab;
+    final color = isSelected ? activeColor : inactiveColor;
 
     return Expanded(
       child: Material(
@@ -111,11 +128,7 @@ class GlobalBottomNavBar extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  isSelected ? activeIcon : inactiveIcon,
-                  size: 24,
-                  color: isSelected ? activeColor : inactiveColor,
-                ),
+                iconBuilder(isSelected, color),
                 const SizedBox(height: 4),
                 Text(
                   label,
@@ -123,7 +136,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11.5,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                    color: isSelected ? activeColor : inactiveColor,
+                    color: color,
                     letterSpacing: 0.1,
                   ),
                 ),
