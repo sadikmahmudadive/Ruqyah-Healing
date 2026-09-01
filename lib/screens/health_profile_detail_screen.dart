@@ -164,8 +164,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                     ),
                     const SizedBox(height: 8),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const Text(
                           '78',
