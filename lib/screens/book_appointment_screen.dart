@@ -590,7 +590,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
 
     return GridView.builder(
       shrinkWrap: true,
-      physics: NeverScrollPhysics(),
+      physics: const NeverScrollPhysics(),
       itemCount: 35,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
@@ -700,7 +700,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
         // Grid of 6 Slots (2 Rows x 3 Columns)
         GridView.builder(
           shrinkWrap: true,
-          physics: NeverScrollPhysics(),
+          physics: const NeverScrollPhysics(),
           itemCount: _timeSlots.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
