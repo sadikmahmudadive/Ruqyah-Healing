@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
 import '../book_appointment_screen.dart';
+import '../health_profile_detail_screen.dart';
 import '../notification_screen.dart';
 
 class HomeTab extends StatefulWidget {
@@ -206,7 +207,6 @@ class _HomeTabState extends State<HomeTab> {
   // Health Index Card
   Widget _buildHealthIndexCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -218,69 +218,98 @@ class _HomeTabState extends State<HomeTab> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Text(
-                'Health Index',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF6E7E77),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const HealthProfileDetailScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 400),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Text(
+                      'Health Index',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF6E7E77),
+                      ),
+                    ),
+                    const Spacer(),
+                    const Icon(
+                      Icons.wb_sunny_outlined,
+                      color: Color(0xFFD49E35),
+                      size: 18,
+                    ),
+                  ],
                 ),
-              ),
-              const Spacer(),
-              const Icon(
-                Icons.wb_sunny_outlined,
-                color: Color(0xFFD49E35),
-                size: 18,
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: const [
-              Text(
-                '78',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
-                  height: 1.0,
+                const SizedBox(height: 12),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: const [
+                    Text(
+                      '78',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF15221D),
+                        height: 1.0,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'Good',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF1E6B45),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(width: 8),
-              Text(
-                'Good',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1E6B45),
+                const SizedBox(height: 14),
+                Container(height: 1, color: const Color(0xFFE2E8E5)),
+                const SizedBox(height: 10),
+                Text(
+                  'Overall physical & spiritual wellness',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF6E7E77),
+                    height: 1.3,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
-          const SizedBox(height: 10),
-          Text(
-            'Overall physical & spiritual wellness',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 11,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xFF6E7E77),
-              height: 1.3,
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
