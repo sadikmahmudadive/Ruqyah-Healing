@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'booking_confirmation_screen.dart';
+
 class BookAppointmentScreen extends StatefulWidget {
   final String therapistName;
   final int basePrice;
@@ -123,18 +125,28 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
 
   void _handleContinue() {
     HapticFeedback.heavyImpact();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Appointment booked for $_selectedService on May $_selectedDay at $_selectedSlot!',
-          style: const TextStyle(fontFamily: 'Inter'),
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            BookingConfirmationScreen(
+          doctorName: widget.therapistName,
+          serviceName: _selectedService,
+          date: 'Mon, May $_selectedDay, 2024',
+          time: '$_selectedSlot (45 min)',
+          location: 'Ruqyah Healing Clinic, Mirpur 10, Dhaka, Bangladesh',
+          sessionFee: widget.basePrice,
+          serviceCharge: 60,
         ),
-        backgroundColor: const Color(0xFF0B4632),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        duration: const Duration(seconds: 2),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
       ),
     );
   }
