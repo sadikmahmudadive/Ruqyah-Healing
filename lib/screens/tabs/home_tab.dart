@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
+import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../book_appointment_screen.dart';
 import '../health_profile_detail_screen.dart';
@@ -520,7 +521,10 @@ class _HomeTabState extends State<HomeTab> {
         ),
         _buildServiceIconCard(
           label: 'Hijama',
-          icon: Icons.favorite_border_rounded,
+          customIcon: const HijamaCuppingIcon(
+            color: Color(0xFFE67E22),
+            size: 28,
+          ),
           bgColor: const Color(0xFFFFF3E8),
           iconColor: const Color(0xFFE67E22),
         ),

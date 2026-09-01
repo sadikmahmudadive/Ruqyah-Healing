@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../video_consultation_screen.dart';
 
@@ -95,7 +96,10 @@ class ServicesTab extends StatelessWidget {
                 title: 'HIJAMA',
                 description:
                     'Cupping therapy for natural detoxification and physical restoration.',
-                icon: Icons.favorite_border_rounded,
+                customIcon: const HijamaCuppingIcon(
+                  color: Color(0xFFE67E22),
+                  size: 28,
+                ),
                 iconBgColor: const Color(0xFFFFF3E8),
                 iconColor: const Color(0xFFE67E22),
                 onTap: () {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../widgets/global_bottom_navbar.dart';
+import '../widgets/hijama_cupping_icon.dart';
+import '../widgets/ruqyah_dua_icon.dart';
 import 'main_navigation_shell.dart';
 
 class HealthProfileDetailScreen extends StatefulWidget {
@@ -426,7 +428,10 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           ),
           _buildDivider(),
           _buildLogTile(
-            icon: Icons.menu_book_rounded,
+            customIcon: const RuqyahDuaIcon(
+              color: Color(0xFF0B4632),
+              size: 20,
+            ),
             iconBg: const Color(0xFFEBF7F0),
             iconColor: const Color(0xFF0B4632),
             title: 'Ruqyah Listening Log',
@@ -436,7 +441,10 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           ),
           _buildDivider(),
           _buildLogTile(
-            icon: Icons.favorite_border_rounded,
+            customIcon: const HijamaCuppingIcon(
+              color: Color(0xFFE67E22),
+              size: 20,
+            ),
             iconBg: const Color(0xFFFFF3E8),
             iconColor: const Color(0xFFE67E22),
             title: 'Hijama Session History',
@@ -470,7 +478,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
   }
 
   Widget _buildLogTile({
-    required IconData icon,
+    IconData? icon,
+    Widget? customIcon,
     required Color iconBg,
     required Color iconColor,
     required String title,
@@ -497,7 +506,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
-                  child: Icon(icon, color: iconColor, size: 20),
+                  child: customIcon ?? Icon(icon, color: iconColor, size: 20),
                 ),
               ),
               const SizedBox(width: 14),

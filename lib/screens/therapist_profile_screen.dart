@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../widgets/hijama_cupping_icon.dart';
+import '../widgets/ruqyah_dua_icon.dart';
 import 'book_appointment_screen.dart';
 import 'tabs/bookings_tab.dart';
 
@@ -411,13 +413,19 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
           children: [
             _buildServiceChip(
               label: 'Ruqyah',
-              icon: Icons.cancel_outlined,
+              customIcon: const RuqyahDuaIcon(
+                color: Color(0xFF0B4632),
+                size: 18,
+              ),
               iconColor: const Color(0xFF0B4632),
             ),
             const SizedBox(width: 10),
             _buildServiceChip(
               label: 'Hijama',
-              icon: Icons.favorite_border_rounded,
+              customIcon: const HijamaCuppingIcon(
+                color: Color(0xFFE67E22),
+                size: 18,
+              ),
               iconColor: const Color(0xFFE67E22),
             ),
             const SizedBox(width: 10),
@@ -434,7 +442,8 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
 
   Widget _buildServiceChip({
     required String label,
-    required IconData icon,
+    IconData? icon,
+    Widget? customIcon,
     required Color iconColor,
   }) {
     return Container(
@@ -453,7 +462,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: iconColor, size: 18),
+          customIcon ?? Icon(icon, color: iconColor, size: 18),
           const SizedBox(width: 8),
           Text(
             label,
