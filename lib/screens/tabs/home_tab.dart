@@ -570,11 +570,6 @@ class _HomeTabState extends State<HomeTab> {
       ],
     );
   }
-          ),
-        ),
-      ],
-    );
-  }
 
   // Today's Prayer Times Card
   Widget _buildPrayerTimesCard() {
