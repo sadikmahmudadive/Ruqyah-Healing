@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
+import '../equipment_store_screen.dart';
 import '../video_consultation_screen.dart';
 
 class ServicesTab extends StatelessWidget {
@@ -155,6 +156,25 @@ class ServicesTab extends StatelessWidget {
                       iconColor: const Color(0xFF0B4632),
                       onTap: () {
                         HapticFeedback.selectionClick();
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const EquipmentStoreScreen(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return FadeTransition(
+                                opacity: CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeInOut,
+                                ),
+                                child: child,
+                              );
+                            },
+                            transitionDuration:
+                                const Duration(milliseconds: 400),
+                          ),
+                        );
                       },
                     ),
                   ),
