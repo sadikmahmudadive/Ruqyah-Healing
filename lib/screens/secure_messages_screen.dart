@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_gradients.dart';
 import 'book_appointment_screen.dart';
 import 'main_navigation_shell.dart';
 import 'video_consultation_screen.dart';
@@ -169,7 +170,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
         right: 20,
       ),
       decoration: const BoxDecoration(
-        color: Color(0xFF0B4632),
+        gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
@@ -744,11 +745,11 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
       width: double.infinity,
       height: 48,
       decoration: BoxDecoration(
-        color: const Color(0xFF0B4632),
+        gradient: AppGradients.greenButtonGradient,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0B4632).withValues(alpha: 0.25),
+            color: const Color(0xFF082F21).withValues(alpha: 0.25),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),

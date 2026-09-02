@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_gradients.dart';
 import 'main_navigation_shell.dart';
 
 class BookingConfirmationScreen extends StatefulWidget {
@@ -1113,11 +1112,11 @@ class _BookingConfirmationScreenState
       width: double.infinity,
       height: 56,
       decoration: BoxDecoration(
-        color: const Color(0xFF0B4632),
+        gradient: AppGradients.greenButtonGradient,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0B4632).withValues(alpha: 0.30),
+            color: const Color(0xFF082F21).withValues(alpha: 0.30),
             offset: const Offset(0, 6),
             blurRadius: 18,
           ),

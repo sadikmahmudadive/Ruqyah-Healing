@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_gradients.dart';
 import 'tabs/bookings_tab.dart';
 import 'therapist_profile_screen.dart';
 
@@ -131,7 +132,7 @@ class _TherapistMarketplaceScreenState
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F7F6),
         appBar: AppBar(
-          backgroundColor: const Color(0xFF0B4632),
+          backgroundColor: const Color(0xFF082F21),
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
@@ -219,7 +220,7 @@ class _TherapistMarketplaceScreenState
         right: 20,
       ),
       decoration: const BoxDecoration(
-        color: Color(0xFF0B4632),
+        gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Column(

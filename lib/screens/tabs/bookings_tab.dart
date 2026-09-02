@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../theme/app_gradients.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
@@ -199,7 +200,7 @@ class _BookingsTabState extends State<BookingsTab> {
         right: 20,
       ),
       decoration: const BoxDecoration(
-        color: Color(0xFF0B4632),
+        gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Column(
@@ -620,11 +621,11 @@ class _BookingsTabState extends State<BookingsTab> {
       width: double.infinity,
       height: 54,
       decoration: BoxDecoration(
-        color: const Color(0xFF0B4632),
+        gradient: AppGradients.greenButtonGradient,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0B4632).withValues(alpha: 0.30),
+            color: const Color(0xFF082F21).withValues(alpha: 0.30),
             offset: const Offset(0, 6),
             blurRadius: 18,
           ),

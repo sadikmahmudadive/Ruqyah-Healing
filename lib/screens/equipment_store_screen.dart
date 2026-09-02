@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_gradients.dart';
+
 class StoreProduct {
   final String id;
   final String title;
@@ -186,7 +188,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
         right: 20,
       ),
       decoration: const BoxDecoration(
-        color: Color(0xFF0B4632),
+        gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_gradients.dart';
 import 'booking_confirmation_screen.dart';
 
 class BookAppointmentScreen extends StatefulWidget {
@@ -955,11 +956,11 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
       width: double.infinity,
       height: 56,
       decoration: BoxDecoration(
-        color: const Color(0xFF0B4632),
+        gradient: AppGradients.greenButtonGradient,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0B4632).withValues(alpha: 0.30),
+            color: const Color(0xFF082F21).withValues(alpha: 0.30),
             offset: const Offset(0, 6),
             blurRadius: 18,
           ),
