@@ -128,7 +128,7 @@ class _BookingsTabState extends State<BookingsTab> {
                 padding: const EdgeInsets.only(
                   left: 20.0,
                   right: 20.0,
-                  top: 12.0,
+                  top: 6.0,
                   bottom: 20.0,
                 ),
                 child: Column(
@@ -146,7 +146,7 @@ class _BookingsTabState extends State<BookingsTab> {
                       ),
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
 
                     // Session Cards List
                     ListView.separated(
@@ -192,7 +192,7 @@ class _BookingsTabState extends State<BookingsTab> {
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 12,
-        bottom: 14,
+        bottom: 10,
         left: 20,
         right: 20,
       ),
