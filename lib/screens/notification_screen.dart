@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'secure_messages_screen.dart';
+import 'settings_screen.dart';
 
 class NotificationItem {
   final String id;
@@ -317,6 +318,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
               onPressed: () {
                 HapticFeedback.selectionClick();
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const SettingsScreen(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                );
               },
             ),
           ),

@@ -6,6 +6,7 @@ import '../widgets/global_bottom_navbar.dart';
 import '../widgets/hijama_cupping_icon.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 import 'main_navigation_shell.dart';
+import 'settings_screen.dart';
 
 class HealthProfileDetailScreen extends StatefulWidget {
   const HealthProfileDetailScreen({super.key});
@@ -108,6 +109,22 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   ),
                   onPressed: () {
                     HapticFeedback.selectionClick();
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const SettingsScreen(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut,
+                            ),
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                    );
                   },
                   padding: EdgeInsets.zero,
                 ),

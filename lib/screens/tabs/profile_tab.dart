@@ -6,6 +6,7 @@ import '../../widgets/global_bottom_navbar.dart';
 import '../health_profile_detail_screen.dart';
 import '../main_navigation_shell.dart';
 import '../notification_screen.dart';
+import '../settings_screen.dart';
 import '../signin_screen.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -73,6 +74,22 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                   onPressed: () {
                     HapticFeedback.selectionClick();
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const SettingsScreen(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut,
+                            ),
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                    );
                   },
                   padding: EdgeInsets.zero,
                 ),
