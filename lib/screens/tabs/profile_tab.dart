@@ -320,7 +320,7 @@ class _ProfileTabState extends State<ProfileTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).pushAndRemoveUntil(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const MainNavigationShell(
+                  pageBuilder: (_, __, ___) => MainNavigationShell(
                     initialTab: NavigationTab.bookings,
                   ),
                 ),
