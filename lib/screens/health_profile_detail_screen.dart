@@ -29,8 +29,33 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0xFFF5F7F6),
           elevation: 0,
-          titleSpacing: 20,
-          automaticallyImplyLeading: false,
+          titleSpacing: 8,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_rounded,
+                  color: Color(0xFF15221D),
+                  size: 20,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                padding: EdgeInsets.zero,
+              ),
+            ),
+          ),
           title: Row(
             children: [
               Container(
@@ -126,29 +151,6 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               const SizedBox(height: 24),
             ],
           ),
-        ),
-        bottomNavigationBar: GlobalBottomNavBar(
-          currentTab: NavigationTab.home,
-          onTabSelected: (tab) {
-            Navigator.of(context).pushAndRemoveUntil(
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    MainNavigationShell(initialTab: tab),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(milliseconds: 300),
-              ),
-              (route) => false,
-            );
-          },
         ),
       ),
     );
