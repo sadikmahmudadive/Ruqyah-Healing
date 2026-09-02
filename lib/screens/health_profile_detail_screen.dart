@@ -29,33 +29,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0xFFF5F7F6),
           elevation: 0,
-          titleSpacing: 8,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
-                  size: 20,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                padding: EdgeInsets.zero,
-              ),
-            ),
-          ),
+          titleSpacing: 20,
+          automaticallyImplyLeading: false,
           title: Row(
             children: [
               Container(
