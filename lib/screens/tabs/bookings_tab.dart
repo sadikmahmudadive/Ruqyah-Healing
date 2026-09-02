@@ -125,9 +125,11 @@ class _BookingsTabState extends State<BookingsTab> {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 16.0,
+                padding: const EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                  top: 12.0,
+                  bottom: 20.0,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +146,7 @@ class _BookingsTabState extends State<BookingsTab> {
                       ),
                     ),
 
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 8),
 
                     // Session Cards List
                     ListView.separated(
@@ -190,7 +192,7 @@ class _BookingsTabState extends State<BookingsTab> {
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 12,
-        bottom: 20,
+        bottom: 14,
         left: 20,
         right: 20,
       ),
