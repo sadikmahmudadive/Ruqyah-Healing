@@ -135,36 +135,153 @@ class _ServicesNavIconPainter extends CustomPainter {
   final bool isSelected;
   final Color color;
 
+  static const String _activePathData =
+      'M51.22 20c0-11.05-8.96-20-20-20H0v31.22c0 11.04 8.95 20 20 20h31.22V20Z M56.78 20c0-11.05 8.96-20 20-20H108v31.22c0 11.04-8.95 20-20 20H56.78V20Z M20 56.78c-11.05 0-20 8.96-20 20V108h31.22c11.04 0 20-8.95 20-20V56.78H20Z M88 56.78c11.05 0 20 8.96 20 20V108H76.78c-11.04 0-20-8.95-20-20V56.78H88Z';
+
+  static const String _inactivePathData =
+      'M31.22 1.5H1.5v29.72c0 10.21 8.28 18.5 18.5 18.5h29.72V20c0-10.22-8.29-18.5-18.5-18.5Z M76.78 1.5h29.72v29.72c0 10.21-8.28 18.5-18.5 18.5H58.28V20c0-10.22 8.29-18.5 18.5-18.5Z M1.5 76.78v29.72h29.72c10.21 0 18.5-8.28 18.5-18.5V58.28H20c-10.22 0-18.5 8.29-18.5 18.5Z M106.5 76.78v29.72H76.78c-10.21 0-18.5-8.28-18.5-18.5V58.28H88c10.22 0 18.5 8.29 18.5 18.5Z';
+
+  static Path? _cachedActivePath;
+  static Path? _cachedInactivePath;
+
   _ServicesNavIconPainter({required this.isSelected, required this.color});
+
+  static Path _parseSvgPath(String data) {
+    final Path path = Path();
+    double currentX = 0;
+    double currentY = 0;
+    double startX = 0;
+    double startY = 0;
+
+    final RegExp regExp =
+        RegExp(r'([a-zA-Z])|([-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?)');
+    final matches = regExp.allMatches(data).toList();
+
+    int i = 0;
+    String command = '';
+
+    double nextNum() {
+      if (i < matches.length && matches[i].group(2) != null) {
+        final val = double.parse(matches[i].group(2)!);
+        i++;
+        return val;
+      }
+      return 0.0;
+    }
+
+    while (i < matches.length) {
+      final match = matches[i];
+      if (match.group(1) != null) {
+        command = match.group(1)!;
+        i++;
+      }
+
+      switch (command) {
+        case 'M':
+          currentX = nextNum();
+          currentY = nextNum();
+          startX = currentX;
+          startY = currentY;
+          path.moveTo(currentX, currentY);
+          command = 'L';
+          break;
+        case 'm':
+          currentX += nextNum();
+          currentY += nextNum();
+          startX = currentX;
+          startY = currentY;
+          path.moveTo(currentX, currentY);
+          command = 'l';
+          break;
+        case 'L':
+          currentX = nextNum();
+          currentY = nextNum();
+          path.lineTo(currentX, currentY);
+          break;
+        case 'l':
+          currentX += nextNum();
+          currentY += nextNum();
+          path.lineTo(currentX, currentY);
+          break;
+        case 'H':
+          currentX = nextNum();
+          path.lineTo(currentX, currentY);
+          break;
+        case 'h':
+          currentX += nextNum();
+          path.lineTo(currentX, currentY);
+          break;
+        case 'V':
+          currentY = nextNum();
+          path.lineTo(currentX, currentY);
+          break;
+        case 'v':
+          currentY += nextNum();
+          path.lineTo(currentX, currentY);
+          break;
+        case 'C':
+          final x1 = nextNum();
+          final y1 = nextNum();
+          final x2 = nextNum();
+          final y2 = nextNum();
+          currentX = nextNum();
+          currentY = nextNum();
+          path.cubicTo(x1, y1, x2, y2, currentX, currentY);
+          break;
+        case 'c':
+          final dx1 = nextNum();
+          final dy1 = nextNum();
+          final dx2 = nextNum();
+          final dy2 = nextNum();
+          final dx = nextNum();
+          final dy = nextNum();
+          path.cubicTo(
+            currentX + dx1,
+            currentY + dy1,
+            currentX + dx2,
+            currentY + dy2,
+            currentX + dx,
+            currentY + dy,
+          );
+          currentX += dx;
+          currentY += dy;
+          break;
+        case 'Z':
+        case 'z':
+          path.close();
+          currentX = startX;
+          currentY = startY;
+          break;
+        default:
+          i++;
+          break;
+      }
+    }
+
+    return path;
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double scale = size.width / 24.0;
+    final double scale = size.width / 108.0;
     canvas.scale(scale, scale);
 
-    final Paint paint = Paint()
-      ..color = color
-      ..style = isSelected ? PaintingStyle.fill : PaintingStyle.stroke
-      ..strokeWidth = isSelected ? 0.0 : 1.75
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    const double radius = 3.2;
-
-    // 4 Modern Bento Rounded Quadrants
-    final RRect r1 =
-        RRect.fromLTRBR(3.2, 3.2, 10.8, 10.8, const Radius.circular(radius));
-    final RRect r2 =
-        RRect.fromLTRBR(13.2, 3.2, 20.8, 10.8, const Radius.circular(radius));
-    final RRect r3 =
-        RRect.fromLTRBR(3.2, 13.2, 10.8, 20.8, const Radius.circular(radius));
-    final RRect r4 =
-        RRect.fromLTRBR(13.2, 13.2, 20.8, 20.8, const Radius.circular(radius));
-
-    canvas.drawRRect(r1, paint);
-    canvas.drawRRect(r2, paint);
-    canvas.drawRRect(r3, paint);
-    canvas.drawRRect(r4, paint);
+    if (isSelected) {
+      _cachedActivePath ??= _parseSvgPath(_activePathData);
+      final Paint fillPaint = Paint()
+        ..color = color
+        ..style = PaintingStyle.fill;
+      canvas.drawPath(_cachedActivePath!, fillPaint);
+    } else {
+      _cachedInactivePath ??= _parseSvgPath(_inactivePathData);
+      final Paint strokePaint = Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.5
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round;
+      canvas.drawPath(_cachedInactivePath!, strokePaint);
+    }
   }
 
   @override
