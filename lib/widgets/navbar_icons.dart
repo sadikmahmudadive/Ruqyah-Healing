@@ -277,7 +277,7 @@ class _ServicesNavIconPainter extends CustomPainter {
       final Paint strokePaint = Paint()
         ..color = color
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 3.5
+        ..strokeWidth = 6.0
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round;
       canvas.drawPath(_cachedInactivePath!, strokePaint);
