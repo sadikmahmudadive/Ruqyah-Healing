@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class GlobalBottomNavBar extends StatelessWidget {
   final ValueChanged<NavigationTab> onTabSelected;
 
   static const Color activeColor = Color(0xFF0B4632);
-  static const Color inactiveColor = Color(0xFF869790);
+  static const Color inactiveColor = Color(0xFF6E7E77);
 
   const GlobalBottomNavBar({
     super.key,
@@ -29,32 +30,35 @@ class GlobalBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
 
-    return ClipRect(
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.94),
+            color: Colors.white.withValues(alpha: 0.95),
+            borderRadius:
+                const BorderRadius.vertical(top: Radius.circular(24)),
             border: Border(
               top: BorderSide(
-                color: const Color(0xFFE8EEEC).withValues(alpha: 0.90),
+                color: const Color(0xFFE2E8E5).withValues(alpha: 0.80),
                 width: 0.8,
               ),
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0A2218).withValues(alpha: 0.04),
-                offset: const Offset(0, -4),
-                blurRadius: 20,
+                color: const Color(0xFF0B4632).withValues(alpha: 0.06),
+                offset: const Offset(0, -6),
+                blurRadius: 24,
                 spreadRadius: 0,
               ),
             ],
           ),
           padding: EdgeInsets.only(
-            top: 8,
-            bottom: bottomPadding > 0 ? bottomPadding + 2 : 10,
-            left: 6,
-            right: 6,
+            top: 6,
+            bottom: bottomPadding > 0 ? bottomPadding + 2 : 8,
+            left: 8,
+            right: 8,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -128,30 +132,42 @@ class GlobalBottomNavBar extends StatelessWidget {
             onTabSelected(tab);
           },
           borderRadius: BorderRadius.circular(16),
-          splashColor: activeColor.withValues(alpha: 0.06),
+          splashColor: activeColor.withValues(alpha: 0.08),
           highlightColor: Colors.transparent,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Clean icon with subtle active scale transition
-                AnimatedScale(
-                  scale: isSelected ? 1.05 : 1.0,
-                  duration: const Duration(milliseconds: 200),
+                // Animated Active Indicator Pill + Icon
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 240),
                   curve: Curves.easeOutCubic,
-                  child: iconBuilder(isSelected, color),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xFFE8F5EE)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: AnimatedScale(
+                    scale: isSelected ? 1.08 : 1.0,
+                    duration: const Duration(milliseconds: 240),
+                    curve: Curves.easeOutCubic,
+                    child: iconBuilder(isSelected, color),
+                  ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 3),
                 // Minimalist typography
                 AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 240),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
-                    fontSize: 11.5,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                    fontSize: isSelected ? 11.5 : 11.0,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     color: color,
-                    letterSpacing: 0.1,
+                    letterSpacing: isSelected ? 0.1 : 0.0,
                   ),
                   child: Text(label),
                 ),
