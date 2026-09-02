@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -135,14 +133,17 @@ class _BookingsTabState extends State<BookingsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Section Sub-Header
-                    Text(
-                      '${_upcomingSessions.length} UPCOMING SESSIONS',
-                      style: const TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.8,
-                        color: Color(0xFF90A4AE),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Text(
+                        '${_upcomingSessions.length} UPCOMING SESSIONS',
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.8,
+                          color: Color(0xFF90A4AE),
+                        ),
                       ),
                     ),
 
