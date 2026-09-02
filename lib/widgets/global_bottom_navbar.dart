@@ -62,7 +62,7 @@ class GlobalBottomNavBar extends StatelessWidget {
             iconBuilder: (isSelected, color) => ServicesNavIcon(
               isSelected: isSelected,
               color: color,
-              size: 21,
+              size: 18.5,
             ),
           ),
           _buildNavItem(
