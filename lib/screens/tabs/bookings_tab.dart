@@ -397,7 +397,10 @@ class _BookingsTabState extends State<BookingsTab> {
                         const SizedBox(height: 8),
 
                         // Mode & Status Line
-                        Row(
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 4,
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
                               '• ${session.mode}',
@@ -408,7 +411,6 @@ class _BookingsTabState extends State<BookingsTab> {
                                 color: Color(0xFF15221D),
                               ),
                             ),
-                            const SizedBox(width: 8),
                             _buildStatusBadge(session.status),
                           ],
                         ),
