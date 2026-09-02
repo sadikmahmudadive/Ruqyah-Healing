@@ -691,9 +691,10 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
             ],
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
   // Top Picks Section
   Widget _buildTopPicksSection() {
