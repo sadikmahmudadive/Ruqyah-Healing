@@ -65,7 +65,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                 iconBuilder: (isSelected, color) => HomeNavIcon(
                   isSelected: isSelected,
                   color: color,
-                  size: 24,
+                  size: 21,
                 ),
               ),
               _buildNavItem(
@@ -74,7 +74,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                 iconBuilder: (isSelected, color) => ServicesNavIcon(
                   isSelected: isSelected,
                   color: color,
-                  size: 23,
+                  size: 21,
                 ),
               ),
               _buildNavItem(
@@ -83,7 +83,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                 iconBuilder: (isSelected, color) => BookingsNavIcon(
                   isSelected: isSelected,
                   color: color,
-                  size: 23,
+                  size: 21,
                 ),
               ),
               _buildNavItem(
@@ -92,7 +92,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                 iconBuilder: (isSelected, color) => LearnNavIcon(
                   isSelected: isSelected,
                   color: color,
-                  size: 23,
+                  size: 21,
                 ),
               ),
               _buildNavItem(
@@ -101,7 +101,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                 iconBuilder: (isSelected, color) => ProfileNavIcon(
                   isSelected: isSelected,
                   color: color,
-                  size: 23,
+                  size: 21,
                 ),
               ),
             ],

@@ -10,7 +10,7 @@ class HomeNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 24.0,
+    this.size = 21.0,
   });
 
   @override
@@ -116,7 +116,7 @@ class ServicesNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 24.0,
+    this.size = 21.0,
   });
 
   @override
@@ -300,7 +300,7 @@ class BookingsNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 24.0,
+    this.size = 21.0,
   });
 
   @override
@@ -411,7 +411,7 @@ class LearnNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 24.0,
+    this.size = 21.0,
   });
 
   @override
@@ -511,7 +511,7 @@ class ProfileNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 24.0,
+    this.size = 21.0,
   });
 
   @override
