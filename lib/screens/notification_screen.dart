@@ -119,47 +119,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F7F6),
-        appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
-          elevation: 0,
-          titleSpacing: 20,
-          automaticallyImplyLeading: false,
-          title: const Text(
-            'NOTIFICATIONS',
-            style: TextStyle(
-              fontFamily: 'Cinzel',
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.5,
-              color: Color(0xFF15221D),
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.settings_outlined,
-                  color: Color(0xFF15221D),
-                  size: 22,
-                ),
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                },
-              ),
-            ),
-          ],
-        ),
         body: Column(
           children: [
-            const SizedBox(height: 8),
+            // 1. Top Dark Green Header Area
+            _buildTopHeader(),
 
-            // 1. Horizontal Category Chips Bar
+            const SizedBox(height: 12),
+
+            // 2. Horizontal Category Chips Bar
             SizedBox(
               height: 42,
               child: ListView.separated(
@@ -208,6 +180,150 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ]
                             : [
                                 BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.02),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                      ),
+                      child: Text(
+                        cat,
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 13.5,
+                          fontWeight:
+                              isSelected ? FontWeight.w700 : FontWeight.w500,
+                          color: isSelected
+                              ? Colors.white
+                              : const Color(0xFF15221D),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            // 3. Notifications List
+            Expanded(
+              child: filteredNotifications.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No notifications in $_selectedCategory',
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 14,
+                          color: Color(0xFF6E7E77),
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 8.0),
+                      itemCount: filteredNotifications.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 14),
+                      itemBuilder: (context, index) {
+                        final item = filteredNotifications[index];
+                        return _buildNotificationCard(item);
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Top Dark Green Header
+  Widget _buildTopHeader() {
+    return Container(
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + 12,
+        bottom: 16,
+        left: 20,
+        right: 20,
+      ),
+      decoration: const BoxDecoration(
+        color: Color(0xFF0B4632),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      ),
+      child: Row(
+        children: [
+          // Back Button
+          Container(
+            width: 44,
+            height: 44,
+            margin: const EdgeInsets.only(right: 14),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.white,
+                size: 20,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+              padding: EdgeInsets.zero,
+            ),
+          ),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'NOTIFICATION CENTER',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.0,
+                    color: Color(0xFF81C784),
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Notifications',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Settings Button
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(
+                Icons.settings_outlined,
+                color: Colors.white,
+                size: 20,
+              ),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
                                   color: Colors.black.withValues(alpha: 0.02),
                                   blurRadius: 8,
                                   offset: const Offset(0, 2),
