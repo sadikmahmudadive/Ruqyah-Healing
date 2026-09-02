@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import 'order_tracking_screen.dart';
 import 'secure_messages_screen.dart';
 import 'settings_screen.dart';
 
@@ -361,10 +362,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: InkWell(
           onTap: () {
             HapticFeedback.selectionClick();
+            final targetWidget = item.category == 'Orders'
+                ? const OrderTrackingScreen()
+                : const SecureMessagesScreen();
+
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    const SecureMessagesScreen(),
+                    targetWidget,
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(
