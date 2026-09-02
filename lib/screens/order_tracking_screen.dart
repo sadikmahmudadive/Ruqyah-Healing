@@ -541,15 +541,18 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       ),
       child: Row(
         children: [
-          const Text(
-            'Need help with your order?',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 13,
-              color: Color(0xFF6E7E77),
+          const Expanded(
+            child: Text(
+              'Need help with your order?',
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 13,
+                color: Color(0xFF6E7E77),
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          const Spacer(),
+          const SizedBox(width: 8),
           InkWell(
             onTap: () {
               HapticFeedback.selectionClick();
@@ -560,6 +563,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               );
             },
             child: const Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.chat_bubble_outline_rounded,
