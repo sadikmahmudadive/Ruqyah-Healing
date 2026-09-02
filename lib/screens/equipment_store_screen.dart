@@ -691,7 +691,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -919,8 +919,9 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   // Affiliate Disclaimer Banner
   Widget _buildDisclaimerBanner() {
