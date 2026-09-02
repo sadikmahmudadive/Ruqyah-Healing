@@ -146,12 +146,13 @@ class _BookingsTabState extends State<BookingsTab> {
                       ),
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
 
                     // Session Cards List
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
                       itemCount: _upcomingSessions.length,
                       separatorBuilder: (context, index) =>
                           const SizedBox(height: 14),
