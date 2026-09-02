@@ -250,17 +250,19 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
           const SizedBox(height: 14),
 
           // Bottom Details Row: Courier, Location, Date
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            runSpacing: 8,
             children: [
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
                     Icons.local_shipping_outlined,
                     color: Color(0xFF90A4AE),
-                    size: 16,
+                    size: 15,
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 4),
                   Text(
                     widget.courierName,
                     style: const TextStyle(
@@ -272,11 +274,12 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 ],
               ),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
                     Icons.location_on_outlined,
                     color: Color(0xFF90A4AE),
-                    size: 16,
+                    size: 15,
                   ),
                   const SizedBox(width: 4),
                   Text(
@@ -290,13 +293,14 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 ],
               ),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
                     Icons.calendar_today_outlined,
                     color: Color(0xFF90A4AE),
-                    size: 15,
+                    size: 14,
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 4),
                   Text(
                     widget.deliveryDate,
                     style: const TextStyle(
