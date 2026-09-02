@@ -23,6 +23,8 @@ class ServicesTab extends StatelessWidget {
           backgroundColor: const Color(0xFFF5F7F6),
           elevation: 0,
           titleSpacing: 20,
+          automaticallyImplyLeading: false,
+          leading: null,
           title: const Text(
             'SERVICES',
             style: TextStyle(
