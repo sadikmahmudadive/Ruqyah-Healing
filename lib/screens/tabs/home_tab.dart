@@ -5,6 +5,7 @@ import '../../services/firebase_service.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
+import '../ai_symptom_guide_screen.dart';
 import '../book_appointment_screen.dart';
 import '../health_profile_detail_screen.dart';
 import '../notification_screen.dart';
@@ -519,6 +520,14 @@ class _HomeTabState extends State<HomeTab> {
           ),
           bgColor: const Color(0xFFEBF7F0),
           iconColor: const Color(0xFF0B4632),
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const AISymptomGuideScreen(),
+              ),
+            );
+          },
         ),
         _buildServiceIconCard(
           label: 'Hijama',
@@ -528,6 +537,9 @@ class _HomeTabState extends State<HomeTab> {
           ),
           bgColor: const Color(0xFFFFF3E8),
           iconColor: const Color(0xFFE67E22),
+          onTap: () {
+            HapticFeedback.selectionClick();
+          },
         ),
         _buildServiceIconCard(
           label: 'Acupuncture',
@@ -537,12 +549,23 @@ class _HomeTabState extends State<HomeTab> {
           ),
           bgColor: const Color(0xFFE6F7FF),
           iconColor: const Color(0xFF2980B9),
+          onTap: () {
+            HapticFeedback.selectionClick();
+          },
         ),
         _buildServiceIconCard(
           label: 'Emergency',
           icon: Icons.error_outline_rounded,
           bgColor: const Color(0xFFFFEBEB),
           iconColor: const Color(0xFFE74C3C),
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const AISymptomGuideScreen(),
+              ),
+            );
+          },
         ),
       ],
     );
@@ -554,28 +577,32 @@ class _HomeTabState extends State<HomeTab> {
     Widget? customIcon,
     required Color bgColor,
     required Color iconColor,
+    VoidCallback? onTap,
   }) {
-    return Column(
-      children: [
-        Container(
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
-          child: Center(
-            child: customIcon ?? Icon(icon, color: iconColor, size: 26),
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+            child: Center(
+              child: customIcon ?? Icon(icon, color: iconColor, size: 26),
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 12.5,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF15221D),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 12.5,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF15221D),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
