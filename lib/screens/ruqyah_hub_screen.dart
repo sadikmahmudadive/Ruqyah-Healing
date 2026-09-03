@@ -500,8 +500,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
           ),
         ),
       ),
-    );
-  }
+    ],
+  );
+}
 
   // 5. Live Session Section
   Widget _buildLiveSessionSection() {
