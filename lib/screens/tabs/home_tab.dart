@@ -8,6 +8,7 @@ import '../../widgets/ruqyah_dua_icon.dart';
 import '../ai_symptom_guide_screen.dart';
 import '../audio_library_screen.dart';
 import '../book_appointment_screen.dart';
+import '../emergency_ruqyah_screen.dart';
 import '../full_audio_player_screen.dart';
 import '../health_profile_detail_screen.dart';
 import '../notification_screen.dart';
@@ -591,7 +592,7 @@ class _HomeTabState extends State<HomeTab> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const AISymptomGuideScreen(),
+                pageBuilder: (_, __, ___) => const EmergencyRuqyahScreen(),
               ),
             );
           },
