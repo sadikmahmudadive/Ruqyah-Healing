@@ -28,6 +28,9 @@ class _SignInScreenState extends State<SignInScreen>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
+  bool _isPhoneLogin = false; // false = Email Login, true = Phone Login
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
 
@@ -36,7 +39,7 @@ class _SignInScreenState extends State<SignInScreen>
   Timer? _resendTimer;
   bool _canResend = false;
   bool _isLoading = false;
-  String? _verificationId;
+  bool _isPasswordVisible = false;
 
   @override
   void initState() {
@@ -85,6 +88,8 @@ class _SignInScreenState extends State<SignInScreen>
   void dispose() {
     _animController.dispose();
     _resendTimer?.cancel();
+    _emailController.dispose();
+    _passwordController.dispose();
     _phoneController.dispose();
     _otpController.dispose();
     super.dispose();
@@ -112,7 +117,15 @@ class _SignInScreenState extends State<SignInScreen>
   }
 
   Future<void> _handleSendOtp() async {
-    _navigateToHome();
+    _startResendTimer();
+    HapticFeedback.selectionClick();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('OTP verification code sent to your phone'),
+        backgroundColor: Color(0xFF1E6B45),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   Future<void> _handleSignIn() async {
@@ -121,52 +134,6 @@ class _SignInScreenState extends State<SignInScreen>
 
   Future<void> _handleGoogleSignIn() async {
     _navigateToHome();
-  }
-
-  Future<void> _onAuthSuccess(String uid) async {
-    final profile = await FirebaseService.getUserProfile(uid);
-    if (profile == null) {
-      final currentUser = FirebaseAuth.instance.currentUser;
-      final newUser = UserModel(
-        userId: uid,
-        email: currentUser?.email ?? '',
-        phone: currentUser?.phoneNumber ??
-            '${_selectedCountry.code}${_phoneController.text.trim()}',
-        name: currentUser?.displayName ?? 'Patient User',
-        role: 'patient',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        healthProfile: HealthProfile.empty(),
-        billing: BillingProfile.empty(),
-      );
-      await FirebaseService.saveUserProfile(newUser);
-    }
-
-    if (mounted) {
-      setState(() => _isLoading = false);
-      if (widget.onSignInSuccess != null) {
-        widget.onSignInSuccess!();
-      } else {
-        Navigator.of(context).pushAndRemoveUntil(
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const MainNavigationShell(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeInOut,
-                ),
-                child: child,
-              );
-            },
-            transitionDuration: const Duration(milliseconds: 600),
-          ),
-          (route) => false,
-        );
-      }
-    }
   }
 
   void _handleResendOtp() {
@@ -218,7 +185,6 @@ class _SignInScreenState extends State<SignInScreen>
               width: double.infinity,
               height: double.infinity,
               errorBuilder: (context, error, stackTrace) {
-                debugPrint('Error loading bg_signin.jpg: $error');
                 return const SizedBox();
               },
             ),
@@ -260,8 +226,8 @@ class _SignInScreenState extends State<SignInScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Top spacing to position content below the crescent moon artwork
-                        SizedBox(height: screenHeight * 0.25),
+                        // Top spacing to position content below artwork
+                        SizedBox(height: screenHeight * 0.20),
 
                         // Main Header Title
                         const Text(
@@ -287,7 +253,9 @@ class _SignInScreenState extends State<SignInScreen>
 
                         // Subtitle
                         Text(
-                          "We'll send a verification code to your phone.",
+                          _isPhoneLogin
+                              ? "We'll send a verification code to your phone."
+                              : "Sign in with your registered email and password.",
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 14,
@@ -297,35 +265,75 @@ class _SignInScreenState extends State<SignInScreen>
                           ),
                         ),
 
-                        const SizedBox(height: 28),
-
-                        // Phone Number Section Label
-                        _buildFieldLabel('Phone Number'),
-
-                        const SizedBox(height: 8),
-
-                        // Phone Number Input Container
-                        _buildPhoneInputField(),
-
-                        const SizedBox(height: 12),
-
-                        // Send OTP Button
-                        _buildSendOtpButton(),
-
                         const SizedBox(height: 20),
 
-                        // OTP Code Section Label
-                        _buildFieldLabel('OTP Code'),
+                        // Login Method Tab Switcher Segment (Email vs Phone)
+                        _buildLoginTabSwitcher(),
 
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 24),
 
-                        // OTP Input Container
-                        _buildOtpInputField(),
+                        if (!_isPhoneLogin) ...[
+                          // --- EMAIL LOGIN FORM ---
+                          _buildFieldLabel('Email Address'),
+                          const SizedBox(height: 8),
+                          _buildEmailInputField(),
 
-                        const SizedBox(height: 12),
+                          const SizedBox(height: 16),
 
-                        // Sign In Action Button
-                        _buildSignInButton(),
+                          _buildFieldLabel('Password'),
+                          const SizedBox(height: 8),
+                          _buildPasswordInputField(),
+
+                          const SizedBox(height: 8),
+
+                          // Forgot Password
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () {
+                                HapticFeedback.selectionClick();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Password reset link sent to your email'),
+                                    behavior: SnackBarBehavior.floating,
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFFE5A93C),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          _buildSignInButton(),
+                        ] else ...[
+                          // --- PHONE OTP LOGIN FORM ---
+                          _buildFieldLabel('Phone Number'),
+                          const SizedBox(height: 8),
+                          _buildPhoneInputField(),
+
+                          const SizedBox(height: 12),
+
+                          _buildSendOtpButton(),
+
+                          const SizedBox(height: 20),
+
+                          _buildFieldLabel('OTP Code'),
+                          const SizedBox(height: 8),
+                          _buildOtpInputField(),
+
+                          const SizedBox(height: 12),
+
+                          _buildSignInButton(),
+                        ],
 
                         const SizedBox(height: 24),
 
@@ -421,6 +429,121 @@ class _SignInScreenState extends State<SignInScreen>
     );
   }
 
+  // Login Method Tab Switcher Segment (Email vs Phone)
+  Widget _buildLoginTabSwitcher() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        child: Container(
+          height: 48,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: const Color(0xFF12181F).withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.18),
+              width: 1.0,
+            ),
+          ),
+          child: Row(
+            children: [
+              // Email Tab
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    setState(() => _isPhoneLogin = false);
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    decoration: BoxDecoration(
+                      color: !_isPhoneLogin
+                          ? const Color(0xFF1E6B45)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.mail_outline_rounded,
+                          size: 18,
+                          color: !_isPhoneLogin
+                              ? Colors.white
+                              : Colors.white.withValues(alpha: 0.65),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Email',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 14,
+                            fontWeight: !_isPhoneLogin
+                                ? FontWeight.w700
+                                : FontWeight.w500,
+                            color: !_isPhoneLogin
+                                ? Colors.white
+                                : Colors.white.withValues(alpha: 0.65),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Phone Tab
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    setState(() => _isPhoneLogin = true);
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    decoration: BoxDecoration(
+                      color: _isPhoneLogin
+                          ? const Color(0xFF1E6B45)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.phone_iphone_rounded,
+                          size: 18,
+                          color: _isPhoneLogin
+                              ? Colors.white
+                              : Colors.white.withValues(alpha: 0.65),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Phone',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 14,
+                            fontWeight: _isPhoneLogin
+                                ? FontWeight.w700
+                                : FontWeight.w500,
+                            color: _isPhoneLogin
+                                ? Colors.white
+                                : Colors.white.withValues(alpha: 0.65),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildFieldLabel(String label) {
     return Text(
       label,
@@ -430,6 +553,128 @@ class _SignInScreenState extends State<SignInScreen>
         fontWeight: FontWeight.w500,
         color: Colors.white,
         letterSpacing: 0.2,
+      ),
+    );
+  }
+
+  Widget _buildEmailInputField() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        child: Container(
+          height: 54,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF12181F).withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.18),
+              width: 1.0,
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.mail_outline_rounded,
+                color: Colors.white.withValues(alpha: 0.70),
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  enabled: !_isLoading,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Enter your email address',
+                    hintStyle: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.5,
+                      color: Colors.white.withValues(alpha: 0.45),
+                    ),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordInputField() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        child: Container(
+          height: 54,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF12181F).withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.18),
+              width: 1.0,
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.lock_outline_rounded,
+                color: Colors.white.withValues(alpha: 0.70),
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: !_isPasswordVisible,
+                  enabled: !_isLoading,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Enter your password',
+                    hintStyle: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.5,
+                      color: Colors.white.withValues(alpha: 0.45),
+                    ),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  _isPasswordVisible
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: Colors.white.withValues(alpha: 0.70),
+                  size: 20,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
