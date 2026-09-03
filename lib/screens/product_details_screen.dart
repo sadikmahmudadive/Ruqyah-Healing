@@ -344,7 +344,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                'Tk ${p.price}',
+                '৳${p.price}',
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 24,
@@ -354,7 +354,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               const SizedBox(width: 10),
               const Text(
-                'Tk 129.99',
+                '৳129.99',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 15,

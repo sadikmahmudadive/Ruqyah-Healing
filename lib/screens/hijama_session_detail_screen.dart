@@ -1095,7 +1095,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               ),
               Spacer(),
               Text(
-                '150 USD',
+                '৳1,500',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
@@ -1149,7 +1149,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               children: const [
                 Expanded(
                   child: Text(
-                    '150',
+                    '1500',
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15,
@@ -1159,7 +1159,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   ),
                 ),
                 Text(
-                  'USD',
+                  'BDT',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,

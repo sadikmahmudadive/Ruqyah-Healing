@@ -589,7 +589,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                           const SizedBox(height: 6),
                         ],
                         Text(
-                          'Tk ${p.price}',
+                          '৳${p.price}',
                           style: const TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 19,
@@ -887,7 +887,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                 Row(
                   children: [
                     Text(
-                      'Tk ${p.price}',
+                      '৳${p.price}',
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
