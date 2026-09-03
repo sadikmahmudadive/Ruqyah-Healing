@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -632,7 +630,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
   Widget _buildUpcomingReminderCard() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const Text(
           'UPCOMING REMINDER',
           style: TextStyle(
@@ -660,7 +658,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             ],
           ),
           child: Row(
-            children: [
+            children: <Widget>[
               Container(
                 width: 48,
                 height: 48,
@@ -681,7 +679,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     const Text(
                       'Evening adhkar reminder',
                       style: TextStyle(
@@ -693,7 +691,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     ),
                     const SizedBox(height: 2),
                     Row(
-                      children: [
+                      children: <Widget>[
                         Container(
                           width: 6,
                           height: 6,
@@ -720,8 +718,8 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               Container(
                 width: 36,
                 height: 36,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEBF7F0),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
