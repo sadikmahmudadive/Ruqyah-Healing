@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import 'full_audio_player_screen.dart';
 
 class RecitationTrack {
   final String id;
@@ -368,7 +367,6 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     final isDownloaded = _downloadedTracks.contains(track.id);
 
     return Container(
-      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -380,8 +378,36 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
           ),
         ],
       ),
-      child: Row(
-        children: [
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => FullAudioPlayerScreen(
+                  title: track.title,
+                  verses: track.subtitle,
+                ),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 400),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              children: [
           // Audio Speaker Icon Container
           Container(
             width: 48,
@@ -448,8 +474,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 
   // Protection Playlists Section
   Widget _buildProtectionPlaylistsSection() {
