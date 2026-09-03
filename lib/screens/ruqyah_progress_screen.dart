@@ -455,16 +455,19 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                'How are you feeling today?',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 15.5,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+              const Expanded(
+                child: Text(
+                  'How are you feeling today?',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF15221D),
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const Spacer(),
+              const SizedBox(width: 8),
               const Text(
                 'Tap to select',
                 style: TextStyle(
