@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,12 +13,29 @@ class EmergencyRuqyahScreen extends StatefulWidget {
   State<EmergencyRuqyahScreen> createState() => _EmergencyRuqyahScreenState();
 }
 
-class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen> {
+class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
   bool _sleepMode = true;
   String _sleepTimer = '30 minutes';
   bool _dimScreen = true;
   bool _quranOnly = true;
   bool _autoStop = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2200),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
 
   void _handleStartPlaylist() {
     HapticFeedback.heavyImpact();
@@ -196,47 +215,92 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen> {
 
   // 1. Pulsing Warning Emblem
   Widget _buildPulsingEmblem() {
-    return Center(
-      child: Container(
-        width: 140,
-        height: 140,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: const Color(0xFF2C1416).withValues(alpha: 0.80),
-          border: Border.all(
-            color: const Color(0xFFE74C3C).withValues(alpha: 0.25),
-            width: 12,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFE74C3C).withValues(alpha: 0.30),
-              blurRadius: 30,
-              spreadRadius: 5,
-            ),
-          ],
-        ),
-        child: Center(
-          child: Container(
-            width: 86,
-            height: 86,
-            decoration: const BoxDecoration(
-              color: Color(0xFFD32F2F),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x66D32F2F),
-                  blurRadius: 16,
-                  offset: Offset(0, 4),
+    return SizedBox(
+      width: 180,
+      height: 180,
+      child: AnimatedBuilder(
+        animation: _pulseController,
+        builder: (context, child) {
+          final progress = _pulseController.value;
+          final wave1Val = progress;
+          final wave2Val = (progress + 0.5) % 1.0;
+
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              // Outer Expanding Wave 2
+              Transform.scale(
+                scale: 1.0 + (wave2Val * 0.50),
+                child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFFE74C3C)
+                          .withValues(alpha: (1.0 - wave2Val) * 0.45),
+                      width: 1.5,
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            child: const Icon(
-              Icons.warning_amber_rounded,
-              color: Colors.white,
-              size: 42,
-            ),
-          ),
-        ),
+              ),
+
+              // Inner Expanding Wave 1
+              Transform.scale(
+                scale: 1.0 + (wave1Val * 0.40),
+                child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFE74C3C)
+                        .withValues(alpha: (1.0 - wave1Val) * 0.18),
+                    border: Border.all(
+                      color: const Color(0xFFE74C3C)
+                          .withValues(alpha: (1.0 - wave1Val) * 0.60),
+                      width: 1.8,
+                    ),
+                  ),
+                ),
+              ),
+
+              // Center Breathing Emblem Button
+              Transform.scale(
+                scale: 1.0 + (math.sin(progress * 2 * math.pi) * 0.03),
+                child: GestureDetector(
+                  onTap: _handleStartPlaylist,
+                  child: Container(
+                    width: 96,
+                    height: 96,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD32F2F),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.25),
+                        width: 2.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFD32F2F)
+                              .withValues(alpha: 0.50),
+                          blurRadius: 24,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.warning_amber_rounded,
+                        color: Colors.white,
+                        size: 44,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
