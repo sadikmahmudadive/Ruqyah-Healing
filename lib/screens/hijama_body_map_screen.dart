@@ -1381,7 +1381,7 @@ class _FullScreen3DAnatomyViewerState
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
-                    Icons.360_rounded,
+                    Icons.rotate_right_rounded,
                     color: Color(0xFFD49E35),
                     size: 18,
                   ),
