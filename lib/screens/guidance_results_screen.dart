@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 
 class GuidanceResultsScreen extends StatefulWidget {
@@ -22,21 +23,13 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
       _isPlanSaved = !_isPlanSaved;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _isPlanSaved
-              ? 'Spiritual protection plan saved to your profile!'
-              : 'Plan removed from saved items.',
-          style: const TextStyle(fontFamily: 'Inter'),
-        ),
-        backgroundColor: const Color(0xFF0B4632),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
+    AppToast.show(
+      context,
+      title: _isPlanSaved ? 'Plan Saved' : 'Plan Removed',
+      message: _isPlanSaved
+          ? 'Spiritual protection plan saved to your profile.'
+          : 'Plan removed from saved items.',
+      type: _isPlanSaved ? ToastType.success : ToastType.info,
     );
   }
 

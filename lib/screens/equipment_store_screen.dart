@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import 'cart_checkout_screen.dart';
 import 'product_details_screen.dart';
 
@@ -110,13 +111,11 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
     setState(() {
       _cartCount++;
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$itemTitle added to cart'),
-        backgroundColor: const Color(0xFF0B4632),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-      ),
+    AppToast.show(
+      context,
+      title: 'Item Added',
+      message: '$itemTitle added to your cart.',
+      type: ToastType.success,
     );
   }
 

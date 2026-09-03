@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import 'main_navigation_shell.dart';
 
 class BookingConfirmationScreen extends StatefulWidget {
@@ -52,26 +53,18 @@ class _BookingConfirmationScreenState
       if (code == 'RUQYAH10' || code == 'HEALING') {
         _discount = 120;
         _isCouponApplied = true;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Coupon applied! ৳120 discount added.'),
-            backgroundColor: const Color(0xFF0B4632),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
+        AppToast.show(
+          context,
+          title: 'Coupon Applied',
+          message: '৳120 discount successfully applied.',
+          type: ToastType.success,
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Invalid coupon code'),
-            backgroundColor: const Color(0xFFC0392B),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
+        AppToast.show(
+          context,
+          title: 'Invalid Coupon',
+          message: 'Please check your code and try again.',
+          type: ToastType.error,
         );
       }
     });
@@ -79,15 +72,14 @@ class _BookingConfirmationScreenState
 
   void _handleConfirmAndPay() {
     if (!_agreedToTerms) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please agree to the Terms & Privacy Policy'),
-          backgroundColor: const Color(0xFFC0392B),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+      AppToast.show(
+        context,
+        title: 'Terms Required',
+        message: 'Please agree to the Terms & Privacy Policy.',
+        type: ToastType.warning,
+      );
+      return;
+    }
       );
       return;
     }

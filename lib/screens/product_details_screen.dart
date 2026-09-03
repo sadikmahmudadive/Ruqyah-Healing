@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import 'equipment_store_screen.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -50,19 +51,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   void _handleAddToCart() {
     HapticFeedback.heavyImpact();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Added $_quantity x ${widget.product.title} to cart!',
-          style: const TextStyle(fontFamily: 'Inter'),
-        ),
-        backgroundColor: const Color(0xFF0B4632),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
+    AppToast.show(
+      context,
+      title: 'Cart Updated',
+      message: 'Added $_quantity x ${widget.product.title} to your cart.',
+      type: ToastType.success,
     );
   }
 
