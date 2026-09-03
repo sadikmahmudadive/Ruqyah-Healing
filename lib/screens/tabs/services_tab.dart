@@ -7,6 +7,7 @@ import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../ai_symptom_guide_screen.dart';
 import '../equipment_store_screen.dart';
+import '../ruqyah_hub_screen.dart';
 import '../video_consultation_screen.dart';
 
 class ServicesTab extends StatelessWidget {
@@ -177,9 +178,7 @@ class ServicesTab extends StatelessWidget {
                   Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          const VideoConsultationScreen(
-                        doctorName: 'Dr. Saifur Rahman',
-                      ),
+                          const RuqyahHubScreen(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         return FadeTransition(
