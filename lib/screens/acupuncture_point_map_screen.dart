@@ -88,6 +88,7 @@ class _AcupuncturePointMapScreenState
     Acupoint(
       code: 'ST36',
       name: 'Zusanli',
+      meridian: 'Stomach 36',
       location: '3 cun below the knee, one finger-breadth lateral to the tibia.',
       commonUse: 'Boosts energy, digestive harmony, and overall immunity.',
       evidence: 'Strong',
@@ -223,9 +224,6 @@ class _AcupuncturePointMapScreenState
               const SizedBox(height: 24),
             ],
           ),
-        ),
-        bottomNavigationBar: const GlobalBottomNavbar(
-          selectedIndex: 1, // Services tab
         ),
       ),
     );
