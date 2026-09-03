@@ -5,6 +5,7 @@ import '../../theme/app_gradients.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
+import '../acupuncture_hub_screen.dart';
 import '../ai_symptom_guide_screen.dart';
 import '../equipment_store_screen.dart';
 import '../hijama_hub_screen.dart';
@@ -246,6 +247,23 @@ class ServicesTab extends StatelessWidget {
                 iconColor: const Color(0xFF2980B9),
                 onTap: () {
                   HapticFeedback.selectionClick();
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const AcupunctureHubScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
                 },
               ),
 
