@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../widgets/hijama_cupping_icon.dart';
+import 'hijama_body_map_screen.dart';
 import 'therapist_marketplace_screen.dart';
 
 class HijamaHubScreen extends StatefulWidget {
@@ -625,6 +626,11 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
             icon: Icons.content_paste_rounded,
             onTap: () {
               HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const HijamaBodyMapScreen(),
+                ),
+              );
             },
           ),
         ),
