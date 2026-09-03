@@ -443,6 +443,7 @@ class _SignInScreenState extends State<SignInScreen>
         ),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Email Tab
           Expanded(
@@ -453,6 +454,7 @@ class _SignInScreenState extends State<SignInScreen>
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: !_isPhoneLogin
                       ? const Color(0xFF113E2E)
@@ -483,7 +485,7 @@ class _SignInScreenState extends State<SignInScreen>
                       'Email',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontSize: 14.5,
+                        fontSize: 15,
                         fontWeight: !_isPhoneLogin
                             ? FontWeight.w700
                             : FontWeight.w600,
@@ -507,6 +509,7 @@ class _SignInScreenState extends State<SignInScreen>
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: _isPhoneLogin
                       ? const Color(0xFF113E2E)
@@ -537,7 +540,7 @@ class _SignInScreenState extends State<SignInScreen>
                       'Phone',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontSize: 14.5,
+                        fontSize: 15,
                         fontWeight: _isPhoneLogin
                             ? FontWeight.w700
                             : FontWeight.w600,
