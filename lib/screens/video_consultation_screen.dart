@@ -1,8 +1,7 @@
-import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../widgets/app_toast.dart';
 
 class VideoConsultationScreen extends StatefulWidget {
   final String doctorName;
@@ -446,11 +445,11 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                         isActive: false,
                         onTap: () {
                           HapticFeedback.selectionClick();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Opening live in-session chat...'),
-                              behavior: SnackBarBehavior.floating,
-                            ),
+                          AppToast.show(
+                            context,
+                            title: 'Live Chat',
+                            message: 'Opening live in-session chat...',
+                            type: ToastType.info,
                           );
                         },
                       ),
@@ -462,13 +461,11 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                         isEmergency: true,
                         onTap: () {
                           HapticFeedback.heavyImpact();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  'Emergency protocol triggered. Support alerted.'),
-                              backgroundColor: Color(0xFFD32F2F),
-                              behavior: SnackBarBehavior.floating,
-                            ),
+                          AppToast.show(
+                            context,
+                            title: 'Emergency Triggered',
+                            message: 'Emergency protocol triggered. Support alerted.',
+                            type: ToastType.error,
                           );
                         },
                       ),

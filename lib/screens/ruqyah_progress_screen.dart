@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 
 class RuqyahProgressScreen extends StatefulWidget {
   const RuqyahProgressScreen({super.key});
@@ -589,11 +590,11 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
           InkWell(
             onTap: () {
               HapticFeedback.selectionClick();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Opening Symptom Journal...'),
-                  behavior: SnackBarBehavior.floating,
-                ),
+              AppToast.show(
+                context,
+                title: 'Symptom Journal',
+                message: 'Opening your private symptom log...',
+                type: ToastType.info,
               );
             },
             borderRadius: BorderRadius.circular(12),

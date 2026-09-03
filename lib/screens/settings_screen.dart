@@ -1,7 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -456,11 +457,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Account deletion request submitted.'),
-                  behavior: SnackBarBehavior.floating,
-                ),
+              AppToast.show(
+                context,
+                title: 'Account Deletion Requested',
+                message: 'Account deletion request submitted to support.',
+                type: ToastType.warning,
               );
             },
             child: const Text(

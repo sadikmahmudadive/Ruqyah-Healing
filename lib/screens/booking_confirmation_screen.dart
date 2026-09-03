@@ -369,11 +369,11 @@ class _BookingConfirmationScreenState
               InkWell(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Added to device calendar'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  AppToast.show(
+                    context,
+                    title: 'Calendar Updated',
+                    message: 'Appointment added to your device calendar.',
+                    type: ToastType.success,
                   );
                 },
                 borderRadius: BorderRadius.circular(12),

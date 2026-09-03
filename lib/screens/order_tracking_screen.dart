@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../widgets/app_toast.dart';
 import 'secure_messages_screen.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
@@ -491,11 +490,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         child: InkWell(
           onTap: () {
             HapticFeedback.selectionClick();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Downloading Order Invoice PDF...'),
-                behavior: SnackBarBehavior.floating,
-              ),
+            AppToast.show(
+              context,
+              title: 'Downloading Invoice',
+              message: 'Order #RH1024 invoice PDF is downloading.',
+              type: ToastType.info,
             );
           },
           borderRadius: BorderRadius.circular(16),
@@ -608,11 +607,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               child: InkWell(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Reordering items from Order #RH1024...'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  AppToast.show(
+                    context,
+                    title: 'Reorder Processing',
+                    message: 'Items from Order #RH1024 added to cart.',
+                    type: ToastType.success,
                   );
                 },
                 borderRadius: BorderRadius.circular(16),
@@ -657,11 +656,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               child: InkWell(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Initiating return / refund request...'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  AppToast.show(
+                    context,
+                    title: 'Refund Initiated',
+                    message: 'Return & refund request for Order #RH1024 submitted.',
+                    type: ToastType.warning,
                   );
                 },
                 borderRadius: BorderRadius.circular(16),

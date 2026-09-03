@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 import 'audio_library_screen.dart';
 import 'ruqyah_progress_screen.dart';
@@ -889,11 +890,11 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                   ),
                   onPressed: () {
                     HapticFeedback.selectionClick();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Downloading Daily Ruqyah Guide PDF...'),
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                    AppToast.show(
+                      context,
+                      title: 'Downloading Guide',
+                      message: 'Daily Ruqyah Guide PDF is downloading.',
+                      type: ToastType.success,
                     );
                   },
                   padding: EdgeInsets.zero,

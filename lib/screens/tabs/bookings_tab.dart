@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../theme/app_gradients.dart';
 import '../../widgets/acupuncture_icon.dart';
+import '../../widgets/app_toast.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../therapist_marketplace_screen.dart';
@@ -441,11 +442,11 @@ class _BookingsTabState extends State<BookingsTab> {
                           ),
                         );
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('$value ${session.title}'),
-                            behavior: SnackBarBehavior.floating,
-                          ),
+                        AppToast.show(
+                          context,
+                          title: 'Session Action',
+                          message: '$value requested for ${session.title}.',
+                          type: ToastType.info,
                         );
                       }
                     },
@@ -574,11 +575,11 @@ class _BookingsTabState extends State<BookingsTab> {
       child: InkWell(
         onTap: () {
           HapticFeedback.selectionClick();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('All sessions added to calendar'),
-              behavior: SnackBarBehavior.floating,
-            ),
+          AppToast.show(
+            context,
+            title: 'Calendar Synchronized',
+            message: 'All upcoming sessions added to your device calendar.',
+            type: ToastType.success,
           );
         },
         borderRadius: BorderRadius.circular(12),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import 'guidance_results_screen.dart';
 
 class AISymptomGuideScreen extends StatefulWidget {
@@ -479,13 +480,13 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
               onTap: () {
                 HapticFeedback.selectionClick();
                 setState(() => _isRecordingVoice = !_isRecordingVoice);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(_isRecordingVoice
-                        ? 'Listening to your voice input...'
-                        : 'Voice recording stopped.'),
-                    behavior: SnackBarBehavior.floating,
-                  ),
+                AppToast.show(
+                  context,
+                  title: _isRecordingVoice ? 'Voice Recording' : 'Recording Stopped',
+                  message: _isRecordingVoice
+                      ? 'Listening to your voice input...'
+                      : 'Voice recording stopped.',
+                  type: ToastType.info,
                 );
               },
               child: Container(

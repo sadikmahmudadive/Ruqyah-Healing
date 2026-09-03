@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 
 class FullAudioPlayerScreen extends StatefulWidget {
   final String title;
@@ -372,11 +373,11 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
           label: '30m Timer',
           onTap: () {
             HapticFeedback.selectionClick();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('30-minute sleep timer set'),
-                behavior: SnackBarBehavior.floating,
-              ),
+            AppToast.show(
+              context,
+              title: 'Sleep Timer',
+              message: '30-minute sleep timer successfully set.',
+              type: ToastType.info,
             );
           },
         ),
@@ -385,11 +386,11 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
           label: 'Download',
           onTap: () {
             HapticFeedback.selectionClick();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Downloading recitation for offline playback...'),
-                behavior: SnackBarBehavior.floating,
-              ),
+            AppToast.show(
+              context,
+              title: 'Downloading Recitation',
+              message: 'Downloading recitation for offline playback...',
+              type: ToastType.success,
             );
           },
         ),

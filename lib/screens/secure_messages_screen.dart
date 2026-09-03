@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import 'book_appointment_screen.dart';
-import 'main_navigation_shell.dart';
 import 'video_consultation_screen.dart';
 
 class SecureMessagesScreen extends StatefulWidget {
@@ -723,11 +723,11 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                 ),
                 onPressed: () {
                   HapticFeedback.selectionClick();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Downloading Aftercare_Guidelines.pdf...'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
+                  AppToast.show(
+                    context,
+                    title: 'Downloading Document',
+                    message: 'Downloading Aftercare_Guidelines.pdf...',
+                    type: ToastType.info,
                   );
                 },
                 padding: EdgeInsets.zero,

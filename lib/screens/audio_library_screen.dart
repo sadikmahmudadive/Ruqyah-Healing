@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../widgets/app_toast.dart';
 import 'full_audio_player_screen.dart';
 
 class RecitationTrack {
@@ -76,15 +77,14 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       }
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(_downloadedTracks.contains(trackId)
-            ? 'Downloading $trackTitle for offline listening...'
-            : '$trackTitle removed from downloads.'),
-        backgroundColor: const Color(0xFF0B4632),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-      ),
+    final isDownloaded = _downloadedTracks.contains(trackId);
+    AppToast.show(
+      context,
+      title: isDownloaded ? 'Downloading Track' : 'Removed Download',
+      message: isDownloaded
+          ? 'Downloading $trackTitle for offline listening...'
+          : '$trackTitle removed from offline downloads.',
+      type: isDownloaded ? ToastType.success : ToastType.info,
     );
   }
 
