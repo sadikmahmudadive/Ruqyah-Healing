@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/acupuncture_icon.dart';
 import '../widgets/app_toast.dart';
+import 'acupuncture_point_map_screen.dart';
 import 'therapist_marketplace_screen.dart';
 
 class AcupunctureHubScreen extends StatefulWidget {
@@ -81,6 +82,12 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                       icon: Icons.menu_book_rounded,
                       onTap: () {
                         HapticFeedback.selectionClick();
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) =>
+                                const AcupuncturePointMapScreen(),
+                          ),
+                        );
                       },
                     ),
 
