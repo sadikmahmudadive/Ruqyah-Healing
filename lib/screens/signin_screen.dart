@@ -431,73 +431,130 @@ class _SignInScreenState extends State<SignInScreen>
 
   // Login Method Tab Switcher Segment (Email vs Phone)
   Widget _buildLoginTabSwitcher() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: Container(
-          height: 48,
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: const Color(0xFF12181F).withValues(alpha: 0.55),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.18),
-              width: 1.0,
-            ),
-          ),
-          child: Row(
-            children: [
-              // Email Tab
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() => _isPhoneLogin = false);
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    decoration: BoxDecoration(
-                      color: !_isPhoneLogin
-                          ? const Color(0xFF1E6B45)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.mail_outline_rounded,
-                          size: 18,
-                          color: !_isPhoneLogin
-                              ? Colors.white
-                              : Colors.white.withValues(alpha: 0.65),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Email',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 14,
-                            fontWeight: !_isPhoneLogin
-                                ? FontWeight.w700
-                                : FontWeight.w500,
-                            color: !_isPhoneLogin
-                                ? Colors.white
-                                : Colors.white.withValues(alpha: 0.65),
+    return Container(
+      height: 52,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8EEEA),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.60),
+          width: 1.0,
+        ),
+      ),
+      child: Row(
+        children: [
+          // Email Tab
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                setState(() => _isPhoneLogin = false);
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: !_isPhoneLogin
+                      ? const Color(0xFF113E2E)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(26),
+                  boxShadow: !_isPhoneLogin
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.12),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
                           ),
-                        ),
-                      ],
+                        ]
+                      : [],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.mail_outline_rounded,
+                      size: 20,
+                      color: !_isPhoneLogin
+                          ? Colors.white
+                          : const Color(0xFF4F6058),
                     ),
-                  ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 14.5,
+                        fontWeight: !_isPhoneLogin
+                            ? FontWeight.w700
+                            : FontWeight.w600,
+                        color: !_isPhoneLogin
+                            ? Colors.white
+                            : const Color(0xFF4F6058),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+            ),
+          ),
 
-              // Phone Tab
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
+          // Phone Tab
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                setState(() => _isPhoneLogin = true);
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: _isPhoneLogin
+                      ? const Color(0xFF113E2E)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(26),
+                  boxShadow: _isPhoneLogin
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.12),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.phone_outlined,
+                      size: 20,
+                      color: _isPhoneLogin
+                          ? Colors.white
+                          : const Color(0xFF4F6058),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Phone',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 14.5,
+                        fontWeight: _isPhoneLogin
+                            ? FontWeight.w700
+                            : FontWeight.w600,
+                        color: _isPhoneLogin
+                            ? Colors.white
+                            : const Color(0xFF4F6058),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
                     setState(() => _isPhoneLogin = true);
                   },
                   child: AnimatedContainer(
