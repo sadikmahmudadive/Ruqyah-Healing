@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../widgets/ruqyah_dua_icon.dart';
+import 'audio_library_screen.dart';
 import 'video_consultation_screen.dart';
 
 class RuqyahHubScreen extends StatefulWidget {
@@ -383,6 +384,11 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             InkWell(
               onTap: () {
                 HapticFeedback.selectionClick();
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const AudioLibraryScreen(),
+                  ),
+                );
               },
               child: const Text(
                 'View all',
@@ -399,19 +405,28 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
 
         const SizedBox(height: 12),
 
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
+        GestureDetector(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const AudioLibraryScreen(),
               ),
-            ],
-          ),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
           child: Row(
             children: [
               // Arabic Calligraphy Badge
@@ -484,7 +499,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 
