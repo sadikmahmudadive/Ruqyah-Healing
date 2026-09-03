@@ -555,51 +555,6 @@ class _SignInScreenState extends State<SignInScreen>
       ),
     );
   }
-                    setState(() => _isPhoneLogin = true);
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    decoration: BoxDecoration(
-                      color: _isPhoneLogin
-                          ? const Color(0xFF1E6B45)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.phone_iphone_rounded,
-                          size: 18,
-                          color: _isPhoneLogin
-                              ? Colors.white
-                              : Colors.white.withValues(alpha: 0.65),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Phone',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 14,
-                            fontWeight: _isPhoneLogin
-                                ? FontWeight.w700
-                                : FontWeight.w500,
-                            color: _isPhoneLogin
-                                ? Colors.white
-                                : Colors.white.withValues(alpha: 0.65),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildFieldLabel(String label) {
     return Text(
