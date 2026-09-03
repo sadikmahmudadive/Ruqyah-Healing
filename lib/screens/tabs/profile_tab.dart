@@ -8,6 +8,7 @@ import '../main_navigation_shell.dart';
 import '../notification_screen.dart';
 import '../settings_screen.dart';
 import '../signin_screen.dart';
+import '../toast_showcase_screen.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -326,6 +327,11 @@ class _ProfileTabState extends State<ProfileTab> {
             title: 'Personal Information',
             onTap: () {
               HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const ToastShowcaseScreen(),
+                ),
+              );
             },
           ),
           _buildDivider(),
