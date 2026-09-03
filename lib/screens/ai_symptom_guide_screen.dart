@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import 'guidance_results_screen.dart';
 
 class AISymptomGuideScreen extends StatefulWidget {
   const AISymptomGuideScreen({super.key});
@@ -33,126 +34,21 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
   }
 
   void _handleGetGuidance() {
-    final text = _symptomController.text.trim();
-    final experiencesStr = _selectedExperiences.join(', ');
-
     HapticFeedback.heavyImpact();
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 38,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE2E8E5),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const GuidanceResultsScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
             ),
-            const SizedBox(height: 18),
-            Row(
-              children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF0B4632),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'AI',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFFD49E35),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Spiritual Guidance Recommendation',
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Text(
-              'Based on your experience ($experiencesStr${text.isNotEmpty ? " • $text" : ""}):',
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 13.5,
-                color: Color(0xFF6E7E77),
-              ),
-            ),
-            const SizedBox(height: 12),
-            _buildRecommendationItem(
-              title: 'Recommended Ruqyah Recitation',
-              subtitle: 'Listen to Surah Al-Baqarah (Verses 1-5 & Ayat Al-Kursi)',
-            ),
-            _buildRecommendationItem(
-              title: 'Morning & Evening Protection Adhkar',
-              subtitle: 'Recite 3x Surah Al-Ikhlas, Al-Falaq, and An-Nas',
-            ),
-            _buildRecommendationItem(
-              title: 'Recommended Practitioner Session',
-              subtitle: 'Consider a 1-on-1 Ruqyah consultation with Dr. Salma Rahman',
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: AppGradients.greenButtonGradient,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'Done',
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-          ],
-        ),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
       ),
     );
   }
