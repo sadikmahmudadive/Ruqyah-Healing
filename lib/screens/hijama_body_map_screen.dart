@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -252,6 +255,31 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
     );
   }
 
+  // Full Screen 3D Rendered Body Viewer
+  void _showFullScreen3DViewerModal() {
+    HapticFeedback.heavyImpact();
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            _FullScreen3DAnatomyViewer(
+          points: _points,
+          initialPoint: _selectedPoint,
+          initialViewAngle: _viewAngle,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 350),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -340,7 +368,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Sub-Header Filter Segment Controls (General vs Personal | Front vs Back)
+              // 1. Sub-Header Filter Segment Controls
               _buildSegmentControlsRow(),
 
               const SizedBox(height: 16),
@@ -580,6 +608,49 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                   },
                 ),
               ],
+            ),
+          ),
+
+          // Full Screen 3D View Button (Top Right)
+          Positioned(
+            right: 14,
+            top: 14,
+            child: InkWell(
+              onTap: _showFullScreen3DViewerModal,
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0B4632),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF0B4632).withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.fullscreen_rounded,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      '3D View',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
 
@@ -1061,59 +1132,465 @@ class _LegendItem extends StatelessWidget {
   }
 }
 
-// 3D Human Anatomy Vector Silhouette CustomPainter
+// 3D Human Anatomy Vector Silhouette CustomPainter with Shading
 class _HumanBodyAnatomyPainter extends CustomPainter {
   final bool isBack;
+  final double rotationY;
 
-  _HumanBodyAnatomyPainter({required this.isBack});
+  _HumanBodyAnatomyPainter({required this.isBack, this.rotationY = 0.0});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFFB0BEC5).withValues(alpha: 0.35)
+    final centerX = size.width / 2;
+    final w = size.width;
+    final h = size.height;
+
+    // 1. Base Gradient Fill Paint for 3D Muscle Skin Effect
+    final Paint bodyFillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: isBack
+            ? [const Color(0xFFD6E2DD), const Color(0xFFB5C8C1)]
+            : [const Color(0xFFE4EDE9), const Color(0xFFC2D4CD)],
+      ).createShader(Rect.fromLTWH(0, 0, w, h));
+
+    // 2. 3D Muscle Contour Line Paint
+    final Paint contourPaint = Paint()
+      ..color = const Color(0xFF718D86).withValues(alpha: 0.50)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.8
+      ..strokeWidth = 1.2
       ..strokeCap = StrokeCap.round;
 
-    final fillPaint = Paint()
-      ..color = const Color(0xFFE2E8E5).withValues(alpha: 0.40)
-      ..style = PaintingStyle.fill;
+    // 3. Outer Outline Paint
+    final Paint outlinePaint = Paint()
+      ..color = const Color(0xFF425E57)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.8;
 
-    final centerX = size.width / 2;
-
-    final Path bodyPath = Path()
-      // Head
+    // Drawing Full Anatomical Human Silhouette
+    final Path headPath = Path()
       ..addOval(Rect.fromCircle(
-          center: Offset(centerX, size.height * 0.10), radius: 16))
-      // Neck & Shoulders
-      ..moveTo(centerX - 6, size.height * 0.16)
-      ..lineTo(centerX - 28, size.height * 0.22)
-      // Left Arm
-      ..lineTo(centerX - 36, size.height * 0.48)
-      ..lineTo(centerX - 30, size.height * 0.48)
-      ..lineTo(centerX - 20, size.height * 0.32)
-      // Left Torso & Leg
-      ..lineTo(centerX - 18, size.height * 0.58)
-      ..lineTo(centerX - 12, size.height * 0.90)
-      ..lineTo(centerX - 2, size.height * 0.90)
-      // Center Crotch
-      ..lineTo(centerX, size.height * 0.58)
-      // Right Leg
-      ..lineTo(centerX + 2, size.height * 0.90)
-      ..lineTo(centerX + 12, size.height * 0.90)
-      ..lineTo(centerX + 18, size.height * 0.58)
-      // Right Arm
-      ..lineTo(centerX + 20, size.height * 0.32)
-      ..lineTo(centerX + 30, size.height * 0.48)
-      ..lineTo(centerX + 36, size.height * 0.48)
-      ..lineTo(centerX + 28, size.height * 0.22)
-      ..lineTo(centerX + 6, size.height * 0.16)
+          center: Offset(centerX, h * 0.09), radius: w * 0.12));
+
+    final Path neckPath = Path()
+      ..moveTo(centerX - w * 0.06, h * 0.14)
+      ..lineTo(centerX - w * 0.08, h * 0.18)
+      ..lineTo(centerX + w * 0.08, h * 0.18)
+      ..lineTo(centerX + w * 0.06, h * 0.14)
       ..close();
 
-    canvas.drawPath(bodyPath, fillPaint);
-    canvas.drawPath(bodyPath, paint);
+    final Path torsoPath = Path()
+      ..moveTo(centerX - w * 0.08, h * 0.18)
+      // Left Shoulder (Deltoid)
+      ..quadraticBezierTo(
+          centerX - w * 0.28, h * 0.19, centerX - w * 0.32, h * 0.23)
+      // Left Arm & Bicep
+      ..cubicTo(centerX - w * 0.38, h * 0.35, centerX - w * 0.40, h * 0.45,
+          centerX - w * 0.38, h * 0.52)
+      ..cubicTo(centerX - w * 0.33, h * 0.52, centerX - w * 0.30, h * 0.45,
+          centerX - w * 0.26, h * 0.34)
+      // Left Waist & Hip
+      ..quadraticBezierTo(
+          centerX - w * 0.20, h * 0.42, centerX - w * 0.18, h * 0.52)
+      // Left Thigh & Quad
+      ..cubicTo(centerX - w * 0.22, h * 0.65, centerX - w * 0.16, h * 0.78,
+          centerX - w * 0.12, h * 0.92)
+      // Left Foot / Ankle
+      ..lineTo(centerX - w * 0.03, h * 0.92)
+      ..quadraticBezierTo(
+          centerX - w * 0.06, h * 0.75, centerX - w * 0.01, h * 0.55)
+      // Center Crotch Junction
+      ..lineTo(centerX + w * 0.01, h * 0.55)
+      // Right Thigh & Quad
+      ..quadraticBezierTo(
+          centerX + w * 0.06, h * 0.75, centerX + w * 0.03, h * 0.92)
+      // Right Foot / Ankle
+      ..lineTo(centerX + w * 0.12, h * 0.92)
+      ..cubicTo(centerX + w * 0.16, h * 0.78, centerX + w * 0.22, h * 0.65,
+          centerX + w * 0.18, h * 0.52)
+      // Right Waist & Hip
+      ..quadraticBezierTo(
+          centerX + w * 0.20, h * 0.42, centerX + w * 0.26, h * 0.34)
+      // Right Arm & Bicep
+      ..cubicTo(centerX + w * 0.30, h * 0.45, centerX + w * 0.33, h * 0.52,
+          centerX + w * 0.38, h * 0.52)
+      ..cubicTo(centerX + w * 0.40, h * 0.45, centerX + w * 0.38, h * 0.35,
+          centerX + w * 0.32, h * 0.23)
+      // Right Shoulder
+      ..quadraticBezierTo(
+          centerX + w * 0.28, h * 0.19, centerX + w * 0.08, h * 0.18)
+      ..close();
+
+    // Draw Base Fills
+    canvas.drawPath(headPath, bodyFillPaint);
+    canvas.drawPath(headPath, outlinePaint);
+
+    canvas.drawPath(neckPath, bodyFillPaint);
+    canvas.drawPath(neckPath, outlinePaint);
+
+    canvas.drawPath(torsoPath, bodyFillPaint);
+    canvas.drawPath(torsoPath, outlinePaint);
+
+    // Anatomical Muscle Shading Contours (Front vs Back Details)
+    if (!isBack) {
+      // Pectorals
+      final Path chestPath = Path()
+        ..moveTo(centerX - w * 0.18, h * 0.23)
+        ..quadraticBezierTo(centerX - w * 0.08, h * 0.28, centerX, h * 0.26)
+        ..quadraticBezierTo(
+            centerX + w * 0.08, h * 0.28, centerX + w * 0.18, h * 0.23);
+      canvas.drawPath(chestPath, contourPaint);
+
+      // Abdominals Center Line
+      canvas.drawLine(Offset(centerX, h * 0.26), Offset(centerX, h * 0.50),
+          contourPaint);
+
+      // Abdominal Rib Contours
+      for (int i = 0; i < 3; i++) {
+        final double y = h * (0.31 + i * 0.06);
+        canvas.drawLine(
+            Offset(centerX - w * 0.08, y), Offset(centerX + w * 0.08, y), contourPaint);
+      }
+
+      // Knee Caps
+      canvas.drawOval(
+          Rect.fromCenter(
+              center: Offset(centerX - w * 0.08, h * 0.72),
+              width: 12,
+              height: 16),
+          contourPaint);
+      canvas.drawOval(
+          Rect.fromCenter(
+              center: Offset(centerX + w * 0.08, h * 0.72),
+              width: 12,
+              height: 16),
+          contourPaint);
+    } else {
+      // Spine Center Line
+      canvas.drawLine(Offset(centerX, h * 0.18), Offset(centerX, h * 0.54),
+          contourPaint);
+
+      // Trapezius V-Shaped Lines
+      final Path trapPath = Path()
+        ..moveTo(centerX - w * 0.20, h * 0.21)
+        ..lineTo(centerX, h * 0.32)
+        ..lineTo(centerX + w * 0.20, h * 0.21);
+      canvas.drawPath(trapPath, contourPaint);
+
+      // Glutes (Buttocks) Contours
+      canvas.drawArc(
+          Rect.fromLTWH(centerX - w * 0.15, h * 0.48, w * 0.15, h * 0.12),
+          0,
+          3.14,
+          false,
+          contourPaint);
+      canvas.drawArc(
+          Rect.fromLTWH(centerX, h * 0.48, w * 0.15, h * 0.12),
+          0,
+          3.14,
+          false,
+          contourPaint);
+    }
   }
 
   @override
-  bool shouldRepaint(covariant _HumanBodyAnatomyPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _HumanBodyAnatomyPainter oldDelegate) =>
+      oldDelegate.isBack != isBack || oldDelegate.rotationY != rotationY;
+}
+
+// Interactive Full Screen 3D Rendered Body Viewer
+class _FullScreen3DAnatomyViewer extends StatefulWidget {
+  final List<HijamaPoint> points;
+  final HijamaPoint initialPoint;
+  final String initialViewAngle;
+
+  const _FullScreen3DAnatomyViewer({
+    required this.points,
+    required this.initialPoint,
+    required this.initialViewAngle,
+  });
+
+  @override
+  State<_FullScreen3DAnatomyViewer> createState() =>
+      _FullScreen3DAnatomyViewerState();
+}
+
+class _FullScreen3DAnatomyViewerState
+    extends State<_FullScreen3DAnatomyViewer> {
+  late HijamaPoint _selectedPoint;
+  double _rotationAngle = 0.0; // 0 = Front, math.pi = Back
+  double _zoomScale = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedPoint = widget.initialPoint;
+    _rotationAngle = widget.initialViewAngle == 'Back' ? math.pi : 0.0;
+  }
+
+  bool get _isBack =>
+      (_rotationAngle % (2 * math.pi)).abs() > math.pi / 2 &&
+      (_rotationAngle % (2 * math.pi)).abs() < 3 * math.pi / 2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0B1411),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0B1411),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.close_rounded, color: Colors.white, size: 24),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Text(
+          '3D Interactive Body Model',
+          style: TextStyle(
+            fontFamily: 'PlusJakartaSans',
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh_rounded, color: Color(0xFF81C784)),
+            onPressed: () {
+              setState(() {
+                _rotationAngle = 0.0;
+                _zoomScale = 1.0;
+              });
+            },
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // 360 Degree Drag Rotation Hint
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              margin: const EdgeInsets.only(top: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.10),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.360_rounded,
+                    color: Color(0xFFD49E35),
+                    size: 18,
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    'Drag horizontally to rotate 360° model',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      color: Color(0xFF81C784),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Main 3D Canvas
+            Expanded(
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  setState(() {
+                    _rotationAngle += details.delta.dx * 0.01;
+                  });
+                },
+                child: Center(
+                  child: Transform.scale(
+                    scale: _zoomScale,
+                    child: SizedBox(
+                      width: 260,
+                      height: 480,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CustomPaint(
+                            size: const Size(220, 460),
+                            painter: _HumanBodyAnatomyPainter(
+                              isBack: _isBack,
+                              rotationY: _rotationAngle,
+                            ),
+                          ),
+                          // Acupoints Overlay
+                          ...widget.points.map((pt) {
+                            final pos = _isBack ? pt.backPos : pt.frontPos;
+                            final isSelected = pt == _selectedPoint;
+
+                            return Positioned(
+                              left: 220 * pos.dx,
+                              top: 460 * pos.dy,
+                              child: GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.selectionClick();
+                                  setState(() => _selectedPoint = pt);
+                                },
+                                child: _build3DPointMarker(pt, isSelected),
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // Preset View Angle Buttons
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildViewPresetPill('Front', 0.0),
+                  const SizedBox(width: 8),
+                  _buildViewPresetPill('Back', math.pi),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Selected Acupoint Detail Card
+            Container(
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF12241F),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: const Color(0xFF0B4632),
+                  width: 1.0,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFD49E35),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${_selectedPoint.name} (${_selectedPoint.code})',
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF0B4632),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _selectedPoint.status,
+                          style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _selectedPoint.purpose,
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 13,
+                      color: Color(0xFF81C784),
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildViewPresetPill(String label, double targetAngle) {
+    final isSelected = (_rotationAngle - targetAngle).abs() < 0.5;
+
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        setState(() => _rotationAngle = targetAngle);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF0B4632) : const Color(0xFF1A2E28),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF81C784) : Colors.transparent,
+            width: 1.0,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontFamily: 'PlusJakartaSans',
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _build3DPointMarker(HijamaPoint pt, bool isSelected) {
+    final Color dotColor = pt.status == 'Active'
+        ? const Color(0xFF0B4632)
+        : pt.status == 'Treated'
+            ? const Color(0xFFD49E35)
+            : const Color(0xFF2ECC71);
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      width: isSelected ? 22 : 14,
+      height: isSelected ? 22 : 14,
+      decoration: BoxDecoration(
+        color: dotColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: isSelected ? 3 : 2),
+        boxShadow: [
+          BoxShadow(
+            color: dotColor.withValues(alpha: 0.60),
+            blurRadius: isSelected ? 12 : 6,
+            spreadRadius: isSelected ? 3 : 1,
+          ),
+        ],
+      ),
+    );
+  }
 }
