@@ -6,6 +6,7 @@ import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../ai_symptom_guide_screen.dart';
+import '../audio_library_screen.dart';
 import '../book_appointment_screen.dart';
 import '../health_profile_detail_screen.dart';
 import '../notification_screen.dart';
@@ -386,7 +387,6 @@ class _HomeTabState extends State<HomeTab> {
   // Audio Player Card
   Widget _buildAudioPlayerCard() {
     return Container(
-      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -398,9 +398,34 @@ class _HomeTabState extends State<HomeTab> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const AudioLibraryScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 400),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
           Row(
             children: [
               Expanded(
@@ -504,8 +529,10 @@ class _HomeTabState extends State<HomeTab> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 
   // Holistic Services Row
   Widget _buildServicesRow() {
