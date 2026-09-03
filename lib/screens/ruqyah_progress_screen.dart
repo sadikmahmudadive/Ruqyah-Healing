@@ -678,11 +678,11 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
 
               const SizedBox(width: 14),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Evening adhkar reminder',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
@@ -691,19 +691,19 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                         color: Color(0xFF15221D),
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Row(
                       children: [
                         Container(
                           width: 6,
                           height: 6,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Color(0xFFD49E35),
                             shape: BoxShape.circle,
                           ),
                         ),
-                        SizedBox(width: 6),
-                        Text(
+                        const SizedBox(width: 6),
+                        const Text(
                           'Today, 8:00 PM',
                           style: TextStyle(
                             fontFamily: 'Inter',

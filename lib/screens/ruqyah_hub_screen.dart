@@ -775,8 +775,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
           ),
         ),
       ),
-    );
-  }
+    ],
+  );
+}
 
   // 7. PDF Guides Section
   Widget _buildPdfGuidesSection() {
