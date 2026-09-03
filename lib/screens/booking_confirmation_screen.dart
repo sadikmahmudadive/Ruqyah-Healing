@@ -80,9 +80,6 @@ class _BookingConfirmationScreenState
       );
       return;
     }
-      );
-      return;
-    }
 
     HapticFeedback.heavyImpact();
 
