@@ -201,7 +201,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   'Minutes',
                   style: TextStyle(
@@ -253,7 +253,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   'Sessions',
                   style: TextStyle(
@@ -305,9 +305,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Row(
-                  children: [
+                  children: <Widget>[
                     Text(
                       'Streak',
                       style: TextStyle(
