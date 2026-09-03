@@ -692,12 +692,14 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     const SizedBox(height: 2),
                     Row(
                       children: <Widget>[
-                        Container(
+                        const SizedBox(
                           width: 6,
                           height: 6,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFD49E35),
-                            shape: BoxShape.circle,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Color(0xFFD49E35),
+                              shape: BoxShape.circle,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 6),
