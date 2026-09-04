@@ -727,7 +727,7 @@ class _LearnTabState extends State<LearnTab> {
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
