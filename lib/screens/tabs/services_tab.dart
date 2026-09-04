@@ -332,8 +332,6 @@ class _ServicesTabState extends State<ServicesTab> {
       ),
     );
   }
-}
-  }
 
   // Full-Width Main Service Card
   Widget _buildMainServiceCard({
