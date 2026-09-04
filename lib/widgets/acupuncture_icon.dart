@@ -14,11 +14,13 @@ class AcupunctureIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _AcupunctureIconPainter(color: color),
+    return Center(
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: _AcupunctureIconPainter(color: color),
+        ),
       ),
     );
   }
