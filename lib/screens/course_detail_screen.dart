@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
+import 'quiz_certificate_screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
   final String courseTitle;
@@ -474,18 +475,37 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           icon: Icons.help_outline_rounded,
           title: 'Quiz',
           subtitle: 'Test Knowl...',
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const QuizCertificateScreen(),
+              ),
+            );
+          },
         ),
         const SizedBox(width: 8),
         _buildBentoItem(
           icon: Icons.edit_outlined,
           title: 'Notes',
           subtitle: 'Your Notes',
+          onTap: () {
+            HapticFeedback.selectionClick();
+          },
         ),
         const SizedBox(width: 8),
         _buildBentoItem(
           icon: Icons.card_membership_rounded,
           title: 'Certificate',
           subtitle: 'Eligibility',
+          onTap: () {
+            HapticFeedback.selectionClick();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const QuizCertificateScreen(),
+              ),
+            );
+          },
         ),
       ],
     );
@@ -495,18 +515,21 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     required IconData icon,
     required String title,
     required String subtitle,
+    VoidCallback? onTap,
   }) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 3),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
             ),
           ],
         ),
