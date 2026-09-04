@@ -687,16 +687,19 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Module 2: Cupping Principles',
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 14.5,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF15221D),
+                  const Expanded(
+                    child: Text(
+                      'Module 2: Cupping Principles',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF15221D),
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(width: 8),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
