@@ -1,13 +1,11 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../theme/app_gradients.dart';
 import '../../widgets/acupuncture_icon.dart';
-import '../../widgets/app_toast.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
+import '../course_detail_screen.dart';
 
 class CourseModel {
   final String id;
@@ -286,11 +284,10 @@ class _LearnTabState extends State<LearnTab> {
               InkWell(
                 onTap: () {
                   HapticFeedback.selectionClick();
-                  AppToast.show(
-                    context,
-                    title: 'Course Resumed',
-                    message: 'Resuming Hijama Practitioner Foundation...',
-                    type: ToastType.info,
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const CourseDetailScreen(),
+                    ),
                   );
                 },
                 borderRadius: BorderRadius.circular(14),
@@ -544,19 +541,33 @@ class _LearnTabState extends State<LearnTab> {
   Widget _buildCourseCard(CourseModel course) {
     final bool isBeginner = course.level == 'Beginner';
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => CourseDetailScreen(
+              courseTitle: course.title,
+              instructorName: course.instructor,
+              level: course.level,
+              price: course.price,
+            ),
           ),
-        ],
-      ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
       child: Column(
         children: [
           // Top Row: Image + Details
