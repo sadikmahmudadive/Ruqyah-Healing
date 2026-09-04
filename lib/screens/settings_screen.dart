@@ -395,10 +395,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   trailingText,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
-                    fontWeight:
-                        isTrailingActive ? FontWeight.w700 : FontWeight.w500,
+                    fontWeight: isTrailingActive
+                        ? FontWeight.w800
+                        : FontWeight.w500,
                     color: isTrailingActive
                         ? const Color(0xFF0B4632)
                         : const Color(0xFF90A4AE),
@@ -411,7 +412,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: isDestructive
                     ? const Color(0xFFE74C3C)
                     : const Color(0xFF90A4AE),
-                size: 20,
+                size: 16,
               ),
             ],
           ),
