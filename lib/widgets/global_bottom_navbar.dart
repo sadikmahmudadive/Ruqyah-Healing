@@ -28,6 +28,14 @@ class GlobalBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final navBgColor = isDark
+        ? const Color(0xFF121B17).withValues(alpha: 0.70)
+        : Colors.white.withValues(alpha: 0.60);
+    final navBorderColor = isDark
+        ? const Color(0xFF283B32).withValues(alpha: 0.80)
+        : Colors.white.withValues(alpha: 0.70);
+
     return Padding(
       padding: const EdgeInsets.only(left: 14, right: 14, bottom: 20),
       child: ClipRRect(
@@ -37,15 +45,15 @@ class GlobalBottomNavBar extends StatelessWidget {
           child: Container(
             height: 72,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.60),
+              color: navBgColor,
               borderRadius: BorderRadius.circular(32),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.70),
+                color: navBorderColor,
                 width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
+                  color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.08),
                   blurRadius: 24,
                   offset: const Offset(0, 8),
                 ),
@@ -57,6 +65,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildNavItem(
+                    context,
                     tab: NavigationTab.home,
                     label: 'Home',
                     iconBuilder: (isSelected, color) => HomeNavIcon(
@@ -66,6 +75,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     ),
                   ),
                   _buildNavItem(
+                    context,
                     tab: NavigationTab.services,
                     label: 'Services',
                     iconBuilder: (isSelected, color) => ServicesNavIcon(
@@ -75,6 +85,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     ),
                   ),
                   _buildNavItem(
+                    context,
                     tab: NavigationTab.bookings,
                     label: 'Bookings',
                     iconBuilder: (isSelected, color) => BookingsNavIcon(
@@ -84,6 +95,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     ),
                   ),
                   _buildNavItem(
+                    context,
                     tab: NavigationTab.learn,
                     label: 'Learn',
                     iconBuilder: (isSelected, color) => LearnNavIcon(
@@ -93,6 +105,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     ),
                   ),
                   _buildNavItem(
+                    context,
                     tab: NavigationTab.profile,
                     label: 'Profile',
                     iconBuilder: (isSelected, color) => ProfileNavIcon(
@@ -110,12 +123,16 @@ class GlobalBottomNavBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem({
+  Widget _buildNavItem(
+    BuildContext context, {
     required NavigationTab tab,
     required String label,
     required Widget Function(bool isSelected, Color color) iconBuilder,
   }) {
     final isSelected = currentTab == tab;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final inactiveIconColor =
+        isDark ? const Color(0xFF81C784) : const Color(0xFF0B4632);
 
     return GestureDetector(
       onTap: () {
@@ -148,7 +165,7 @@ class GlobalBottomNavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             iconBuilder(
-                isSelected, isSelected ? Colors.white : const Color(0xFF0B4632)),
+                isSelected, isSelected ? Colors.white : inactiveIconColor),
             if (isSelected) ...[
               const SizedBox(width: 8),
               Text(

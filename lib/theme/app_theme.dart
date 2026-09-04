@@ -27,6 +27,25 @@ class AppColors {
   static const Color darkContainerBg = Color(0xFF182E25);
 }
 
+extension AppThemeContext on BuildContext {
+  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
+
+  Color get pageBg =>
+      isDarkMode ? AppColors.darkBackground : AppColors.lightBackground;
+  Color get cardBg =>
+      isDarkMode ? AppColors.darkCardBg : AppColors.lightCardBg;
+  Color get cardBorder =>
+      isDarkMode ? AppColors.darkCardBorder : AppColors.lightCardBorder;
+  Color get textPrimary =>
+      isDarkMode ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+  Color get textSecondary =>
+      isDarkMode ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
+  Color get textMuted =>
+      isDarkMode ? AppColors.darkTextMuted : AppColors.lightTextMuted;
+  Color get containerBg =>
+      isDarkMode ? AppColors.darkContainerBg : AppColors.lightContainerBg;
+}
+
 class AppTheme {
   static final ValueNotifier<ThemeMode> themeModeNotifier =
       ValueNotifier<ThemeMode>(ThemeMode.system);

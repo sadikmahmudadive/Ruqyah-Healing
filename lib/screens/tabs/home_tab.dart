@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
+import '../../theme/app_gradients.dart';
+import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
@@ -40,7 +42,7 @@ class _HomeTabState extends State<HomeTab> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: SafeArea(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -74,8 +76,15 @@ class _HomeTabState extends State<HomeTab> {
                 const SizedBox(height: 24),
 
                 // 4. Holistic Services Section Title
-                const Text(
+                Text(
                   'Holistic Services',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: context.textPrimary,
+                  ),
+                ),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 18,
@@ -118,7 +127,7 @@ class _HomeTabState extends State<HomeTab> {
           height: 48,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width: 2.0),
+            border: Border.all(color: context.cardBorder, width: 2.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.08),
@@ -146,17 +155,17 @@ class _HomeTabState extends State<HomeTab> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
-                  color: const Color(0xFF6E7E77),
+                  color: context.textSecondary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 userName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
             ],
@@ -168,9 +177,9 @@ class _HomeTabState extends State<HomeTab> {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.cardBg,
             shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+            border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -180,9 +189,9 @@ class _HomeTabState extends State<HomeTab> {
             ],
           ),
           child: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.notifications_none_rounded,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
               size: 22,
             ),
             onPressed: () {
@@ -215,8 +224,9 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildHealthIndexCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -256,13 +266,13 @@ class _HomeTabState extends State<HomeTab> {
               children: [
                 Row(
                   children: [
-                    const Text(
+                    Text(
                       'Health Index',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                     const Spacer(),
@@ -277,19 +287,19 @@ class _HomeTabState extends State<HomeTab> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
-                  children: const [
+                  children: [
                     Text(
                       '78',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 32,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                         height: 1.0,
                       ),
                     ),
-                    SizedBox(width: 8),
-                    Text(
+                    const SizedBox(width: 8),
+                    const Text(
                       'Good',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
@@ -301,7 +311,7 @@ class _HomeTabState extends State<HomeTab> {
                   ],
                 ),
                 const SizedBox(height: 14),
-                Container(height: 1, color: const Color(0xFFE2E8E5)),
+                Container(height: 1, color: context.cardBorder),
                 const SizedBox(height: 10),
                 Text(
                   'Overall physical & spiritual wellness',
@@ -309,7 +319,7 @@ class _HomeTabState extends State<HomeTab> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xFF6E7E77),
+                    color: context.textSecondary,
                     height: 1.3,
                   ),
                 ),
@@ -390,8 +400,9 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildAudioPlayerCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -428,43 +439,43 @@ class _HomeTabState extends State<HomeTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    const Text(
-                      'سورة البقرة',
-                      style: TextStyle(
-                        fontFamily: 'Cinzel',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF0B4632),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'سورة البقرة',
+                            style: TextStyle(
+                              fontFamily: 'Cinzel',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF0B4632),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Surah Al-Baqarah (Ayet 1–5)',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: context.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Recited by Sheikh Al-Afasy',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              color: context.textSecondary,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      'Surah Al-Baqarah (Ayet 1–5)',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF15221D),
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Recited by Sheikh Al-Afasy',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        color: const Color(0xFF6E7E77),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
               // Play Button
               InkWell(
@@ -616,7 +627,12 @@ class _HomeTabState extends State<HomeTab> {
           Container(
             width: 64,
             height: 64,
-            decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+            decoration: BoxDecoration(
+              color: context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : bgColor,
+              shape: BoxShape.circle,
+            ),
             child: Center(
               child: customIcon ?? Icon(icon, color: iconColor, size: 26),
             ),
@@ -624,11 +640,11 @@ class _HomeTabState extends State<HomeTab> {
           const SizedBox(height: 8),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 12.5,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
         ],
@@ -641,8 +657,9 @@ class _HomeTabState extends State<HomeTab> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -654,14 +671,14 @@ class _HomeTabState extends State<HomeTab> {
       child: Column(
         children: [
           Row(
-            children: const [
+            children: [
               Text(
                 "Today's Prayer Times",
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
               Spacer(),
@@ -770,8 +787,9 @@ class _HomeTabState extends State<HomeTab> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),

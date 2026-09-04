@@ -34,9 +34,9 @@ class _ProfileTabState extends State<ProfileTab> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: context.pageBg,
           elevation: 0,
           titleSpacing: 20,
           automaticallyImplyLeading: false,
@@ -311,8 +311,9 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget _buildSettingsListCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),

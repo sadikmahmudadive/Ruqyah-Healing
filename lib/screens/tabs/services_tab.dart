@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../theme/app_gradients.dart';
+import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
@@ -24,30 +25,30 @@ class ServicesTab extends StatelessWidget {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: context.pageBg,
           elevation: 0,
           titleSpacing: 20,
           automaticallyImplyLeading: false,
           leading: null,
-          title: const Text(
+          title: Text(
             'SERVICES',
             style: TextStyle(
               fontFamily: 'Cinzel',
               fontSize: 24,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.5,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.search_rounded,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                   size: 24,
                 ),
                 onPressed: () {
@@ -339,8 +340,9 @@ class ServicesTab extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -386,22 +388,22 @@ class ServicesTab extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cinzel',
                           fontSize: 16.5,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.2,
-                          color: Color(0xFF15221D),
+                          color: context.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         description,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF6E7E77),
+                          color: context.textSecondary,
                           height: 1.35,
                         ),
                       ),
@@ -436,8 +438,9 @@ class ServicesTab extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
