@@ -5,6 +5,7 @@ import '../theme/app_gradients.dart';
 import '../widgets/acupuncture_icon.dart';
 import '../widgets/app_toast.dart';
 import 'acupuncture_point_map_screen.dart';
+import 'pain_stress_monitor_screen.dart';
 import 'therapist_marketplace_screen.dart';
 
 class AcupunctureHubScreen extends StatefulWidget {
@@ -437,19 +438,28 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
 
   // 6. Pain & Stress Tracker Card
   Widget _buildPainStressTrackerCard() {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const PainStressMonitorScreen(),
           ),
-        ],
-      ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
       child: Column(
         children: [
           Row(
@@ -591,8 +601,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   // 7. Safety & Education Card
   Widget _buildSafetyEducationCard() {
