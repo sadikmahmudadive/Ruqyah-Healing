@@ -676,47 +676,58 @@ class _LearnTabState extends State<LearnTab> {
           const SizedBox(height: 10),
 
           // Footer Info Row
-          Row(
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 4,
             children: [
-              const Icon(
-                Icons.star_rounded,
-                color: Color(0xFFD49E35),
-                size: 16,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.star_rounded,
+                    color: Color(0xFFD49E35),
+                    size: 16,
+                  ),
+                  const SizedBox(width: 3),
+                  Text(
+                    '${course.rating} ',
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF15221D),
+                    ),
+                  ),
+                  Text(
+                    '(${course.reviewsCount} reviews)',
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 11.5,
+                      color: Color(0xFF90A4AE),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 3),
-              Text(
-                '${course.rating} ',
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.school_outlined,
+                    color: Color(0xFF0B4632),
+                    size: 15,
+                  ),
+                  SizedBox(width: 4),
+                  Text(
+                    'Certificate',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 11.5,
+                      color: Color(0xFF6E7E77),
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                '(${course.reviewsCount} reviews)',
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11.5,
-                  color: Color(0xFF90A4AE),
-                ),
-              ),
-              const Spacer(),
-              const Icon(
-                Icons.school_outlined,
-                color: Color(0xFF0B4632),
-                size: 15,
-              ),
-              const SizedBox(width: 4),
-              const Text(
-                'Certificate',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11.5,
-                  color: Color(0xFF6E7E77),
-                ),
-              ),
-              const SizedBox(width: 10),
               Text(
                 '${course.freeLessons} Free Lessons',
                 style: const TextStyle(
