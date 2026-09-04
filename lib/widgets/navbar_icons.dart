@@ -434,7 +434,7 @@ class _LearnIconPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final scale = size.width / 29.0;
-    canvas.scale(scale, scale * (size.height / size.width) * (29.0 / 21.0));
+    canvas.scale(scale, scale);
 
     final paint = Paint()..color = color;
 
