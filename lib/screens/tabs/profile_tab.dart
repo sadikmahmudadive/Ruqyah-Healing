@@ -8,6 +8,7 @@ import '../main_navigation_shell.dart';
 import '../notification_screen.dart';
 import '../settings_screen.dart';
 import '../signin_screen.dart';
+import '../subscription_plans_screen.dart';
 import '../toast_showcase_screen.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -347,6 +348,19 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 ),
                 (route) => false,
+              );
+            },
+          ),
+          _buildDivider(),
+          _buildSettingsTile(
+            icon: Icons.workspace_premium_rounded,
+            title: 'Subscription Plans',
+            onTap: () {
+              HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const SubscriptionPlansScreen(),
+                ),
               );
             },
           ),
