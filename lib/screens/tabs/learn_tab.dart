@@ -568,8 +568,8 @@ class _LearnTabState extends State<LearnTab> {
             ),
           ],
         ),
-      child: Column(
-        children: [
+        child: Column(
+          children: [
           // Top Row: Image + Details
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
