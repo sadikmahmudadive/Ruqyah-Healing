@@ -62,7 +62,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => HomeNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 21,
+                      size: 24,
                     ),
                   ),
                   _buildNavItem(
@@ -71,7 +71,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => ServicesNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 18.5,
+                      size: 24,
                     ),
                   ),
                   _buildNavItem(
@@ -80,7 +80,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => BookingsNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 21,
+                      size: 24,
                     ),
                   ),
                   _buildNavItem(
@@ -89,7 +89,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => LearnNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 21,
+                      size: 24,
                     ),
                   ),
                   _buildNavItem(
@@ -98,7 +98,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => ProfileNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 21,
+                      size: 24,
                     ),
                   ),
                 ],
@@ -126,18 +126,19 @@ class GlobalBottomNavBar extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOutCubic,
+        height: 48,
         padding: isSelected
-            ? const EdgeInsets.symmetric(horizontal: 16, vertical: 10)
-            : const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            ? const EdgeInsets.symmetric(horizontal: 18)
+            : const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF13422E) : Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
+          color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
+          borderRadius: BorderRadius.circular(24),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF13422E).withValues(alpha: 0.3),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
+                    color: const Color(0xFF0B4632).withValues(alpha: 0.25),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
                   ),
                 ]
               : [],
@@ -147,7 +148,7 @@ class GlobalBottomNavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             iconBuilder(
-                isSelected, isSelected ? Colors.white : const Color(0xFF13422E)),
+                isSelected, isSelected ? Colors.white : const Color(0xFF0B4632)),
             if (isSelected) ...[
               const SizedBox(width: 8),
               Text(
