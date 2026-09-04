@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Modern Home Navigation Icon with refined geometry and clean active/inactive states
 class HomeNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -10,103 +9,98 @@ class HomeNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 21.0,
+    this.size = 24.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _HomeNavIconPainter(isSelected: isSelected, color: color),
+    return Center(
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: _HomeIconPainter(isSelected: isSelected, color: color),
+        ),
       ),
     );
   }
 }
 
-class _HomeNavIconPainter extends CustomPainter {
+class _HomeIconPainter extends CustomPainter {
   final bool isSelected;
   final Color color;
 
-  _HomeNavIconPainter({required this.isSelected, required this.color});
+  _HomeIconPainter({required this.isSelected, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double scale = size.width / 24.0;
-    canvas.scale(scale, scale);
+    final scale = size.width / 21.0;
+    canvas.scale(scale, scale * (size.height / size.width) * (21.0 / 23.0));
 
-    final Paint fillPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    final Paint strokePaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.75
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
+    final paint = Paint()..color = color;
 
     if (isSelected) {
-      // Solid Modern House with smooth gable apex and arched door cutout
-      final Path house = Path()
-        ..moveTo(12.0, 2.8)
-        ..cubicTo(12.5, 2.8, 13.0, 3.1, 13.4, 3.5)
-        ..lineTo(20.4, 9.2)
-        ..cubicTo(21.0, 9.7, 21.3, 10.4, 21.3, 11.2)
-        ..lineTo(21.3, 19.0)
-        ..cubicTo(21.3, 20.1, 20.4, 21.0, 19.3, 21.0)
-        ..lineTo(4.7, 21.0)
-        ..cubicTo(3.6, 21.0, 2.7, 20.1, 2.7, 19.0)
-        ..lineTo(2.7, 11.2)
-        ..cubicTo(2.7, 10.4, 3.0, 9.7, 3.6, 9.2)
-        ..lineTo(10.6, 3.5)
-        ..cubicTo(11.0, 3.1, 11.5, 2.8, 12.0, 2.8)
-        ..close();
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      paint.strokeCap = StrokeCap.round;
 
-      // Arched Door Cutout
-      final Path door = Path()
-        ..moveTo(9.5, 21.0)
-        ..lineTo(9.5, 15.2)
-        ..cubicTo(9.5, 13.8, 10.6, 12.8, 12.0, 12.8)
-        ..cubicTo(13.4, 12.8, 14.5, 13.8, 14.5, 15.2)
-        ..lineTo(14.5, 21.0)
+      final path1 = Path()
+        ..moveTo(13.67, 22)
+        ..lineTo(13.67, 13.16)
+        ..cubicTo(13.67, 12.86, 13.56, 12.58, 13.36, 12.38)
+        ..cubicTo(13.16, 12.17, 12.89, 12.05, 12.61, 12.05)
+        ..lineTo(8.4, 12.05)
+        ..cubicTo(8.12, 12.05, 7.85, 12.17, 7.65, 12.38)
+        ..cubicTo(7.45, 12.58, 7.35, 12.86, 7.35, 13.16)
+        ..lineTo(7.35, 22)
+        ..moveTo(1, 9.84)
+        ..cubicTo(1, 9.52, 1.07, 9.2, 1.2, 8.91)
+        ..cubicTo(1.33, 8.62, 1.5, 8.36, 1.75, 8.15)
+        ..lineTo(9.14, 1.52)
+        ..cubicTo(9.52, 1.2, 10, 1, 10.5, 1)
+        ..cubicTo(11, 1, 11.48, 1.19, 11.86, 1.52)
+        ..lineTo(19.26, 8.15)
+        ..cubicTo(19.49, 8.36, 19.67, 8.62, 19.8, 8.91)
+        ..cubicTo(19.93, 9.21, 20, 9.52, 20, 9.84)
+        ..lineTo(20, 19.79)
+        ..cubicTo(20, 20.38, 19.78, 20.94, 19.38, 21.35)
+        ..cubicTo(18.98, 21.77, 18.45, 22, 17.88, 22)
+        ..lineTo(3.12, 22)
+        ..cubicTo(2.56, 22, 2.02, 21.77, 1.62, 21.35)
+        ..cubicTo(1.23, 20.94, 1, 20.38, 1, 19.8)
+        ..lineTo(1, 9.84)
         ..close();
-
-      final Path combined = Path.combine(PathOperation.difference, house, door);
-      canvas.drawPath(combined, fillPaint);
+      canvas.drawPath(path1, paint);
     } else {
-      // Crisp Monoline Outline
-      final Path houseOutline = Path()
-        ..moveTo(12.0, 3.2)
-        ..lineTo(20.2, 9.7)
-        ..cubicTo(20.6, 10.0, 20.8, 10.5, 20.8, 11.0)
-        ..lineTo(20.8, 18.8)
-        ..cubicTo(20.8, 19.8, 20.0, 20.6, 19.0, 20.6)
-        ..lineTo(5.0, 20.6)
-        ..cubicTo(4.0, 20.6, 3.2, 19.8, 3.2, 18.8)
-        ..lineTo(3.2, 11.0)
-        ..cubicTo(3.2, 10.5, 3.4, 10.0, 3.8, 9.7)
+      paint.style = PaintingStyle.fill;
+      final path = Path()
+        ..moveTo(1.2, 8.91)
+        ..cubicTo(1.07, 9.21, 1, 9.52, 1, 9.84)
+        ..lineTo(1, 19.79)
+        ..cubicTo(1, 20.38, 1.22, 20.94, 1.62, 21.35)
+        ..cubicTo(2.02, 21.77, 2.55, 22, 3.12, 22)
+        ..lineTo(17.89, 22)
+        ..cubicTo(18.45, 22, 18.99, 21.77, 19.39, 21.35)
+        ..cubicTo(19.78, 20.94, 20, 20.38, 20, 19.79)
+        ..lineTo(20, 9.84)
+        ..cubicTo(20, 9.52, 19.93, 9.2, 19.8, 8.91)
+        ..cubicTo(19.67, 8.62, 19.49, 8.36, 19.25, 8.15)
+        ..lineTo(11.86, 1.52)
+        ..cubicTo(11.48, 1.2, 11, 1, 10.5, 1)
+        ..cubicTo(10, 1, 9.52, 1.19, 9.14, 1.52)
+        ..lineTo(1.74, 8.15)
+        ..cubicTo(1.52, 8.36, 1.34, 8.62, 1.2, 8.91)
         ..close();
-      canvas.drawPath(houseOutline, strokePaint);
-
-      final Path doorPath = Path()
-        ..moveTo(9.8, 20.6)
-        ..lineTo(9.8, 15.5)
-        ..cubicTo(9.8, 14.3, 10.8, 13.4, 12.0, 13.4)
-        ..cubicTo(13.2, 13.4, 14.2, 14.3, 14.2, 15.5)
-        ..lineTo(14.2, 20.6);
-      canvas.drawPath(doorPath, strokePaint);
+      canvas.drawPath(path, paint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _HomeNavIconPainter oldDelegate) {
+  bool shouldRepaint(covariant _HomeIconPainter oldDelegate) {
     return oldDelegate.isSelected != isSelected || oldDelegate.color != color;
   }
 }
 
-/// Modern Services Bento Grid Navigation Icon
 class ServicesNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -116,181 +110,137 @@ class ServicesNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 21.0,
+    this.size = 24.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _ServicesNavIconPainter(isSelected: isSelected, color: color),
+    return Center(
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: _ServicesIconPainter(isSelected: isSelected, color: color),
+        ),
       ),
     );
   }
 }
 
-class _ServicesNavIconPainter extends CustomPainter {
+class _ServicesIconPainter extends CustomPainter {
   final bool isSelected;
   final Color color;
 
-  static const String _activePathData =
-      'M51.22 20c0-11.05-8.96-20-20-20H0v31.22c0 11.04 8.95 20 20 20h31.22V20Z M56.78 20c0-11.05 8.96-20 20-20H108v31.22c0 11.04-8.95 20-20 20H56.78V20Z M20 56.78c-11.05 0-20 8.96-20 20V108h31.22c11.04 0 20-8.95 20-20V56.78H20Z M88 56.78c11.05 0 20 8.96 20 20V108H76.78c-11.04 0-20-8.95-20-20V56.78H88Z';
-
-  static const String _inactivePathData =
-      'M31.22 1.5H1.5v29.72c0 10.21 8.28 18.5 18.5 18.5h29.72V20c0-10.22-8.29-18.5-18.5-18.5Z M76.78 1.5h29.72v29.72c0 10.21-8.28 18.5-18.5 18.5H58.28V20c0-10.22 8.29-18.5 18.5-18.5Z M1.5 76.78v29.72h29.72c10.21 0 18.5-8.28 18.5-18.5V58.28H20c-10.22 0-18.5 8.29-18.5 18.5Z M106.5 76.78v29.72H76.78c-10.21 0-18.5-8.28-18.5-18.5V58.28H88c10.22 0 18.5 8.29 18.5 18.5Z';
-
-  static Path? _cachedActivePath;
-  static Path? _cachedInactivePath;
-
-  _ServicesNavIconPainter({required this.isSelected, required this.color});
-
-  static Path _parseSvgPath(String data) {
-    final Path path = Path();
-    double currentX = 0;
-    double currentY = 0;
-    double startX = 0;
-    double startY = 0;
-
-    final RegExp regExp =
-        RegExp(r'([a-zA-Z])|([-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?)');
-    final matches = regExp.allMatches(data).toList();
-
-    int i = 0;
-    String command = '';
-
-    double nextNum() {
-      if (i < matches.length && matches[i].group(2) != null) {
-        final val = double.parse(matches[i].group(2)!);
-        i++;
-        return val;
-      }
-      return 0.0;
-    }
-
-    while (i < matches.length) {
-      final match = matches[i];
-      if (match.group(1) != null) {
-        command = match.group(1)!;
-        i++;
-      }
-
-      switch (command) {
-        case 'M':
-          currentX = nextNum();
-          currentY = nextNum();
-          startX = currentX;
-          startY = currentY;
-          path.moveTo(currentX, currentY);
-          command = 'L';
-          break;
-        case 'm':
-          currentX += nextNum();
-          currentY += nextNum();
-          startX = currentX;
-          startY = currentY;
-          path.moveTo(currentX, currentY);
-          command = 'l';
-          break;
-        case 'L':
-          currentX = nextNum();
-          currentY = nextNum();
-          path.lineTo(currentX, currentY);
-          break;
-        case 'l':
-          currentX += nextNum();
-          currentY += nextNum();
-          path.lineTo(currentX, currentY);
-          break;
-        case 'H':
-          currentX = nextNum();
-          path.lineTo(currentX, currentY);
-          break;
-        case 'h':
-          currentX += nextNum();
-          path.lineTo(currentX, currentY);
-          break;
-        case 'V':
-          currentY = nextNum();
-          path.lineTo(currentX, currentY);
-          break;
-        case 'v':
-          currentY += nextNum();
-          path.lineTo(currentX, currentY);
-          break;
-        case 'C':
-          final x1 = nextNum();
-          final y1 = nextNum();
-          final x2 = nextNum();
-          final y2 = nextNum();
-          currentX = nextNum();
-          currentY = nextNum();
-          path.cubicTo(x1, y1, x2, y2, currentX, currentY);
-          break;
-        case 'c':
-          final dx1 = nextNum();
-          final dy1 = nextNum();
-          final dx2 = nextNum();
-          final dy2 = nextNum();
-          final dx = nextNum();
-          final dy = nextNum();
-          path.cubicTo(
-            currentX + dx1,
-            currentY + dy1,
-            currentX + dx2,
-            currentY + dy2,
-            currentX + dx,
-            currentY + dy,
-          );
-          currentX += dx;
-          currentY += dy;
-          break;
-        case 'Z':
-        case 'z':
-          path.close();
-          currentX = startX;
-          currentY = startY;
-          break;
-        default:
-          i++;
-          break;
-      }
-    }
-
-    return path;
-  }
+  _ServicesIconPainter({required this.isSelected, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double scale = size.width / 108.0;
-    canvas.scale(scale, scale);
+    final scale = size.width / 22.0;
+    canvas.scale(scale, scale * (size.height / size.width) * (22.0 / 22.0));
+
+    final paint = Paint()..color = color;
 
     if (isSelected) {
-      _cachedActivePath ??= _parseSvgPath(_activePathData);
-      final Paint fillPaint = Paint()
-        ..color = color
-        ..style = PaintingStyle.fill;
-      canvas.drawPath(_cachedActivePath!, fillPaint);
+      paint.style = PaintingStyle.fill;
+      final path1 = Path()
+        ..moveTo(17.42, 1.83)
+        ..lineTo(16.74, 1.83)
+        ..lineTo(16.74, 0.92)
+        ..cubicTo(16.74, 0.42, 16.33, 0, 15.82, 0)
+        ..cubicTo(15.32, 0, 14.9, 0.41, 14.9, 0.92)
+        ..lineTo(14.9, 1.83)
+        ..lineTo(7.1, 1.83)
+        ..lineTo(7.1, 0.92)
+        ..cubicTo(7.1, 0.42, 6.67, 0, 6.17, 0)
+        ..cubicTo(5.67, 0, 5.26, 0.41, 5.26, 0.92)
+        ..lineTo(5.26, 1.83)
+        ..lineTo(4.58, 1.83)
+        ..cubicTo(2.05, 1.83, 0, 3.9, 0, 6.42)
+        ..lineTo(0, 17.42)
+        ..cubicTo(0, 19.95, 2.05, 22, 4.58, 22)
+        ..lineTo(17.42, 22)
+        ..cubicTo(19.95, 22, 22, 19.95, 22, 17.42)
+        ..lineTo(22, 6.42)
+        ..cubicTo(22, 3.89, 19.95, 1.83, 17.42, 1.83)
+        ..close()
+        ..moveTo(20.17, 17.42)
+        ..cubicTo(20.17, 18.92, 18.93, 20.17, 17.42, 20.17)
+        ..lineTo(4.58, 20.17)
+        ..cubicTo(3.08, 20.17, 1.83, 18.93, 1.83, 17.42)
+        ..lineTo(1.83, 6.42)
+        ..cubicTo(1.83, 4.9, 3.07, 3.67, 4.58, 3.67)
+        ..lineTo(5.26, 3.67)
+        ..lineTo(5.26, 4.59)
+        ..cubicTo(5.26, 5.09, 5.67, 5.51, 6.17, 5.51)
+        ..cubicTo(6.67, 5.51, 7.09, 5.1, 7.09, 4.59)
+        ..lineTo(7.09, 3.67)
+        ..lineTo(14.89, 3.67)
+        ..lineTo(14.89, 4.59)
+        ..cubicTo(14.89, 5.09, 15.31, 5.51, 15.81, 5.51)
+        ..cubicTo(16.31, 5.51, 16.73, 5.1, 16.73, 4.59)
+        ..lineTo(16.73, 3.67)
+        ..lineTo(17.41, 3.67)
+        ..cubicTo(18.91, 3.67, 20.16, 4.9, 20.16, 6.42)
+        ..lineTo(20.16, 17.42)
+        ..close();
+      canvas.drawPath(path1, paint);
+      final path2 = Path()
+        ..moveTo(16.48, 6.95)
+        ..lineTo(5.52, 6.95)
+        ..cubicTo(5.03, 6.95, 4.63, 7.47, 4.63, 8.11)
+        ..cubicTo(4.63, 8.74, 5.03, 9.26, 5.52, 9.26)
+        ..lineTo(16.48, 9.26)
+        ..cubicTo(16.97, 9.26, 17.37, 8.74, 17.37, 8.11)
+        ..cubicTo(17.37, 7.47, 16.97, 6.95, 16.48, 6.95)
+        ..close();
+      canvas.drawPath(path2, paint);
     } else {
-      _cachedInactivePath ??= _parseSvgPath(_inactivePathData);
-      final Paint strokePaint = Paint()
-        ..color = color
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 6.0
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round;
-      canvas.drawPath(_cachedInactivePath!, strokePaint);
+      paint.style = PaintingStyle.fill;
+      final path1 = Path()
+        ..moveTo(0, 5)
+        ..cubicTo(0, 2.24, 2.24, 0, 5, 0)
+        ..lineTo(10, 0)
+        ..lineTo(10, 10)
+        ..lineTo(0, 10)
+        ..lineTo(0, 5)
+        ..close();
+      canvas.drawPath(path1, paint);
+      final path2 = Path()
+        ..moveTo(11, 0)
+        ..lineTo(16, 0)
+        ..cubicTo(18.76, 0, 21, 2.24, 21, 5)
+        ..lineTo(21, 10)
+        ..lineTo(11, 10)
+        ..lineTo(11, 0)
+        ..close();
+      canvas.drawPath(path2, paint);
+      final path3 = Path()
+        ..moveTo(11, 11)
+        ..lineTo(21, 11)
+        ..lineTo(21, 16)
+        ..cubicTo(21, 18.76, 18.76, 21, 16, 21)
+        ..lineTo(11, 21)
+        ..lineTo(11, 11)
+        ..close();
+      canvas.drawPath(path3, paint);
+      final path4 = Path()
+        ..moveTo(0, 11)
+        ..lineTo(10, 11)
+        ..lineTo(10, 21)
+        ..lineTo(5, 21)
+        ..cubicTo(2.24, 21, 0, 18.76, 0, 16)
+        ..lineTo(0, 11)
+        ..close();
+      canvas.drawPath(path4, paint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _ServicesNavIconPainter oldDelegate) {
+  bool shouldRepaint(covariant _ServicesIconPainter oldDelegate) {
     return oldDelegate.isSelected != isSelected || oldDelegate.color != color;
   }
 }
 
-/// Modern Bookings / Calendar Navigation Icon
 class BookingsNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -300,108 +250,161 @@ class BookingsNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 21.0,
+    this.size = 24.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _BookingsNavIconPainter(isSelected: isSelected, color: color),
+    return Center(
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: _BookingsIconPainter(isSelected: isSelected, color: color),
+        ),
       ),
     );
   }
 }
 
-class _BookingsNavIconPainter extends CustomPainter {
+class _BookingsIconPainter extends CustomPainter {
   final bool isSelected;
   final Color color;
 
-  _BookingsNavIconPainter({required this.isSelected, required this.color});
+  _BookingsIconPainter({required this.isSelected, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double scale = size.width / 24.0;
-    canvas.scale(scale, scale);
+    final scale = size.width / 37.0;
+    canvas.scale(scale, scale * (size.height / size.width) * (37.0 / 35.0));
 
-    final Paint strokePaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.75
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final Paint fillPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    final RRect calRect =
-        RRect.fromLTRBR(3.2, 5.0, 20.8, 21.0, const Radius.circular(4.5));
+    final paint = Paint()..color = color;
 
     if (isSelected) {
-      canvas.drawRRect(calRect, fillPaint);
-
-      // Contrast header line & binder rings cutout in white
-      final Paint cutoutPaint = Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.fill;
-
-      canvas.drawRRect(
-        RRect.fromLTRBR(6.8, 2.4, 9.2, 6.2, const Radius.circular(1.2)),
-        cutoutPaint,
-      );
-      canvas.drawRRect(
-        RRect.fromLTRBR(14.8, 2.4, 17.2, 6.2, const Radius.circular(1.2)),
-        cutoutPaint,
-      );
-
-      // Clean date dots
-      final Paint dotPaint = Paint()..color = Colors.white;
-      canvas.drawCircle(const Offset(8.0, 13.0), 1.2, dotPaint);
-      canvas.drawCircle(const Offset(12.0, 13.0), 1.2, dotPaint);
-      canvas.drawCircle(const Offset(16.0, 13.0), 1.2, dotPaint);
-      canvas.drawCircle(const Offset(8.0, 17.0), 1.2, dotPaint);
-      canvas.drawCircle(const Offset(12.0, 17.0), 1.2, dotPaint);
-      canvas.drawCircle(const Offset(16.0, 17.0), 1.2, dotPaint);
+      paint.style = PaintingStyle.fill;
+      final path1 = Path()
+        ..moveTo(17.42, 1.83)
+        ..lineTo(16.74, 1.83)
+        ..lineTo(16.74, 0.92)
+        ..cubicTo(16.74, 0.42, 16.33, 0, 15.82, 0)
+        ..cubicTo(15.32, 0, 14.9, 0.41, 14.9, 0.92)
+        ..lineTo(14.9, 1.83)
+        ..lineTo(7.1, 1.83)
+        ..lineTo(7.1, 0.92)
+        ..cubicTo(7.1, 0.42, 6.67, 0, 6.17, 0)
+        ..cubicTo(5.67, 0, 5.26, 0.41, 5.26, 0.92)
+        ..lineTo(5.26, 1.83)
+        ..lineTo(4.58, 1.83)
+        ..cubicTo(2.05, 1.83, 0, 3.9, 0, 6.42)
+        ..lineTo(0, 17.42)
+        ..cubicTo(0, 19.95, 2.05, 22, 4.58, 22)
+        ..lineTo(17.42, 22)
+        ..cubicTo(19.95, 22, 22, 19.95, 22, 17.42)
+        ..lineTo(22, 6.42)
+        ..cubicTo(22, 3.89, 19.95, 1.83, 17.42, 1.83)
+        ..close()
+        ..moveTo(20.17, 17.42)
+        ..cubicTo(20.17, 18.92, 18.93, 20.17, 17.42, 20.17)
+        ..lineTo(4.58, 20.17)
+        ..cubicTo(3.08, 20.17, 1.83, 18.93, 1.83, 17.42)
+        ..lineTo(1.83, 6.42)
+        ..cubicTo(1.83, 4.9, 3.07, 3.67, 4.58, 3.67)
+        ..lineTo(5.26, 3.67)
+        ..lineTo(5.26, 4.59)
+        ..cubicTo(5.26, 5.09, 5.67, 5.51, 6.17, 5.51)
+        ..cubicTo(6.67, 5.51, 7.09, 5.1, 7.09, 4.59)
+        ..lineTo(7.09, 3.67)
+        ..lineTo(14.89, 3.67)
+        ..lineTo(14.89, 4.59)
+        ..cubicTo(14.89, 5.09, 15.31, 5.51, 15.81, 5.51)
+        ..cubicTo(16.31, 5.51, 16.73, 5.1, 16.73, 4.59)
+        ..lineTo(16.73, 3.67)
+        ..lineTo(17.41, 3.67)
+        ..cubicTo(18.91, 3.67, 20.16, 4.9, 20.16, 6.42)
+        ..lineTo(20.16, 17.42)
+        ..close();
+      canvas.drawPath(path1, paint);
+      final path2 = Path()
+        ..moveTo(16.48, 6.95)
+        ..lineTo(5.52, 6.95)
+        ..cubicTo(5.03, 6.95, 4.63, 7.47, 4.63, 8.11)
+        ..cubicTo(4.63, 8.74, 5.03, 9.26, 5.52, 9.26)
+        ..lineTo(16.48, 9.26)
+        ..cubicTo(16.97, 9.26, 17.37, 8.74, 17.37, 8.11)
+        ..cubicTo(17.37, 7.47, 16.97, 6.95, 16.48, 6.95)
+        ..close();
+      canvas.drawPath(path2, paint);
     } else {
-      canvas.drawRRect(calRect, strokePaint);
-
-      // Header separation line
-      canvas.drawLine(
-        const Offset(3.2, 10.0),
-        const Offset(20.8, 10.0),
-        strokePaint,
-      );
-
-      // Binder Hooks
-      canvas.drawLine(
-        const Offset(7.5, 2.4),
-        const Offset(7.5, 6.0),
-        strokePaint,
-      );
-      canvas.drawLine(
-        const Offset(16.5, 2.4),
-        const Offset(16.5, 6.0),
-        strokePaint,
-      );
-
-      // Date dots
-      final Paint dotPaint = Paint()..color = color;
-      canvas.drawCircle(const Offset(8.0, 14.5), 1.1, dotPaint);
-      canvas.drawCircle(const Offset(12.0, 14.5), 1.1, dotPaint);
-      canvas.drawCircle(const Offset(16.0, 14.5), 1.1, dotPaint);
+      paint.style = PaintingStyle.fill;
+      final path1 = Path()
+        ..moveTo(12.88, 5.47)
+        ..cubicTo(13.49, 5.47, 13.99, 5.96, 13.99, 6.57)
+        ..lineTo(13.99, 6.93)
+        ..lineTo(15.76, 6.93)
+        ..lineTo(20.36, 6.93)
+        ..lineTo(22.13, 6.93)
+        ..lineTo(22.13, 6.56)
+        ..cubicTo(22.13, 5.96, 22.63, 5.46, 23.24, 5.46)
+        ..cubicTo(23.85, 5.46, 24.35, 5.96, 24.35, 6.56)
+        ..lineTo(24.35, 7)
+        ..lineTo(25.3, 7.1)
+        ..cubicTo(26.63, 7.27, 27.76, 7.65, 28.65, 8.53)
+        ..cubicTo(29.54, 9.41, 29.92, 10.51, 30.1, 11.83)
+        ..lineTo(30.2, 12.76)
+        ..lineTo(5.92, 12.76)
+        ..cubicTo(5.94, 12.43, 5.97, 12.12, 6.02, 11.82)
+        ..cubicTo(6.19, 10.52, 6.58, 9.41, 7.47, 8.52)
+        ..cubicTo(8.36, 7.65, 9.48, 7.27, 10.81, 7.1)
+        ..lineTo(11.77, 7)
+        ..lineTo(11.77, 6.56)
+        ..cubicTo(11.77, 5.96, 12.27, 5.46, 12.88, 5.46)
+        ..close();
+      canvas.drawPath(path1, paint);
+      final path2 = Path()
+        ..fillType = PathFillType.evenOdd
+        ..moveTo(5.85, 16.7)
+        ..lineTo(5.85, 14.95)
+        ..lineTo(30.27, 14.95)
+        ..lineTo(30.27, 16.69)
+        ..lineTo(30.27, 21.19)
+        ..cubicTo(30.27, 22.52, 30.27, 23.58, 30.19, 24.44)
+        ..cubicTo(30.11, 25.32, 29.94, 26.1, 29.53, 26.8)
+        ..cubicTo(29.04, 27.63, 28.34, 28.32, 27.5, 28.8)
+        ..cubicTo(26.78, 29.2, 26, 29.37, 25.1, 29.45)
+        ..cubicTo(24.23, 29.53, 23.15, 29.53, 21.81, 29.53)
+        ..lineTo(15.76, 29.53)
+        ..cubicTo(13.74, 29.53, 12.1, 29.53, 10.82, 29.36)
+        ..cubicTo(9.49, 29.18, 8.37, 28.81, 7.48, 27.93)
+        ..cubicTo(6.58, 27.05, 6.2, 25.95, 6.02, 24.63)
+        ..cubicTo(5.85, 23.37, 5.85, 21.76, 5.85, 19.77)
+        ..lineTo(5.85, 16.69)
+        ..close()
+        ..moveTo(10.73, 22.85)
+        ..cubicTo(10.73, 22.25, 11.23, 21.76, 11.83, 21.76)
+        ..lineTo(19.73, 21.76)
+        ..cubicTo(20.35, 21.76, 20.85, 22.25, 20.85, 22.86)
+        ..cubicTo(20.85, 23.46, 20.35, 23.95, 19.74, 23.95)
+        ..lineTo(11.84, 23.95)
+        ..cubicTo(11.22, 23.95, 10.73, 23.45, 10.73, 22.85)
+        ..close()
+        ..moveTo(11.83, 17.62)
+        ..cubicTo(11.23, 17.62, 10.73, 18.11, 10.73, 18.72)
+        ..cubicTo(10.73, 19.32, 11.23, 19.8, 11.83, 19.8)
+        ..lineTo(16.28, 19.8)
+        ..cubicTo(16.89, 19.8, 17.38, 19.32, 17.38, 18.71)
+        ..cubicTo(17.38, 18.11, 16.89, 17.62, 16.28, 17.62)
+        ..lineTo(11.84, 17.62)
+        ..close();
+      canvas.drawPath(path2, paint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _BookingsNavIconPainter oldDelegate) {
+  bool shouldRepaint(covariant _BookingsIconPainter oldDelegate) {
     return oldDelegate.isSelected != isSelected || oldDelegate.color != color;
   }
 }
 
-/// Modern Learn / Book of Wisdom Navigation Icon
 class LearnNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -411,97 +414,249 @@ class LearnNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 21.0,
+    this.size = 24.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _LearnNavIconPainter(isSelected: isSelected, color: color),
+    return Center(
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: _LearnIconPainter(isSelected: isSelected, color: color),
+        ),
       ),
     );
   }
 }
 
-class _LearnNavIconPainter extends CustomPainter {
+class _LearnIconPainter extends CustomPainter {
   final bool isSelected;
   final Color color;
 
-  _LearnNavIconPainter({required this.isSelected, required this.color});
+  _LearnIconPainter({required this.isSelected, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double scale = size.width / 24.0;
-    canvas.scale(scale, scale);
+    final scale = size.width / 29.0;
+    canvas.scale(scale, scale * (size.height / size.width) * (29.0 / 21.0));
 
-    final Paint strokePaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.75
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final Paint fillPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    // Left Page Flow
-    final Path leftPage = Path()
-      ..moveTo(12.0, 5.5)
-      ..cubicTo(9.0, 4.0, 4.8, 4.2, 2.8, 5.2)
-      ..cubicTo(2.4, 5.4, 2.2, 5.8, 2.2, 6.3)
-      ..lineTo(2.2, 18.5)
-      ..cubicTo(2.2, 19.0, 2.6, 19.4, 3.1, 19.3)
-      ..cubicTo(5.2, 18.5, 9.0, 18.5, 12.0, 19.8)
-      ..close();
-
-    // Right Page Flow
-    final Path rightPage = Path()
-      ..moveTo(12.0, 5.5)
-      ..cubicTo(15.0, 4.0, 19.2, 4.2, 21.2, 5.2)
-      ..cubicTo(21.6, 5.4, 21.8, 5.8, 21.8, 6.3)
-      ..lineTo(21.8, 18.5)
-      ..cubicTo(21.8, 19.0, 21.4, 19.4, 20.9, 19.3)
-      ..cubicTo(18.8, 18.5, 15.0, 18.5, 12.0, 19.8)
-      ..close();
+    final paint = Paint()..color = color;
 
     if (isSelected) {
-      canvas.drawPath(leftPage, fillPaint);
-      canvas.drawPath(rightPage, fillPaint);
-
-      // Spine division in white
-      final Paint spinePaint = Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.4
-        ..strokeCap = StrokeCap.round;
-
-      canvas.drawLine(
-        const Offset(12.0, 6.0),
-        const Offset(12.0, 19.5),
-        spinePaint,
-      );
+      paint.style = PaintingStyle.fill;
+      final path1 = Path()
+        ..moveTo(14.2, 20.3)
+        ..cubicTo(14.2, 20.49, 14.12, 20.67, 13.99, 20.8)
+        ..cubicTo(13.86, 20.93, 13.69, 21, 13.5, 21)
+        ..cubicTo(13.32, 21, 13.14, 20.93, 13.01, 20.8)
+        ..cubicTo(12.88, 20.67, 12.8, 20.49, 12.8, 20.3)
+        ..lineTo(12.8, 20.28)
+        ..cubicTo(12.79, 20, 12.68, 19.74, 12.5, 19.54)
+        ..lineTo(12.48, 19.52)
+        ..cubicTo(12.28, 19.32, 11.99, 19.2, 11.7, 19.2)
+        ..lineTo(2.48, 19.2)
+        ..cubicTo(1.84, 19.2, 1.23, 18.95, 0.77, 18.5)
+        ..lineTo(0.76, 18.5)
+        ..lineTo(0.73, 18.47)
+        ..cubicTo(0.26, 18.01, 0, 17.37, 0, 16.71)
+        ..lineTo(0, 2.5)
+        ..cubicTo(0, 2.17, 0.06, 1.85, 0.19, 1.54)
+        ..cubicTo(0.31, 1.24, 0.49, 0.96, 0.72, 0.74)
+        ..cubicTo(0.95, 0.5, 1.22, 0.32, 1.52, 0.19)
+        ..cubicTo(1.84, 0.06, 2.16, 0, 2.49, 0)
+        ..lineTo(11.72, 0)
+        ..cubicTo(12.38, 0, 12.99, 0.27, 13.43, 0.7)
+        ..lineTo(13.45, 0.72)
+        ..lineTo(13.47, 0.73)
+        ..lineTo(13.51, 0.77)
+        ..lineTo(13.55, 0.73)
+        ..cubicTo(13.78, 0.5, 14.05, 0.32, 14.35, 0.19)
+        ..cubicTo(14.64, 0.07, 14.96, 0, 15.29, 0)
+        ..lineTo(24.52, 0)
+        ..cubicTo(24.85, 0, 25.17, 0.06, 25.47, 0.19)
+        ..cubicTo(25.77, 0.32, 26.05, 0.5, 26.27, 0.73)
+        ..cubicTo(26.51, 0.96, 26.69, 1.24, 26.81, 1.54)
+        ..cubicTo(26.94, 1.84, 27.01, 2.17, 27, 2.5)
+        ..lineTo(27, 16.7)
+        ..cubicTo(27, 17.35, 26.75, 17.96, 26.3, 18.43)
+        ..lineTo(26.29, 18.44)
+        ..lineTo(26.27, 18.47)
+        ..cubicTo(25.81, 18.93, 25.17, 19.2, 24.52, 19.2)
+        ..lineTo(15.3, 19.2)
+        ..cubicTo(15.01, 19.2, 14.74, 19.31, 14.53, 19.51)
+        ..lineTo(14.53, 19.52)
+        ..cubicTo(14.33, 19.72, 14.21, 20, 14.2, 20.28)
+        ..lineTo(14.2, 20.3)
+        ..close()
+        ..moveTo(12.8, 18.07)
+        ..lineTo(12.8, 2.47)
+        ..cubicTo(12.8, 2.19, 12.69, 1.92, 12.49, 1.72)
+        ..lineTo(12.46, 1.69)
+        ..cubicTo(12.26, 1.5, 12, 1.4, 11.71, 1.4)
+        ..lineTo(2.48, 1.4)
+        ..cubicTo(2.19, 1.4, 1.9, 1.53, 1.7, 1.74)
+        ..cubicTo(1.51, 1.93, 1.39, 2.2, 1.39, 2.5)
+        ..lineTo(1.39, 16.7)
+        ..cubicTo(1.39, 17.01, 1.51, 17.28, 1.7, 17.49)
+        ..lineTo(1.72, 17.5)
+        ..cubicTo(1.92, 17.69, 2.18, 17.81, 2.48, 17.81)
+        ..lineTo(11.71, 17.81)
+        ..cubicTo(12.11, 17.81, 12.48, 17.91, 12.81, 18.07)
+        ..close()
+        ..moveTo(14.2, 2.5)
+        ..lineTo(14.2, 18.07)
+        ..cubicTo(14.53, 17.9, 14.9, 17.81, 15.29, 17.81)
+        ..lineTo(24.52, 17.81)
+        ..cubicTo(24.82, 17.81, 25.1, 17.68, 25.29, 17.49)
+        ..lineTo(25.31, 17.48)
+        ..cubicTo(25.51, 17.27, 25.61, 16.99, 25.61, 16.7)
+        ..lineTo(25.61, 2.5)
+        ..cubicTo(25.61, 2.2, 25.5, 1.93, 25.29, 1.72)
+        ..cubicTo(25.09, 1.52, 24.81, 1.4, 24.52, 1.4)
+        ..lineTo(15.3, 1.4)
+        ..cubicTo(15.01, 1.4, 14.73, 1.5, 14.53, 1.71)
+        ..cubicTo(14.33, 1.91, 14.21, 2.19, 14.2, 2.47)
+        ..lineTo(14.2, 2.5)
+        ..close()
+        ..moveTo(4.45, 6.37)
+        ..cubicTo(4.29, 6.35, 4.13, 6.27, 4, 6.14)
+        ..cubicTo(3.9, 6.01, 3.83, 5.84, 3.83, 5.67)
+        ..cubicTo(3.83, 5.5, 3.9, 5.33, 4.01, 5.21)
+        ..cubicTo(4.13, 5.08, 4.3, 5, 4.46, 4.98)
+        ..lineTo(9.73, 4.98)
+        ..cubicTo(9.91, 4.98, 10.09, 5.05, 10.22, 5.18)
+        ..cubicTo(10.35, 5.32, 10.42, 5.49, 10.42, 5.68)
+        ..cubicTo(10.42, 5.86, 10.35, 6.04, 10.22, 6.17)
+        ..cubicTo(10.09, 6.3, 9.92, 6.38, 9.72, 6.38)
+        ..lineTo(4.47, 6.38)
+        ..close()
+        ..moveTo(4.47, 10.3)
+        ..cubicTo(4.28, 10.3, 4.11, 10.22, 3.97, 10.1)
+        ..cubicTo(3.85, 9.96, 3.77, 9.79, 3.77, 9.6)
+        ..cubicTo(3.77, 9.42, 3.85, 9.24, 3.97, 9.1)
+        ..cubicTo(4.11, 8.98, 4.28, 8.9, 4.47, 8.9)
+        ..lineTo(9.74, 8.9)
+        ..cubicTo(9.92, 8.9, 10.1, 8.98, 10.23, 9.1)
+        ..cubicTo(10.36, 9.24, 10.42, 9.42, 10.42, 9.6)
+        ..cubicTo(10.42, 9.79, 10.35, 9.96, 10.22, 10.1)
+        ..cubicTo(10.09, 10.22, 9.92, 10.3, 9.72, 10.3)
+        ..lineTo(4.47, 10.3)
+        ..close()
+        ..moveTo(4.47, 14.23)
+        ..cubicTo(4.28, 14.23, 4.11, 14.15, 3.97, 14.03)
+        ..cubicTo(3.85, 13.89, 3.77, 13.72, 3.77, 13.53)
+        ..cubicTo(3.77, 13.35, 3.85, 13.17, 3.97, 13.04)
+        ..cubicTo(4.11, 12.91, 4.28, 12.83, 4.47, 12.83)
+        ..lineTo(9.74, 12.83)
+        ..cubicTo(9.92, 12.83, 10.1, 12.9, 10.23, 13.03)
+        ..cubicTo(10.36, 13.17, 10.42, 13.33, 10.42, 13.53)
+        ..cubicTo(10.42, 13.71, 10.35, 13.88, 10.22, 14.01)
+        ..cubicTo(10.09, 14.14, 9.92, 14.23, 9.72, 14.23)
+        ..lineTo(4.47, 14.23)
+        ..close()
+        ..moveTo(17.27, 6.37)
+        ..cubicTo(17.1, 6.35, 16.95, 6.27, 16.83, 6.14)
+        ..cubicTo(16.71, 6.01, 16.65, 5.84, 16.65, 5.67)
+        ..cubicTo(16.65, 5.5, 16.71, 5.33, 16.83, 5.21)
+        ..cubicTo(16.95, 5.08, 17.1, 5, 17.28, 4.98)
+        ..lineTo(22.55, 4.98)
+        ..cubicTo(22.73, 4.98, 22.91, 5.05, 23.04, 5.18)
+        ..cubicTo(23.17, 5.32, 23.24, 5.49, 23.24, 5.68)
+        ..cubicTo(23.24, 5.86, 23.17, 6.04, 23.04, 6.17)
+        ..cubicTo(22.91, 6.3, 22.74, 6.38, 22.54, 6.38)
+        ..lineTo(17.28, 6.38)
+        ..close()
+        ..moveTo(17.27, 10.3)
+        ..cubicTo(17.09, 10.3, 16.92, 10.22, 16.79, 10.1)
+        ..cubicTo(16.66, 9.96, 16.59, 9.79, 16.59, 9.6)
+        ..cubicTo(16.59, 9.42, 16.66, 9.24, 16.79, 9.1)
+        ..cubicTo(16.92, 8.98, 17.09, 8.9, 17.28, 8.9)
+        ..lineTo(22.55, 8.9)
+        ..cubicTo(22.73, 8.9, 22.91, 8.98, 23.04, 9.1)
+        ..cubicTo(23.17, 9.24, 23.24, 9.42, 23.24, 9.6)
+        ..cubicTo(23.24, 9.79, 23.17, 9.96, 23.04, 10.1)
+        ..cubicTo(22.91, 10.22, 22.74, 10.3, 22.54, 10.3)
+        ..lineTo(17.28, 10.3)
+        ..close()
+        ..moveTo(17.27, 14.23)
+        ..cubicTo(17.09, 14.23, 16.92, 14.15, 16.79, 14.03)
+        ..cubicTo(16.66, 13.89, 16.59, 13.72, 16.59, 13.53)
+        ..cubicTo(16.59, 13.35, 16.66, 13.17, 16.79, 13.04)
+        ..cubicTo(16.92, 12.91, 17.09, 12.83, 17.28, 12.83)
+        ..lineTo(22.55, 12.83)
+        ..cubicTo(22.73, 12.83, 22.91, 12.9, 23.04, 13.03)
+        ..cubicTo(23.17, 13.17, 23.24, 13.33, 23.24, 13.53)
+        ..cubicTo(23.24, 13.71, 23.17, 13.88, 23.04, 14.01)
+        ..cubicTo(22.91, 14.14, 22.74, 14.23, 22.54, 14.23)
+        ..lineTo(17.28, 14.23)
+        ..close();
+      canvas.drawPath(path1, paint);
     } else {
-      canvas.drawPath(leftPage, strokePaint);
-      canvas.drawPath(rightPage, strokePaint);
-      canvas.drawLine(
-        const Offset(12.0, 5.5),
-        const Offset(12.0, 19.8),
-        strokePaint,
-      );
+      paint.style = PaintingStyle.fill;
+      final path1 = Path()
+        ..moveTo(1.88, 15.94)
+        ..lineTo(1.88, 3.75)
+        ..cubicTo(1.38, 3.75, 0.9, 3.95, 0.55, 4.3)
+        ..cubicTo(0.2, 4.65, 0, 5.13, 0, 5.63)
+        ..lineTo(0, 18.75)
+        ..cubicTo(0, 19.25, 0.2, 19.72, 0.55, 20.08)
+        ..cubicTo(0.9, 20.43, 1.38, 20.63, 1.87, 20.63)
+        ..lineTo(10.67, 20.63)
+        ..cubicTo(8.91, 19.41, 6.83, 18.75, 4.69, 18.75)
+        ..cubicTo(3.94, 18.75, 3.23, 18.45, 2.71, 17.93)
+        ..cubicTo(2.19, 17.4, 1.9, 16.68, 1.9, 15.93)
+        ..lineTo(1.88, 15.94)
+        ..close()
+        ..moveTo(26.25, 3.75)
+        ..lineTo(26.25, 15.94)
+        ..cubicTo(26.25, 16.68, 25.95, 17.4, 25.43, 17.93)
+        ..cubicTo(24.9, 18.45, 24.18, 18.75, 23.43, 18.75)
+        ..cubicTo(21.3, 18.75, 19.21, 19.41, 17.46, 20.63)
+        ..lineTo(26.25, 20.63)
+        ..cubicTo(26.75, 20.63, 27.22, 20.43, 27.58, 20.08)
+        ..cubicTo(27.93, 19.72, 28.13, 19.25, 28.13, 18.75)
+        ..lineTo(28.13, 5.62)
+        ..cubicTo(28.13, 5.12, 27.93, 4.65, 27.58, 4.3)
+        ..cubicTo(27.22, 3.95, 26.75, 3.75, 26.25, 3.75)
+        ..close();
+      canvas.drawPath(path1, paint);
+      final path2 = Path()
+        ..moveTo(4.69, 0)
+        ..cubicTo(4.44, 0, 4.2, 0.1, 4.02, 0.27)
+        ..cubicTo(3.85, 0.45, 3.75, 0.7, 3.75, 0.94)
+        ..lineTo(3.75, 15.94)
+        ..cubicTo(3.75, 16.19, 3.85, 16.42, 4.02, 16.6)
+        ..cubicTo(4.2, 16.78, 4.44, 16.87, 4.69, 16.87)
+        ..cubicTo(7.51, 16.87, 10.24, 17.84, 12.45, 19.59)
+        ..lineTo(13.13, 20.14)
+        ..lineTo(13.13, 0.17)
+        ..cubicTo(12.82, 0.06, 12.5, 0, 12.19, 0)
+        ..lineTo(4.69, 0)
+        ..close()
+        ..moveTo(24.37, 15.94)
+        ..lineTo(24.37, 0.94)
+        ..cubicTo(24.37, 0.69, 24.27, 0.45, 24.09, 0.27)
+        ..cubicTo(23.92, 0.1, 23.69, 0, 23.44, 0)
+        ..lineTo(15.94, 0)
+        ..cubicTo(15.62, 0, 15.3, 0.06, 15, 0.17)
+        ..lineTo(15, 20.14)
+        ..lineTo(15.68, 19.59)
+        ..cubicTo(17.88, 17.84, 20.62, 16.88, 23.44, 16.88)
+        ..cubicTo(23.69, 16.88, 23.92, 16.78, 24.1, 16.6)
+        ..cubicTo(24.28, 16.42, 24.37, 16.19, 24.37, 15.94)
+        ..close();
+      canvas.drawPath(path2, paint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _LearnNavIconPainter oldDelegate) {
+  bool shouldRepaint(covariant _LearnIconPainter oldDelegate) {
     return oldDelegate.isSelected != isSelected || oldDelegate.color != color;
   }
 }
 
-/// Modern Profile / Avatar Navigation Icon
 class ProfileNavIcon extends StatelessWidget {
   final bool isSelected;
   final Color color;
@@ -511,68 +666,102 @@ class ProfileNavIcon extends StatelessWidget {
     super.key,
     required this.isSelected,
     required this.color,
-    this.size = 21.0,
+    this.size = 24.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _ProfileNavIconPainter(isSelected: isSelected, color: color),
+    return Center(
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: _ProfileIconPainter(isSelected: isSelected, color: color),
+        ),
       ),
     );
   }
 }
 
-class _ProfileNavIconPainter extends CustomPainter {
+class _ProfileIconPainter extends CustomPainter {
   final bool isSelected;
   final Color color;
 
-  _ProfileNavIconPainter({required this.isSelected, required this.color});
+  _ProfileIconPainter({required this.isSelected, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double scale = size.width / 24.0;
-    canvas.scale(scale, scale);
+    final scale = size.width / 20.0;
+    canvas.scale(scale, scale * (size.height / size.width) * (20.0 / 23.0));
 
-    final Paint strokePaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.75
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final Paint fillPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    // Head Avatar
-    final Offset headCenter = const Offset(12.0, 7.5);
-    const double headRadius = 4.2;
-
-    // Shoulders Arc
-    final Path shouldersPath = Path()
-      ..moveTo(3.6, 20.5)
-      ..cubicTo(3.6, 16.2, 7.2, 14.0, 12.0, 14.0)
-      ..cubicTo(16.8, 14.0, 20.4, 16.2, 20.4, 20.5);
+    final paint = Paint()..color = color;
 
     if (isSelected) {
-      canvas.drawCircle(headCenter, headRadius, fillPaint);
-      final Path closedShoulders = Path.from(shouldersPath)
-        ..lineTo(20.4, 21.0)
-        ..lineTo(3.6, 21.0)
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      paint.strokeCap = StrokeCap.round;
+
+      final path1 = Path()
+        ..moveTo(9.75, 11.5)
+        ..cubicTo(12.65, 11.5, 15, 9.15, 15, 6.25)
+        ..cubicTo(15, 3.35, 12.65, 1, 9.75, 1)
+        ..cubicTo(6.85, 1, 4.5, 3.35, 4.5, 6.25)
+        ..cubicTo(4.5, 9.15, 6.85, 11.5, 9.75, 11.5)
         ..close();
-      canvas.drawPath(closedShoulders, fillPaint);
+      canvas.drawPath(path1, paint);
+      final path2 = Path()
+        ..moveTo(9.75, 11.5)
+        ..cubicTo(12.65, 11.5, 15, 9.15, 15, 6.25)
+        ..cubicTo(15, 3.35, 12.65, 1, 9.75, 1)
+        ..cubicTo(6.85, 1, 4.5, 3.35, 4.5, 6.25)
+        ..cubicTo(4.5, 9.15, 6.85, 11.5, 9.75, 11.5)
+        ..close();
+      canvas.drawPath(path2, paint);
+      final path3 = Path()
+        ..moveTo(1, 22)
+        ..cubicTo(1, 18.13, 3.92, 15, 7.53, 15)
+        ..lineTo(11.97, 15)
+        ..cubicTo(15.57, 15, 18.5, 18.13, 18.5, 22);
+      canvas.drawPath(path3, paint);
+      final path4 = Path()
+        ..moveTo(1, 22)
+        ..cubicTo(1, 18.13, 3.92, 15, 7.53, 15)
+        ..lineTo(11.97, 15)
+        ..cubicTo(15.57, 15, 18.5, 18.13, 18.5, 22);
+      canvas.drawPath(path4, paint);
     } else {
-      canvas.drawCircle(headCenter, headRadius, strokePaint);
-      canvas.drawPath(shouldersPath, strokePaint);
+      paint.style = PaintingStyle.fill;
+      final path1 = Path()
+        ..moveTo(15.04, 5.5)
+        ..cubicTo(15.04, 6.58, 14.72, 7.64, 14.11, 8.55)
+        ..cubicTo(13.5, 9.45, 12.63, 10.15, 11.62, 10.57)
+        ..cubicTo(10.61, 10.99, 9.49, 11.1, 8.42, 10.88)
+        ..cubicTo(7.34, 10.68, 6.36, 10.15, 5.58, 9.38)
+        ..cubicTo(4.81, 8.61, 4.28, 7.63, 4.06, 6.57)
+        ..cubicTo(3.86, 5.5, 3.96, 4.4, 4.38, 3.39)
+        ..cubicTo(4.8, 2.39, 5.51, 1.53, 6.42, 0.93)
+        ..cubicTo(7.33, 0.33, 8.4, 0, 9.5, 0)
+        ..cubicTo(10.23, 0, 10.95, 0.14, 11.62, 0.42)
+        ..cubicTo(12.29, 0.69, 12.9, 1.1, 13.42, 1.61)
+        ..cubicTo(13.93, 2.12, 14.34, 2.73, 14.62, 3.39)
+        ..cubicTo(14.9, 4.06, 15.04, 4.77, 15.04, 5.5)
+        ..close()
+        ..moveTo(9.5, 12.62)
+        ..cubicTo(7.93, 12.62, 6.38, 12.94, 4.94, 13.56)
+        ..cubicTo(3.5, 14.19, 2.22, 15.11, 1.16, 16.26)
+        ..cubicTo(-0.71, 18.27, -0.26, 21.49, 2.1, 22.93)
+        ..cubicTo(4.33, 24.28, 6.89, 25, 9.5, 25)
+        ..cubicTo(12.11, 25, 14.67, 24.28, 16.9, 22.93)
+        ..cubicTo(19.26, 21.49, 19.71, 18.27, 17.84, 16.25)
+        ..cubicTo(16.78, 15.11, 15.49, 14.19, 14.06, 13.56)
+        ..cubicTo(12.62, 12.94, 11.06, 12.61, 9.5, 12.62)
+        ..close();
+      canvas.drawPath(path1, paint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _ProfileNavIconPainter oldDelegate) {
+  bool shouldRepaint(covariant _ProfileIconPainter oldDelegate) {
     return oldDelegate.isSelected != isSelected || oldDelegate.color != color;
   }
 }
