@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -154,6 +155,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       child: Column(
         children: [
+          _buildSettingItem(
+            title: 'Theme Mode',
+            trailingText: _getThemeModeLabel(AppTheme.themeModeNotifier.value),
+            isTrailingActive: true,
+            onTap: _showThemeModeDialog,
+          ),
+          _buildDivider(),
           _buildSettingItem(
             title: 'Language',
             trailingText: _selectedLanguage,
@@ -418,6 +426,89 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  String _getThemeModeLabel(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.system:
+        return 'System';
+      case ThemeMode.light:
+        return 'Light';
+      case ThemeMode.dark:
+        return 'Dark';
+    }
+  }
+
+  void _showThemeModeDialog() {
+    HapticFeedback.selectionClick();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 38,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE2E8E5),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Select Theme Mode',
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFF15221D),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildThemeRadioOption('System Default (Auto)', ThemeMode.system),
+            _buildThemeRadioOption('Light Mode', ThemeMode.light),
+            _buildThemeRadioOption('Dark Mode', ThemeMode.dark),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThemeRadioOption(String label, ThemeMode mode) {
+    final isSelected = AppTheme.themeModeNotifier.value == mode;
+
+    return ListTile(
+      title: Text(
+        label,
+        style: TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 15,
+          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+          color: isSelected ? const Color(0xFF0B4632) : const Color(0xFF15221D),
+        ),
+      ),
+      trailing: isSelected
+          ? const Icon(Icons.check_circle_rounded, color: Color(0xFF0B4632))
+          : null,
+      onTap: () {
+        HapticFeedback.selectionClick();
+        setState(() {
+          AppTheme.themeModeNotifier.value = mode;
+        });
+        Navigator.of(context).pop();
+      },
     );
   }
 
