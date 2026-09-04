@@ -265,12 +265,12 @@ class _BookingsIconPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final scale = size.width / 37.0;
-    canvas.scale(scale, scale * (size.height / size.width) * (37.0 / 35.0));
-
     final paint = Paint()..color = color;
 
     if (isSelected) {
+      final scale = size.width / 22.0;
+      canvas.scale(scale, scale * (size.height / size.width));
+
       paint.style = PaintingStyle.fill;
       final path1 = Path()
         ..moveTo(17.42, 1.83)
@@ -325,6 +325,10 @@ class _BookingsIconPainter extends CustomPainter {
         ..close();
       canvas.drawPath(path2, paint);
     } else {
+      final scale = size.width / 24.42;
+      canvas.scale(scale, scale * (size.height / size.width));
+      canvas.translate(-5.85, -5.46);
+
       paint.style = PaintingStyle.fill;
       final path1 = Path()
         ..moveTo(12.88, 5.47)
