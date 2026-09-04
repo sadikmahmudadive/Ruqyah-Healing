@@ -29,13 +29,13 @@ class GlobalBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 24),
+      padding: const EdgeInsets.only(left: 14, right: 14, bottom: 20),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(32),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
-            height: 72,
+            height: 68,
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.70),
               borderRadius: BorderRadius.circular(32),
@@ -52,9 +52,9 @@ class GlobalBottomNavBar extends StatelessWidget {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildNavItem(
                     tab: NavigationTab.home,
@@ -62,7 +62,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => HomeNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 24,
+                      size: 22,
                     ),
                   ),
                   _buildNavItem(
@@ -71,7 +71,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => ServicesNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 24,
+                      size: 22,
                     ),
                   ),
                   _buildNavItem(
@@ -80,7 +80,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => BookingsNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 24,
+                      size: 22,
                     ),
                   ),
                   _buildNavItem(
@@ -89,7 +89,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => LearnNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 24,
+                      size: 22,
                     ),
                   ),
                   _buildNavItem(
@@ -98,7 +98,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                     iconBuilder: (isSelected, color) => ProfileNavIcon(
                       isSelected: isSelected,
                       color: color,
-                      size: 24,
+                      size: 22,
                     ),
                   ),
                 ],
@@ -126,13 +126,13 @@ class GlobalBottomNavBar extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOutCubic,
-        height: 48,
+        height: 46,
         padding: isSelected
-            ? const EdgeInsets.symmetric(horizontal: 18)
-            : const EdgeInsets.symmetric(horizontal: 12),
+            ? const EdgeInsets.symmetric(horizontal: 14)
+            : const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(23),
           boxShadow: isSelected
               ? [
                   BoxShadow(
@@ -150,12 +150,12 @@ class GlobalBottomNavBar extends StatelessWidget {
             iconBuilder(
                 isSelected, isSelected ? Colors.white : const Color(0xFF0B4632)),
             if (isSelected) ...[
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Text(
                 label,
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 14.5,
+                  fontSize: 13.5,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
