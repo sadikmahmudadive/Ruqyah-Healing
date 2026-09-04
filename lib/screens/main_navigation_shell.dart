@@ -56,6 +56,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
+        extendBody: true,
         body: IndexedStack(
           index: _currentTab.index,
           children: _tabPages.values.toList(),

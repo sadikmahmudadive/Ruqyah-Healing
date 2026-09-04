@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -26,73 +28,81 @@ class GlobalBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
-
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFE2E8E5),
-            width: 1.0,
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 24),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(32),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            height: 72,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.70),
+              borderRadius: BorderRadius.circular(32),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.80),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavItem(
+                  tab: NavigationTab.home,
+                  label: 'Home',
+                  iconBuilder: (isSelected, color) => HomeNavIcon(
+                    isSelected: isSelected,
+                    color: color,
+                    size: 21,
+                  ),
+                ),
+                _buildNavItem(
+                  tab: NavigationTab.services,
+                  label: 'Services',
+                  iconBuilder: (isSelected, color) => ServicesNavIcon(
+                    isSelected: isSelected,
+                    color: color,
+                    size: 18.5,
+                  ),
+                ),
+                _buildNavItem(
+                  tab: NavigationTab.bookings,
+                  label: 'Bookings',
+                  iconBuilder: (isSelected, color) => BookingsNavIcon(
+                    isSelected: isSelected,
+                    color: color,
+                    size: 21,
+                  ),
+                ),
+                _buildNavItem(
+                  tab: NavigationTab.learn,
+                  label: 'Learn',
+                  iconBuilder: (isSelected, color) => LearnNavIcon(
+                    isSelected: isSelected,
+                    color: color,
+                    size: 21,
+                  ),
+                ),
+                _buildNavItem(
+                  tab: NavigationTab.profile,
+                  label: 'Profile',
+                  iconBuilder: (isSelected, color) => ProfileNavIcon(
+                    isSelected: isSelected,
+                    color: color,
+                    size: 21,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      padding: EdgeInsets.only(
-        top: 10,
-        bottom: bottomPadding > 0 ? bottomPadding + 2 : 10,
-        left: 6,
-        right: 6,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(
-            tab: NavigationTab.home,
-            label: 'Home',
-            iconBuilder: (isSelected, color) => HomeNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 21,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.services,
-            label: 'Services',
-            iconBuilder: (isSelected, color) => ServicesNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 18.5,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.bookings,
-            label: 'Bookings',
-            iconBuilder: (isSelected, color) => BookingsNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 21,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.learn,
-            label: 'Learn',
-            iconBuilder: (isSelected, color) => LearnNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 21,
-            ),
-          ),
-          _buildNavItem(
-            tab: NavigationTab.profile,
-            label: 'Profile',
-            iconBuilder: (isSelected, color) => ProfileNavIcon(
-              isSelected: isSelected,
-              color: color,
-              size: 21,
-            ),
-          ),
-        ],
       ),
     );
   }
