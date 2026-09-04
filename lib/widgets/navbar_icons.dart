@@ -135,65 +135,55 @@ class _ServicesIconPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final scale = size.width / 22.0;
-    canvas.scale(scale, scale * (size.height / size.width) * (22.0 / 22.0));
+    final scale = size.width / 21.0;
+    canvas.scale(scale, scale * (size.height / size.width));
 
     final paint = Paint()..color = color;
 
     if (isSelected) {
-      paint.style = PaintingStyle.fill;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2.0;
+      paint.strokeCap = StrokeCap.round;
+
       final path1 = Path()
-        ..moveTo(17.42, 1.83)
-        ..lineTo(16.74, 1.83)
-        ..lineTo(16.74, 0.92)
-        ..cubicTo(16.74, 0.42, 16.33, 0, 15.82, 0)
-        ..cubicTo(15.32, 0, 14.9, 0.41, 14.9, 0.92)
-        ..lineTo(14.9, 1.83)
-        ..lineTo(7.1, 1.83)
-        ..lineTo(7.1, 0.92)
-        ..cubicTo(7.1, 0.42, 6.67, 0, 6.17, 0)
-        ..cubicTo(5.67, 0, 5.26, 0.41, 5.26, 0.92)
-        ..lineTo(5.26, 1.83)
-        ..lineTo(4.58, 1.83)
-        ..cubicTo(2.05, 1.83, 0, 3.9, 0, 6.42)
-        ..lineTo(0, 17.42)
-        ..cubicTo(0, 19.95, 2.05, 22, 4.58, 22)
-        ..lineTo(17.42, 22)
-        ..cubicTo(19.95, 22, 22, 19.95, 22, 17.42)
-        ..lineTo(22, 6.42)
-        ..cubicTo(22, 3.89, 19.95, 1.83, 17.42, 1.83)
-        ..close()
-        ..moveTo(20.17, 17.42)
-        ..cubicTo(20.17, 18.92, 18.93, 20.17, 17.42, 20.17)
-        ..lineTo(4.58, 20.17)
-        ..cubicTo(3.08, 20.17, 1.83, 18.93, 1.83, 17.42)
-        ..lineTo(1.83, 6.42)
-        ..cubicTo(1.83, 4.9, 3.07, 3.67, 4.58, 3.67)
-        ..lineTo(5.26, 3.67)
-        ..lineTo(5.26, 4.59)
-        ..cubicTo(5.26, 5.09, 5.67, 5.51, 6.17, 5.51)
-        ..cubicTo(6.67, 5.51, 7.09, 5.1, 7.09, 4.59)
-        ..lineTo(7.09, 3.67)
-        ..lineTo(14.89, 3.67)
-        ..lineTo(14.89, 4.59)
-        ..cubicTo(14.89, 5.09, 15.31, 5.51, 15.81, 5.51)
-        ..cubicTo(16.31, 5.51, 16.73, 5.1, 16.73, 4.59)
-        ..lineTo(16.73, 3.67)
-        ..lineTo(17.41, 3.67)
-        ..cubicTo(18.91, 3.67, 20.16, 4.9, 20.16, 6.42)
-        ..lineTo(20.16, 17.42)
+        ..moveTo(5, 1)
+        ..lineTo(9, 1)
+        ..lineTo(9, 9)
+        ..lineTo(1, 9)
+        ..lineTo(1, 5)
+        ..cubicTo(1, 2.8, 2.8, 1, 5, 1)
         ..close();
       canvas.drawPath(path1, paint);
+
       final path2 = Path()
-        ..moveTo(16.48, 6.95)
-        ..lineTo(5.52, 6.95)
-        ..cubicTo(5.03, 6.95, 4.63, 7.47, 4.63, 8.11)
-        ..cubicTo(4.63, 8.74, 5.03, 9.26, 5.52, 9.26)
-        ..lineTo(16.48, 9.26)
-        ..cubicTo(16.97, 9.26, 17.37, 8.74, 17.37, 8.11)
-        ..cubicTo(17.37, 7.47, 16.97, 6.95, 16.48, 6.95)
+        ..moveTo(16, 1)
+        ..cubicTo(18.2, 1, 20, 2.8, 20, 5)
+        ..lineTo(20, 9)
+        ..lineTo(12, 9)
+        ..lineTo(12, 1)
+        ..lineTo(16, 1)
         ..close();
       canvas.drawPath(path2, paint);
+
+      final path3 = Path()
+        ..moveTo(20, 12)
+        ..lineTo(20, 16)
+        ..cubicTo(20, 18.2, 18.2, 20, 16, 20)
+        ..lineTo(12, 20)
+        ..lineTo(12, 12)
+        ..lineTo(20, 12)
+        ..close();
+      canvas.drawPath(path3, paint);
+
+      final path4 = Path()
+        ..moveTo(9, 12)
+        ..lineTo(9, 20)
+        ..lineTo(5, 20)
+        ..cubicTo(2.8, 20, 1, 18.2, 1, 16)
+        ..lineTo(1, 12)
+        ..lineTo(9, 12)
+        ..close();
+      canvas.drawPath(path4, paint);
     } else {
       paint.style = PaintingStyle.fill;
       final path1 = Path()
