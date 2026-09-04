@@ -13,9 +13,14 @@ import '../hijama_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
 import '../video_consultation_screen.dart';
 
-class ServicesTab extends StatelessWidget {
+class ServicesTab extends StatefulWidget {
   const ServicesTab({super.key});
 
+  @override
+  State<ServicesTab> createState() => _ServicesTabState();
+}
+
+class _ServicesTabState extends State<ServicesTab> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -326,6 +331,8 @@ class ServicesTab extends StatelessWidget {
         ),
       ),
     );
+  }
+}
   }
 
   // Full-Width Main Service Card

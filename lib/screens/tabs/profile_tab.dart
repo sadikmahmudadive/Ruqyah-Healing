@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/firebase_service.dart';
+import '../../theme/app_theme.dart';
 import '../../widgets/global_bottom_navbar.dart';
 import '../health_profile_detail_screen.dart';
 import '../main_navigation_shell.dart';

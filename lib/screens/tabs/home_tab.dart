@@ -85,13 +85,6 @@ class _HomeTabState extends State<HomeTab> {
                     color: context.textPrimary,
                   ),
                 ),
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
-                  ),
-                ),
 
                 const SizedBox(height: 14),
 
