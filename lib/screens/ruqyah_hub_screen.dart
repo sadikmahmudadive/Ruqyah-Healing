@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 import 'audio_library_screen.dart';
@@ -44,7 +43,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -114,9 +113,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -197,8 +196,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -212,8 +212,10 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
           Container(
             width: 48,
             height: 48,
-            decoration: const BoxDecoration(
-              color: Color(0xFFEBF7F0),
+            decoration: BoxDecoration(
+              color: context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : const Color(0xFFEBF7F0),
               shape: BoxShape.circle,
             ),
             child: const Center(
@@ -225,7 +227,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -235,16 +237,16 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'Explore authentic spiritual remedies and live healing sessions.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                     height: 1.3,
                   ),
                 ),
@@ -262,8 +264,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -283,10 +286,10 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
           Expanded(
             child: TextField(
               controller: _searchController,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
               decoration: const InputDecoration(
                 hintText: 'Search recitations, duas, topics...',
@@ -330,12 +333,12 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF0B4632) : Colors.white,
+                color: isSelected ? const Color(0xFF0B4632) : context.cardBg,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFE2E8E5),
+                      : context.cardBorder,
                   width: 1.0,
                 ),
                 boxShadow: isSelected
@@ -356,7 +359,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected ? Colors.white : const Color(0xFF52625B),
+                    color: isSelected ? Colors.white : context.textPrimary,
                   ),
                 ),
               ),
@@ -373,13 +376,13 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Featured Playlist',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -419,8 +422,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -429,95 +433,96 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 ),
               ],
             ),
-          child: Row(
-            children: [
-              // Arabic Calligraphy Badge
-              Container(
-                width: 58,
-                height: 58,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0B4632),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Center(
-                  child: Text(
-                    'الرقية',
-                    style: TextStyle(
-                      fontFamily: 'Cinzel',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFFD49E35),
-                    ),
+            child: Row(
+              children: [
+                // Arabic Calligraphy Badge
+                Container(
+                  width: 58,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0B4632),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                ),
-              ),
-
-              const SizedBox(width: 14),
-
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Daily Protection',
+                  child: const Center(
+                    child: Text(
+                      'الرقية',
                       style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 16,
+                        fontFamily: 'Cinzel',
+                        fontSize: 18,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: Color(0xFFD49E35),
                       ),
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Morning & Evening • 12 tracks • 48 min',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              Container(
-                width: 42,
-                height: 42,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFEBF7F0),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.play_arrow_rounded,
-                    color: Color(0xFF0B4632),
-                    size: 24,
                   ),
-                  onPressed: () {
-                    HapticFeedback.selectionClick();
-                  },
                 ),
-              ),
-            ],
+
+                const SizedBox(width: 14),
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Daily Protection',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Morning & Evening • 12 tracks • 48 min',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12.5,
+                          color: context.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : const Color(0xFFEBF7F0),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.play_arrow_rounded,
+                      color: Color(0xFF0B4632),
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      HapticFeedback.selectionClick();
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
   // 5. Live Session Section
   Widget _buildLiveSessionSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Live Session',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
             fontWeight: FontWeight.w800,
-            color: Color(0xFF15221D),
+            color: context.textPrimary,
           ),
         ),
 

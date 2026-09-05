@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import 'main_navigation_shell.dart';
 
 class CartItem {
@@ -336,10 +335,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   // Cart Item Card
   Widget _buildCartItemCard(CartItem item) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -375,21 +375,21 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               children: [
                 Text(
                   item.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   '৳${item.price}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -399,10 +399,12 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F7F6),
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : const Color(0xFFF5F7F6),
                     borderRadius: BorderRadius.circular(10),
                     border:
-                        Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                        Border.all(color: context.cardBorder, width: 1.0),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -424,11 +426,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           '${item.quantity}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13.5,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF15221D),
+                            color: context.textPrimary,
                           ),
                         ),
                       ),
@@ -491,8 +493,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -516,11 +519,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               const Spacer(),
               Text(
                 '৳$_subtotal',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
             ],
@@ -541,11 +544,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               const Spacer(),
               Text(
                 '৳$_shippingFee',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
             ],
@@ -596,28 +599,28 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           ),
 
           const SizedBox(height: 12),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: context.cardBorder),
           const SizedBox(height: 12),
 
           Row(
             children: [
-              const Text(
+              Text(
                 'Total',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 17,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
               const Spacer(),
               Text(
                 '৳$total',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
             ],
@@ -632,8 +635,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -703,7 +707,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -713,16 +717,16 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       'House 12, Road 5, Dhanmondi, Dhaka 1205, Bangladesh',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                         height: 1.35,
                       ),
                     ),
@@ -741,8 +745,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),

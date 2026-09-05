@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import 'equipment_store_screen.dart';
 
@@ -70,17 +69,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: context.pageBg,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.cardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: context.cardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
@@ -90,9 +89,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ],
               ),
               child: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -101,13 +100,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
           centerTitle: true,
-          title: const Text(
+          title: Text(
             'Product Details',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           actions: [
@@ -118,9 +117,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.cardBg,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(color: context.cardBorder, width: 1.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -130,9 +129,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ],
                 ),
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.share_outlined,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                     size: 18,
                   ),
                   onPressed: () {
@@ -150,9 +149,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.cardBg,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(color: context.cardBorder, width: 1.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -289,8 +288,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -327,11 +327,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           // Product Title
           Text(
             p.title,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
               height: 1.25,
             ),
           ),
@@ -345,11 +345,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             children: [
               Text(
                 '৳${p.price}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(width: 10),
@@ -412,19 +412,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               const SizedBox(width: 4),
               Text(
                 '${p.rating} ',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
               Text(
                 '(${p.reviewsCount > 0 ? p.reviewsCount : 178} reviews)',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.5,
-                  color: Color(0xFF6E7E77),
+                  color: context.textSecondary,
                 ),
               ),
               const Spacer(),
@@ -456,26 +456,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
 
           const SizedBox(height: 16),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: context.cardBorder),
           const SizedBox(height: 16),
 
           // Description Section
-          const Text(
+          Text(
             'Description',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Complete set for safe & hygienic Hijama practice. Includes 12 professional-grade cups, manual vacuum pump, and carrying case. Medical-grade silicone material.',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 13.5,
-              color: Color(0xFF6E7E77),
+              color: context.textSecondary,
               height: 1.45,
             ),
           ),
@@ -483,13 +483,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           const SizedBox(height: 20),
 
           // Key Features Section
-          const Text(
+          Text(
             'Key Features',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(height: 10),
@@ -507,11 +507,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Expanded(
                     child: Text(
                       feature,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF52625B),
+                        color: context.textSecondary,
                       ),
                     ),
                   ),
@@ -523,13 +523,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           const SizedBox(height: 16),
 
           // What's in the Box Section
-          const Text(
+          Text(
             'What\'s in the Box',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(height: 12),
@@ -570,10 +570,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        boxShadow: [
+      decoration: BoxDecoration(
+        color: context.cardBg,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: const [
           BoxShadow(
             color: Color(0x0F000000),
             blurRadius: 16,
@@ -587,9 +587,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : const Color(0xFFF5F7F6),
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+              border: Border.all(color: context.cardBorder, width: 1.0),
             ),
             child: Row(
               children: [
@@ -621,11 +623,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                 Text(
                   '$_quantity',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
 

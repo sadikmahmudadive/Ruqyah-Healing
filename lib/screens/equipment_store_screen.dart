@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import 'cart_checkout_screen.dart';
 import 'product_details_screen.dart';
@@ -128,7 +127,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -188,9 +187,9 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -334,8 +333,9 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -355,10 +355,10 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
           Expanded(
             child: TextField(
               controller: _searchController,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
               decoration: const InputDecoration(
                 hintText: 'Search products...',
@@ -375,16 +375,18 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : const Color(0xFFF5F7F6),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Text(
+            child: Text(
               'Filter',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 11.5,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF6E7E77),
+                color: context.textSecondary,
               ),
             ),
           ),
@@ -418,12 +420,12 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF0B4632) : Colors.white,
+                color: isSelected ? const Color(0xFF0B4632) : context.cardBg,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFE2E8E5),
+                      : context.cardBorder,
                   width: 1.0,
                 ),
                 boxShadow: isSelected
@@ -444,7 +446,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected ? Colors.white : const Color(0xFF52625B),
+                    color: isSelected ? Colors.white : context.textPrimary,
                   ),
                 ),
               ),
@@ -463,13 +465,13 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Featured',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -527,8 +529,9 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -590,30 +593,30 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                         ],
                         Text(
                           '৳${p.price}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 19,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF15221D),
+                            color: context.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 3),
                         Text(
                           p.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF15221D),
+                            color: context.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           p.subtitle,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 11.5,
-                            color: Color(0xFF6E7E77),
+                            color: context.textSecondary,
                             height: 1.3,
                           ),
                         ),
@@ -668,19 +671,19 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                   const SizedBox(width: 4),
                   Text(
                     '${p.rating} ',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
                       fontWeight: FontWeight.w800,
-                      color: Color(0xFF15221D),
+                      color: context.textPrimary,
                     ),
                   ),
                   Text(
                     '(${p.reviewsCount} reviews)',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
-                      color: Color(0xFF6E7E77),
+                      color: context.textSecondary,
                     ),
                   ),
                   const Spacer(),
@@ -718,13 +721,13 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Top Picks',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -797,8 +800,9 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.cardBg,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: context.cardBorder, width: 1.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -834,20 +838,20 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
               children: [
                 Text(
                   p.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   p.subtitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
                 if (p.isApproved) ...[
@@ -888,11 +892,11 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                   children: [
                     Text(
                       '৳${p.price}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
                     const Spacer(),
@@ -904,11 +908,11 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                     const SizedBox(width: 3),
                     Text(
                       '${p.rating}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
                     const SizedBox(width: 10),

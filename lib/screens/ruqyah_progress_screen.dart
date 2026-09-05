@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 
 class RuqyahProgressScreen extends StatefulWidget {
@@ -41,7 +42,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -106,9 +107,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -151,13 +152,13 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
   Widget _buildThisWeekHeader() {
     return Row(
       children: [
-        const Text(
+        Text(
           'This Week',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
             fontWeight: FontWeight.w800,
-            color: Color(0xFF15221D),
+            color: context.textPrimary,
           ),
         ),
         const Spacer(),
@@ -190,8 +191,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -200,10 +202,10 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 ),
               ],
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'Minutes',
                   style: TextStyle(
                     fontFamily: 'Inter',
@@ -211,8 +213,8 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     color: Color(0xFF90A4AE),
                   ),
                 ),
-                SizedBox(height: 6),
-                Text(
+                const SizedBox(height: 6),
+                const Text(
                   '112',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
@@ -221,13 +223,13 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     color: Color(0xFF0B4632),
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'min',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -242,8 +244,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -252,10 +255,10 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 ),
               ],
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'Sessions',
                   style: TextStyle(
                     fontFamily: 'Inter',
@@ -263,23 +266,23 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     color: Color(0xFF90A4AE),
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
                   '8',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'this week',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -353,8 +356,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -441,8 +445,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -456,14 +461,14 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
                   'How are you feeling today?',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -501,12 +506,14 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   decoration: BoxDecoration(
                     color: isSelected
                         ? const Color(0xFFEBF7F0)
-                        : const Color(0xFFF5F7F6),
+                        : context.isDarkMode
+                            ? const Color(0xFF182E25)
+                            : const Color(0xFFF5F7F6),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isSelected
                           ? const Color(0xFF0B4632)
-                          : const Color(0xFFE2E8E5),
+                          : context.cardBorder,
                       width: isSelected ? 2.0 : 1.0,
                     ),
                   ),
@@ -530,8 +537,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -560,7 +568,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
 
           const SizedBox(width: 14),
 
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -570,16 +578,16 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'Log your symptoms privately',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -651,8 +659,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.cardBg,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -684,13 +693,13 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Evening adhkar reminder',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -707,12 +716,12 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                           ),
                         ),
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           'Today, 8:00 PM',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 12.5,
-                            color: Color(0xFF6E7E77),
+                            color: context.textSecondary,
                           ),
                         ),
                       ],

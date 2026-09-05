@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import 'full_audio_player_screen.dart';
 
@@ -97,7 +98,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -152,9 +153,9 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -199,8 +200,9 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -220,10 +222,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
           Expanded(
             child: TextField(
               controller: _searchController,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
               decoration: const InputDecoration(
                 hintText: 'Search recitations, duas...',
@@ -267,12 +269,12 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF0B4632) : Colors.white,
+                color: isSelected ? const Color(0xFF0B4632) : context.cardBg,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFE2E8E5),
+                      : context.cardBorder,
                   width: 1.0,
                 ),
                 boxShadow: isSelected
@@ -293,7 +295,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected ? Colors.white : const Color(0xFF52625B),
+                    color: isSelected ? Colors.white : context.textPrimary,
                   ),
                 ),
               ),
@@ -310,13 +312,13 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Recommended For You',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -365,11 +367,13 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
 
   Widget _buildTrackCard(RecitationTrack track) {
     final isDownloaded = _downloadedTracks.contains(track.id);
+    final isDark = context.isDarkMode;
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -408,46 +412,46 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             padding: const EdgeInsets.all(14.0),
             child: Row(
               children: [
-          // Audio Speaker Icon Container
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: const Color(0xFFEBF7F0),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: const Icon(
-              Icons.volume_up_rounded,
-              color: Color(0xFF0B4632),
-              size: 22,
-            ),
-          ),
-
-          const SizedBox(width: 14),
-
-          // Details Column
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  track.title,
-                  style: const TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                // Audio Speaker Icon Container
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF182E25) : const Color(0xFFEBF7F0),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(
+                    Icons.volume_up_rounded,
+                    color: Color(0xFF0B4632),
+                    size: 22,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  track.subtitle,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
-                  ),
-                ),
+
+                const SizedBox(width: 14),
+
+                // Details Column
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        track.title,
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w800,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        track.subtitle,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12.5,
+                          color: context.textSecondary,
+                        ),
+                      ),
               ],
             ),
           ),
@@ -486,13 +490,13 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Protection Playlists',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -526,8 +530,9 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.cardBg,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -555,7 +560,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
 
               const SizedBox(width: 14),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -565,16 +570,16 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       '5 tracks • 68 min',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
