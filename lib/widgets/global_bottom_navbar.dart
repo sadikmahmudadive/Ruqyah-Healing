@@ -30,10 +30,10 @@ class GlobalBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final navBgColor = isDark
-        ? const Color(0xFF121B17).withValues(alpha: 0.70)
+        ? const Color(0xFF081C15)
         : Colors.white.withValues(alpha: 0.60);
     final navBorderColor = isDark
-        ? const Color(0xFF283B32).withValues(alpha: 0.80)
+        ? Colors.white.withValues(alpha: 0.85)
         : Colors.white.withValues(alpha: 0.70);
 
     return Padding(
@@ -49,11 +49,11 @@ class GlobalBottomNavBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(32),
               border: Border.all(
                 color: navBorderColor,
-                width: 1.5,
+                width: isDark ? 1.2 : 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.08),
+                  color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
                   blurRadius: 24,
                   offset: const Offset(0, 8),
                 ),
@@ -131,8 +131,7 @@ class GlobalBottomNavBar extends StatelessWidget {
   }) {
     final isSelected = currentTab == tab;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final inactiveIconColor =
-        isDark ? const Color(0xFF81C784) : const Color(0xFF0B4632);
+    final inactiveIconColor = const Color(0xFF0B4632);
 
     return GestureDetector(
       onTap: () {

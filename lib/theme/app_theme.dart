@@ -17,14 +17,15 @@ class AppColors {
   static const Color lightTextMuted = Color(0xFF90A4AE);
   static const Color lightContainerBg = Color(0xFFEBF7F0);
 
-  // Dark Mode Colors (Onyx Emerald)
-  static const Color darkBackground = Color(0xFF0B0F12);
-  static const Color darkCardBg = Color(0xFF121B17);
-  static const Color darkCardBorder = Color(0xFF1E302A);
-  static const Color darkTextPrimary = Color(0xFFF5F7F6);
+  // Dark Mode Colors (Onyx Emerald - Exact Reference)
+  static const Color darkBackground = Color(0xFF08120E);
+  static const Color darkCardBg = Color(0xFF0F1F1A);
+  static const Color darkCardBorder = Color(0xFF1C362C);
+  static const Color darkTextPrimary = Colors.white;
   static const Color darkTextSecondary = Color(0xFF92A89F);
   static const Color darkTextMuted = Color(0xFF627870);
-  static const Color darkContainerBg = Color(0xFF182E25);
+  static const Color darkContainerBg = Color(0xFF162E25);
+  static const Color darkIconCircleBg = Color(0xFF132620);
 }
 
 extension AppThemeContext on BuildContext {
@@ -44,6 +45,8 @@ extension AppThemeContext on BuildContext {
       isDarkMode ? AppColors.darkTextMuted : AppColors.lightTextMuted;
   Color get containerBg =>
       isDarkMode ? AppColors.darkContainerBg : AppColors.lightContainerBg;
+  Color get iconCircleBg =>
+      isDarkMode ? AppColors.darkIconCircleBg : AppColors.lightContainerBg;
 }
 
 class AppTheme {

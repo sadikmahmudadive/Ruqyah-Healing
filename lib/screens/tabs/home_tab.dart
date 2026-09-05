@@ -543,17 +543,23 @@ class _HomeTabState extends State<HomeTab> {
 
   // Holistic Services Row
   Widget _buildServicesRow() {
+    final isDark = context.isDarkMode;
+    final iconColorRuqyah = isDark ? const Color(0xFFD49E35) : const Color(0xFF0B4632);
+    final iconColorHijama = isDark ? const Color(0xFFD49E35) : const Color(0xFFE67E22);
+    final iconColorAcupuncture = isDark ? const Color(0xFFD49E35) : const Color(0xFF2980B9);
+    final iconColorEmergency = isDark ? const Color(0xFFD49E35) : const Color(0xFFE74C3C);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildServiceIconCard(
           label: 'Ruqyah',
-          customIcon: const RuqyahDuaIcon(
-            color: Color(0xFF0B4632),
+          customIcon: RuqyahDuaIcon(
+            color: iconColorRuqyah,
             size: 28,
           ),
           bgColor: const Color(0xFFEBF7F0),
-          iconColor: const Color(0xFF0B4632),
+          iconColor: iconColorRuqyah,
           onTap: () {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
@@ -565,24 +571,24 @@ class _HomeTabState extends State<HomeTab> {
         ),
         _buildServiceIconCard(
           label: 'Hijama',
-          customIcon: const HijamaCuppingIcon(
-            color: Color(0xFFE67E22),
+          customIcon: HijamaCuppingIcon(
+            color: iconColorHijama,
             size: 28,
           ),
           bgColor: const Color(0xFFFFF3E8),
-          iconColor: const Color(0xFFE67E22),
+          iconColor: iconColorHijama,
           onTap: () {
             HapticFeedback.selectionClick();
           },
         ),
         _buildServiceIconCard(
           label: 'Acupuncture',
-          customIcon: const AcupunctureIcon(
-            color: Color(0xFF2980B9),
+          customIcon: AcupunctureIcon(
+            color: iconColorAcupuncture,
             size: 28,
           ),
           bgColor: const Color(0xFFE6F7FF),
-          iconColor: const Color(0xFF2980B9),
+          iconColor: iconColorAcupuncture,
           onTap: () {
             HapticFeedback.selectionClick();
           },
@@ -591,7 +597,7 @@ class _HomeTabState extends State<HomeTab> {
           label: 'Emergency',
           icon: Icons.error_outline_rounded,
           bgColor: const Color(0xFFFFEBEB),
-          iconColor: const Color(0xFFE74C3C),
+          iconColor: iconColorEmergency,
           onTap: () {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
@@ -622,7 +628,7 @@ class _HomeTabState extends State<HomeTab> {
             height: 64,
             decoration: BoxDecoration(
               color: context.isDarkMode
-                  ? const Color(0xFF182E25)
+                  ? const Color(0xFF132620)
                   : bgColor,
               shape: BoxShape.circle,
             ),
@@ -674,14 +680,14 @@ class _HomeTabState extends State<HomeTab> {
                   color: context.textPrimary,
                 ),
               ),
-              Spacer(),
-              Text(
+              const Spacer(),
+              const Text(
                 'Dhaka, BD',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF0B4632),
+                  color: Color(0xFFD49E35),
                 ),
               ),
             ],
@@ -754,21 +760,21 @@ class _HomeTabState extends State<HomeTab> {
       children: [
         Text(
           name,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 11.5,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF6E7E77),
+            color: context.textSecondary,
           ),
         ),
         const SizedBox(height: 6),
         Text(
           time,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 14.5,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: context.textPrimary,
           ),
         ),
       ],
@@ -816,13 +822,13 @@ class _HomeTabState extends State<HomeTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Dr. Salma Rahman',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -831,19 +837,19 @@ class _HomeTabState extends State<HomeTab> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
-                    color: const Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Row(
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.star_rounded,
                       color: Color(0xFFD49E35),
                       size: 16,
                     ),
-                    SizedBox(width: 4),
-                    Text(
+                    const SizedBox(width: 4),
+                    const Text(
                       '4.9 ',
                       style: TextStyle(
                         fontFamily: 'Inter',
@@ -857,7 +863,7 @@ class _HomeTabState extends State<HomeTab> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
