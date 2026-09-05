@@ -30,7 +30,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -86,9 +86,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        color: Color(0xFF0B4632),
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -143,8 +143,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildPreferencesCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -223,8 +224,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildSecurityPrivacyCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -298,8 +300,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildAboutLegalCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -376,7 +379,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     fontWeight: FontWeight.w600,
                     color: isDestructive
                         ? const Color(0xFFE74C3C)
-                        : const Color(0xFF15221D),
+                        : context.textPrimary,
                   ),
                 ),
               ),
@@ -571,7 +574,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         height: 1,
-        color: const Color(0xFFE2E8E5).withValues(alpha: 0.80),
+        color: context.cardBorder,
       ),
     );
   }

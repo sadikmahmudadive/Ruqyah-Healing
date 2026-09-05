@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 
@@ -42,7 +41,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -112,9 +111,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -223,8 +222,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -286,7 +286,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(
@@ -298,7 +300,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
 
               const SizedBox(width: 14),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -308,16 +310,16 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       'Ayat 1–5, 163–164, 255',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
@@ -328,7 +330,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -349,8 +353,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -425,7 +430,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
 
               const SizedBox(width: 14),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -435,16 +440,16 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       'Adhkar collection for safety',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
@@ -476,8 +481,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -551,7 +557,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
 
               const SizedBox(width: 14),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -561,16 +567,16 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       'Listen twice daily for self-ruqyah',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
