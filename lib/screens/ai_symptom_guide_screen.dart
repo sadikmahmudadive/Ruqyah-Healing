@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import 'guidance_results_screen.dart';
 
@@ -103,6 +102,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -111,7 +111,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -180,9 +180,9 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,8 +284,9 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -321,7 +322,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
           const SizedBox(width: 14),
 
           // Content Column
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -331,16 +332,16 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   'Share your experience and we\'ll provide Islamic guidance, duas, and spiritual support.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                     height: 1.4,
                   ),
                 ),
@@ -376,12 +377,12 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFF0B4632) : Colors.white,
+              color: isSelected ? const Color(0xFF0B4632) : context.cardBg,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: isSelected
                     ? const Color(0xFF0B4632)
-                    : const Color(0xFFE2E8E5),
+                    : context.cardBorder,
                 width: 1.0,
               ),
               boxShadow: isSelected
@@ -415,7 +416,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected ? Colors.white : const Color(0xFF52625B),
+                    color: isSelected ? Colors.white : context.textPrimary,
                   ),
                 ),
               ],
@@ -430,9 +431,9 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
   Widget _buildDetailInputCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -453,10 +454,10 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen> {
             child: TextField(
               controller: _symptomController,
               maxLines: 4,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
               decoration: const InputDecoration(
                 hintText: 'Describe in your own words what you are experiencing...',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_theme.dart';
 import '../widgets/acupuncture_icon.dart';
 import '../widgets/global_bottom_navbar.dart';
 import '../widgets/hijama_cupping_icon.dart';
@@ -26,18 +27,18 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: context.pageBg,
           elevation: 0,
           titleSpacing: 8,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.cardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: context.cardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
@@ -47,9 +48,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 ],
               ),
               child: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -72,13 +73,13 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'Health Profile',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
             ],
@@ -90,9 +91,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.cardBg,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(color: context.cardBorder, width: 1.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -102,9 +103,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   ],
                 ),
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.settings_outlined,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                     size: 20,
                   ),
                   onPressed: () {
@@ -178,8 +179,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -212,13 +214,13 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
+                        Text(
                           '78',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 34,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF15221D),
+                            color: context.textPrimary,
                             height: 1.0,
                           ),
                         ),
@@ -370,8 +372,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
   Widget _buildWellnessLogsCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -419,7 +422,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             title: 'Current Concerns',
             badgeText: 'Anxiety, Sleep',
             badgeBg: Colors.transparent,
-            badgeColor: const Color(0xFF6E7E77),
+            badgeColor: context.textSecondary,
           ),
           _buildDivider(),
           _buildLogTile(
@@ -485,6 +488,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
     required Color badgeBg,
     required Color badgeColor,
   }) {
+    final isDark = context.isDarkMode;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -500,7 +505,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: iconBg,
+                  color: isDark ? const Color(0xFF182E25) : iconBg,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
@@ -511,11 +516,11 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
               ),
@@ -553,8 +558,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
   Widget _buildPrivacyControlsCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -616,20 +622,20 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
               ),
               Text(
                 subtitle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
-                  color: Color(0xFF6E7E77),
+                  color: context.textSecondary,
                 ),
               ),
               const SizedBox(width: 6),
@@ -650,7 +656,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         height: 1,
-        color: const Color(0xFFE2E8E5).withValues(alpha: 0.80),
+        color: context.cardBorder,
       ),
     );
   }

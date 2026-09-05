@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import 'order_tracking_screen.dart';
 import 'secure_messages_screen.dart';
 import 'settings_screen.dart';
@@ -126,7 +127,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -164,12 +165,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? const Color(0xFF0B4632)
-                            : Colors.white,
+                            : context.cardBg,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: isSelected
                               ? const Color(0xFF0B4632)
-                              : const Color(0xFFE2E8E5),
+                              : context.cardBorder,
                           width: 1.0,
                         ),
                         boxShadow: isSelected
@@ -198,7 +199,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               isSelected ? FontWeight.w700 : FontWeight.w500,
                           color: isSelected
                               ? Colors.white
-                              : const Color(0xFF15221D),
+                              : context.textPrimary,
                         ),
                       ),
                     ),
@@ -345,10 +346,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget _buildNotificationCard(NotificationItem item) {
+    final isDark = context.isDarkMode;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -395,7 +399,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: item.iconBgColor,
+                    color: isDark ? const Color(0xFF182E25) : item.iconBgColor,
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Center(
@@ -422,11 +426,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           Expanded(
                             child: Text(
                               item.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF15221D),
+                                color: context.textPrimary,
                               ),
                             ),
                           ),
@@ -435,10 +439,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             children: [
                               Text(
                                 item.time,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 12,
-                                  color: Color(0xFF6E7E77),
+                                  color: context.textSecondary,
                                 ),
                               ),
                               if (item.isUnread) ...[
@@ -462,11 +466,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       // Subtitle
                       Text(
                         item.subtitle,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF6E7E77),
+                          color: context.textSecondary,
                           height: 1.38,
                         ),
                       ),
