@@ -734,14 +734,12 @@ class _LearnTabState extends State<LearnTab> {
                   ),
                 ],
               ),
-                ],
-              ),
               Text(
                 '${course.freeLessons} Free Lessons',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11.5,
-                  color: Color(0xFF6E7E77),
+                  color: context.textSecondary,
                 ),
               ),
             ],
