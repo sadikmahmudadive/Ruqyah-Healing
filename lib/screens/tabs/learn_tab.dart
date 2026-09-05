@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../theme/app_gradients.dart';
+import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
@@ -75,7 +76,7 @@ class _LearnTabState extends State<LearnTab> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -125,9 +126,9 @@ class _LearnTabState extends State<LearnTab> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -188,8 +189,9 @@ class _LearnTabState extends State<LearnTab> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -243,24 +245,24 @@ class _LearnTabState extends State<LearnTab> {
 
           const SizedBox(height: 10),
 
-          const Text(
+          Text(
             'Hijama Practitioner Foundation',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 17,
               fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
 
           const SizedBox(height: 2),
 
-          const Text(
+          Text(
             'Lesson 3 of 10 • Cupping Principles',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 12.5,
-              color: Color(0xFF6E7E77),
+              color: context.textSecondary,
             ),
           ),
 
@@ -333,13 +335,13 @@ class _LearnTabState extends State<LearnTab> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Browse by Category',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -428,8 +430,9 @@ class _LearnTabState extends State<LearnTab> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -451,7 +454,9 @@ class _LearnTabState extends State<LearnTab> {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: iconBg,
+                  color: context.isDarkMode
+                      ? const Color(0xFF162E25)
+                      : iconBg,
                   shape: BoxShape.circle,
                 ),
                 child: Center(child: customIcon),
@@ -460,21 +465,21 @@ class _LearnTabState extends State<LearnTab> {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 subtitle,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11,
-                  color: Color(0xFF90A4AE),
+                  color: context.textSecondary,
                 ),
               ),
             ],
@@ -490,13 +495,13 @@ class _LearnTabState extends State<LearnTab> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Featured Courses',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -558,8 +563,9 @@ class _LearnTabState extends State<LearnTab> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.cardBg,
           borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: context.cardBorder, width: 1.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -621,11 +627,11 @@ class _LearnTabState extends State<LearnTab> {
                         const Spacer(),
                         Text(
                           'Tk ${course.price}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF15221D),
+                            color: context.textPrimary,
                           ),
                         ),
                       ],
@@ -635,11 +641,11 @@ class _LearnTabState extends State<LearnTab> {
 
                     Text(
                       course.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
 
@@ -649,10 +655,10 @@ class _LearnTabState extends State<LearnTab> {
                       children: [
                         Text(
                           course.instructor,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 12,
-                            color: Color(0xFF6E7E77),
+                            color: context.textSecondary,
                           ),
                         ),
                         if (course.isVerified) ...[
@@ -672,7 +678,7 @@ class _LearnTabState extends State<LearnTab> {
           ),
 
           const SizedBox(height: 12),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: context.cardBorder),
           const SizedBox(height: 10),
 
           // Footer Info Row
@@ -692,40 +698,42 @@ class _LearnTabState extends State<LearnTab> {
                   const SizedBox(width: 3),
                   Text(
                     '${course.rating} ',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
-                      color: Color(0xFF15221D),
+                      color: context.textPrimary,
                     ),
                   ),
                   Text(
                     '(${course.reviewsCount} reviews)',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11.5,
-                      color: Color(0xFF90A4AE),
+                      color: context.textSecondary,
                     ),
                   ),
                 ],
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.school_outlined,
                     color: Color(0xFF0B4632),
                     size: 15,
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   Text(
                     'Certificate',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11.5,
-                      color: Color(0xFF6E7E77),
+                      color: context.textSecondary,
                     ),
                   ),
+                ],
+              ),
                 ],
               ),
               Text(
