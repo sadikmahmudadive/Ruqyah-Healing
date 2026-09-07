@@ -321,7 +321,7 @@ class _ServicesTabState extends State<ServicesTab> {
                 ],
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 110),
             ],
           ),
         ),

@@ -171,7 +171,7 @@ class _BookingsTabState extends State<BookingsTab> {
                     // Info Disclaimer Box
                     _buildInfoDisclaimerBox(),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 110),
 
                     // Add all upcoming to calendar row
                     _buildAddToCalendarRow(),
