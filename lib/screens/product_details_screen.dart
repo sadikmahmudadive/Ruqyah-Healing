@@ -63,11 +63,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     final p = widget.product;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-      ),
+      value: context.systemOverlayStyle,
       child: Scaffold(
         backgroundColor: context.pageBg,
         appBar: AppBar(

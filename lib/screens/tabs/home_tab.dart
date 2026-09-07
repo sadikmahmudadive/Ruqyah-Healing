@@ -34,13 +34,7 @@ class _HomeTabState extends State<HomeTab> {
         : 'Amima';
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
+      value: context.systemOverlayStyle,
       child: Scaffold(
         backgroundColor: context.pageBg,
         body: SafeArea(

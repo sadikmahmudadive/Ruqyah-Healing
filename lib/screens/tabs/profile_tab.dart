@@ -29,11 +29,7 @@ class _ProfileTabState extends State<ProfileTab> {
         'amima@email.com';
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-      ),
+      value: context.systemOverlayStyle,
       child: Scaffold(
         backgroundColor: context.pageBg,
         appBar: AppBar(

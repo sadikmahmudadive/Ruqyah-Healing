@@ -47,6 +47,26 @@ extension AppThemeContext on BuildContext {
       isDarkMode ? AppColors.darkContainerBg : AppColors.lightContainerBg;
   Color get iconCircleBg =>
       isDarkMode ? AppColors.darkIconCircleBg : AppColors.lightContainerBg;
+
+  SystemUiOverlayStyle get systemOverlayStyle {
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+      statusBarBrightness: isDarkMode ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+    );
+  }
+
+  SystemUiOverlayStyle get darkHeaderOverlayStyle {
+    return const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+    );
+  }
 }
 
 class AppTheme {

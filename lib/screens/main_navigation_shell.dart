@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_theme.dart';
 import '../widgets/global_bottom_navbar.dart';
 import 'tabs/bookings_tab.dart';
 import 'tabs/home_tab.dart';
@@ -47,14 +48,15 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasDarkHeader = _currentTab == NavigationTab.bookings ||
+        _currentTab == NavigationTab.learn;
+
+    final overlayStyle = hasDarkHeader
+        ? context.darkHeaderOverlayStyle
+        : context.systemOverlayStyle;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
+      value: overlayStyle,
       child: Scaffold(
         extendBody: true,
         body: IndexedStack(

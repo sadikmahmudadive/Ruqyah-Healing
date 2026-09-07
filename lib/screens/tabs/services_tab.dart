@@ -24,11 +24,7 @@ class _ServicesTabState extends State<ServicesTab> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-      ),
+      value: context.systemOverlayStyle,
       child: Scaffold(
         backgroundColor: context.pageBg,
         appBar: AppBar(
