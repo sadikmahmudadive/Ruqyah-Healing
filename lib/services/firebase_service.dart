@@ -84,20 +84,24 @@ class FirebaseService {
       final user = userCredential.user;
 
       if (user != null) {
-        final existingProfile = await getUserProfile(user.uid);
-        if (existingProfile == null) {
-          final newUser = UserModel(
-            userId: user.uid,
-            email: user.email ?? '',
-            phone: user.phoneNumber ?? '',
-            name: user.displayName ?? 'User',
-            role: 'patient',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-            healthProfile: HealthProfile.empty(),
-            billing: BillingProfile.empty(),
-          );
-          await saveUserProfile(newUser);
+        try {
+          final existingProfile = await getUserProfile(user.uid);
+          if (existingProfile == null) {
+            final newUser = UserModel(
+              userId: user.uid,
+              email: user.email ?? '',
+              phone: user.phoneNumber ?? '',
+              name: user.displayName ?? 'User',
+              role: 'patient',
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+              healthProfile: HealthProfile.empty(),
+              billing: BillingProfile.empty(),
+            );
+            await saveUserProfile(newUser);
+          }
+        } catch (firestoreError) {
+          debugPrint('Firestore profile fetch/save note: $firestoreError');
         }
       }
 
