@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,9 +27,11 @@ class _SignUpScreenState extends State<SignUpScreen>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
+  bool _isPhoneSignUp = false; // false = Email Sign Up, true = Phone Sign Up
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -37,6 +40,11 @@ class _SignUpScreenState extends State<SignUpScreen>
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
+
+  String? _verificationId;
+  int _resendSeconds = 45;
+  Timer? _resendTimer;
+  bool _canResend = false;
 
   @override
   void initState() {
@@ -59,12 +67,36 @@ class _SignUpScreenState extends State<SignUpScreen>
     _animController.forward();
   }
 
+  void _startResendTimer() {
+    _resendSeconds = 45;
+    _canResend = false;
+    _resendTimer?.cancel();
+    _resendTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_resendSeconds > 0) {
+        if (mounted) {
+          setState(() {
+            _resendSeconds--;
+          });
+        }
+      } else {
+        _resendTimer?.cancel();
+        if (mounted) {
+          setState(() {
+            _canResend = true;
+          });
+        }
+      }
+    });
+  }
+
   @override
   void dispose() {
     _animController.dispose();
+    _resendTimer?.cancel();
     _fullNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _otpController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -114,12 +146,62 @@ class _SignUpScreenState extends State<SignUpScreen>
     );
   }
 
+  // Handle Sending Phone OTP
+  Future<void> _handleSendOtp() async {
+    final phone = _phoneController.text.trim();
+    if (phone.isEmpty || phone.length < 6) {
+      _showSnackBar('Please enter a valid phone number', isError: true);
+      return;
+    }
+
+    final fullPhoneNumber = '${_selectedCountry.code}$phone';
+    setState(() => _isLoading = true);
+    HapticFeedback.selectionClick();
+
+    try {
+      await FirebaseService.verifyPhoneNumber(
+        phoneNumber: fullPhoneNumber,
+        onVerificationCompleted: (PhoneAuthCredential credential) async {
+          // Auto-verification handled
+        },
+        onVerificationFailed: (FirebaseAuthException e) {
+          if (mounted) {
+            setState(() => _isLoading = false);
+            _showSnackBar(e.message ?? 'Phone verification failed', isError: true);
+          }
+        },
+        onCodeSent: (String verificationId, int? resendToken) {
+          if (mounted) {
+            setState(() {
+              _verificationId = verificationId;
+              _isLoading = false;
+            });
+            _startResendTimer();
+            _showSnackBar('OTP verification code sent to $fullPhoneNumber');
+          }
+        },
+        onCodeAutoRetrievalTimeout: (String verificationId) {
+          _verificationId = verificationId;
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        _showSnackBar('Failed to send OTP: $e', isError: true);
+      }
+    }
+  }
+
+  void _handleResendOtp() {
+    if (!_canResend) return;
+    _handleSendOtp();
+  }
+
+  // Handle Account Creation
   Future<void> _handleCreateAccount() async {
     HapticFeedback.mediumImpact();
 
     final fullName = _fullNameController.text.trim();
-    final email = _emailController.text.trim();
-    final phone = _phoneController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
 
@@ -127,67 +209,136 @@ class _SignUpScreenState extends State<SignUpScreen>
       _showSnackBar('Please enter your full name', isError: true);
       return;
     }
-    if (email.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
-      _showSnackBar('Please enter a valid email address', isError: true);
-      return;
-    }
-    if (password.isEmpty || password.length < 6) {
-      _showSnackBar('Password must be at least 6 characters long', isError: true);
-      return;
-    }
-    if (password != confirmPassword) {
-      _showSnackBar('Passwords do not match', isError: true);
-      return;
-    }
 
-    setState(() => _isLoading = true);
+    if (!_isPhoneSignUp) {
+      // --- EMAIL SIGN UP ---
+      final email = _emailController.text.trim();
+      if (email.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+        _showSnackBar('Please enter a valid email address', isError: true);
+        return;
+      }
+      if (password.isEmpty || password.length < 6) {
+        _showSnackBar('Password must be at least 6 characters long', isError: true);
+        return;
+      }
+      if (password != confirmPassword) {
+        _showSnackBar('Passwords do not match', isError: true);
+        return;
+      }
 
-    try {
-      final userCred = await FirebaseService.signUpWithEmail(
-        email: email,
-        password: password,
-      );
+      setState(() => _isLoading = true);
 
-      final user = userCred.user;
-      if (user != null) {
-        await user.updateDisplayName(fullName);
-
-        final fullPhone = phone.isNotEmpty
-            ? '${_selectedCountry.code}$phone'
-            : '';
-
-        final newUser = UserModel(
-          userId: user.uid,
+      try {
+        final userCred = await FirebaseService.signUpWithEmail(
           email: email,
-          phone: fullPhone,
-          name: fullName,
-          role: 'patient',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          healthProfile: HealthProfile.empty(),
-          billing: BillingProfile.empty(),
+          password: password,
         );
 
-        await FirebaseService.saveUserProfile(newUser);
-        _showSnackBar('Account created successfully! Welcome to Ruqyah Healing.');
-        _navigateToHome();
+        final user = userCred.user;
+        if (user != null) {
+          await user.updateDisplayName(fullName);
+
+          final newUser = UserModel(
+            userId: user.uid,
+            email: email,
+            phone: '',
+            name: fullName,
+            role: 'patient',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+            healthProfile: HealthProfile.empty(),
+            billing: BillingProfile.empty(),
+          );
+
+          await FirebaseService.saveUserProfile(newUser);
+          _showSnackBar('Account created successfully! Welcome to Ruqyah Healing.');
+          _navigateToHome();
+        }
+      } on FirebaseAuthException catch (e) {
+        String msg = 'Failed to create account';
+        if (e.code == 'email-already-in-use') {
+          msg = 'An account already exists for this email. Please sign in.';
+        } else if (e.code == 'weak-password') {
+          msg = 'The password provided is too weak.';
+        } else if (e.code == 'invalid-email') {
+          msg = 'The email address format is invalid.';
+        } else if (e.message != null) {
+          msg = e.message!;
+        }
+        _showSnackBar(msg, isError: true);
+      } catch (e) {
+        _showSnackBar('An unexpected error occurred: $e', isError: true);
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
       }
-    } on FirebaseAuthException catch (e) {
-      String msg = 'Failed to create account';
-      if (e.code == 'email-already-in-use') {
-        msg = 'An account already exists for this email. Please sign in.';
-      } else if (e.code == 'weak-password') {
-        msg = 'The password provided is too weak.';
-      } else if (e.code == 'invalid-email') {
-        msg = 'The email address format is invalid.';
-      } else if (e.message != null) {
-        msg = e.message!;
+    } else {
+      // --- PHONE SIGN UP ---
+      final phone = _phoneController.text.trim();
+      final otpCode = _otpController.text.trim();
+
+      if (phone.isEmpty || phone.length < 6) {
+        _showSnackBar('Please enter a valid phone number', isError: true);
+        return;
       }
-      _showSnackBar(msg, isError: true);
-    } catch (e) {
-      _showSnackBar('An unexpected error occurred: $e', isError: true);
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (_verificationId == null) {
+        _showSnackBar('Please request an OTP code first', isError: true);
+        return;
+      }
+      if (otpCode.length < 6) {
+        _showSnackBar('Please enter the 6-digit OTP code', isError: true);
+        return;
+      }
+      if (password.isEmpty || password.length < 6) {
+        _showSnackBar('Password must be at least 6 characters long', isError: true);
+        return;
+      }
+      if (password != confirmPassword) {
+        _showSnackBar('Passwords do not match', isError: true);
+        return;
+      }
+
+      setState(() => _isLoading = true);
+
+      try {
+        final userCred = await FirebaseService.signInWithOtp(
+          verificationId: _verificationId!,
+          smsCode: otpCode,
+        );
+
+        final user = userCred.user;
+        if (user != null) {
+          await user.updateDisplayName(fullName);
+
+          final fullPhone = '${_selectedCountry.code}$phone';
+          final newUser = UserModel(
+            userId: user.uid,
+            email: user.email ?? '',
+            phone: fullPhone,
+            name: fullName,
+            role: 'patient',
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+            healthProfile: HealthProfile.empty(),
+            billing: BillingProfile.empty(),
+          );
+
+          await FirebaseService.saveUserProfile(newUser);
+          _showSnackBar('Account verified and created successfully!');
+          _navigateToHome();
+        }
+      } on FirebaseAuthException catch (e) {
+        String msg = 'Verification failed';
+        if (e.code == 'invalid-verification-code') {
+          msg = 'Incorrect OTP code. Please check and try again.';
+        } else if (e.message != null) {
+          msg = e.message!;
+        }
+        _showSnackBar(msg, isError: true);
+      } catch (e) {
+        _showSnackBar('An unexpected error occurred: $e', isError: true);
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -241,7 +392,6 @@ class _SignUpScreenState extends State<SignUpScreen>
               width: double.infinity,
               height: double.infinity,
               errorBuilder: (context, error, stackTrace) {
-                debugPrint('Error loading bg_signup.jpg: $error');
                 return const SizedBox();
               },
             ),
@@ -309,7 +459,9 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                         // Subtitle
                         Text(
-                          'Join us to start your spiritual and physical wellness journey.',
+                          _isPhoneSignUp
+                              ? 'Sign up with your phone number and verify via OTP.'
+                              : 'Join us to start your spiritual and physical wellness journey.',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 14,
@@ -319,9 +471,14 @@ class _SignUpScreenState extends State<SignUpScreen>
                           ),
                         ),
 
-                        const SizedBox(height: 28),
+                        const SizedBox(height: 20),
 
-                        // Full Name
+                        // Tab Switcher (Email vs Phone)
+                        _buildSignUpTabSwitcher(),
+
+                        const SizedBox(height: 24),
+
+                        // Full Name Field (Common)
                         _buildFieldLabel('Full Name'),
                         const SizedBox(height: 8),
                         _buildInputField(
@@ -333,24 +490,36 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                         const SizedBox(height: 18),
 
-                        // Email Address
-                        _buildFieldLabel('Email Address'),
-                        const SizedBox(height: 8),
-                        _buildInputField(
-                          controller: _emailController,
-                          icon: Icons.email_outlined,
-                          hintText: 'Enter your email address',
-                          keyboardType: TextInputType.emailAddress,
-                        ),
+                        if (!_isPhoneSignUp) ...[
+                          // --- EMAIL SIGN UP FIELDS ---
+                          _buildFieldLabel('Email Address'),
+                          const SizedBox(height: 8),
+                          _buildInputField(
+                            controller: _emailController,
+                            icon: Icons.email_outlined,
+                            hintText: 'Enter your email address',
+                            keyboardType: TextInputType.emailAddress,
+                          ),
 
-                        const SizedBox(height: 18),
+                          const SizedBox(height: 18),
+                        ] else ...[
+                          // --- PHONE SIGN UP FIELDS ---
+                          _buildFieldLabel('Phone Number'),
+                          const SizedBox(height: 8),
+                          _buildPhoneInputField(),
 
-                        // Phone Number
-                        _buildFieldLabel('Phone Number'),
-                        const SizedBox(height: 8),
-                        _buildPhoneInputField(),
+                          const SizedBox(height: 12),
 
-                        const SizedBox(height: 18),
+                          _buildSendOtpButton(),
+
+                          const SizedBox(height: 18),
+
+                          _buildFieldLabel('OTP Code'),
+                          const SizedBox(height: 8),
+                          _buildOtpInputField(),
+
+                          const SizedBox(height: 18),
+                        ],
 
                         // Password
                         _buildFieldLabel('Password'),
@@ -438,6 +607,136 @@ class _SignUpScreenState extends State<SignUpScreen>
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Sign Up Method Tab Switcher Segment (Email vs Phone)
+  Widget _buildSignUpTabSwitcher() {
+    return Container(
+      height: 52,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8EEEA),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.60),
+          width: 1.0,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Email Tab
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                setState(() => _isPhoneSignUp = false);
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: !_isPhoneSignUp
+                      ? const Color(0xFF113E2E)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(26),
+                  boxShadow: !_isPhoneSignUp
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.12),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.mail_outline_rounded,
+                      size: 20,
+                      color: !_isPhoneSignUp
+                          ? Colors.white
+                          : const Color(0xFF4F6058),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 15,
+                        fontWeight: !_isPhoneSignUp
+                            ? FontWeight.w700
+                            : FontWeight.w600,
+                        color: !_isPhoneSignUp
+                            ? Colors.white
+                            : const Color(0xFF4F6058),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Phone Tab
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                setState(() => _isPhoneSignUp = true);
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: _isPhoneSignUp
+                      ? const Color(0xFF113E2E)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(26),
+                  boxShadow: _isPhoneSignUp
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.12),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.phone_outlined,
+                      size: 20,
+                      color: _isPhoneSignUp
+                          ? Colors.white
+                          : const Color(0xFF4F6058),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Phone',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 15,
+                        fontWeight: _isPhoneSignUp
+                            ? FontWeight.w700
+                            : FontWeight.w600,
+                        color: _isPhoneSignUp
+                            ? Colors.white
+                            : const Color(0xFF4F6058),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -607,6 +906,136 @@ class _SignUpScreenState extends State<SignUpScreen>
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSendOtpButton() {
+    return Container(
+      width: double.infinity,
+      height: 52,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E6B45),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF2ECC71).withValues(alpha: 0.35),
+          width: 1.0,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1E6B45).withValues(alpha: 0.30),
+            offset: const Offset(0, 4),
+            blurRadius: 16,
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: _isLoading ? null : _handleSendOtp,
+          borderRadius: BorderRadius.circular(16),
+          splashColor: Colors.white.withValues(alpha: 0.15),
+          child: Center(
+            child: _isLoading
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : const Text(
+                    'Send OTP',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOtpInputField() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        child: Container(
+          height: 54,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF12181F).withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.18),
+              width: 1.0,
+            ),
+          ),
+          child: Row(
+            children: [
+              // Key Icon
+              Icon(
+                Icons.vpn_key_outlined,
+                color: Colors.white.withValues(alpha: 0.70),
+                size: 20,
+              ),
+
+              const SizedBox(width: 12),
+
+              // OTP Input Field
+              Expanded(
+                child: TextField(
+                  controller: _otpController,
+                  keyboardType: TextInputType.number,
+                  enabled: !_isLoading,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15,
+                    color: Colors.white,
+                    letterSpacing: 1.0,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Enter 6-digit code',
+                    hintStyle: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14.5,
+                      letterSpacing: 0,
+                      color: Colors.white.withValues(alpha: 0.45),
+                    ),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+
+              // Resend Timer / Button
+              GestureDetector(
+                onTap: (_canResend && !_isLoading) ? _handleResendOtp : null,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Text(
+                    _canResend ? 'Resend' : 'Resend (${_resendSeconds}s)',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w600,
+                      color: _canResend
+                          ? const Color(0xFFE5A93C)
+                          : const Color(0xFFE5A93C).withValues(alpha: 0.85),
+                    ),
                   ),
                 ),
               ),
