@@ -40,8 +40,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Auto-navigate to Language Onboarding Screen after 5 seconds
-    _timer = Timer(const Duration(seconds: 5), () {
+    // Auto-navigate to Language Onboarding Screen after 2 seconds
+    _timer = Timer(const Duration(seconds: 2), () {
       if (mounted) {
         if (widget.onFinished != null) {
           widget.onFinished!();
