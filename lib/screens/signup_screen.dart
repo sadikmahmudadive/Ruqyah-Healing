@@ -70,8 +70,31 @@ class _SignUpScreenState extends State<SignUpScreen>
     super.dispose();
   }
 
+  void _showSnackBar(String message, {bool isError = false}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(fontFamily: 'Inter', color: Colors.white),
+        ),
+        backgroundColor:
+            isError ? const Color(0xFFC0392B) : const Color(0xFF1E6B45),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   void _navigateToHome() {
     HapticFeedback.heavyImpact();
+    if (widget.onSignUpSuccess != null) {
+      widget.onSignUpSuccess!();
+    }
     Navigator.of(context).pushAndRemoveUntil(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
@@ -92,29 +115,99 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   Future<void> _handleCreateAccount() async {
-    _navigateToHome();
+    HapticFeedback.mediumImpact();
+
+    final fullName = _fullNameController.text.trim();
+    final email = _emailController.text.trim();
+    final phone = _phoneController.text.trim();
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    if (fullName.isEmpty || fullName.length < 2) {
+      _showSnackBar('Please enter your full name', isError: true);
+      return;
+    }
+    if (email.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      _showSnackBar('Please enter a valid email address', isError: true);
+      return;
+    }
+    if (password.isEmpty || password.length < 6) {
+      _showSnackBar('Password must be at least 6 characters long', isError: true);
+      return;
+    }
+    if (password != confirmPassword) {
+      _showSnackBar('Passwords do not match', isError: true);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final userCred = await FirebaseService.signUpWithEmail(
+        email: email,
+        password: password,
+      );
+
+      final user = userCred.user;
+      if (user != null) {
+        await user.updateDisplayName(fullName);
+
+        final fullPhone = phone.isNotEmpty
+            ? '${_selectedCountry.code}$phone'
+            : '';
+
+        final newUser = UserModel(
+          userId: user.uid,
+          email: email,
+          phone: fullPhone,
+          name: fullName,
+          role: 'patient',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          healthProfile: HealthProfile.empty(),
+          billing: BillingProfile.empty(),
+        );
+
+        await FirebaseService.saveUserProfile(newUser);
+        _showSnackBar('Account created successfully! Welcome to Ruqyah Healing.');
+        _navigateToHome();
+      }
+    } on FirebaseAuthException catch (e) {
+      String msg = 'Failed to create account';
+      if (e.code == 'email-already-in-use') {
+        msg = 'An account already exists for this email. Please sign in.';
+      } else if (e.code == 'weak-password') {
+        msg = 'The password provided is too weak.';
+      } else if (e.code == 'invalid-email') {
+        msg = 'The email address format is invalid.';
+      } else if (e.message != null) {
+        msg = e.message!;
+      }
+      _showSnackBar(msg, isError: true);
+    } catch (e) {
+      _showSnackBar('An unexpected error occurred: $e', isError: true);
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   Future<void> _handleGoogleSignIn() async {
-    _navigateToHome();
-  }
+    HapticFeedback.mediumImpact();
+    setState(() => _isLoading = true);
 
-  void _showSnackBar(String message, {bool isError = false}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(fontFamily: 'Inter'),
-        ),
-        backgroundColor:
-            isError ? const Color(0xFFC0392B) : const Color(0xFF1E6B45),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    try {
+      final userCred = await FirebaseService.signInWithGoogle();
+      if (userCred != null && userCred.user != null) {
+        _showSnackBar('Signed in with Google successfully!');
+        _navigateToHome();
+      }
+    } on FirebaseAuthException catch (e) {
+      _showSnackBar(e.message ?? 'Google Sign-In failed', isError: true);
+    } catch (e) {
+      _showSnackBar('Google Sign-In cancelled or failed', isError: true);
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   void _navigateToSignIn() {
