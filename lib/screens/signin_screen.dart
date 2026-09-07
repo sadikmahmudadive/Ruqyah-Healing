@@ -383,7 +383,7 @@ class _SignInScreenState extends State<SignInScreen>
                 hintStyle: const TextStyle(color: Color(0xFF627870)),
                 filled: true,
                 fillColor: const Color(0xFF182E25),
-                border: RoundedRectangleBorder(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(color: Color(0xFF1E302A)),
                 ),
