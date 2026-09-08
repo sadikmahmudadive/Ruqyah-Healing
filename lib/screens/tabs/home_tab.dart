@@ -95,7 +95,7 @@ class _HomeTabState extends State<HomeTab> {
                 // 7. Featured Specialist Consultation Card
                 _buildSpecialistCard(),
 
-                const SizedBox(height: 110),
+                const SizedBox(height: 120),
               ],
             ),
           ),

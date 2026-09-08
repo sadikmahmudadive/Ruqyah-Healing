@@ -106,7 +106,7 @@ class _LearnTabState extends State<LearnTab> {
                     // 3. Featured Courses Section
                     _buildFeaturedCoursesSection(),
 
-                    const SizedBox(height: 110),
+                    const SizedBox(height: 120),
                   ],
                 ),
               ),

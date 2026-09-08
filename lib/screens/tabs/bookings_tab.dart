@@ -181,7 +181,7 @@ class _BookingsTabState extends State<BookingsTab> {
                     // Primary Action Button: Book a New Appointment
                     _buildBookNewAppointmentButton(),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 120),
                   ],
                 ),
               ),

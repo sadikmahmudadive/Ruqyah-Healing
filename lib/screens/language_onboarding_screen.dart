@@ -38,7 +38,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
     LanguageOption(code: 'en', nativeName: 'English', englishName: 'English'),
     LanguageOption(code: 'bn', nativeName: 'বাংলা', englishName: 'Bangla'),
     LanguageOption(code: 'ar', nativeName: 'العربية', englishName: 'Arabic'),
-    LanguageOption(code: 'fa', nativeName: 'فارسی', englishName: 'Farsi'),
+    LanguageOption(code: 'ur', nativeName: 'فارسی', englishName: 'Farsi'),
   ];
 
   String _selectedLanguageCode = 'en';

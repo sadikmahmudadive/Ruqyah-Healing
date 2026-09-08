@@ -119,7 +119,7 @@ class _ProfileTabState extends State<ProfileTab> {
               // 4. Logout Action Card
               _buildLogoutCard(),
 
-              const SizedBox(height: 110),
+              const SizedBox(height: 120),
             ],
           ),
         ),
