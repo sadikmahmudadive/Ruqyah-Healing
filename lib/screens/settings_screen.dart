@@ -680,29 +680,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-    return ListTile(
-      title: Text(
-        label,
-        style: TextStyle(
-          fontFamily: 'PlusJakartaSans',
-          fontSize: 15,
-          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-          color: isSelected ? const Color(0xFF0B4632) : context.textPrimary,
-        ),
-      ),
-      trailing: isSelected
-          ? const Icon(Icons.check_circle_rounded, color: Color(0xFF0B4632))
-          : null,
-      onTap: () {
-        HapticFeedback.selectionClick();
-        setState(() {
-          AppLocalizations.setLocale(code);
-        });
-        Navigator.of(context).pop();
-      },
-    );
-  }
-
   void _showDeleteAccountDialog() {
     showDialog(
       context: context,
