@@ -669,17 +669,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-                fontFamily: 'Inter',
-                fontSize: 13.5,
-                fontWeight: FontWeight.w500,
-                color: isDark ? const Color(0xFF92A89F) : const Color(0xFF6E7E77),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   void _showDeleteAccountDialog() {
     showDialog(
