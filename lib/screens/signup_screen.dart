@@ -28,6 +28,8 @@ class _SignUpScreenState extends State<SignUpScreen>
   late Animation<Offset> _slideAnimation;
 
   bool _isPhoneSignUp = false; // false = Email Sign Up, true = Phone Sign Up
+  String _selectedRole = 'patient'; // 'patient' (User), 'raki' (Raki), 'therapist' (Therapist)
+
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -213,7 +215,7 @@ class _SignUpScreenState extends State<SignUpScreen>
     if (!_isPhoneSignUp) {
       // --- EMAIL SIGN UP ---
       final email = _emailController.text.trim();
-      if (email.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      if (email.isEmpty || !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
         _showSnackBar('Please enter a valid email address', isError: true);
         return;
       }
@@ -243,7 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen>
             email: email,
             phone: '',
             name: fullName,
-            role: 'patient',
+            role: _selectedRole,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
             healthProfile: HealthProfile.empty(),
@@ -315,7 +317,7 @@ class _SignUpScreenState extends State<SignUpScreen>
             email: user.email ?? '',
             phone: fullPhone,
             name: fullName,
-            role: 'patient',
+            role: _selectedRole,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
             healthProfile: HealthProfile.empty(),
@@ -551,6 +553,13 @@ class _SignUpScreenState extends State<SignUpScreen>
                           },
                         ),
 
+                        const SizedBox(height: 18),
+
+                        // Select Role Segment Switcher (User, Raki, Therapist)
+                        _buildFieldLabel('Select Role'),
+                        const SizedBox(height: 8),
+                        _buildRoleSelector(),
+
                         const SizedBox(height: 26),
 
                         // Create Account Primary Emerald Button
@@ -606,6 +615,100 @@ class _SignUpScreenState extends State<SignUpScreen>
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Role Selector Switcher (User, Raki, Therapist)
+  Widget _buildRoleSelector() {
+    return Container(
+      height: 52,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.40),
+          width: 1.0,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildRoleTabOption(
+            roleKey: 'patient',
+            label: 'User',
+            icon: Icons.person_outline_rounded,
+          ),
+          _buildRoleTabOption(
+            roleKey: 'raki',
+            label: 'Raki',
+            icon: Icons.record_voice_over_outlined,
+          ),
+          _buildRoleTabOption(
+            roleKey: 'therapist',
+            label: 'Therapist',
+            icon: Icons.medical_services_outlined,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRoleTabOption({
+    required String roleKey,
+    required String label,
+    required IconData icon,
+  }) {
+    final isSelected = _selectedRole == roleKey;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          setState(() => _selectedRole = roleKey);
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF113E2E) : Colors.transparent,
+            borderRadius: BorderRadius.circular(26),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.15),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : [],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 18,
+                color: isSelected
+                    ? Colors.white
+                    : Colors.white.withValues(alpha: 0.70),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 14,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                  color: isSelected
+                      ? Colors.white
+                      : Colors.white.withValues(alpha: 0.70),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
