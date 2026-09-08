@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -518,53 +520,165 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _showLanguageDialog() {
     HapticFeedback.selectionClick();
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: context.cardBg,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        final isDark = context.isDarkMode;
+        final currentCode = AppLocalizations.currentLocale.languageCode;
+
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(22),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
               child: Container(
-                width: 38,
-                height: 4,
+                padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  color: context.cardBorder,
-                  borderRadius: BorderRadius.circular(2),
+                  color: isDark
+                      ? const Color(0xFF0F1F1A).withValues(alpha: 0.88)
+                      : const Color(0xFFE6E6E6).withValues(alpha: 0.85),
+                  borderRadius: BorderRadius.circular(22),
+                  border: Border.all(
+                    color: isDark
+                        ? const Color(0xFF1C362C)
+                        : const Color(0xFFBCBCBC),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.20),
+                      blurRadius: 24,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.tr('choose_language'),
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 17.5,
+                        fontWeight: FontWeight.w800,
+                        color: isDark ? Colors.white : const Color(0xFF15221D),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildLanguageDialogCard('English', 'English', 'en', currentCode, dialogContext),
+                    const SizedBox(height: 10),
+                    _buildLanguageDialogCard('বাংলা', 'Bangla', 'bn', currentCode, dialogContext),
+                    const SizedBox(height: 10),
+                    _buildLanguageDialogCard('العربية', 'Arabic', 'ar', currentCode, dialogContext),
+                    const SizedBox(height: 10),
+                    _buildLanguageDialogCard('اردو', 'Urdu', 'ur', currentCode, dialogContext),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              context.tr('choose_language'),
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: context.textPrimary,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageDialogCard(
+    String nativeName,
+    String englishName,
+    String code,
+    String currentCode,
+    BuildContext dialogContext,
+  ) {
+    final isSelected = code == currentCode;
+    final isDark = context.isDarkMode;
+
+    return InkWell(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        setState(() {
+          AppLocalizations.setLocale(code);
+        });
+        Navigator.of(dialogContext).pop();
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? (isDark ? const Color(0xFF182E25) : Colors.white.withValues(alpha: 0.35))
+              : (isDark ? const Color(0xFF121B17).withValues(alpha: 0.50) : Colors.white.withValues(alpha: 0.20)),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFF0B4632)
+                : (isDark ? const Color(0xFF1E302A) : Colors.white.withValues(alpha: 0.30)),
+            width: isSelected ? 1.5 : 1.0,
+          ),
+        ),
+        child: Row(
+          children: [
+            // Radio Circle Indicator
+            Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected
+                      ? const Color(0xFF0B4632)
+                      : (isDark ? const Color(0xFF627870) : const Color(0xFF90A4AE)),
+                  width: isSelected ? 2.0 : 1.8,
+                ),
+                color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
+              ),
+              child: isSelected
+                  ? const Center(
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+
+            const SizedBox(width: 14),
+
+            // Native Name
+            Expanded(
+              child: Text(
+                nativeName,
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 16,
+                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                  color: isDark ? Colors.white : const Color(0xFF15221D),
+                ),
               ),
             ),
-            const SizedBox(height: 12),
-            _buildLanguageRadioOption('English', 'en'),
-            _buildLanguageRadioOption('বাংলা (Bangla)', 'bn'),
-            _buildLanguageRadioOption('العربية (Arabic)', 'ar'),
-            _buildLanguageRadioOption('اردو (Urdu)', 'ur'),
-            const SizedBox(height: 10),
+
+            // English Subtitle
+            Text(
+              englishName,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 13.5,
+                fontWeight: FontWeight.w500,
+                color: isDark ? const Color(0xFF92A89F) : const Color(0xFF6E7E77),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-
-  Widget _buildLanguageRadioOption(String label, String code) {
-    final isSelected = AppLocalizations.currentLocale.languageCode == code;
 
     return ListTile(
       title: Text(
