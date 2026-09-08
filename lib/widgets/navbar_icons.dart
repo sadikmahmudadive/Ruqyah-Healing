@@ -433,12 +433,12 @@ class _LearnIconPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final scale = size.width / 29.0;
-    canvas.scale(scale, scale);
-
     final paint = Paint()..color = color;
 
     if (isSelected) {
+      final scale = size.width / 27.0;
+      canvas.scale(scale, scale);
+      canvas.translate(-0.2, 0.5);
       paint.style = PaintingStyle.fill;
       final path1 = Path()
         ..moveTo(14.2, 20.3)
@@ -588,6 +588,9 @@ class _LearnIconPainter extends CustomPainter {
         ..close();
       canvas.drawPath(path1, paint);
     } else {
+      final scale = size.width / 24.5;
+      canvas.scale(scale, scale);
+      canvas.translate(-1.8, 1.2);
       paint.style = PaintingStyle.fill;
       final path1 = Path()
         ..moveTo(1.88, 15.94)
