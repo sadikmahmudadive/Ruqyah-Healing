@@ -524,34 +524,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       barrierDismissible: true,
       builder: (dialogContext) {
-        final isDark = context.isDarkMode;
         final currentCode = AppLocalizations.currentLocale.languageCode;
 
         return Dialog(
           backgroundColor: Colors.transparent,
           insetPadding: const EdgeInsets.symmetric(horizontal: 20),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(21),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
               child: Container(
-                padding: const EdgeInsets.all(22),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? const Color(0xFF0F1F1A).withValues(alpha: 0.88)
-                      : const Color(0xFFE6E6E6).withValues(alpha: 0.85),
-                  borderRadius: BorderRadius.circular(22),
+                  color: const Color(0x33E6E6E6),
+                  borderRadius: BorderRadius.circular(21),
                   border: Border.all(
-                    color: isDark
-                        ? const Color(0xFF1C362C)
-                        : const Color(0xFFBCBCBC),
-                    width: 1.5,
+                    color: const Color(0xFFBCBCBC),
+                    width: 2.0,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.20),
-                      blurRadius: 24,
-                      offset: const Offset(0, 8),
+                      color: Colors.black.withValues(alpha: 0.18),
+                      blurRadius: 20,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
@@ -559,13 +554,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      context.tr('choose_language'),
+                    const Text(
+                      'Choose your language',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
-                        fontSize: 17.5,
-                        fontWeight: FontWeight.w800,
-                        color: isDark ? Colors.white : const Color(0xFF15221D),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -594,7 +589,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     BuildContext dialogContext,
   ) {
     final isSelected = code == currentCode;
-    final isDark = context.isDarkMode;
 
     return InkWell(
       onTap: () {
@@ -604,18 +598,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         });
         Navigator.of(dialogContext).pop();
       },
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(18),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isSelected
-              ? (isDark ? const Color(0xFF182E25) : Colors.white.withValues(alpha: 0.35))
-              : (isDark ? const Color(0xFF121B17).withValues(alpha: 0.50) : Colors.white.withValues(alpha: 0.20)),
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.white.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: isSelected
-                ? const Color(0xFF0B4632)
-                : (isDark ? const Color(0xFF1E302A) : Colors.white.withValues(alpha: 0.30)),
+            color: Colors.white.withValues(alpha: isSelected ? 0.60 : 0.35),
             width: isSelected ? 1.5 : 1.0,
           ),
         ),
@@ -623,17 +613,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             // Radio Circle Indicator
             Container(
-              width: 22,
-              height: 22,
+              width: 24,
+              height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                color: isSelected ? const Color(0xFF082F21) : Colors.transparent,
                 border: Border.all(
                   color: isSelected
-                      ? const Color(0xFF0B4632)
-                      : (isDark ? const Color(0xFF627870) : const Color(0xFF90A4AE)),
-                  width: isSelected ? 2.0 : 1.8,
+                      ? const Color(0xFF082F21)
+                      : Colors.white.withValues(alpha: 0.60),
+                  width: 2.0,
                 ),
-                color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
               ),
               child: isSelected
                   ? Center(
@@ -655,11 +645,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Expanded(
               child: Text(
                 nativeName,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                  color: isDark ? Colors.white : const Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -668,6 +658,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               englishName,
               style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.white.withValues(alpha: 0.70),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
                 fontFamily: 'Inter',
                 fontSize: 13.5,
                 fontWeight: FontWeight.w500,
