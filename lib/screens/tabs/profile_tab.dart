@@ -386,21 +386,6 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           _buildDivider(),
           _buildSettingsTile(
-            icon: Icons.language_rounded,
-            title: context.tr('language'),
-            trailingText: AppLocalizations.getLanguageName(
-                AppLocalizations.currentLocale.languageCode),
-            onTap: () {
-              HapticFeedback.selectionClick();
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const SettingsScreen(),
-                ),
-              );
-            },
-          ),
-          _buildDivider(),
-          _buildSettingsTile(
             icon: Icons.shield_outlined,
             title: 'Privacy & Security',
             onTap: () {
