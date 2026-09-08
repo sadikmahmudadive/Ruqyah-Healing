@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
@@ -226,9 +227,9 @@ class _BookingsTabState extends State<BookingsTab> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      'My Appointments',
-                      style: TextStyle(
+                    Text(
+                      context.tr('my_appointments'),
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 24,
                         fontWeight: FontWeight.w800,

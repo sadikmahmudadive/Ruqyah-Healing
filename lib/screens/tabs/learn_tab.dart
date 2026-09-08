@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
@@ -336,7 +337,7 @@ class _LearnTabState extends State<LearnTab> {
         Row(
           children: [
             Text(
-              'Browse by Category',
+              context.tr('browse_category'),
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
@@ -496,7 +497,7 @@ class _LearnTabState extends State<LearnTab> {
         Row(
           children: [
             Text(
-              'Featured Courses',
+              context.tr('featured_courses'),
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,

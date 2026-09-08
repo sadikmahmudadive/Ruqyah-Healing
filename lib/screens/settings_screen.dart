@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
@@ -164,11 +165,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Language',
-            trailingText: _selectedLanguage,
-            onTap: () {
-              HapticFeedback.selectionClick();
-            },
+            title: context.tr('language'),
+            trailingText: AppLocalizations.getLanguageName(
+                AppLocalizations.currentLocale.languageCode),
+            isTrailingActive: true,
+            onTap: _showLanguageDialog,
           ),
           _buildDivider(),
           _buildSettingItem(
@@ -509,6 +510,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
         HapticFeedback.selectionClick();
         setState(() {
           AppTheme.themeModeNotifier.value = mode;
+        });
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  void _showLanguageDialog() {
+    HapticFeedback.selectionClick();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: context.cardBg,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 38,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: context.cardBorder,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              context.tr('choose_language'),
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                color: context.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildLanguageRadioOption('English', 'en'),
+            _buildLanguageRadioOption('বাংলা (Bangla)', 'bn'),
+            _buildLanguageRadioOption('العربية (Arabic)', 'ar'),
+            _buildLanguageRadioOption('اردو (Urdu)', 'ur'),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageRadioOption(String label, String code) {
+    final isSelected = AppLocalizations.currentLocale.languageCode == code;
+
+    return ListTile(
+      title: Text(
+        label,
+        style: TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontSize: 15,
+          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+          color: isSelected ? const Color(0xFF0B4632) : context.textPrimary,
+        ),
+      ),
+      trailing: isSelected
+          ? const Icon(Icons.check_circle_rounded, color: Color(0xFF0B4632))
+          : null,
+      onTap: () {
+        HapticFeedback.selectionClick();
+        setState(() {
+          AppLocalizations.setLocale(code);
         });
         Navigator.of(context).pop();
       },

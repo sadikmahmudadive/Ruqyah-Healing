@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../services/firebase_service.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
@@ -71,7 +72,7 @@ class _HomeTabState extends State<HomeTab> {
 
                 // 4. Holistic Services Section Title
                 Text(
-                  'Holistic Services',
+                  context.tr('holistic_services'),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 18,
@@ -254,7 +255,7 @@ class _HomeTabState extends State<HomeTab> {
                 Row(
                   children: [
                     Text(
-                      'Health Index',
+                      context.tr('health_index'),
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 13,
@@ -286,9 +287,9 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Text(
-                      'Good',
-                      style: TextStyle(
+                    Text(
+                      context.tr('good'),
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -337,7 +338,7 @@ class _HomeTabState extends State<HomeTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'NEXT APPOINTMENT',
+            context.tr('next_appointment'),
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 10,
@@ -547,7 +548,7 @@ class _HomeTabState extends State<HomeTab> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildServiceIconCard(
-          label: 'Ruqyah',
+          label: context.tr('ruqyah'),
           customIcon: RuqyahDuaIcon(
             color: iconColorRuqyah,
             size: 28,
@@ -564,7 +565,7 @@ class _HomeTabState extends State<HomeTab> {
           },
         ),
         _buildServiceIconCard(
-          label: 'Hijama',
+          label: context.tr('hijama'),
           customIcon: HijamaCuppingIcon(
             color: iconColorHijama,
             size: 28,
@@ -576,7 +577,7 @@ class _HomeTabState extends State<HomeTab> {
           },
         ),
         _buildServiceIconCard(
-          label: 'Acupuncture',
+          label: context.tr('acupuncture'),
           customIcon: AcupunctureIcon(
             color: iconColorAcupuncture,
             size: 28,
@@ -588,7 +589,7 @@ class _HomeTabState extends State<HomeTab> {
           },
         ),
         _buildServiceIconCard(
-          label: 'Emergency',
+          label: context.tr('emergency'),
           icon: Icons.error_outline_rounded,
           bgColor: const Color(0xFFFFEBEB),
           iconColor: iconColorEmergency,
@@ -666,7 +667,7 @@ class _HomeTabState extends State<HomeTab> {
           Row(
             children: [
               Text(
-                "Today's Prayer Times",
+                context.tr('prayer_times'),
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
@@ -34,7 +35,7 @@ class _ServicesTabState extends State<ServicesTab> {
           automaticallyImplyLeading: false,
           leading: null,
           title: Text(
-            'SERVICES',
+            context.tr('services').toUpperCase(),
             style: TextStyle(
               fontFamily: 'Cinzel',
               fontSize: 24,

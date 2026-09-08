@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../services/firebase_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/global_bottom_navbar.dart';
@@ -323,7 +324,7 @@ class _ProfileTabState extends State<ProfileTab> {
         children: [
           _buildSettingsTile(
             icon: Icons.tune_rounded,
-            title: 'Personal Information',
+            title: context.tr('personal_info'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -336,7 +337,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.calendar_today_outlined,
-            title: 'My Appointments',
+            title: context.tr('my_appointments'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).pushAndRemoveUntil(
@@ -386,10 +387,16 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.language_rounded,
-            title: 'Language',
-            trailingText: 'English',
+            title: context.tr('language'),
+            trailingText: AppLocalizations.getLanguageName(
+                AppLocalizations.currentLocale.languageCode),
             onTap: () {
               HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const SettingsScreen(),
+                ),
+              );
             },
           ),
           _buildDivider(),
@@ -534,9 +541,9 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 ),
                 const SizedBox(width: 14),
-                const Text(
-                  'Logout',
-                  style: TextStyle(
+                Text(
+                  context.tr('logout'),
+                  style: const TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

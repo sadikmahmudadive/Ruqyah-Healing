@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import 'onboarding_screen_1.dart';
 
 class LanguageOption {
@@ -38,7 +39,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
     LanguageOption(code: 'en', nativeName: 'English', englishName: 'English'),
     LanguageOption(code: 'bn', nativeName: 'বাংলা', englishName: 'Bangla'),
     LanguageOption(code: 'ar', nativeName: 'العربية', englishName: 'Arabic'),
-    LanguageOption(code: 'ur', nativeName: 'فارسی', englishName: 'Farsi'),
+    LanguageOption(code: 'ur', nativeName: 'اردو', englishName: 'Urdu'),
   ];
 
   String _selectedLanguageCode = 'en';
@@ -78,6 +79,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
     setState(() {
       _selectedLanguageCode = code;
     });
+    AppLocalizations.setLocale(code);
     widget.onLanguageSelected?.call(code);
   }
 
