@@ -636,11 +636,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
               ),
               child: isSelected
-                  ? const Center(
+                  ? Center(
                       child: Container(
                         width: 8,
                         height: 8,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
