@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'localization/app_localizations.dart';
 import 'screens/splash_screen.dart';
@@ -35,6 +36,11 @@ class RuqyahHealingApp extends StatelessWidget {
                 Locale('bn'),
                 Locale('ar'),
                 Locale('ur'),
+              ],
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
               ],
               home: const SplashScreen(),
             );
