@@ -276,9 +276,14 @@ class _SignUpScreenState extends State<SignUpScreen>
       }
     } else {
       // --- PHONE SIGN UP ---
+      final email = _emailController.text.trim();
       final phone = _phoneController.text.trim();
       final otpCode = _otpController.text.trim();
 
+      if (email.isEmpty || !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+        _showSnackBar('Please enter a valid email address', isError: true);
+        return;
+      }
       if (phone.isEmpty || phone.length < 6) {
         _showSnackBar('Please enter a valid phone number', isError: true);
         return;
@@ -311,11 +316,14 @@ class _SignUpScreenState extends State<SignUpScreen>
         final user = userCred.user;
         if (user != null) {
           await user.updateDisplayName(fullName);
+          try {
+            await user.verifyBeforeUpdateEmail(email);
+          } catch (_) {}
 
           final fullPhone = '${_selectedCountry.code}$phone';
           final newUser = UserModel(
             userId: user.uid,
-            email: user.email ?? '',
+            email: email,
             phone: fullPhone,
             name: fullName,
             role: _selectedRole,
@@ -493,19 +501,19 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                         const SizedBox(height: 18),
 
-                        if (!_isPhoneSignUp) ...[
-                          // --- EMAIL SIGN UP FIELDS ---
-                          _buildFieldLabel(context.tr('email_address')),
-                          const SizedBox(height: 8),
-                          _buildInputField(
-                            controller: _emailController,
-                            icon: Icons.email_outlined,
-                            hintText: 'Enter your email address',
-                            keyboardType: TextInputType.emailAddress,
-                          ),
+                        // Email Address Field (Common)
+                        _buildFieldLabel(context.tr('email_address')),
+                        const SizedBox(height: 8),
+                        _buildInputField(
+                          controller: _emailController,
+                          icon: Icons.email_outlined,
+                          hintText: 'Enter your email address',
+                          keyboardType: TextInputType.emailAddress,
+                        ),
 
-                          const SizedBox(height: 18),
-                        ] else ...[
+                        const SizedBox(height: 18),
+
+                        if (_isPhoneSignUp) ...[
                           // --- PHONE SIGN UP FIELDS ---
                           _buildFieldLabel(context.tr('phone')),
                           const SizedBox(height: 8),
