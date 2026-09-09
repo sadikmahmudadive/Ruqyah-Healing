@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/notification_screen.dart';
+import 'firebase_service.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -80,6 +81,16 @@ class PushNotificationService {
 
   static List<NotificationItem> get notifications => List.unmodifiable(_notificationsList);
 
+  /// Helper to safely retrieve current FCM token
+  static Future<String?> getFcmToken() async {
+    try {
+      return await _fcm.getToken();
+    } catch (e) {
+      debugPrint('Error fetching FCM token: $e');
+      return null;
+    }
+  }
+
   /// Initializes Push Notifications permissions and handlers.
   static Future<void> initialize() async {
     try {
@@ -96,26 +107,35 @@ class PushNotificationService {
 
       debugPrint('FCM Notification permission status: ${settings.authorizationStatus}');
 
-      // 2. Fetch FCM Token for targeted push messages
-      String? token = await _fcm.getToken();
+      // 2. Fetch FCM Token for targeted push messages & save to Firestore
+      String? token = await getFcmToken();
       debugPrint('FCM Device Token: $token');
+      if (token != null && token.isNotEmpty) {
+        await FirebaseService.updateFcmToken(token);
+      }
 
-      // 3. Register Background Handler
+      // 3. Listen for token refreshes
+      _fcm.onTokenRefresh.listen((newToken) {
+        debugPrint('FCM Token refreshed: $newToken');
+        FirebaseService.updateFcmToken(newToken);
+      });
+
+      // 4. Register Background Handler
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-      // 4. Handle Foreground Push Messages
+      // 5. Handle Foreground Push Messages
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         debugPrint('Foreground FCM Message received: ${message.notification?.title}');
         _handleIncomingRemoteMessage(message);
       });
 
-      // 5. Handle App Opened via Notification Click
+      // 6. Handle App Opened via Notification Click
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         debugPrint('App opened via FCM Push Notification: ${message.notification?.title}');
         _handleIncomingRemoteMessage(message);
       });
 
-      // 6. Check Initial Message if app was launched from terminated state
+      // 7. Check Initial Message if app was launched from terminated state
       RemoteMessage? initialMessage = await _fcm.getInitialMessage();
       if (initialMessage != null) {
         _handleIncomingRemoteMessage(initialMessage);

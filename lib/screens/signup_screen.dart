@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import '../localization/app_localizations.dart';
 import '../models/user_model.dart';
 import '../services/firebase_service.dart';
+import '../services/push_notification_service.dart';
 import '../widgets/country_code_picker.dart';
 import '../widgets/google_logo.dart';
 import 'main_navigation_shell.dart';
@@ -240,6 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen>
         final user = userCred.user;
         if (user != null) {
           await user.updateDisplayName(fullName);
+          final token = await PushNotificationService.getFcmToken() ?? '';
 
           final newUser = UserModel(
             userId: user.uid,
@@ -247,6 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen>
             phone: '',
             name: fullName,
             role: _selectedRole,
+            fcmToken: token,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
             healthProfile: HealthProfile.empty(),
@@ -320,6 +323,7 @@ class _SignUpScreenState extends State<SignUpScreen>
             await user.verifyBeforeUpdateEmail(email);
           } catch (_) {}
 
+          final token = await PushNotificationService.getFcmToken() ?? '';
           final fullPhone = '${_selectedCountry.code}$phone';
           final newUser = UserModel(
             userId: user.uid,
@@ -327,6 +331,7 @@ class _SignUpScreenState extends State<SignUpScreen>
             phone: fullPhone,
             name: fullName,
             role: _selectedRole,
+            fcmToken: token,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
             healthProfile: HealthProfile.empty(),

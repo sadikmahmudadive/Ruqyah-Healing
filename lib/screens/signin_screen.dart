@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import '../localization/app_localizations.dart';
 import '../models/user_model.dart';
 import '../services/firebase_service.dart';
+import '../services/push_notification_service.dart';
 import '../widgets/country_code_picker.dart';
 import '../widgets/google_logo.dart';
 import 'main_navigation_shell.dart';
@@ -198,6 +199,7 @@ class _SignInScreenState extends State<SignInScreen>
 
   Future<void> _ensureUserProfile(User user) async {
     try {
+      final token = await PushNotificationService.getFcmToken() ?? '';
       final profile = await FirebaseService.getUserProfile(user.uid);
       if (profile == null) {
         final newUser = UserModel(
@@ -208,12 +210,15 @@ class _SignInScreenState extends State<SignInScreen>
               ? user.displayName!
               : 'Ruqyah User',
           role: 'patient',
+          fcmToken: token,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           healthProfile: HealthProfile.empty(),
           billing: BillingProfile.empty(),
         );
         await FirebaseService.saveUserProfile(newUser);
+      } else if (token.isNotEmpty) {
+        await FirebaseService.updateFcmToken(token);
       }
     } catch (e) {
       debugPrint('Error saving user profile: $e');
