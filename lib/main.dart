@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'localization/app_localizations.dart';
 import 'screens/splash_screen.dart';
@@ -23,12 +24,24 @@ class RuqyahHealingApp extends StatelessWidget {
           valueListenable: AppLocalizations.currentLocaleNotifier,
           builder: (context, locale, child) {
             return MaterialApp(
+              key: ValueKey(locale.languageCode),
               title: 'Ruqyah Healing',
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: mode,
               locale: locale,
+              supportedLocales: const [
+                Locale('en'),
+                Locale('bn'),
+                Locale('ar'),
+                Locale('ur'),
+              ],
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
               home: const SplashScreen(),
             );
           },

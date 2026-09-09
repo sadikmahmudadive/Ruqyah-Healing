@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import '../models/user_model.dart';
 import '../services/firebase_service.dart';
 import '../widgets/country_code_picker.dart';
@@ -266,7 +267,7 @@ class _SignInScreenState extends State<SignInScreen>
       final email = _emailController.text.trim();
       final password = _passwordController.text;
 
-      if (email.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      if (email.isEmpty || !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
         _showSnackBar('Please enter a valid email address', isError: true);
         return;
       }
@@ -518,9 +519,9 @@ class _SignInScreenState extends State<SignInScreen>
                         SizedBox(height: screenHeight * 0.20),
 
                         // Main Header Title
-                        const Text(
-                          'SIGN IN TO YOUR ACCOUNT',
-                          style: TextStyle(
+                        Text(
+                          context.tr('sign_in_account'),
+                          style: const TextStyle(
                             fontFamily: 'Cinzel',
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -562,13 +563,13 @@ class _SignInScreenState extends State<SignInScreen>
 
                         if (!_isPhoneLogin) ...[
                           // --- EMAIL LOGIN FORM ---
-                          _buildFieldLabel('Email Address'),
+                          _buildFieldLabel(context.tr('email_address')),
                           const SizedBox(height: 8),
                           _buildEmailInputField(),
 
                           const SizedBox(height: 16),
 
-                          _buildFieldLabel('Password'),
+                          _buildFieldLabel(context.tr('password')),
                           const SizedBox(height: 8),
                           _buildPasswordInputField(),
 
@@ -579,9 +580,9 @@ class _SignInScreenState extends State<SignInScreen>
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: _handleForgotPassword,
-                              child: const Text(
-                                'Forgot Password?',
-                                style: TextStyle(
+                              child: Text(
+                                context.tr('forgot_password'),
+                                style: const TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -762,7 +763,7 @@ class _SignInScreenState extends State<SignInScreen>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Email',
+                      context.tr('email'),
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
@@ -817,7 +818,7 @@ class _SignInScreenState extends State<SignInScreen>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Phone',
+                      context.tr('phone'),
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
@@ -1119,9 +1120,9 @@ class _SignInScreenState extends State<SignInScreen>
                       strokeWidth: 2,
                     ),
                   )
-                : const Text(
-                    'Send OTP',
-                    style: TextStyle(
+                : Text(
+                    context.tr('send_otp'),
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 15.5,
                       fontWeight: FontWeight.w600,
@@ -1249,9 +1250,9 @@ class _SignInScreenState extends State<SignInScreen>
                       strokeWidth: 2,
                     ),
                   )
-                : const Text(
-                    'Sign In',
-                    style: TextStyle(
+                : Text(
+                    context.tr('sign_in'),
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 15.5,
                       fontWeight: FontWeight.w600,
@@ -1277,7 +1278,7 @@ class _SignInScreenState extends State<SignInScreen>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14.0),
           child: Text(
-            'or continue with',
+            context.tr('or_continue_with'),
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 13,
@@ -1317,6 +1318,31 @@ class _SignInScreenState extends State<SignInScreen>
                 border: Border.all(
                   color: Colors.white.withValues(alpha: 0.22),
                   width: 1.0,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const GoogleLogo(size: 20),
+                  const SizedBox(width: 12),
+                  Text(
+                    context.tr('continue_google'),
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
                 ),
               ),
               child: Row(

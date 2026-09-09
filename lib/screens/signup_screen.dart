@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import '../models/user_model.dart';
 import '../services/firebase_service.dart';
 import '../widgets/country_code_picker.dart';
@@ -438,9 +439,9 @@ class _SignUpScreenState extends State<SignUpScreen>
                         SizedBox(height: screenHeight * 0.15),
 
                         // Main Header Title
-                        const Text(
-                          'CREATE YOUR ACCOUNT',
-                          style: TextStyle(
+                        Text(
+                          context.tr('create_account_title'),
+                          style: const TextStyle(
                             fontFamily: 'Cinzel',
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -481,7 +482,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         const SizedBox(height: 24),
 
                         // Full Name Field (Common)
-                        _buildFieldLabel('Full Name'),
+                        _buildFieldLabel(context.tr('full_name')),
                         const SizedBox(height: 8),
                         _buildInputField(
                           controller: _fullNameController,
@@ -494,7 +495,7 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                         if (!_isPhoneSignUp) ...[
                           // --- EMAIL SIGN UP FIELDS ---
-                          _buildFieldLabel('Email Address'),
+                          _buildFieldLabel(context.tr('email_address')),
                           const SizedBox(height: 8),
                           _buildInputField(
                             controller: _emailController,
@@ -506,7 +507,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                           const SizedBox(height: 18),
                         ] else ...[
                           // --- PHONE SIGN UP FIELDS ---
-                          _buildFieldLabel('Phone Number'),
+                          _buildFieldLabel(context.tr('phone')),
                           const SizedBox(height: 8),
                           _buildPhoneInputField(),
 
@@ -516,7 +517,7 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                           const SizedBox(height: 18),
 
-                          _buildFieldLabel('OTP Code'),
+                          _buildFieldLabel(context.tr('otp_code')),
                           const SizedBox(height: 8),
                           _buildOtpInputField(),
 
@@ -524,7 +525,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         ],
 
                         // Password
-                        _buildFieldLabel('Password'),
+                        _buildFieldLabel(context.tr('password')),
                         const SizedBox(height: 8),
                         _buildPasswordField(
                           controller: _passwordController,
@@ -540,7 +541,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         const SizedBox(height: 18),
 
                         // Confirm Password
-                        _buildFieldLabel('Confirm Password'),
+                        _buildFieldLabel(context.tr('confirm_password')),
                         const SizedBox(height: 8),
                         _buildPasswordField(
                           controller: _confirmPasswordController,
@@ -556,7 +557,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         const SizedBox(height: 18),
 
                         // Select Role Segment Switcher (User, Raki, Therapist)
-                        _buildFieldLabel('Select Role'),
+                        _buildFieldLabel(context.tr('select_role')),
                         const SizedBox(height: 8),
                         _buildRoleSelector(),
 
@@ -638,17 +639,17 @@ class _SignUpScreenState extends State<SignUpScreen>
         children: [
           _buildRoleTabOption(
             roleKey: 'patient',
-            label: 'User',
+            label: context.tr('user'),
             icon: Icons.person_outline_rounded,
           ),
           _buildRoleTabOption(
             roleKey: 'raki',
-            label: 'Raki',
+            label: context.tr('raki'),
             icon: Icons.record_voice_over_outlined,
           ),
           _buildRoleTabOption(
             roleKey: 'therapist',
-            label: 'Therapist',
+            label: context.tr('therapist'),
             icon: Icons.medical_services_outlined,
           ),
         ],

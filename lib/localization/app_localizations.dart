@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 
+class LocaleNotifier extends ValueNotifier<Locale> {
+  LocaleNotifier(super.value);
+
+  void setLocale(String languageCode) {
+    value = Locale(languageCode);
+    notifyListeners();
+  }
+}
+
 class AppLocalizations {
-  static final ValueNotifier<Locale> currentLocaleNotifier =
-      ValueNotifier<Locale>(const Locale('en'));
+  static final LocaleNotifier currentLocaleNotifier =
+      LocaleNotifier(const Locale('en'));
 
   static Locale get currentLocale => currentLocaleNotifier.value;
 
   static void setLocale(String languageCode) {
-    currentLocaleNotifier.value = Locale(languageCode);
+    currentLocaleNotifier.setLocale(languageCode);
   }
 
   static String getLanguageName(String code) {
@@ -31,6 +40,25 @@ class AppLocalizations {
       'tagline': 'Compassionate care for body, mind and soul',
       'choose_language': 'Choose your language',
       'continue': 'Continue',
+      'sign_in_account': 'SIGN IN TO YOUR ACCOUNT',
+      'create_account_title': 'CREATE YOUR ACCOUNT',
+      'email': 'Email',
+      'phone': 'Phone',
+      'email_address': 'Email Address',
+      'password': 'Password',
+      'confirm_password': 'Confirm Password',
+      'forgot_password': 'Forgot Password?',
+      'sign_in': 'Sign In',
+      'sign_up': 'Sign Up',
+      'send_otp': 'Send OTP',
+      'otp_code': 'OTP Code',
+      'select_role': 'Select Role',
+      'user': 'User',
+      'raki': 'Raki',
+      'therapist': 'Therapist',
+      'full_name': 'Full Name',
+      'or_continue_with': 'or continue with',
+      'continue_google': 'Continue with Google',
       'home': 'Home',
       'services': 'Services',
       'bookings': 'Bookings',
@@ -62,6 +90,25 @@ class AppLocalizations {
       'tagline': 'দেহ, মন ও আত্মার সহানুভূতিশীল সেবা',
       'choose_language': 'আপনার ভাষা নির্বাচন করুন',
       'continue': 'এগিয়ে যান',
+      'sign_in_account': 'আপনার অ্যাকাউন্টে সাইন ইন করুন',
+      'create_account_title': 'অ্যাকাউন্ট তৈরি করুন',
+      'email': 'ইমেইল',
+      'phone': 'ফোন',
+      'email_address': 'ইমেইল ঠিকানা',
+      'password': 'পাসওয়ার্ড',
+      'confirm_password': 'পাসওয়ার্ড নিশ্চিত করুন',
+      'forgot_password': 'পাসওয়ার্ড ভুলে গেছেন?',
+      'sign_in': 'সাইন ইন',
+      'sign_up': 'সাইন আপ',
+      'send_otp': 'ওটিপি পাঠান',
+      'otp_code': 'ওটিপি কোড',
+      'select_role': 'ভূমিকা নির্বাচন করুন',
+      'user': 'ব্যবহারকারী',
+      'raki': 'রাকী',
+      'therapist': 'থেরাপিস্ট',
+      'full_name': 'সম্পূর্ণ নাম',
+      'or_continue_with': 'অথবা এটি দিয়ে চালিয়ে যান',
+      'continue_google': 'গুগল দিয়ে চালিয়ে যান',
       'home': 'হোম',
       'services': 'সেবা',
       'bookings': 'বুকিং',
@@ -93,6 +140,25 @@ class AppLocalizations {
       'tagline': 'رعاية شفيقة للجسد والعقل والروح',
       'choose_language': 'اختر لغتك',
       'continue': 'متابعة',
+      'sign_in_account': 'تسجيل الدخول إلى حسابك',
+      'create_account_title': 'إنشاء حساب جديد',
+      'email': 'البريد',
+      'phone': 'الهاتف',
+      'email_address': 'البريد الإلكتروني',
+      'password': 'كلمة المرور',
+      'confirm_password': 'تأكيد كلمة المرور',
+      'forgot_password': 'نسيت كلمة المرور؟',
+      'sign_in': 'تسجيل الدخول',
+      'sign_up': 'إنشاء حساب',
+      'send_otp': 'إرسال الرمز',
+      'otp_code': 'رمز التحقق',
+      'select_role': 'اختر الصفة',
+      'user': 'مستخدم',
+      'raki': 'راقي',
+      'therapist': 'معالج',
+      'full_name': 'الاسم الكامل',
+      'or_continue_with': 'أو المتابعة باستخدام',
+      'continue_google': 'المتابعة بـ Google',
       'home': 'الرئيسية',
       'services': 'الخدمات',
       'bookings': 'الحجوزات',
@@ -124,6 +190,25 @@ class AppLocalizations {
       'tagline': 'جسم، ذہن اور روح کی دیکھ بھال',
       'choose_language': 'اپنی زبان منتخب کریں',
       'continue': 'جاری رکھیں',
+      'sign_in_account': 'اپنے اکاؤنٹ میں سائن ان کریں',
+      'create_account_title': 'نیا اکاؤنٹ بنائیں',
+      'email': 'ای میل',
+      'phone': 'فون',
+      'email_address': 'ای میل ایڈریس',
+      'password': 'پاس ورڈ',
+      'confirm_password': 'پاس ورڈ کی تصدیق کریں',
+      'forgot_password': 'پاس ورڈ بھول گئے؟',
+      'sign_in': 'سائن ان',
+      'sign_up': 'سائن اپ',
+      'send_otp': 'او ٹی پی بھیجیں',
+      'otp_code': 'او ٹی پی کوڈ',
+      'select_role': 'کردار منتخب کریں',
+      'user': 'صارف',
+      'raki': 'راقی',
+      'therapist': 'معالج',
+      'full_name': 'مکمل نام',
+      'or_continue_with': 'یا اس کے ساتھ جاری رکھیں',
+      'continue_google': 'گوگل کے ساتھ جاری رکھیں',
       'home': 'ہوم',
       'services': 'خدمات',
       'bookings': 'بکنگز',
