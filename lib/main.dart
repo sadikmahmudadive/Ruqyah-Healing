@@ -24,7 +24,6 @@ class RuqyahHealingApp extends StatelessWidget {
           valueListenable: AppLocalizations.currentLocaleNotifier,
           builder: (context, locale, child) {
             return MaterialApp(
-              key: ValueKey(locale.languageCode),
               title: 'Ruqyah Healing',
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,
