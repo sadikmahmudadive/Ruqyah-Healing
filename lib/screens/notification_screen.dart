@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
+import '../services/push_notification_service.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import 'order_tracking_screen.dart';
@@ -49,68 +51,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
     'Orders',
   ];
 
-  final List<NotificationItem> _allNotifications = const [
-    NotificationItem(
-      id: 'notif_1',
-      title: 'Appointment Reminder',
-      subtitle:
-          'Your session with Dr. Salma Rahman starts in 2 hours. Join the session.',
-      time: '10:00 AM',
-      category: 'Appointments',
-      icon: Icons.calendar_today_outlined,
-      iconBgColor: Color(0xFFEBF7F0),
-      iconColor: Color(0xFF0B4632),
-      isUnread: true,
-    ),
-    NotificationItem(
-      id: 'notif_2',
-      title: 'Daily Azkar Reminder',
-      subtitle:
-          'Take 5 minutes to read your morning protection supplications.',
-      time: '08:00 AM',
-      category: 'Reminders',
-      icon: Icons.notifications_none_rounded,
-      iconBgColor: Color(0xFFEBF7F0),
-      iconColor: Color(0xFF0B4632),
-      isUnread: true,
-    ),
-    NotificationItem(
-      id: 'notif_3',
-      title: 'New Message Received',
-      subtitle:
-          "Dr. Salma Rahman replied: 'Make sure to keep drinking the Ruqyah water...'",
-      time: 'Yesterday',
-      category: 'Messages',
-      icon: Icons.mail_outline_rounded,
-      iconBgColor: Color(0xFFE6F7FF),
-      iconColor: Color(0xFF2980B9),
-      isUnread: false,
-    ),
-    NotificationItem(
-      id: 'notif_4',
-      title: 'Order Complete',
-      subtitle:
-          'Your package containing organic Sidr leaves has been delivered.',
-      time: '2 days ago',
-      category: 'Orders',
-      icon: Icons.shopping_bag_outlined,
-      iconBgColor: Color(0xFFFFF3E8),
-      iconColor: Color(0xFFE67E22),
-      isUnread: false,
-    ),
-    NotificationItem(
-      id: 'notif_5',
-      title: 'Therapist Matched',
-      subtitle:
-          'A certified Hijama practitioner is now available near your area.',
-      time: '3 days ago',
-      category: 'Appointments',
-      icon: Icons.person_outline_rounded,
-      iconBgColor: Color(0xFFEBF7F0),
-      iconColor: Color(0xFF0B4632),
-      isUnread: false,
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    PushNotificationService.markAllAsRead();
+  }
+
+  List<NotificationItem> get _allNotifications =>
+      PushNotificationService.notifications;
 
   @override
   Widget build(BuildContext context) {

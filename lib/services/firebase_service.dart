@@ -10,6 +10,7 @@ import '../models/course_model.dart';
 import '../models/order_model.dart';
 import '../models/therapist_model.dart';
 import '../models/user_model.dart';
+import 'push_notification_service.dart';
 
 /// Centralized service handling Firebase Authentication, Firestore NoSQL Database operations,
 /// and Firebase Storage connections for the Ruqyah Healing Super-App.
@@ -24,6 +25,7 @@ class FirebaseService {
         options: DefaultFirebaseOptions.currentPlatform,
       );
       debugPrint('Firebase initialized successfully');
+      await PushNotificationService.initialize();
     } catch (e) {
       debugPrint('Firebase initialization note: $e');
     }
