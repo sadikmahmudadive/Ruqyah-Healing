@@ -128,23 +128,23 @@ class _ServicesTabState extends State<ServicesTab> {
                             ),
                           ),
                           const SizedBox(width: 14),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'AI Symptom Guide',
-                                  style: TextStyle(
+                                  context.tr('ai_symptom_guide'),
+                                  style: const TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w800,
                                     color: Colors.white,
                                   ),
                                 ),
-                                SizedBox(height: 2),
+                                const SizedBox(height: 2),
                                 Text(
-                                  'Get instant Islamic guidance & duas',
-                                  style: TextStyle(
+                                  context.tr('ai_symptom_sub'),
+                                  style: const TextStyle(
                                     fontFamily: 'Inter',
                                     fontSize: 12,
                                     color: Color(0xFF81C784),
@@ -169,9 +169,8 @@ class _ServicesTabState extends State<ServicesTab> {
 
               // 1. RUQYAH Service Card
               _buildMainServiceCard(
-                title: 'RUQYAH',
-                description:
-                    'Qur\'anic healing for protection and relief from spiritual distress.',
+                title: context.tr('ruqyah_title'),
+                description: context.tr('ruqyah_sub'),
                 customIcon: const RuqyahDuaIcon(
                   color: Color(0xFF0B4632),
                   size: 28,
@@ -204,9 +203,8 @@ class _ServicesTabState extends State<ServicesTab> {
 
               // 2. HIJAMA Service Card
               _buildMainServiceCard(
-                title: 'HIJAMA',
-                description:
-                    'Cupping therapy for natural detoxification and physical restoration.',
+                title: context.tr('hijama_title'),
+                description: context.tr('hijama_sub'),
                 customIcon: const HijamaCuppingIcon(
                   color: Color(0xFFE67E22),
                   size: 28,
@@ -239,9 +237,8 @@ class _ServicesTabState extends State<ServicesTab> {
 
               // 3. ACUPUNCTURE Service Card
               _buildMainServiceCard(
-                title: 'ACUPUNCTURE',
-                description:
-                    'Holistic healing practices to maintain physical balance and energy wellness.',
+                title: context.tr('acupuncture_title'),
+                description: context.tr('acupuncture_sub'),
                 customIcon: const AcupunctureIcon(
                   color: Color(0xFF2980B9),
                   size: 28,
@@ -277,8 +274,8 @@ class _ServicesTabState extends State<ServicesTab> {
                 children: [
                   Expanded(
                     child: _buildSubServiceCard(
-                      title: 'Courses',
-                      description: 'Learn protection',
+                      title: context.tr('courses'),
+                      description: context.tr('learn_protection'),
                       icon: Icons.menu_book_rounded,
                       iconBgColor: const Color(0xFFFFF3E8),
                       iconColor: const Color(0xFFE67E22),
@@ -290,8 +287,8 @@ class _ServicesTabState extends State<ServicesTab> {
                   const SizedBox(width: 14),
                   Expanded(
                     child: _buildSubServiceCard(
-                      title: 'Store',
-                      description: 'Natural remedies',
+                      title: context.tr('store'),
+                      description: context.tr('natural_remedies'),
                       icon: Icons.shopping_bag_outlined,
                       iconBgColor: const Color(0xFFEBF7F0),
                       iconColor: const Color(0xFF0B4632),

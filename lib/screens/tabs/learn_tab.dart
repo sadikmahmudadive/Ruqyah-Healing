@@ -136,20 +136,20 @@ class _LearnTabState extends State<LearnTab> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  'Learning',
-                  style: TextStyle(
+                  context.tr('learning'),
+                  style: const TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
-                  'Grow in knowledge, serve with sincerity.',
-                  style: TextStyle(
+                  context.tr('learning_sub'),
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w500,
@@ -213,9 +213,9 @@ class _LearnTabState extends State<LearnTab> {
                 size: 8,
               ),
               const SizedBox(width: 6),
-              const Text(
-                'CONTINUE LEARNING',
-                style: TextStyle(
+              Text(
+                context.tr('continue_learning'),
+                style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
@@ -301,20 +301,20 @@ class _LearnTabState extends State<LearnTab> {
                     color: const Color(0xFF0B4632),
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Continue',
-                        style: TextStyle(
+                        context.tr('continue'),
+                        style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13.5,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(width: 6),
-                      Icon(
+                      const SizedBox(width: 6),
+                      const Icon(
                         Icons.arrow_forward_rounded,
                         color: Colors.white,
                         size: 16,

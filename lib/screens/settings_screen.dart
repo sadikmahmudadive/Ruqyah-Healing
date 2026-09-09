@@ -51,21 +51,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Group 1: PREFERENCES
-                    _buildSectionHeader('PREFERENCES'),
+                    _buildSectionHeader(context.tr('preferences')),
                     const SizedBox(height: 8),
                     _buildPreferencesCard(),
 
                     const SizedBox(height: 20),
 
                     // Group 2: SECURITY & PRIVACY
-                    _buildSectionHeader('SECURITY & PRIVACY'),
+                    _buildSectionHeader(context.tr('security_privacy')),
                     const SizedBox(height: 8),
                     _buildSecurityPrivacyCard(),
 
                     const SizedBox(height: 20),
 
                     // Group 3: ABOUT & LEGAL
-                    _buildSectionHeader('ABOUT & LEGAL'),
+                    _buildSectionHeader(context.tr('about_legal')),
                     const SizedBox(height: 8),
                     _buildAboutLegalCard(),
 
@@ -160,7 +160,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         children: [
           _buildSettingItem(
-            title: 'Theme Mode',
+            title: context.tr('theme_mode'),
             trailingText: _getThemeModeLabel(AppTheme.themeModeNotifier.value),
             isTrailingActive: true,
             onTap: _showThemeModeDialog,
@@ -175,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Text Size',
+            title: context.tr('text_size'),
             trailingText: _textSize,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -183,7 +183,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Display',
+            title: context.tr('display'),
             trailingText: _highContrast ? 'High Contrast On' : 'High Contrast Off',
             onTap: () {
               HapticFeedback.selectionClick();
@@ -192,7 +192,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Reduce Motion',
+            title: context.tr('reduce_motion'),
             trailingText: _reduceMotion ? 'On' : 'Off',
             onTap: () {
               HapticFeedback.selectionClick();
@@ -201,7 +201,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Prayer Reminders',
+            title: context.tr('prayer_reminders'),
             hasActiveDot: true,
             trailingText: _prayerReminders ? 'On' : 'Off',
             isTrailingActive: _prayerReminders,
@@ -212,7 +212,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Audio Downloads',
+            title: context.tr('audio_downloads'),
             trailingText: _audioDownloads,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -241,7 +241,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         children: [
           _buildSettingItem(
-            title: 'Biometric Lock',
+            title: context.tr('biometric_lock'),
             hasActiveDot: true,
             trailingText: _biometricLock ? 'On' : 'Off',
             isTrailingActive: _biometricLock,
@@ -252,7 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Connected Devices',
+            title: context.tr('connected_devices'),
             badgeText: '2 devices',
             badgeBg: const Color(0xFFEBF7F0),
             badgeColor: const Color(0xFF0B4632),
@@ -262,7 +262,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Health Connect',
+            title: context.tr('health_connect'),
             badgeText: 'Connected',
             badgeBg: const Color(0xFFEBF7F0),
             badgeColor: const Color(0xFF0B4632),
@@ -272,7 +272,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Notification Settings',
+            title: context.tr('notification_settings'),
             trailingText: 'Manage alerts',
             onTap: () {
               HapticFeedback.selectionClick();
@@ -280,14 +280,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Export My Data',
+            title: context.tr('export_my_data'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Delete Account',
+            title: context.tr('delete_account'),
             isDestructive: true,
             onTap: () {
               HapticFeedback.heavyImpact();
@@ -317,21 +317,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         children: [
           _buildSettingItem(
-            title: 'Privacy Policy',
+            title: context.tr('privacy_policy'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Terms of Service',
+            title: context.tr('terms_of_service'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'About Ruqyah Healing',
+            title: context.tr('about_ruqyah'),
             trailingText: 'v1.2.0',
             onTap: () {
               HapticFeedback.selectionClick();

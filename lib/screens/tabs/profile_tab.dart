@@ -214,7 +214,7 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: '12',
-            label: 'SESSIONS',
+            label: context.tr('sessions_completed'),
             subtitle: 'Completed',
             subtitleColor: const Color(0xFF6E7E77),
           ),
@@ -233,7 +233,7 @@ class _ProfileTabState extends State<ProfileTab> {
             },
             child: _buildBentoCard(
               number: '78',
-              label: 'HEALTH INDEX',
+              label: context.tr('health_index_label'),
               subtitle: 'Good State',
               subtitleColor: const Color(0xFF1E6B45),
             ),
@@ -243,7 +243,7 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: '45',
-            label: 'DAYS ACTIVE',
+            label: context.tr('days_active'),
             subtitle: 'Streak Tracker',
             subtitleColor: const Color(0xFF6E7E77),
           ),
@@ -353,7 +353,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.workspace_premium_rounded,
-            title: 'Subscription Plans',
+            title: context.tr('subscription_plans'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -366,7 +366,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.credit_card_outlined,
-            title: 'Payment Methods',
+            title: context.tr('payment_methods'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
@@ -374,7 +374,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.notifications_none_rounded,
-            title: 'Notifications',
+            title: context.tr('notifications'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -387,7 +387,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.shield_outlined,
-            title: 'Privacy & Security',
+            title: context.tr('privacy_security'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -401,7 +401,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.help_outline_rounded,
-            title: 'Help & Support',
+            title: context.tr('help_support'),
             onTap: () {
               HapticFeedback.selectionClick();
             },

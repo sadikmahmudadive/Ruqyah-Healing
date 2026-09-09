@@ -216,9 +216,9 @@ class _BookingsTabState extends State<BookingsTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'PATIENT PORTAL',
-                      style: TextStyle(
+                    Text(
+                      context.tr('patient_portal'),
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
@@ -267,11 +267,11 @@ class _BookingsTabState extends State<BookingsTab> {
           // Filter Segment Tabs Pill Row
           Row(
             children: [
-              _buildFilterPill('Upcoming'),
+              _buildFilterPill(context.tr('upcoming')),
               const SizedBox(width: 8),
-              _buildFilterPill('Completed'),
+              _buildFilterPill(context.tr('completed')),
               const SizedBox(width: 8),
-              _buildFilterPill('Cancelled'),
+              _buildFilterPill(context.tr('cancelled')),
             ],
           ),
         ],
@@ -547,18 +547,18 @@ class _BookingsTabState extends State<BookingsTab> {
           width: 1.0,
         ),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.info_outline_rounded,
             color: Color(0xFF0B4632),
             size: 20,
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Free rescheduling or cancellation is allowed up to 24 hours prior to the scheduled session.',
-              style: TextStyle(
+              context.tr('rescheduling_info'),
+              style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 12,
                 color: Color(0xFF52625B),
@@ -589,25 +589,25 @@ class _BookingsTabState extends State<BookingsTab> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           child: Row(
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.calendar_month_rounded,
                 color: Color(0xFF0B4632),
                 size: 20,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Add all upcoming to calendar',
+                  context.tr('add_to_calendar'),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.chevron_right_rounded,
                 color: Color(0xFFB0BEC5),
                 size: 20,
@@ -660,18 +660,18 @@ class _BookingsTabState extends State<BookingsTab> {
           },
           borderRadius: BorderRadius.circular(18),
           splashColor: Colors.white.withValues(alpha: 0.15),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.add_rounded,
                 color: Colors.white,
                 size: 22,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
-                'Book a New Appointment',
-                style: TextStyle(
+                context.tr('book_new_appointment'),
+                style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
