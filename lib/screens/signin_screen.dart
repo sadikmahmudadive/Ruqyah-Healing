@@ -1343,29 +1343,4 @@ class _SignInScreenState extends State<SignInScreen>
       ),
     );
   }
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  GoogleLogo(size: 20),
-                  SizedBox(width: 12),
-                  Text(
-                    'Continue with Google',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 15.5,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
