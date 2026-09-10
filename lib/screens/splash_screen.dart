@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../services/firebase_service.dart';
 import 'language_onboarding_screen.dart';
+import 'main_navigation_shell.dart';
 
 class SplashScreen extends StatefulWidget {
   final VoidCallback? onFinished;
@@ -40,16 +42,21 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Auto-navigate to Language Onboarding Screen after 2 seconds
+    // Navigate to MainNavigationShell if user is logged in, else Language Onboarding Screen
     _timer = Timer(const Duration(seconds: 2), () {
       if (mounted) {
         if (widget.onFinished != null) {
           widget.onFinished!();
         } else {
+          final currentUser = FirebaseService.currentUser;
+          final Widget targetScreen = currentUser != null
+              ? const MainNavigationShell()
+              : const LanguageOnboardingScreen();
+
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  const LanguageOnboardingScreen(),
+                  targetScreen,
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                     return FadeTransition(

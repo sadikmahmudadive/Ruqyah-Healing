@@ -3,13 +3,11 @@ import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
 import '../../services/firebase_service.dart';
-import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../ai_symptom_guide_screen.dart';
-import '../audio_library_screen.dart';
 import '../book_appointment_screen.dart';
 import '../emergency_ruqyah_screen.dart';
 import '../full_audio_player_screen.dart';
@@ -30,9 +28,21 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseService.currentUser;
-    final userName = currentUser?.displayName?.isNotEmpty == true
-        ? currentUser!.displayName!
-        : 'Amima';
+    String userName = 'Guest User';
+    if (currentUser != null) {
+      if (currentUser.displayName?.isNotEmpty == true) {
+        userName = currentUser.displayName!;
+      } else if (currentUser.email?.isNotEmpty == true) {
+        final emailPrefix = currentUser.email!.split('@').first;
+        userName = emailPrefix.isNotEmpty
+            ? emailPrefix[0].toUpperCase() + emailPrefix.substring(1)
+            : 'User';
+      } else if (currentUser.phoneNumber?.isNotEmpty == true) {
+        userName = currentUser.phoneNumber!;
+      } else {
+        userName = 'User';
+      }
+    }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: context.systemOverlayStyle,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../localization/app_localizations.dart';
 import '../services/push_notification_service.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';

@@ -16,7 +16,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String _selectedLanguage = 'English';
   String _textSize = 'Medium';
   bool _highContrast = false;
   bool _reduceMotion = false;

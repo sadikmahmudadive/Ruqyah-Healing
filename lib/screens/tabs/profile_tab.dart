@@ -24,9 +24,25 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseService.currentUser;
-    final displayName = currentUser?.displayName ?? 'Amima Rahman';
-    final email =
-        currentUser?.email ?? currentUser?.phoneNumber ?? 'amima@email.com';
+    String displayName = 'Guest User';
+    String email = 'Sign in to access full features';
+    if (currentUser != null) {
+      if (currentUser.displayName?.isNotEmpty == true) {
+        displayName = currentUser.displayName!;
+      } else if (currentUser.email?.isNotEmpty == true) {
+        final emailPrefix = currentUser.email!.split('@').first;
+        displayName = emailPrefix.isNotEmpty
+            ? emailPrefix[0].toUpperCase() + emailPrefix.substring(1)
+            : 'User';
+      } else if (currentUser.phoneNumber?.isNotEmpty == true) {
+        displayName = currentUser.phoneNumber!;
+      } else {
+        displayName = 'User';
+      }
+      email = currentUser.email?.isNotEmpty == true
+          ? currentUser.email!
+          : (currentUser.phoneNumber ?? '');
+    }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: context.systemOverlayStyle,

@@ -84,9 +84,16 @@ class PushNotificationService {
   /// Helper to safely retrieve current FCM token
   static Future<String?> getFcmToken() async {
     try {
+      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+        final apnsToken = await _fcm.getAPNSToken();
+        if (apnsToken == null) {
+          debugPrint('APNs token unavailable (running on iOS Simulator). Skipping FCM token request.');
+          return null;
+        }
+      }
       return await _fcm.getToken();
     } catch (e) {
-      debugPrint('Error fetching FCM token: $e');
+      debugPrint('Note fetching FCM token: $e');
       return null;
     }
   }

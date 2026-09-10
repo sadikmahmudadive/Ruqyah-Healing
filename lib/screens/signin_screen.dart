@@ -631,7 +631,12 @@ class _SignInScreenState extends State<SignInScreen>
                         // Google Sign-In Button
                         _buildGoogleSignInButton(),
 
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 16),
+
+                        // Guest Access Button
+                        _buildGuestButton(),
+
+                        const SizedBox(height: 24),
 
                         // Footer: Don't have an account? Sign Up
                         Center(
@@ -1342,6 +1347,29 @@ class _SignInScreenState extends State<SignInScreen>
                   ),
                 ],
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGuestButton() {
+    return Center(
+      child: InkWell(
+        onTap: _navigateToHome,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            'Continue as Guest',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 14.5,
+              fontWeight: FontWeight.w600,
+              color: Colors.white.withValues(alpha: 0.85),
+              decoration: TextDecoration.underline,
+              decorationColor: Colors.white.withValues(alpha: 0.5),
             ),
           ),
         ),

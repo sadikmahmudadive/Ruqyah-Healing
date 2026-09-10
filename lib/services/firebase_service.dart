@@ -24,6 +24,9 @@ class FirebaseService {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      if (kDebugMode && !kIsWeb) {
+        await _auth.setSettings(appVerificationDisabledForTesting: true);
+      }
       debugPrint('Firebase initialized successfully');
       await PushNotificationService.initialize();
     } catch (e) {

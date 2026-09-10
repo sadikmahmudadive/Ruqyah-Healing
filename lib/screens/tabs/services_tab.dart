@@ -12,7 +12,6 @@ import '../ai_symptom_guide_screen.dart';
 import '../equipment_store_screen.dart';
 import '../hijama_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
-import '../video_consultation_screen.dart';
 
 class ServicesTab extends StatefulWidget {
   const ServicesTab({super.key});
