@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,15 +25,17 @@ class FirebaseService {
     try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
-      );
+      ).timeout(const Duration(seconds: 3));
       if (kDebugMode && !kIsWeb) {
         await _auth.setSettings(appVerificationDisabledForTesting: true);
       }
       debugPrint('Firebase initialized successfully');
-      await PushNotificationService.initialize();
     } catch (e) {
       debugPrint('Firebase initialization note: $e');
     }
+
+    // Initialize push notifications asynchronously so it never blocks UI launch
+    unawaited(PushNotificationService.initialize());
   }
 
   // ===========================================================================
@@ -74,7 +78,11 @@ class FirebaseService {
   /// Signs in with Google Authentication.
   static Future<UserCredential?> signInWithGoogle() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId: kIsWeb || defaultTargetPlatform == TargetPlatform.iOS
+            ? '968913433241-rfo96nqtrm1brrbcnmesngcnkcltim1g.apps.googleusercontent.com'
+            : null,
+      );
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) return null; // User cancelled
 

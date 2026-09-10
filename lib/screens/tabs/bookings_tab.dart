@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
+import '../../models/appointment_model.dart';
+import '../../services/firebase_service.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/app_toast.dart';
-import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../therapist_marketplace_screen.dart';
 import '../video_consultation_screen.dart';
@@ -75,39 +75,6 @@ class BookingsTab extends StatefulWidget {
 class _BookingsTabState extends State<BookingsTab> {
   String _selectedTab = 'Upcoming'; // 'Upcoming', 'Completed', 'Cancelled'
 
-  final List<AppointmentSession> _upcomingSessions = [
-    AppointmentSession(
-      id: 'app_1',
-      title: 'Ruqyah Session',
-      doctorName: 'Dr. Salma Rahman',
-      dateTime: 'Wed 15 May 2024 · 10:30 AM',
-      mode: 'Online Video',
-      status: 'Confirmed',
-      accentColor: const Color(0xFF0B4632),
-      icon: const RuqyahDuaIcon(color: Color(0xFF0B4632), size: 22),
-    ),
-    AppointmentSession(
-      id: 'app_2',
-      title: 'Hijama Session',
-      doctorName: 'Hafiz Abdul Karim',
-      dateTime: 'Thu 16 May 2024 · 9:00 AM',
-      mode: 'At Clinic',
-      status: 'Pending',
-      accentColor: const Color(0xFFD49E35),
-      icon: const HijamaCuppingIcon(color: Color(0xFFE67E22), size: 22),
-    ),
-    AppointmentSession(
-      id: 'app_3',
-      title: 'Acupuncture Session',
-      doctorName: 'Dr. Aisha Noor',
-      dateTime: 'Sat 18 May 2024 · 11:00 AM',
-      mode: 'At Clinic',
-      status: 'Confirmed',
-      accentColor: const Color(0xFF0B4632),
-      icon: const AcupunctureIcon(color: Color(0xFF2980B9), size: 22),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -136,34 +103,78 @@ class _BookingsTabState extends State<BookingsTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Section Sub-Header
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0),
-                      child: Text(
-                        '${_upcomingSessions.length} UPCOMING SESSIONS',
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.8,
-                          color: Color(0xFF90A4AE),
-                        ),
-                      ),
-                    ),
+                    // Dynamic Sessions List or Empty State
+                    Builder(
+                      builder: (context) {
+                        final currentUser = FirebaseService.currentUser;
+                        if (currentUser == null) {
+                          return _buildEmptyStateCard('Sign in to view your booked appointments.');
+                        }
 
-                    const SizedBox(height: 4),
+                        return StreamBuilder<List<AppointmentModel>>(
+                          stream: FirebaseService.getPatientAppointments(currentUser.uid),
+                          builder: (context, snapshot) {
+                            final appointments = snapshot.data ?? [];
+                            final filtered = _selectedTab == 'Upcoming'
+                                ? appointments.where((a) => a.status != 'completed' && a.status != 'cancelled').toList()
+                                : (_selectedTab == 'Completed'
+                                    ? appointments.where((a) => a.status == 'completed').toList()
+                                    : appointments.where((a) => a.status == 'cancelled').toList());
 
-                    // Session Cards List
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: _upcomingSessions.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 14),
-                      itemBuilder: (context, index) {
-                        final session = _upcomingSessions[index];
-                        return _buildSessionCard(session);
+                            if (filtered.isEmpty) {
+                              return _buildEmptyStateCard(
+                                _selectedTab == 'Upcoming'
+                                    ? 'No upcoming sessions. Book a therapist to get started!'
+                                    : 'No ${_selectedTab.toLowerCase()} sessions found.',
+                              );
+                            }
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6.0, bottom: 8.0),
+                                  child: Text(
+                                    '${filtered.length} ${_selectedTab.toUpperCase()} SESSIONS',
+                                    style: const TextStyle(
+                                      fontFamily: 'PlusJakartaSans',
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.8,
+                                      color: Color(0xFF90A4AE),
+                                    ),
+                                  ),
+                                ),
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.zero,
+                                  itemCount: filtered.length,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 14),
+                                  itemBuilder: (context, index) {
+                                    final app = filtered[index];
+                                    final formattedDate =
+                                        '${app.scheduledTime.day}/${app.scheduledTime.month}/${app.scheduledTime.year} · ${app.scheduledTime.hour}:${app.scheduledTime.minute.toString().padLeft(2, '0')}';
+                                    final session = AppointmentSession(
+                                      id: app.appointmentId,
+                                      title: app.therapyType.replaceAll('_', ' '),
+                                      doctorName: app.therapistId.isNotEmpty
+                                          ? 'Therapist #${app.therapistId.substring(0, app.therapistId.length > 5 ? 5 : app.therapistId.length)}'
+                                          : 'Assigned Therapist',
+                                      dateTime: formattedDate,
+                                      mode: app.therapyType.contains('Online') ? 'Online Video' : 'At Clinic',
+                                      status: app.status.isNotEmpty ? app.status[0].toUpperCase() + app.status.substring(1) : 'Scheduled',
+                                      accentColor: const Color(0xFF0B4632),
+                                      icon: const RuqyahDuaIcon(color: Color(0xFF0B4632), size: 22),
+                                    );
+                                    return _buildSessionCard(session);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
 
@@ -615,6 +626,38 @@ class _BookingsTabState extends State<BookingsTab> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyStateCard(String message) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: context.cardBg,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
+      ),
+      child: Column(
+        children: [
+          const Icon(
+            Icons.event_note_rounded,
+            size: 40,
+            color: Color(0xFF90A4AE),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 13.5,
+              color: Color(0xFF6E7E77),
+              height: 1.4,
+            ),
+          ),
+        ],
       ),
     );
   }

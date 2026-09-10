@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../services/firebase_service.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
 
@@ -608,14 +609,24 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
 
           const SizedBox(height: 8),
 
-          const Text(
-            'This is to certify that Amima has successfully completed',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 10,
-              color: Color(0xFF90A4AE),
-            ),
-            textAlign: TextAlign.center,
+          Builder(
+            builder: (context) {
+              final currentUser = FirebaseService.currentUser;
+              final certName = currentUser?.displayName?.isNotEmpty == true
+                  ? currentUser!.displayName!
+                  : (currentUser?.email?.isNotEmpty == true
+                      ? currentUser!.email!.split('@').first
+                      : 'Learner');
+              return Text(
+                'This is to certify that $certName has successfully completed',
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 10,
+                  color: Color(0xFF90A4AE),
+                ),
+                textAlign: TextAlign.center,
+              );
+            },
           ),
 
           const SizedBox(height: 12),

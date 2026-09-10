@@ -94,6 +94,7 @@ class _SplashScreenState extends State<SplashScreen>
         systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
+        backgroundColor: const Color(0xFF0B0E13),
         body: Stack(
           fit: StackFit.expand,
           children: [

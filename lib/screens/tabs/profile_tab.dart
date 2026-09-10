@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
+import '../../models/user_model.dart';
 import '../../services/firebase_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/global_bottom_navbar.dart';
@@ -24,25 +25,6 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseService.currentUser;
-    String displayName = 'Guest User';
-    String email = 'Sign in to access full features';
-    if (currentUser != null) {
-      if (currentUser.displayName?.isNotEmpty == true) {
-        displayName = currentUser.displayName!;
-      } else if (currentUser.email?.isNotEmpty == true) {
-        final emailPrefix = currentUser.email!.split('@').first;
-        displayName = emailPrefix.isNotEmpty
-            ? emailPrefix[0].toUpperCase() + emailPrefix.substring(1)
-            : 'User';
-      } else if (currentUser.phoneNumber?.isNotEmpty == true) {
-        displayName = currentUser.phoneNumber!;
-      } else {
-        displayName = 'User';
-      }
-      email = currentUser.email?.isNotEmpty == true
-          ? currentUser.email!
-          : (currentUser.phoneNumber ?? '');
-    }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: context.systemOverlayStyle,
@@ -119,33 +101,101 @@ class _ProfileTabState extends State<ProfileTab> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: Column(
-            children: [
-              // 1. User Avatar & Identity Header
-              _buildAvatarHeader(displayName, email),
+        body: currentUser == null
+            ? _buildProfileContent(
+                name: 'Guest User',
+                email: 'Sign in to access full features',
+                sessionsCompleted: '0',
+                healthIndex: '--',
+                daysActive: '0',
+                isGuest: true,
+              )
+            : FutureBuilder<UserModel?>(
+                future: FirebaseService.getUserProfile(currentUser.uid),
+                builder: (context, snapshot) {
+                  final userModel = snapshot.data;
 
-              const SizedBox(height: 20),
+                  String resolvedName = 'User';
+                  if (userModel?.name.isNotEmpty == true) {
+                    resolvedName = userModel!.name;
+                  } else if (currentUser.displayName?.isNotEmpty == true) {
+                    resolvedName = currentUser.displayName!;
+                  } else if (currentUser.email?.isNotEmpty == true) {
+                    final prefix = currentUser.email!.split('@').first;
+                    resolvedName = prefix.isNotEmpty
+                        ? prefix[0].toUpperCase() + prefix.substring(1)
+                        : 'User';
+                  } else if (currentUser.phoneNumber?.isNotEmpty == true) {
+                    resolvedName = currentUser.phoneNumber!;
+                  }
 
-              // 2. Statistics Bento Cards (3 Columns)
-              _buildStatsBentoRow(),
+                  final resolvedEmail = userModel?.email.isNotEmpty == true
+                      ? userModel!.email
+                      : (currentUser.email?.isNotEmpty == true
+                          ? currentUser.email!
+                          : (currentUser.phoneNumber ?? ''));
 
-              const SizedBox(height: 20),
+                  final sessionsCount =
+                      userModel?.healthProfile.ruqyahAudioLogs.length.toString() ??
+                          '0';
+                  final healthScore = userModel?.healthProfile != null
+                      ? '${100 - (userModel!.healthProfile.stressLevelIndex * 4)}'
+                      : '80';
+                  final activeDays = userModel?.createdAt != null
+                      ? '${DateTime.now().difference(userModel!.createdAt).inDays + 1}'
+                      : '1';
 
-              // 3. Settings Options List Card
-              _buildSettingsListCard(),
+                  return _buildProfileContent(
+                    name: resolvedName,
+                    email: resolvedEmail,
+                    sessionsCompleted: sessionsCount,
+                    healthIndex: healthScore,
+                    daysActive: activeDays,
+                    isGuest: false,
+                  );
+                },
+              ),
+      ),
+    );
+  }
 
-              const SizedBox(height: 16),
+  Widget _buildProfileContent({
+    required String name,
+    required String email,
+    required String sessionsCompleted,
+    required String healthIndex,
+    required String daysActive,
+    required bool isGuest,
+  }) {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      child: Column(
+        children: [
+          // 1. User Avatar & Identity Header
+          _buildAvatarHeader(name, email),
 
-              // 4. Logout Action Card
-              _buildLogoutCard(),
+          const SizedBox(height: 20),
 
-              const SizedBox(height: 120),
-            ],
+          // 2. Statistics Bento Cards (3 Columns)
+          _buildStatsBentoRow(
+            sessionsCompleted: sessionsCompleted,
+            healthIndex: healthIndex,
+            daysActive: daysActive,
           ),
-        ),
+
+          const SizedBox(height: 20),
+
+          // 3. Settings Options List Card
+          _buildSettingsListCard(),
+
+          const SizedBox(height: 16),
+
+          // 4. Logout or Sign-In Card
+          isGuest ? _buildAuthCard() : _buildLogoutCard(),
+
+          const SizedBox(height: 120),
+        ],
       ),
     );
   }
@@ -231,12 +281,16 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   // 2. Statistics Bento Cards (3 Equal Columns)
-  Widget _buildStatsBentoRow() {
+  Widget _buildStatsBentoRow({
+    required String sessionsCompleted,
+    required String healthIndex,
+    required String daysActive,
+  }) {
     return Row(
       children: [
         Expanded(
           child: _buildBentoCard(
-            number: '12',
+            number: sessionsCompleted,
             label: context.tr('sessions_completed'),
             subtitle: 'Completed',
             subtitleColor: const Color(0xFF6E7E77),
@@ -254,9 +308,9 @@ class _ProfileTabState extends State<ProfileTab> {
               );
             },
             child: _buildBentoCard(
-              number: '78',
+              number: healthIndex,
               label: context.tr('health_index_label'),
-              subtitle: 'Good State',
+              subtitle: 'State',
               subtitleColor: const Color(0xFF1E6B45),
             ),
           ),
@@ -264,9 +318,9 @@ class _ProfileTabState extends State<ProfileTab> {
         const SizedBox(width: 10),
         Expanded(
           child: _buildBentoCard(
-            number: '45',
+            number: daysActive,
             label: context.tr('days_active'),
-            subtitle: 'Streak Tracker',
+            subtitle: 'Streak',
             subtitleColor: const Color(0xFF6E7E77),
           ),
         ),
@@ -486,6 +540,57 @@ class _ProfileTabState extends State<ProfileTab> {
                 size: 20,
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 4. Guest Sign-In Action Card
+  Widget _buildAuthCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E6B45),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1E6B45).withValues(alpha: 0.25),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.heavyImpact();
+            Navigator.of(context).pushAndRemoveUntil(
+              PageRouteBuilder(
+                pageBuilder: (_, _, _) => const SignInScreen(),
+              ),
+              (route) => false,
+            );
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.login_rounded, color: Colors.white, size: 20),
+                SizedBox(width: 10),
+                Text(
+                  'Sign In / Register',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

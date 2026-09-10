@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
+import '../../models/appointment_model.dart';
 import '../../services/firebase_service.dart';
+import '../../services/prayer_times_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
+import '../../widgets/prayer_time_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../ai_symptom_guide_screen.dart';
 import '../book_appointment_screen.dart';
@@ -13,6 +16,7 @@ import '../emergency_ruqyah_screen.dart';
 import '../full_audio_player_screen.dart';
 import '../health_profile_detail_screen.dart';
 import '../notification_screen.dart';
+import '../therapist_marketplace_screen.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -331,65 +335,129 @@ class _HomeTabState extends State<HomeTab> {
 
   // Next Appointment Card
   Widget _buildNextAppointmentCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0B4632),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF0B4632).withValues(alpha: 0.25),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.tr('next_appointment'),
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 10,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.8,
-              color: Colors.white.withValues(alpha: 0.70),
+    final currentUser = FirebaseService.currentUser;
+
+    if (currentUser == null) {
+      return _buildAppointmentCardUI(
+        dateText: 'No Active Booking',
+        timeText: 'Sign in or explore sessions',
+        doctorText: 'Browse Therapists',
+        onTap: () {
+          HapticFeedback.selectionClick();
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
             ),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Mon, 20 May 2024',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+          );
+        },
+      );
+    }
+
+    return StreamBuilder<List<AppointmentModel>>(
+      stream: FirebaseService.getPatientAppointments(currentUser.uid),
+      builder: (context, snapshot) {
+        final appointments = snapshot.data ?? [];
+        if (appointments.isEmpty) {
+          return _buildAppointmentCardUI(
+            dateText: 'No Active Booking',
+            timeText: 'Schedule a new session',
+            doctorText: 'Book a Therapist',
+            onTap: () {
+              HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
+                ),
+              );
+            },
+          );
+        }
+
+        final nextApp = appointments.first;
+        final formattedDate =
+            '${nextApp.scheduledTime.day}/${nextApp.scheduledTime.month}/${nextApp.scheduledTime.year}';
+        final formattedTime =
+            '${nextApp.scheduledTime.hour}:${nextApp.scheduledTime.minute.toString().padLeft(2, '0')}';
+        return _buildAppointmentCardUI(
+          dateText: formattedDate,
+          timeText: formattedTime,
+          doctorText: nextApp.therapyType.replaceAll('_', ' '),
+          onTap: () {
+            HapticFeedback.selectionClick();
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildAppointmentCardUI({
+    required String dateText,
+    required String timeText,
+    required String doctorText,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF0B4632),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF0B4632).withValues(alpha: 0.25),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
             ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            '10:30 AM',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: Colors.white.withValues(alpha: 0.75),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.tr('next_appointment'),
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.8,
+                color: Colors.white.withValues(alpha: 0.70),
+              ),
             ),
-          ),
-          const SizedBox(height: 14),
-          Container(height: 1, color: Colors.white.withValues(alpha: 0.15)),
-          const SizedBox(height: 10),
-          const Text(
-            'Dr. Salma Rahman',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 12.5,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFFD49E35),
+            const SizedBox(height: 10),
+            Text(
+              dateText,
+              style: const TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 2),
+            Text(
+              timeText,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Colors.white.withValues(alpha: 0.75),
+              ),
+            ),
+            const SizedBox(height: 14),
+            Container(height: 1, color: Colors.white.withValues(alpha: 0.15)),
+            const SizedBox(height: 10),
+            Text(
+              doctorText,
+              style: const TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 12.5,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFFD49E35),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -659,10 +727,10 @@ class _HomeTabState extends State<HomeTab> {
   // Today's Prayer Times Card
   Widget _buildPrayerTimesCard() {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       decoration: BoxDecoration(
         color: context.cardBg,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
@@ -673,6 +741,7 @@ class _HomeTabState extends State<HomeTab> {
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -680,8 +749,8 @@ class _HomeTabState extends State<HomeTab> {
                 context.tr('prayer_times'),
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
                   color: context.textPrimary,
                 ),
               ),
@@ -690,26 +759,67 @@ class _HomeTabState extends State<HomeTab> {
                 'Dhaka, BD',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 13,
+                  fontSize: 13.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFFD49E35),
+                  color: Color(0xFF0B4632),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
 
-          // Prayer Times Grid
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildPrayerSlot(name: 'Fajr', time: '4:05', isActive: false),
-              _buildPrayerSlot(name: 'Dhuhr', time: '12:30', isActive: true),
-              _buildPrayerSlot(name: 'Asr', time: '4:45', isActive: false),
-              _buildPrayerSlot(name: 'Maghrib', time: '6:45', isActive: false),
-              _buildPrayerSlot(name: 'Isha', time: '8:15', isActive: false),
-            ],
+          // 6 Prayer Times Row (Fajr, Dhuhr, Asr, Maghrib, Isha, Jummah)
+          FutureBuilder<PrayerTimesModel>(
+            future: PrayerTimesService.fetchPrayerTimes(),
+            builder: (context, snapshot) {
+              final times = snapshot.data ?? PrayerTimesModel.fallback();
+
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildPrayerSlot(
+                      name: 'Fajr',
+                      time: times.fajr,
+                      isActive: false,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildPrayerSlot(
+                      name: 'Dhuhr',
+                      time: times.dhuhr,
+                      isActive: true,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildPrayerSlot(
+                      name: 'Asr',
+                      time: times.asr,
+                      isActive: false,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildPrayerSlot(
+                      name: 'Maghrib',
+                      time: times.maghrib,
+                      isActive: false,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildPrayerSlot(
+                      name: 'Isha',
+                      time: times.isha,
+                      isActive: false,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildPrayerSlot(
+                      name: 'Jummah',
+                      time: times.jummah,
+                      isActive: false,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -723,27 +833,35 @@ class _HomeTabState extends State<HomeTab> {
   }) {
     if (isActive) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        constraints: const BoxConstraints(minWidth: 58),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: const Color(0xFF0B4632),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF0B4632).withValues(alpha: 0.30),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
+              color: const Color(0xFF0B4632).withValues(alpha: 0.35),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            PrayerTimeIcon(
+              prayerName: name,
+              color: Colors.white,
+              size: 20,
+            ),
+            const SizedBox(height: 6),
             Text(
               name,
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
-                fontSize: 11.5,
-                fontWeight: FontWeight.w500,
-                color: Colors.white.withValues(alpha: 0.80),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Colors.white.withValues(alpha: 0.90),
               ),
             ),
             const SizedBox(height: 4),
@@ -751,8 +869,8 @@ class _HomeTabState extends State<HomeTab> {
               time,
               style: const TextStyle(
                 fontFamily: 'PlusJakartaSans',
-                fontSize: 14.5,
-                fontWeight: FontWeight.w700,
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
                 color: Color(0xFFD49E35),
               ),
             ),
@@ -761,28 +879,39 @@ class _HomeTabState extends State<HomeTab> {
       );
     }
 
-    return Column(
-      children: [
-        Text(
-          name,
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 11.5,
-            fontWeight: FontWeight.w500,
-            color: context.textSecondary,
+    return Container(
+      constraints: const BoxConstraints(minWidth: 58),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          PrayerTimeIcon(
+            prayerName: name,
+            color: const Color(0xFF52625B),
+            size: 20,
           ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          time,
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 14.5,
-            fontWeight: FontWeight.w700,
-            color: context.textPrimary,
+          const SizedBox(height: 6),
+          Text(
+            name,
+            style: const TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF6E7E77),
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 4),
+          Text(
+            time,
+            style: TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
+              color: context.textPrimary,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
