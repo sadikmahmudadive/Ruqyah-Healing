@@ -87,7 +87,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -115,14 +118,21 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 
             // Share Button
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -161,7 +171,9 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     // 1. Level Badge
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF3E8),
                         borderRadius: BorderRadius.circular(8),
@@ -345,23 +357,22 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: const Color(0xFF12241F),
-              ),
+              errorBuilder: (context, error, stackTrace) =>
+                  Container(color: const Color(0xFF12241F)),
             ),
 
             // Dark Overlay Layer
-            Container(
-              color: Colors.black.withValues(alpha: 0.45),
-            ),
+            Container(color: Colors.black.withValues(alpha: 0.45)),
 
             // Top Left Tag: Lesson 3: Principles
             Positioned(
               top: 14,
               left: 14,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.60),
                   borderRadius: BorderRadius.circular(10),
@@ -413,8 +424,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               right: 0,
               bottom: 0,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 color: const Color(0xFF082F21).withValues(alpha: 0.92),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -479,7 +492,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const QuizCertificateScreen(),
+                pageBuilder: (_, _, _) => const QuizCertificateScreen(),
               ),
             );
           },
@@ -502,7 +515,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const QuizCertificateScreen(),
+                pageBuilder: (_, _, _) => const QuizCertificateScreen(),
               ),
             );
           },
@@ -661,8 +674,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0B4632),
                   borderRadius: BorderRadius.circular(8),
@@ -725,8 +737,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFF3E8),
                       borderRadius: BorderRadius.circular(8),
@@ -761,8 +775,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 
               // Lesson 2: Principles of Cupping (Active Playing)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(12),

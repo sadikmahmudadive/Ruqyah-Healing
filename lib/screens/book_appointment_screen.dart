@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,7 +23,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   String _consultationMode = 'In-person'; // 'In-person' or 'Video Call'
   int _selectedDay = 20;
   String _selectedSlot = '10:30 AM';
-  String _selectedPatient = 'Aamina Begum';
+  final String _selectedPatient = 'Aamina Begum';
   final TextEditingController _reasonController = TextEditingController();
 
   final List<String> _services = const [
@@ -96,16 +94,19 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15,
-                      fontWeight:
-                          isSelected ? FontWeight.w700 : FontWeight.w500,
+                      fontWeight: isSelected
+                          ? FontWeight.w700
+                          : FontWeight.w500,
                       color: isSelected
                           ? const Color(0xFF0B4632)
                           : const Color(0xFF15221D),
                     ),
                   ),
                   trailing: isSelected
-                      ? const Icon(Icons.check_circle_rounded,
-                          color: Color(0xFF0B4632))
+                      ? const Icon(
+                          Icons.check_circle_rounded,
+                          color: Color(0xFF0B4632),
+                        )
                       : null,
                   onTap: () {
                     HapticFeedback.selectionClick();
@@ -130,14 +131,14 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             BookingConfirmationScreen(
-          doctorName: widget.therapistName,
-          serviceName: _selectedService,
-          date: 'Mon, May $_selectedDay, 2024',
-          time: '$_selectedSlot (45 min)',
-          location: 'Ruqyah Healing Clinic, Mirpur 10, Dhaka, Bangladesh',
-          sessionFee: widget.basePrice,
-          serviceCharge: 60,
-        ),
+              doctorName: widget.therapistName,
+              serviceName: _selectedService,
+              date: 'Mon, May $_selectedDay, 2024',
+              time: '$_selectedSlot (45 min)',
+              location: 'Ruqyah Healing Clinic, Mirpur 10, Dhaka, Bangladesh',
+              sessionFee: widget.basePrice,
+              serviceCharge: 60,
+            ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: CurvedAnimation(
@@ -393,9 +394,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               Icon(
                 icon,
                 size: 18,
-                color: isSelected
-                    ? Colors.white
-                    : const Color(0xFF6E7E77),
+                color: isSelected ? Colors.white : const Color(0xFF6E7E77),
               ),
               const SizedBox(width: 8),
             ],
@@ -405,9 +404,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 14,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                color: isSelected
-                    ? Colors.white
-                    : const Color(0xFF6E7E77),
+                color: isSelected ? Colors.white : const Color(0xFF6E7E77),
               ),
             ),
           ],
@@ -571,8 +568,6 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     );
   }
 
-
-
   Widget _buildCalendarNavArrow({
     required IconData icon,
     required VoidCallback onTap,
@@ -601,11 +596,41 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     // Row 5: 26, 27, 28, 29, 30, 31, 1 (next month disabled)
 
     final List<int?> daysGrid = [
-      null, null, null, 1, 2, 3, 4,
-      5, 6, 7, 8, 9, 10, 11,
-      12, 13, 14, 15, 16, 17, 18,
-      19, 20, 21, 22, 23, 24, 25,
-      26, 27, 28, 29, 30, 31, -1,
+      null,
+      null,
+      null,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      -1,
     ];
 
     return GridView.builder(
@@ -662,17 +687,14 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isSelected
-                  ? const Color(0xFF0B4632)
-                  : Colors.transparent,
+              color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
               border: isToday && !isSelected
                   ? Border.all(color: const Color(0xFF0B4632), width: 1.5)
                   : null,
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color:
-                            const Color(0xFF0B4632).withValues(alpha: 0.30),
+                        color: const Color(0xFF0B4632).withValues(alpha: 0.30),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -688,9 +710,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   fontWeight: isSelected || isToday
                       ? FontWeight.w700
                       : FontWeight.w500,
-                  color: isSelected
-                      ? Colors.white
-                      : const Color(0xFF15221D),
+                  color: isSelected ? Colors.white : const Color(0xFF15221D),
                 ),
               ),
             ),
@@ -754,8 +774,8 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color:
-                                const Color(0xFF0B4632).withValues(alpha: 0.25),
+                            color: const Color(0xFF0B4632)
+                                .withValues(alpha: 0.25),
                             blurRadius: 10,
                             offset: const Offset(0, 2),
                           ),
@@ -768,10 +788,12 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 13,
-                      fontWeight:
-                          isSelected ? FontWeight.w700 : FontWeight.w600,
-                      color:
-                          isSelected ? Colors.white : const Color(0xFF6E7E77),
+                      fontWeight: isSelected
+                          ? FontWeight.w700
+                          : FontWeight.w600,
+                      color: isSelected
+                          ? Colors.white
+                          : const Color(0xFF6E7E77),
                     ),
                   ),
                 ),

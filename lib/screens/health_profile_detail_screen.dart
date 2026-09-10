@@ -3,10 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_theme.dart';
 import '../widgets/acupuncture_icon.dart';
-import '../widgets/global_bottom_navbar.dart';
 import '../widgets/hijama_cupping_icon.dart';
 import '../widgets/ruqyah_dua_icon.dart';
-import 'main_navigation_shell.dart';
 import 'settings_screen.dart';
 
 class HealthProfileDetailScreen extends StatefulWidget {
@@ -82,7 +80,11 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
@@ -108,17 +110,17 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                     HapticFeedback.selectionClick();
                     Navigator.of(context).push(
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const SettingsScreen(),
+                        pageBuilder: (_, _, _) => const SettingsScreen(),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(
-                            opacity: CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOut,
-                            ),
-                            child: child,
-                          );
-                        },
+                              return FadeTransition(
+                                opacity: CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeInOut,
+                                ),
+                                child: child,
+                              );
+                            },
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
                     );
@@ -247,9 +249,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                     SizedBox(
                       height: 24,
                       width: 100,
-                      child: CustomPaint(
-                        painter: _TrendLinePainter(),
-                      ),
+                      child: CustomPaint(painter: _TrendLinePainter()),
                     ),
                   ],
                 ),
@@ -261,11 +261,26 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               Expanded(
                 child: Column(
                   children: [
-                    _buildMetricRow('Spiritual', 'Good', 0.85, const Color(0xFF0B4632)),
+                    _buildMetricRow(
+                      'Spiritual',
+                      'Good',
+                      0.85,
+                      const Color(0xFF0B4632),
+                    ),
                     const SizedBox(height: 10),
-                    _buildMetricRow('Sleep Quality', 'Good', 0.78, const Color(0xFF0B4632)),
+                    _buildMetricRow(
+                      'Sleep Quality',
+                      'Good',
+                      0.78,
+                      const Color(0xFF0B4632),
+                    ),
                     const SizedBox(height: 10),
-                    _buildMetricRow('Stress Level', 'Moderate', 0.55, const Color(0xFFE67E22)),
+                    _buildMetricRow(
+                      'Stress Level',
+                      'Moderate',
+                      0.55,
+                      const Color(0xFFE67E22),
+                    ),
                   ],
                 ),
               ),
@@ -422,10 +437,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           ),
           _buildDivider(),
           _buildLogTile(
-            customIcon: const RuqyahDuaIcon(
-              color: Color(0xFF0B4632),
-              size: 20,
-            ),
+            customIcon: const RuqyahDuaIcon(color: Color(0xFF0B4632), size: 20),
             iconBg: const Color(0xFFEBF7F0),
             iconColor: const Color(0xFF0B4632),
             title: 'Ruqyah Listening Log',
@@ -521,8 +533,10 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: badgeBg,
                   borderRadius: BorderRadius.circular(10),
@@ -650,10 +664,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        height: 1,
-        color: context.cardBorder,
-      ),
+      child: Container(height: 1, color: context.cardBorder),
     );
   }
 }

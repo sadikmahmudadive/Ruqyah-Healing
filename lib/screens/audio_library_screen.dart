@@ -213,11 +213,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.search_rounded,
-            color: Color(0xFF90A4AE),
-            size: 20,
-          ),
+          const Icon(Icons.search_rounded, color: Color(0xFF90A4AE), size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -280,8 +276,8 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color:
-                              const Color(0xFF0B4632).withValues(alpha: 0.20),
+                          color: const Color(0xFF0B4632)
+                              .withValues(alpha: 0.20),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -328,7 +324,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               },
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(10),
@@ -389,20 +388,20 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => FullAudioPlayerScreen(
+                pageBuilder: (_, _, _) => FullAudioPlayerScreen(
                   title: track.title,
                   verses: track.subtitle,
                 ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -417,7 +416,9 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF182E25) : const Color(0xFFEBF7F0),
+                    color: isDark
+                        ? const Color(0xFF182E25)
+                        : const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Icon(
@@ -452,37 +453,37 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                           color: context.textSecondary,
                         ),
                       ),
+                    ],
+                  ),
+                ),
+
+                // Download Icon Button
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEBF7F0),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      isDownloaded
+                          ? Icons.check_circle_rounded
+                          : Icons.download_rounded,
+                      color: const Color(0xFF0B4632),
+                      size: 20,
+                    ),
+                    onPressed: () => _toggleDownload(track.id, track.title),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
               ],
             ),
           ),
-
-          // Download Icon Button
-          Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(
-              color: const Color(0xFFEBF7F0),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: IconButton(
-              icon: Icon(
-                isDownloaded
-                    ? Icons.check_circle_rounded
-                    : Icons.download_rounded,
-                color: const Color(0xFF0B4632),
-                size: 20,
-              ),
-              onPressed: () => _toggleDownload(track.id, track.title),
-              padding: EdgeInsets.zero,
-            ),
-          ),
-        ],
+        ),
       ),
-    ),
-  ),
-),
-);
-}
+    );
+  }
 
   // Protection Playlists Section
   Widget _buildProtectionPlaylistsSection() {
@@ -506,7 +507,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               },
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(10),

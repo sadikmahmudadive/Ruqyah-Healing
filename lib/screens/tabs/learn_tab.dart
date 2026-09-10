@@ -206,11 +206,7 @@ class _LearnTabState extends State<LearnTab> {
           // Header Status Row
           Row(
             children: [
-              const Icon(
-                Icons.circle,
-                color: Color(0xFF1E6B45),
-                size: 8,
-              ),
+              const Icon(Icons.circle, color: Color(0xFF1E6B45), size: 8),
               const SizedBox(width: 6),
               const Text(
                 'CONTINUE LEARNING',
@@ -224,8 +220,10 @@ class _LearnTabState extends State<LearnTab> {
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFF8E1),
                   borderRadius: BorderRadius.circular(10),
@@ -288,14 +286,16 @@ class _LearnTabState extends State<LearnTab> {
                   HapticFeedback.selectionClick();
                   Navigator.of(context).push(
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const CourseDetailScreen(),
+                      pageBuilder: (_, _, _) => const CourseDetailScreen(),
                     ),
                   );
                 },
                 borderRadius: BorderRadius.circular(14),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF0B4632),
                     borderRadius: BorderRadius.circular(14),
@@ -351,8 +351,10 @@ class _LearnTabState extends State<LearnTab> {
               },
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(10),
@@ -454,9 +456,7 @@ class _LearnTabState extends State<LearnTab> {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: context.isDarkMode
-                      ? const Color(0xFF162E25)
-                      : iconBg,
+                  color: context.isDarkMode ? const Color(0xFF162E25) : iconBg,
                   shape: BoxShape.circle,
                 ),
                 child: Center(child: customIcon),
@@ -511,8 +511,10 @@ class _LearnTabState extends State<LearnTab> {
               },
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(10),
@@ -551,7 +553,7 @@ class _LearnTabState extends State<LearnTab> {
         HapticFeedback.selectionClick();
         Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => CourseDetailScreen(
+            pageBuilder: (_, _, _) => CourseDetailScreen(
               courseTitle: course.title,
               instructorName: course.instructor,
               level: course.level,
@@ -576,177 +578,179 @@ class _LearnTabState extends State<LearnTab> {
         ),
         child: Column(
           children: [
-          // Top Row: Image + Details
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: Container(
-                  width: 90,
-                  height: 90,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF1E3A2F),
-                    image: DecorationImage(
-                      image: AssetImage('assets/logo/logo_app.png'),
-                      fit: BoxFit.cover,
+            // Top Row: Image + Details
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Container(
+                    width: 90,
+                    height: 90,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF1E3A2F),
+                      image: DecorationImage(
+                        image: AssetImage('assets/logo/logo_app.png'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(width: 14),
+                const SizedBox(width: 14),
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: isBeginner
-                                ? const Color(0xFFEBF7F0)
-                                : const Color(0xFFFFF3E8),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            course.level,
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w700,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
                               color: isBeginner
-                                  ? const Color(0xFF0B4632)
-                                  : const Color(0xFFE67E22),
+                                  ? const Color(0xFFEBF7F0)
+                                  : const Color(0xFFFFF3E8),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              course.level,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w700,
+                                color: isBeginner
+                                    ? const Color(0xFF0B4632)
+                                    : const Color(0xFFE67E22),
+                              ),
                             ),
                           ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          'Tk ${course.price}',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: context.textPrimary,
+                          const Spacer(),
+                          Text(
+                            'Tk ${course.price}',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: context.textPrimary,
+                            ),
                           ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 6),
+
+                      Text(
+                        course.title,
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: context.textPrimary,
                         ),
-                      ],
+                      ),
+
+                      const SizedBox(height: 2),
+
+                      Row(
+                        children: [
+                          Text(
+                            course.instructor,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              color: context.textSecondary,
+                            ),
+                          ),
+                          if (course.isVerified) ...[
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.check_circle_rounded,
+                              color: Color(0xFF0B4632),
+                              size: 14,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 12),
+            Container(height: 1, color: context.cardBorder),
+            const SizedBox(height: 10),
+
+            // Footer Info Row
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.star_rounded,
+                      color: Color(0xFFD49E35),
+                      size: 16,
                     ),
-
-                    const SizedBox(height: 6),
-
+                    const SizedBox(width: 3),
                     Text(
-                      course.title,
+                      '${course.rating} ',
                       style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 15,
+                        fontFamily: 'Inter',
+                        fontSize: 12,
                         fontWeight: FontWeight.w800,
                         color: context.textPrimary,
                       ),
                     ),
-
-                    const SizedBox(height: 2),
-
-                    Row(
-                      children: [
-                        Text(
-                          course.instructor,
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            color: context.textSecondary,
-                          ),
-                        ),
-                        if (course.isVerified) ...[
-                          const SizedBox(width: 4),
-                          const Icon(
-                            Icons.check_circle_rounded,
-                            color: Color(0xFF0B4632),
-                            size: 14,
-                          ),
-                        ],
-                      ],
+                    Text(
+                      '(${course.reviewsCount} reviews)',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 11.5,
+                        color: context.textSecondary,
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 12),
-          Container(height: 1, color: context.cardBorder),
-          const SizedBox(height: 10),
-
-          // Footer Info Row
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 8,
-            runSpacing: 4,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.star_rounded,
-                    color: Color(0xFFD49E35),
-                    size: 16,
-                  ),
-                  const SizedBox(width: 3),
-                  Text(
-                    '${course.rating} ',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w800,
-                      color: context.textPrimary,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.school_outlined,
+                      color: Color(0xFF0B4632),
+                      size: 15,
                     ),
-                  ),
-                  Text(
-                    '(${course.reviewsCount} reviews)',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 11.5,
-                      color: context.textSecondary,
+                    const SizedBox(width: 4),
+                    Text(
+                      'Certificate',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 11.5,
+                        color: context.textSecondary,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.school_outlined,
-                    color: Color(0xFF0B4632),
-                    size: 15,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Certificate',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 11.5,
-                      color: context.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                '${course.freeLessons} Free Lessons',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11.5,
-                  color: context.textSecondary,
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
+                Text(
+                  '${course.freeLessons} Free Lessons',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11.5,
+                    color: context.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

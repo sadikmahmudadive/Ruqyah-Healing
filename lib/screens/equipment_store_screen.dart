@@ -282,17 +282,17 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                     HapticFeedback.selectionClick();
                     Navigator.of(context).push(
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const CartCheckoutScreen(),
+                        pageBuilder: (_, _, _) => const CartCheckoutScreen(),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(
-                            opacity: CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOut,
-                            ),
-                            child: child,
-                          );
-                        },
+                              return FadeTransition(
+                                opacity: CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeInOut,
+                                ),
+                                child: child,
+                              );
+                            },
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
                     );
@@ -346,11 +346,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.search_rounded,
-            color: Color(0xFF90A4AE),
-            size: 20,
-          ),
+          const Icon(Icons.search_rounded, color: Color(0xFF90A4AE), size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -431,8 +427,8 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color:
-                              const Color(0xFF0B4632).withValues(alpha: 0.20),
+                          color: const Color(0xFF0B4632)
+                              .withValues(alpha: 0.20),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -510,18 +506,17 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    ProductDetailsScreen(product: p),
+                pageBuilder: (_, _, _) => ProductDetailsScreen(product: p),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -540,180 +535,182 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                 ),
               ],
             ),
-          child: Column(
-            children: [
-              // Top Row: Image Thumbnail + Details
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Product Image
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
-                    child: Container(
-                      width: 95,
-                      height: 95,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF1E3A2F),
-                        image: DecorationImage(
-                          image: AssetImage('assets/logo/logo_app.png'),
-                          fit: BoxFit.cover,
+            child: Column(
+              children: [
+                // Top Row: Image Thumbnail + Details
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Product Image
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Container(
+                        width: 95,
+                        height: 95,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF1E3A2F),
+                          image: DecorationImage(
+                            image: AssetImage('assets/logo/logo_app.png'),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                  const SizedBox(width: 14),
+                    const SizedBox(width: 14),
 
-                  // Details
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (p.badgeText != null) ...[
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 3,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFEBEB),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              p.badgeText!,
-                              style: const TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFFE74C3C),
+                    // Details
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (p.badgeText != null) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFEBEB),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                p.badgeText!,
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFFE74C3C),
+                                ),
                               ),
                             ),
+                            const SizedBox(height: 6),
+                          ],
+                          Text(
+                            '৳${p.price}',
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 19,
+                              fontWeight: FontWeight.w800,
+                              color: context.textPrimary,
+                            ),
                           ),
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 3),
+                          Text(
+                            p.title,
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: context.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            p.subtitle,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 11.5,
+                              color: context.textSecondary,
+                              height: 1.3,
+                            ),
+                          ),
                         ],
-                        Text(
-                          '৳${p.price}',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 19,
-                            fontWeight: FontWeight.w800,
-                            color: context.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 3),
-                        Text(
-                          p.title,
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: context.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          p.subtitle,
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 11.5,
-                            color: context.textSecondary,
-                            height: 1.3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              // Approved Wellness Product Banner
-              Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle_rounded,
-                      color: Color(0xFFD49E35),
-                      size: 15,
-                    ),
-                    SizedBox(width: 6),
-                    Text(
-                      'Approved Wellness Product',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFFD49E35),
                       ),
                     ),
                   ],
                 ),
-              ),
 
-              const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
-              // Rating & Cart Button Row
-              Row(
-                children: [
-                  const Icon(
-                    Icons.star_rounded,
-                    color: Color(0xFFD49E35),
-                    size: 18,
+                // Approved Wellness Product Banner
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
                   ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${p.rating} ',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
-                      color: context.textPrimary,
-                    ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF8E1),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  Text(
-                    '(${p.reviewsCount} reviews)',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      color: context.textSecondary,
-                    ),
-                  ),
-                  const Spacer(),
-
-                  // Add to Cart Button
-                  GestureDetector(
-                    onTap: () => _addToCart(p.title),
-                    child: Container(
-                      width: 42,
-                      height: 42,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF0B4632),
-                        shape: BoxShape.circle,
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle_rounded,
+                        color: Color(0xFFD49E35),
+                        size: 15,
                       ),
-                      child: const Icon(
-                        Icons.shopping_cart_outlined,
-                        color: Colors.white,
-                        size: 20,
+                      SizedBox(width: 6),
+                      Text(
+                        'Approved Wellness Product',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFFD49E35),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 14),
+
+                // Rating & Cart Button Row
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.star_rounded,
+                      color: Color(0xFFD49E35),
+                      size: 18,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${p.rating} ',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: context.textPrimary,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Text(
+                      '(${p.reviewsCount} reviews)',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        color: context.textSecondary,
+                      ),
+                    ),
+                    const Spacer(),
+
+                    // Add to Cart Button
+                    GestureDetector(
+                      onTap: () => _addToCart(p.title),
+                      child: Container(
+                        width: 42,
+                        height: 42,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF0B4632),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.shopping_cart_outlined,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   // Top Picks Section
   Widget _buildTopPicksSection() {
@@ -766,7 +763,8 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           itemCount: _topPicks.length,
-          separatorBuilder: (context, index) => const SizedBox(width: 0, height: 12),
+          separatorBuilder: (context, index) =>
+              const SizedBox(width: 0, height: 12),
           itemBuilder: (context, index) {
             final p = _topPicks[index];
             return _buildTopPickCard(p);
@@ -782,17 +780,17 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
         HapticFeedback.selectionClick();
         Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => ProductDetailsScreen(product: p),
+            pageBuilder: (_, _, _) => ProductDetailsScreen(product: p),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeInOut,
-                ),
-                child: child,
-              );
-            },
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
             transitionDuration: const Duration(milliseconds: 400),
           ),
         );
@@ -811,138 +809,138 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
             ),
           ],
         ),
-      child: Row(
-        children: [
-          // Image Thumbnail
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              width: 72,
-              height: 72,
-              decoration: const BoxDecoration(
-                color: Color(0xFF1E3A2F),
-                image: DecorationImage(
-                  image: AssetImage('assets/logo/logo_app.png'),
-                  fit: BoxFit.cover,
+        child: Row(
+          children: [
+            // Image Thumbnail
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                width: 72,
+                height: 72,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF1E3A2F),
+                  image: DecorationImage(
+                    image: AssetImage('assets/logo/logo_app.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          ),
 
-          const SizedBox(width: 14),
+            const SizedBox(width: 14),
 
-          // Details Column
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  p.title,
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 14.5,
-                    fontWeight: FontWeight.w700,
-                    color: context.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  p.subtitle,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 11.5,
-                    color: context.textSecondary,
-                  ),
-                ),
-                if (p.isApproved) ...[
-                  const SizedBox(height: 4),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
+            // Details Column
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    p.title,
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 14.5,
+                      fontWeight: FontWeight.w700,
+                      color: context.textPrimary,
                     ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFF8E1),
-                      borderRadius: BorderRadius.circular(6),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    p.subtitle,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 11.5,
+                      color: context.textSecondary,
                     ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.check_rounded,
-                          color: Color(0xFFD49E35),
-                          size: 11,
-                        ),
-                        SizedBox(width: 3),
-                        Text(
-                          'Approved Wellness Product',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
+                  ),
+                  if (p.isApproved) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF8E1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.check_rounded,
                             color: Color(0xFFD49E35),
+                            size: 11,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Text(
-                      '৳${p.price}',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: context.textPrimary,
-                      ),
-                    ),
-                    const Spacer(),
-                    const Icon(
-                      Icons.star_rounded,
-                      color: Color(0xFFD49E35),
-                      size: 15,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      '${p.rating}',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: context.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    // Add Button
-                    GestureDetector(
-                      onTap: () => _addToCart(p.title),
-                      child: Container(
-                        width: 34,
-                        height: 34,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF0B4632),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.add_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                          SizedBox(width: 3),
+                          Text(
+                            'Approved Wellness Product',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFFD49E35),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                ),
-              ],
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Text(
+                        '৳${p.price}',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFD49E35),
+                        size: 15,
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        '${p.rating}',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      // Add Button
+                      GestureDetector(
+                        onTap: () => _addToCart(p.title),
+                        child: Container(
+                          width: 34,
+                          height: 34,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF0B4632),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.add_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   // Affiliate Disclaimer Banner
   Widget _buildDisclaimerBanner() {

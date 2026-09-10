@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -94,9 +92,16 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 12.0, bottom: 12.0),
+              padding: const EdgeInsets.only(
+                right: 20.0,
+                top: 12.0,
+                bottom: 12.0,
+              ),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(8),
@@ -269,7 +274,10 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
                   color: isSelected
                       ? const Color(0xFFEBF7F0)
@@ -300,8 +308,9 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13.5,
-                          fontWeight:
-                              isSelected ? FontWeight.w800 : FontWeight.w600,
+                          fontWeight: isSelected
+                              ? FontWeight.w800
+                              : FontWeight.w600,
                           color: isSelected
                               ? const Color(0xFF0B4632)
                               : const Color(0xFF52625B),
@@ -666,8 +675,11 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.qr_code_rounded,
-                        color: Color(0xFF90A4AE), size: 18),
+                    const Icon(
+                      Icons.qr_code_rounded,
+                      color: Color(0xFF90A4AE),
+                      size: 18,
+                    ),
                     const SizedBox(width: 6),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -726,11 +738,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.download_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
+              Icon(Icons.download_rounded, color: Colors.white, size: 20),
               SizedBox(width: 8),
               Text(
                 'Download Certificate',

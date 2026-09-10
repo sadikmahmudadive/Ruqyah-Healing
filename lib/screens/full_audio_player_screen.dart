@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -464,8 +463,30 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(24, (index) {
               final heights = [
-                14, 22, 34, 18, 26, 38, 20, 30, 16, 28, 36, 22,
-                18, 32, 24, 14, 28, 38, 22, 16, 26, 34, 18, 12
+                14,
+                22,
+                34,
+                18,
+                26,
+                38,
+                20,
+                30,
+                16,
+                28,
+                36,
+                22,
+                18,
+                32,
+                24,
+                14,
+                28,
+                38,
+                22,
+                16,
+                26,
+                34,
+                18,
+                12,
               ];
               final barHeight = heights[index % heights.length].toDouble();
               final isPlayed = (index / 24.0) <= progress;
@@ -566,9 +587,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             ),
             child: Center(
               child: Icon(
-                _isPlaying
-                    ? Icons.pause_rounded
-                    : Icons.play_arrow_rounded,
+                _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
                 color: const Color(0xFF082F21),
                 size: 36,
               ),

@@ -48,7 +48,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 
   int get _subtotal {
     return _cartItems.fold(
-        0, (sum, item) => sum + (item.price * item.quantity));
+      0,
+      (sum, item) => sum + (item.price * item.quantity),
+    );
   }
 
   final int _shippingFee = 80;
@@ -61,9 +63,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         backgroundColor: Colors.white,
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -117,7 +117,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const MainNavigationShell(),
+                      pageBuilder: (_, _, _) => const MainNavigationShell(),
                     ),
                     (route) => false,
                   );
@@ -187,7 +187,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4),
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: const Color(0xFFEBF7F0),
                               borderRadius: BorderRadius.circular(10),
@@ -396,15 +398,16 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 
                 // Stepper Container
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: context.isDarkMode
                         ? const Color(0xFF182E25)
                         : const Color(0xFFF5F7F6),
                     borderRadius: BorderRadius.circular(10),
-                    border:
-                        Border.all(color: context.cardBorder, width: 1.0),
+                    border: Border.all(color: context.cardBorder, width: 1.0),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -418,8 +421,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Icon(Icons.remove,
-                              color: Color(0xFF6E7E77), size: 16),
+                          child: Icon(
+                            Icons.remove,
+                            color: Color(0xFF6E7E77),
+                            size: 16,
+                          ),
                         ),
                       ),
                       Padding(
@@ -441,8 +447,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Icon(Icons.add,
-                              color: Color(0xFF0B4632), size: 16),
+                          child: Icon(
+                            Icons.add,
+                            color: Color(0xFF0B4632),
+                            size: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -474,8 +483,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 value: 'remove',
                 child: Row(
                   children: [
-                    Icon(Icons.delete_outline_rounded,
-                        color: Color(0xFFE74C3C), size: 18),
+                    Icon(
+                      Icons.delete_outline_rounded,
+                      color: Color(0xFFE74C3C),
+                      size: 18,
+                    ),
                     SizedBox(width: 8),
                     Text('Remove from Cart'),
                   ],
@@ -668,8 +680,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 },
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(10),
@@ -778,8 +792,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 },
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(10),
@@ -907,11 +923,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.lock_rounded,
-                color: Colors.white,
-                size: 18,
-              ),
+              const Icon(Icons.lock_rounded, color: Colors.white, size: 18),
               const SizedBox(width: 8),
               Text(
                 'Place Order · ৳$total',

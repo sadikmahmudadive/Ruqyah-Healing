@@ -174,16 +174,10 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             decoration: BoxDecoration(
               color: const Color(0xFF0B4632),
               shape: BoxShape.circle,
-              border: Border.all(
-                color: const Color(0xFFD49E35),
-                width: 1.5,
-              ),
+              border: Border.all(color: const Color(0xFFD49E35), width: 1.5),
             ),
             child: const Center(
-              child: RuqyahDuaIcon(
-                color: Color(0xFFD49E35),
-                size: 22,
-              ),
+              child: RuqyahDuaIcon(color: Color(0xFFD49E35), size: 22),
             ),
           ),
         ],
@@ -277,11 +271,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.search_rounded,
-            color: Color(0xFF90A4AE),
-            size: 20,
-          ),
+          const Icon(Icons.search_rounded, color: Color(0xFF90A4AE), size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -344,8 +334,8 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color:
-                              const Color(0xFF0B4632).withValues(alpha: 0.20),
+                          color: const Color(0xFF0B4632)
+                              .withValues(alpha: 0.20),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -391,7 +381,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 HapticFeedback.selectionClick();
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const AudioLibraryScreen(),
+                    pageBuilder: (_, _, _) => const AudioLibraryScreen(),
                   ),
                 );
               },
@@ -415,7 +405,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const AudioLibraryScreen(),
+                pageBuilder: (_, _, _) => const AudioLibraryScreen(),
               ),
             );
           },
@@ -511,6 +501,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       ],
     );
   }
+
   // 5. Live Session Section
   Widget _buildLiveSessionSection() {
     return Column(
@@ -548,18 +539,16 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFEBEB),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Row(
                       children: [
-                        Icon(
-                          Icons.circle,
-                          color: Color(0xFFE74C3C),
-                          size: 7,
-                        ),
+                        Icon(Icons.circle, color: Color(0xFFE74C3C), size: 7),
                         SizedBox(width: 4),
                         Text(
                           'LIVE',
@@ -632,10 +621,10 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                       if (_isReminded) {
                         Navigator.of(context).push(
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) =>
+                            pageBuilder: (_, _, _) =>
                                 const VideoConsultationScreen(
-                              doctorName: 'Ustazh Salim',
-                            ),
+                                  doctorName: 'Ustazh Salim',
+                                ),
                           ),
                         );
                       }
@@ -680,7 +669,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 HapticFeedback.selectionClick();
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const RuqyahProgressScreen(),
+                    pageBuilder: (_, _, _) => const RuqyahProgressScreen(),
                   ),
                 );
               },
@@ -704,7 +693,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const RuqyahProgressScreen(),
+                pageBuilder: (_, _, _) => const RuqyahProgressScreen(),
               ),
             );
           },
@@ -721,69 +710,69 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 ),
               ],
             ),
-          child: Row(
-            children: [
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'MINUTES LISTENED',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.8,
-                        color: Color(0xFF90A4AE),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'MINUTES LISTENED',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.8,
+                          color: Color(0xFF90A4AE),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      '112 min',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF0B4632),
+                      SizedBox(height: 6),
+                      Text(
+                        '112 min',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFF0B4632),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'This week\'s goal: 150 min',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 11.5,
-                        color: Color(0xFF90A4AE),
+                      SizedBox(height: 4),
+                      Text(
+                        'This week\'s goal: 150 min',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 11.5,
+                          color: Color(0xFF90A4AE),
+                        ),
                       ),
-                    ),
+                    ],
+                  ),
+                ),
+
+                // Bar Chart Graphic Representation
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: const [
+                    _BarItem(height: 18, color: Color(0xFF81C784)),
+                    SizedBox(width: 4),
+                    _BarItem(height: 32, color: Color(0xFF0B4632)),
+                    SizedBox(width: 4),
+                    _BarItem(height: 22, color: Color(0xFF81C784)),
+                    SizedBox(width: 4),
+                    _BarItem(height: 42, color: Color(0xFFD49E35)),
+                    SizedBox(width: 4),
+                    _BarItem(height: 28, color: Color(0xFF0B4632)),
+                    SizedBox(width: 4),
+                    _BarItem(height: 36, color: Color(0xFF0B4632)),
                   ],
                 ),
-              ),
-
-              // Bar Chart Graphic Representation
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: const [
-                  _BarItem(height: 18, color: Color(0xFF81C784)),
-                  SizedBox(width: 4),
-                  _BarItem(height: 32, color: Color(0xFF0B4632)),
-                  SizedBox(width: 4),
-                  _BarItem(height: 22, color: Color(0xFF81C784)),
-                  SizedBox(width: 4),
-                  _BarItem(height: 42, color: Color(0xFFD49E35)),
-                  SizedBox(width: 4),
-                  _BarItem(height: 28, color: Color(0xFF0B4632)),
-                  SizedBox(width: 4),
-                  _BarItem(height: 36, color: Color(0xFF0B4632)),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   // 7. PDF Guides Section
   Widget _buildPdfGuidesSection() {

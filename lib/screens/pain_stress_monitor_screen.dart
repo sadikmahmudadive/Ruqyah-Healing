@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,7 +16,7 @@ class PainStressMonitorScreen extends StatefulWidget {
 class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
   double _painLevel = 6.0;
   double _stressLevel = 4.0;
-  String _trendFilter = 'Pain';
+  final String _trendFilter = 'Pain';
   final TextEditingController _notesController = TextEditingController(
     text: 'Tight shoulders, dull headache, fatigue in the evening.',
   );
@@ -27,7 +25,15 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
   bool _flagNumbness = false;
   bool _flagFever = false;
 
-  final List<double> _weeklyPainTrend = const [5.0, 4.0, 6.0, 5.0, 3.0, 6.0, 5.0];
+  final List<double> _weeklyPainTrend = const [
+    5.0,
+    4.0,
+    6.0,
+    5.0,
+    3.0,
+    6.0,
+    5.0,
+  ];
 
   @override
   void dispose() {
@@ -110,14 +116,21 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -230,8 +243,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(10),
@@ -617,7 +632,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(10),
@@ -872,8 +890,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   HapticFeedback.selectionClick();
                   Navigator.of(context).push(
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) =>
-                          const SecureMessagesScreen(),
+                      pageBuilder: (_, _, _) => const SecureMessagesScreen(),
                     ),
                   );
                 },
@@ -989,8 +1006,9 @@ class _BodyLocatorPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final Path bodyPath = Path()
-      ..addOval(Rect.fromCircle(
-          center: Offset(centerX, h * 0.12), radius: w * 0.10))
+      ..addOval(
+        Rect.fromCircle(center: Offset(centerX, h * 0.12), radius: w * 0.10),
+      )
       ..moveTo(centerX - 4, h * 0.18)
       ..lineTo(centerX - 20, h * 0.24)
       ..lineTo(centerX - 24, h * 0.48)

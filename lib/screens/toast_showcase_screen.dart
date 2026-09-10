@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -95,7 +93,8 @@ class ToastShowcaseScreen extends StatelessWidget {
                         color: const Color(0xFFEBF7F0),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: const Color(0xFF0B4632).withValues(alpha: 0.15),
+                          color: const Color(0xFF0B4632)
+                              .withValues(alpha: 0.15),
                           width: 1.0,
                         ),
                       ),
@@ -189,19 +188,10 @@ class ToastShowcaseScreen extends StatelessWidget {
   }) {
     return InkWell(
       onTap: () {
-        AppToast.show(
-          context,
-          title: title,
-          message: message,
-          type: type,
-        );
+        AppToast.show(context, title: title, message: message, type: type);
       },
       borderRadius: BorderRadius.circular(20),
-      child: AppToastWidget(
-        title: title,
-        message: message,
-        type: type,
-      ),
+      child: AppToastWidget(title: title, message: message, type: type),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -227,10 +225,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               borderRadius: BorderRadius.circular(18),
             ),
             child: const Center(
-              child: HijamaCuppingIcon(
-                color: Color(0xFFE07B39),
-                size: 48,
-              ),
+              child: HijamaCuppingIcon(color: Color(0xFFE07B39), size: 48),
             ),
           ),
         ],
@@ -322,8 +317,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    const TherapistMarketplaceScreen(),
+                pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
               ),
             );
           },
@@ -338,10 +332,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Center(
-                  child: HijamaCuppingIcon(
-                    color: Color(0xFF0B4632),
-                    size: 22,
-                  ),
+                  child: HijamaCuppingIcon(color: Color(0xFF0B4632), size: 22),
                 ),
               ),
 
@@ -550,8 +541,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
             HapticFeedback.heavyImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    const TherapistMarketplaceScreen(),
+                pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
               ),
             );
           },
@@ -597,8 +587,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) =>
-                      const TherapistMarketplaceScreen(),
+                  pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
                 ),
               );
             },
@@ -616,8 +605,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) =>
-                      const HijamaSessionDetailScreen(),
+                  pageBuilder: (_, _, _) => const HijamaSessionDetailScreen(),
                 ),
               );
             },
@@ -635,7 +623,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HijamaBodyMapScreen(),
+                  pageBuilder: (_, _, _) => const HijamaBodyMapScreen(),
                 ),
               );
             },
@@ -679,11 +667,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Icon(
-                    icon,
-                    color: const Color(0xFF0B4632),
-                    size: 20,
-                  ),
+                  child: Icon(icon, color: const Color(0xFF0B4632), size: 20),
                 ),
               ),
               const SizedBox(height: 10),

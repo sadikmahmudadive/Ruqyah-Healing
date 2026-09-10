@@ -117,7 +117,8 @@ class _TherapistMarketplaceScreenState
       final matchesCategory = therapist.category == _selectedCategory;
       final matchesVerified = !_verifiedOnly || therapist.isVerified;
       final query = _searchController.text.toLowerCase().trim();
-      final matchesQuery = query.isEmpty ||
+      final matchesQuery =
+          query.isEmpty ||
           therapist.name.toLowerCase().contains(query) ||
           therapist.title.toLowerCase().contains(query);
       return matchesCategory && matchesVerified && matchesQuery;
@@ -214,11 +215,7 @@ class _TherapistMarketplaceScreenState
 
   Widget _buildTopHeader() {
     return Container(
-      padding: const EdgeInsets.only(
-        bottom: 20,
-        left: 20,
-        right: 20,
-      ),
+      padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
       decoration: const BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -327,8 +324,8 @@ class _TherapistMarketplaceScreenState
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color:
-                              const Color(0xFF0B4632).withValues(alpha: 0.20),
+                          color: const Color(0xFF0B4632)
+                              .withValues(alpha: 0.20),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -370,7 +367,7 @@ class _TherapistMarketplaceScreenState
             scale: 0.8,
             child: Switch(
               value: _verifiedOnly,
-              activeColor: Colors.white,
+              activeThumbColor: Colors.white,
               activeTrackColor: const Color(0xFF0B4632),
               inactiveThumbColor: Colors.white,
               inactiveTrackColor: const Color(0xFFE2E8E5),
@@ -388,10 +385,7 @@ class _TherapistMarketplaceScreenState
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: const Color(0xFFE2E8E5),
-                width: 1.0,
-              ),
+              border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
             ),
             child: Row(
               children: [
@@ -461,14 +455,14 @@ class _TherapistMarketplaceScreenState
                     TherapistProfileScreen(therapist: therapist),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );

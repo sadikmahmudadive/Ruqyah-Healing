@@ -11,7 +11,6 @@ import '../ai_symptom_guide_screen.dart';
 import '../equipment_store_screen.dart';
 import '../hijama_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
-import '../video_consultation_screen.dart';
 
 class ServicesTab extends StatefulWidget {
   const ServicesTab({super.key});
@@ -85,20 +84,19 @@ class _ServicesTabState extends State<ServicesTab> {
                       HapticFeedback.mediumImpact();
                       Navigator.of(context).push(
                         PageRouteBuilder(
-                          pageBuilder: (_, __, ___) =>
+                          pageBuilder: (_, _, _) =>
                               const AISymptomGuideScreen(),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
-                            return FadeTransition(
-                              opacity: CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeInOut,
-                              ),
-                              child: child,
-                            );
-                          },
-                          transitionDuration:
-                              const Duration(milliseconds: 400),
+                                return FadeTransition(
+                                  opacity: CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.easeInOut,
+                                  ),
+                                  child: child,
+                                );
+                              },
+                          transitionDuration: const Duration(milliseconds: 400),
                         ),
                       );
                     },
@@ -169,8 +167,7 @@ class _ServicesTabState extends State<ServicesTab> {
               // 1. RUQYAH Service Card
               _buildMainServiceCard(
                 title: 'RUQYAH',
-                description:
-                    'Qur\'anic healing for protection and relief from spiritual distress.',
+                description: 'Qur\'anic healing for protection and relief from spiritual distress.',
                 customIcon: const RuqyahDuaIcon(
                   color: Color(0xFF0B4632),
                   size: 28,
@@ -185,14 +182,14 @@ class _ServicesTabState extends State<ServicesTab> {
                           const RuqyahHubScreen(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeInOut,
-                          ),
-                          child: child,
-                        );
-                      },
+                            return FadeTransition(
+                              opacity: CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                              child: child,
+                            );
+                          },
                       transitionDuration: const Duration(milliseconds: 400),
                     ),
                   );
@@ -204,8 +201,7 @@ class _ServicesTabState extends State<ServicesTab> {
               // 2. HIJAMA Service Card
               _buildMainServiceCard(
                 title: 'HIJAMA',
-                description:
-                    'Cupping therapy for natural detoxification and physical restoration.',
+                description: 'Cupping therapy for natural detoxification and physical restoration.',
                 customIcon: const HijamaCuppingIcon(
                   color: Color(0xFFE67E22),
                   size: 28,
@@ -220,14 +216,14 @@ class _ServicesTabState extends State<ServicesTab> {
                           const HijamaHubScreen(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeInOut,
-                          ),
-                          child: child,
-                        );
-                      },
+                            return FadeTransition(
+                              opacity: CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                              child: child,
+                            );
+                          },
                       transitionDuration: const Duration(milliseconds: 400),
                     ),
                   );
@@ -239,8 +235,7 @@ class _ServicesTabState extends State<ServicesTab> {
               // 3. ACUPUNCTURE Service Card
               _buildMainServiceCard(
                 title: 'ACUPUNCTURE',
-                description:
-                    'Holistic healing practices to maintain physical balance and energy wellness.',
+                description: 'Holistic healing practices to maintain physical balance and energy wellness.',
                 customIcon: const AcupunctureIcon(
                   color: Color(0xFF2980B9),
                   size: 28,
@@ -255,14 +250,14 @@ class _ServicesTabState extends State<ServicesTab> {
                           const AcupunctureHubScreen(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeInOut,
-                          ),
-                          child: child,
-                        );
-                      },
+                            return FadeTransition(
+                              opacity: CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                              child: child,
+                            );
+                          },
                       transitionDuration: const Duration(milliseconds: 400),
                     ),
                   );
@@ -298,21 +293,29 @@ class _ServicesTabState extends State<ServicesTab> {
                         HapticFeedback.selectionClick();
                         Navigator.of(context).push(
                           PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    const EquipmentStoreScreen(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              return FadeTransition(
-                                opacity: CurvedAnimation(
-                                  parent: animation,
-                                  curve: Curves.easeInOut,
-                                ),
-                                child: child,
-                              );
-                            },
-                            transitionDuration:
-                                const Duration(milliseconds: 400),
+                            pageBuilder: (
+                              context,
+                              animation,
+                              secondaryAnimation,
+                            ) => const EquipmentStoreScreen(),
+                            transitionsBuilder:
+                                (
+                                  context,
+                                  animation,
+                                  secondaryAnimation,
+                                  child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: CurvedAnimation(
+                                      parent: animation,
+                                      curve: Curves.easeInOut,
+                                    ),
+                                    child: child,
+                                  );
+                                },
+                            transitionDuration: const Duration(
+                              milliseconds: 400,
+                            ),
                           ),
                         );
                       },
@@ -371,12 +374,7 @@ class _ServicesTabState extends State<ServicesTab> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Center(
-                    child: customIcon ??
-                        Icon(
-                          icon,
-                          color: iconColor,
-                          size: 26,
-                        ),
+                    child: customIcon ?? Icon(icon, color: iconColor, size: 26),
                   ),
                 ),
 
@@ -456,7 +454,10 @@ class _ServicesTabState extends State<ServicesTab> {
           onTap: onTap,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14.0,
+              vertical: 16.0,
+            ),
             child: Row(
               children: [
                 // Icon Container
@@ -467,13 +468,7 @@ class _ServicesTabState extends State<ServicesTab> {
                     color: iconBgColor,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Center(
-                    child: Icon(
-                      icon,
-                      color: iconColor,
-                      size: 20,
-                    ),
-                  ),
+                  child: Center(child: Icon(icon, color: iconColor, size: 20)),
                 ),
 
                 const SizedBox(width: 10),

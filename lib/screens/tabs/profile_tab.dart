@@ -24,9 +24,8 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget build(BuildContext context) {
     final currentUser = FirebaseService.currentUser;
     final displayName = currentUser?.displayName ?? 'Amima Rahman';
-    final email = currentUser?.email ??
-        currentUser?.phoneNumber ??
-        'amima@email.com';
+    final email =
+        currentUser?.email ?? currentUser?.phoneNumber ?? 'amima@email.com';
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: context.systemOverlayStyle,
@@ -49,14 +48,21 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -75,17 +81,17 @@ class _ProfileTabState extends State<ProfileTab> {
                     HapticFeedback.selectionClick();
                     Navigator.of(context).push(
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const SettingsScreen(),
+                        pageBuilder: (_, _, _) => const SettingsScreen(),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(
-                            opacity: CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOut,
-                            ),
-                            child: child,
-                          );
-                        },
+                              return FadeTransition(
+                                opacity: CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.easeInOut,
+                                ),
+                                child: child,
+                              );
+                            },
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
                     );
@@ -140,10 +146,7 @@ class _ProfileTabState extends State<ProfileTab> {
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color(0xFFD49E35),
-                  width: 2.0,
-                ),
+                border: Border.all(color: const Color(0xFFD49E35), width: 2.0),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(42),
@@ -152,7 +155,11 @@ class _ProfileTabState extends State<ProfileTab> {
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
                     color: const Color(0xFF1E3A2F),
-                    child: const Icon(Icons.person, color: Colors.white, size: 40),
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 40,
+                    ),
                   ),
                 ),
               ),
@@ -225,8 +232,7 @@ class _ProfileTabState extends State<ProfileTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) =>
-                      const HealthProfileDetailScreen(),
+                  pageBuilder: (_, _, _) => const HealthProfileDetailScreen(),
                 ),
               );
             },
@@ -328,7 +334,7 @@ class _ProfileTabState extends State<ProfileTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const ToastShowcaseScreen(),
+                  pageBuilder: (_, _, _) => const ToastShowcaseScreen(),
                 ),
               );
             },
@@ -341,9 +347,8 @@ class _ProfileTabState extends State<ProfileTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).pushAndRemoveUntil(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => MainNavigationShell(
-                    initialTab: NavigationTab.bookings,
-                  ),
+                  pageBuilder: (_, _, _) =>
+                      MainNavigationShell(initialTab: NavigationTab.bookings),
                 ),
                 (route) => false,
               );
@@ -357,7 +362,7 @@ class _ProfileTabState extends State<ProfileTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const SubscriptionPlansScreen(),
+                  pageBuilder: (_, _, _) => const SubscriptionPlansScreen(),
                 ),
               );
             },
@@ -378,7 +383,7 @@ class _ProfileTabState extends State<ProfileTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const NotificationScreen(),
+                  pageBuilder: (_, _, _) => const NotificationScreen(),
                 ),
               );
             },
@@ -400,8 +405,7 @@ class _ProfileTabState extends State<ProfileTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) =>
-                      const HealthProfileDetailScreen(),
+                  pageBuilder: (_, _, _) => const HealthProfileDetailScreen(),
                 ),
               );
             },
@@ -442,11 +446,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
-                  child: Icon(
-                    icon,
-                    color: const Color(0xFF0B4632),
-                    size: 20,
-                  ),
+                  child: Icon(icon, color: const Color(0xFF0B4632), size: 20),
                 ),
               ),
               const SizedBox(width: 14),
@@ -507,7 +507,7 @@ class _ProfileTabState extends State<ProfileTab> {
             if (mounted) {
               Navigator.of(context).pushAndRemoveUntil(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const SignInScreen(),
+                  pageBuilder: (_, _, _) => const SignInScreen(),
                 ),
                 (route) => false,
               );

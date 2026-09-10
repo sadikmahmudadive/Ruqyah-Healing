@@ -130,7 +130,6 @@ class GlobalBottomNavBar extends StatelessWidget {
     required Widget Function(bool isSelected, Color color) iconBuilder,
   }) {
     final isSelected = currentTab == tab;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final inactiveIconColor = const Color(0xFF0B4632);
 
     return GestureDetector(

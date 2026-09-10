@@ -30,8 +30,7 @@ class BookingConfirmationScreen extends StatefulWidget {
       _BookingConfirmationScreenState();
 }
 
-class _BookingConfirmationScreenState
-    extends State<BookingConfirmationScreen> {
+class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
   String _selectedPaymentMethod = 'bKash'; // 'bKash', 'Nagad', 'Card'
   final TextEditingController _couponController = TextEditingController();
   bool _agreedToTerms = true;
@@ -88,9 +87,7 @@ class _BookingConfirmationScreenState
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         backgroundColor: Colors.white,
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -144,7 +141,7 @@ class _BookingConfirmationScreenState
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const MainNavigationShell(),
+                      pageBuilder: (_, _, _) => const MainNavigationShell(),
                     ),
                     (route) => false,
                   );
@@ -219,14 +216,21 @@ class _BookingConfirmationScreenState
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -378,8 +382,10 @@ class _BookingConfirmationScreenState
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(12),
@@ -444,7 +450,9 @@ class _BookingConfirmationScreenState
                     const SizedBox(height: 3),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 2),
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFEBF7F0),
                         borderRadius: BorderRadius.circular(8),
@@ -503,11 +511,7 @@ class _BookingConfirmationScreenState
             color: const Color(0xFFEBF7F0),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(
-            icon,
-            color: const Color(0xFF0B4632),
-            size: 16,
-          ),
+          child: Icon(icon, color: const Color(0xFF0B4632), size: 16),
         ),
         const SizedBox(width: 10),
         Expanded(
@@ -545,7 +549,9 @@ class _BookingConfirmationScreenState
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: isSelected ? const Color(0xFF0B4632) : const Color(0xFFE2E8E5),
+            color: isSelected
+                ? const Color(0xFF0B4632)
+                : const Color(0xFFE2E8E5),
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
@@ -636,7 +642,9 @@ class _BookingConfirmationScreenState
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: isSelected ? const Color(0xFF0B4632) : const Color(0xFFE2E8E5),
+            color: isSelected
+                ? const Color(0xFF0B4632)
+                : const Color(0xFFE2E8E5),
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
@@ -725,7 +733,9 @@ class _BookingConfirmationScreenState
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: isSelected ? const Color(0xFF0B4632) : const Color(0xFFE2E8E5),
+            color: isSelected
+                ? const Color(0xFF0B4632)
+                : const Color(0xFFE2E8E5),
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
@@ -778,8 +788,10 @@ class _BookingConfirmationScreenState
             Row(
               children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF1A237E),
                     borderRadius: BorderRadius.circular(4),
@@ -797,8 +809,10 @@ class _BookingConfirmationScreenState
                 ),
                 const SizedBox(width: 4),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFD32F2F),
                     borderRadius: BorderRadius.circular(4),
@@ -845,8 +859,10 @@ class _BookingConfirmationScreenState
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border:
-                      Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                 ),
                 child: TextField(
                   controller: _couponController,
@@ -1120,11 +1136,7 @@ class _BookingConfirmationScreenState
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.lock_rounded,
-                color: Colors.white,
-                size: 18,
-              ),
+              const Icon(Icons.lock_rounded, color: Colors.white, size: 18),
               const SizedBox(width: 8),
               Text(
                 'Confirm & Pay ৳$total',

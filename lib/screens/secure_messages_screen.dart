@@ -37,8 +37,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
     {
       'id': 'msg_2',
       'isUser': false,
-      'text':
-          'Alhamdulillah. Continue the recommended adhkar and drink plenty of water.',
+      'text': 'Alhamdulillah. Continue the recommended adhkar and drink plenty of water.',
       'time': '10:12 AM',
       'type': 'text',
     },
@@ -134,9 +133,13 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               child: ListView.separated(
                 controller: _scrollController,
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 8.0,
+                ),
                 itemCount: _messages.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final msg = _messages[index];
                   return _buildMessageItem(msg);
@@ -146,7 +149,10 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
 
             // 6. Book Follow-up Button Banner
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 6.0,
+              ),
               child: _buildBookFollowUpButton(),
             ),
 
@@ -256,11 +262,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.lock_outline_rounded,
-            color: Color(0xFF0B4632),
-            size: 16,
-          ),
+          Icon(Icons.lock_outline_rounded, color: Color(0xFF0B4632), size: 16),
           SizedBox(width: 8),
           Flexible(
             child: Text(
@@ -461,7 +463,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                 HapticFeedback.selectionClick();
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => VideoConsultationScreen(
+                    pageBuilder: (_, _, _) => VideoConsultationScreen(
                       doctorName: widget.practitionerName,
                     ),
                   ),
@@ -511,8 +513,9 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
           ],
         ),
         child: Column(
-          crossAxisAlignment:
-              isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          crossAxisAlignment: isUser
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
           children: [
             Text(
               msg['text'] as String,
@@ -610,9 +613,25 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(16, (index) {
                       final heights = [
-                        12, 18, 28, 14, 22, 32, 16, 24, 10, 20, 28, 18, 22, 14, 8, 16
+                        12,
+                        18,
+                        28,
+                        14,
+                        22,
+                        32,
+                        16,
+                        24,
+                        10,
+                        20,
+                        28,
+                        18,
+                        22,
+                        14,
+                        8,
+                        16,
                       ];
-                      final barHeight = heights[index % heights.length].toDouble();
+                      final barHeight = heights[index % heights.length]
+                          .toDouble();
                       return Container(
                         width: 3,
                         height: barHeight,
@@ -762,7 +781,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             HapticFeedback.mediumImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => BookAppointmentScreen(
+                pageBuilder: (_, _, _) => BookAppointmentScreen(
                   therapistName: widget.practitionerName,
                 ),
               ),
@@ -772,11 +791,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.calendar_month_rounded,
-                color: Colors.white,
-                size: 18,
-              ),
+              Icon(Icons.calendar_month_rounded, color: Colors.white, size: 18),
               SizedBox(width: 8),
               Text(
                 'Book Follow-up',

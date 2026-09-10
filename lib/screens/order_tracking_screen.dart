@@ -226,7 +226,10 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               ),
 
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(12),
@@ -426,7 +429,9 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFFEBF7F0),
                             borderRadius: BorderRadius.circular(6),
@@ -557,7 +562,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const SecureMessagesScreen(),
+                  pageBuilder: (_, _, _) => const SecureMessagesScreen(),
                 ),
               );
             },
@@ -659,7 +664,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   AppToast.show(
                     context,
                     title: 'Refund Initiated',
-                    message: 'Return & refund request for Order #RH1024 submitted.',
+                    message:
+                        'Return & refund request for Order #RH1024 submitted.',
                     type: ToastType.warning,
                   );
                 },

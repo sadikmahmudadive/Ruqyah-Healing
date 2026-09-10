@@ -1,11 +1,7 @@
-import 'dart:math' as math;
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
-import '../widgets/global_bottom_navbar.dart';
 import 'therapist_marketplace_screen.dart';
 
 class Acupoint {
@@ -40,8 +36,7 @@ class AcupuncturePointMapScreen extends StatefulWidget {
       _AcupuncturePointMapScreenState();
 }
 
-class _AcupuncturePointMapScreenState
-    extends State<AcupuncturePointMapScreen> {
+class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   String _viewAngle = 'Front'; // 'Front' or 'Back'
   String _selectedMeridian = 'Lung (LU)';
   bool _isBookmarked = false;
@@ -62,13 +57,11 @@ class _AcupuncturePointMapScreenState
       code: 'LI4',
       name: 'Hegu',
       meridian: 'Large Intestine 4',
-      location:
-          'On the back of the hand, between the thumb and index finger.',
+      location: 'On the back of the hand, between the thumb and index finger.',
       commonUse:
           'May help with headaches, facial pain, stress and pain relief.',
       evidence: 'Moderate',
-      safetyNotice:
-          'Not recommended during pregnancy. Always consult a qualified practitioner.',
+      safetyNotice: 'Not recommended during pregnancy. Always consult a qualified practitioner.',
       frontPos: Offset(0.38, 0.22),
       backPos: Offset(0.40, 0.24),
     ),
@@ -76,8 +69,7 @@ class _AcupuncturePointMapScreenState
       code: 'LU7',
       name: 'Lieque',
       meridian: 'Lung 7',
-      location:
-          '1.5 cun proximal to the wrist crease, above the styloid process of the radius.',
+      location: '1.5 cun proximal to the wrist crease, above the styloid process of the radius.',
       commonUse: 'Supports respiratory function and neck stiffness relief.',
       evidence: 'High',
       safetyNotice:
@@ -89,7 +81,8 @@ class _AcupuncturePointMapScreenState
       code: 'ST36',
       name: 'Zusanli',
       meridian: 'Stomach 36',
-      location: '3 cun below the knee, one finger-breadth lateral to the tibia.',
+      location:
+          '3 cun below the knee, one finger-breadth lateral to the tibia.',
       commonUse: 'Boosts energy, digestive harmony, and overall immunity.',
       evidence: 'Strong',
       safetyNotice: 'Clinical use only - consult a verified acupuncturist.',
@@ -170,14 +163,21 @@ class _AcupuncturePointMapScreenState
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -400,8 +400,9 @@ class _AcupuncturePointMapScreenState
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 12,
-                        fontWeight:
-                            isSelected ? FontWeight.w800 : FontWeight.w500,
+                        fontWeight: isSelected
+                            ? FontWeight.w800
+                            : FontWeight.w500,
                         color: isSelected
                             ? Colors.white
                             : const Color(0xFF52625B),
@@ -438,7 +439,9 @@ class _AcupuncturePointMapScreenState
                 // 3D Human Body Anatomy with Meridian Channel Lines
                 CustomPaint(
                   size: const Size(160, 320),
-                  painter: _MeridianAnatomyPainter(isBack: _viewAngle == 'Back'),
+                  painter: _MeridianAnatomyPainter(
+                    isBack: _viewAngle == 'Back',
+                  ),
                 ),
 
                 // Acupoint Markers Overlay
@@ -624,18 +627,12 @@ class _AcupuncturePointMapScreenState
           const SizedBox(height: 16),
 
           // LOCATION Row
-          _buildDetailPillRow(
-            label: 'LOCATION',
-            value: pt.location,
-          ),
+          _buildDetailPillRow(label: 'LOCATION', value: pt.location),
 
           const SizedBox(height: 12),
 
           // COMMON USE Row
-          _buildDetailPillRow(
-            label: 'COMMON USE',
-            value: pt.commonUse,
-          ),
+          _buildDetailPillRow(label: 'COMMON USE', value: pt.commonUse),
 
           const SizedBox(height: 12),
 
@@ -643,8 +640,10 @@ class _AcupuncturePointMapScreenState
           Row(
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(8),
@@ -662,8 +661,10 @@ class _AcupuncturePointMapScreenState
               ),
               const SizedBox(width: 12),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFF8E1),
                   borderRadius: BorderRadius.circular(8),
@@ -757,7 +758,7 @@ class _AcupuncturePointMapScreenState
                   HapticFeedback.heavyImpact();
                   Navigator.of(context).push(
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) =>
+                      pageBuilder: (_, _, _) =>
                           const TherapistMarketplaceScreen(),
                     ),
                   );
@@ -784,10 +785,7 @@ class _AcupuncturePointMapScreenState
     );
   }
 
-  Widget _buildDetailPillRow({
-    required String label,
-    required String value,
-  }) {
+  Widget _buildDetailPillRow({required String label, required String value}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -863,38 +861,99 @@ class _MeridianAnatomyPainter extends CustomPainter {
     // Head
     final Path headPath = Path()
       ..addOval(
-          Rect.fromCircle(center: Offset(centerX, h * 0.10), radius: w * 0.12));
+        Rect.fromCircle(center: Offset(centerX, h * 0.10), radius: w * 0.12),
+      );
 
     // Torso & Limbs
     final Path torsoPath = Path()
       ..moveTo(centerX - w * 0.08, h * 0.18)
       ..quadraticBezierTo(
-          centerX - w * 0.28, h * 0.19, centerX - w * 0.32, h * 0.23)
-      ..cubicTo(centerX - w * 0.38, h * 0.35, centerX - w * 0.40, h * 0.45,
-          centerX - w * 0.38, h * 0.52)
-      ..cubicTo(centerX - w * 0.33, h * 0.52, centerX - w * 0.30, h * 0.45,
-          centerX - w * 0.26, h * 0.34)
+        centerX - w * 0.28,
+        h * 0.19,
+        centerX - w * 0.32,
+        h * 0.23,
+      )
+      ..cubicTo(
+        centerX - w * 0.38,
+        h * 0.35,
+        centerX - w * 0.40,
+        h * 0.45,
+        centerX - w * 0.38,
+        h * 0.52,
+      )
+      ..cubicTo(
+        centerX - w * 0.33,
+        h * 0.52,
+        centerX - w * 0.30,
+        h * 0.45,
+        centerX - w * 0.26,
+        h * 0.34,
+      )
       ..quadraticBezierTo(
-          centerX - w * 0.20, h * 0.42, centerX - w * 0.18, h * 0.52)
-      ..cubicTo(centerX - w * 0.22, h * 0.65, centerX - w * 0.16, h * 0.78,
-          centerX - w * 0.12, h * 0.92)
+        centerX - w * 0.20,
+        h * 0.42,
+        centerX - w * 0.18,
+        h * 0.52,
+      )
+      ..cubicTo(
+        centerX - w * 0.22,
+        h * 0.65,
+        centerX - w * 0.16,
+        h * 0.78,
+        centerX - w * 0.12,
+        h * 0.92,
+      )
       ..lineTo(centerX - w * 0.03, h * 0.92)
       ..quadraticBezierTo(
-          centerX - w * 0.06, h * 0.75, centerX - w * 0.01, h * 0.55)
+        centerX - w * 0.06,
+        h * 0.75,
+        centerX - w * 0.01,
+        h * 0.55,
+      )
       ..lineTo(centerX + w * 0.01, h * 0.55)
       ..quadraticBezierTo(
-          centerX + w * 0.06, h * 0.75, centerX + w * 0.03, h * 0.92)
+        centerX + w * 0.06,
+        h * 0.75,
+        centerX + w * 0.03,
+        h * 0.92,
+      )
       ..lineTo(centerX + w * 0.12, h * 0.92)
-      ..cubicTo(centerX + w * 0.16, h * 0.78, centerX + w * 0.22, h * 0.65,
-          centerX + w * 0.18, h * 0.52)
+      ..cubicTo(
+        centerX + w * 0.16,
+        h * 0.78,
+        centerX + w * 0.22,
+        h * 0.65,
+        centerX + w * 0.18,
+        h * 0.52,
+      )
       ..quadraticBezierTo(
-          centerX + w * 0.20, h * 0.42, centerX + w * 0.26, h * 0.34)
-      ..cubicTo(centerX + w * 0.30, h * 0.45, centerX + w * 0.33, h * 0.52,
-          centerX + w * 0.38, h * 0.52)
-      ..cubicTo(centerX + w * 0.40, h * 0.45, centerX + w * 0.38, h * 0.35,
-          centerX + w * 0.32, h * 0.23)
+        centerX + w * 0.20,
+        h * 0.42,
+        centerX + w * 0.26,
+        h * 0.34,
+      )
+      ..cubicTo(
+        centerX + w * 0.30,
+        h * 0.45,
+        centerX + w * 0.33,
+        h * 0.52,
+        centerX + w * 0.38,
+        h * 0.52,
+      )
+      ..cubicTo(
+        centerX + w * 0.40,
+        h * 0.45,
+        centerX + w * 0.38,
+        h * 0.35,
+        centerX + w * 0.32,
+        h * 0.23,
+      )
       ..quadraticBezierTo(
-          centerX + w * 0.28, h * 0.19, centerX + w * 0.08, h * 0.18)
+        centerX + w * 0.28,
+        h * 0.19,
+        centerX + w * 0.08,
+        h * 0.18,
+      )
       ..close();
 
     canvas.drawPath(headPath, bodyFillPaint);

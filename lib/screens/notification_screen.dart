@@ -53,8 +53,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     NotificationItem(
       id: 'notif_1',
       title: 'Appointment Reminder',
-      subtitle:
-          'Your session with Dr. Salma Rahman starts in 2 hours. Join the session.',
+      subtitle: 'Your session with Dr. Salma Rahman starts in 2 hours. Join the session.',
       time: '10:00 AM',
       category: 'Appointments',
       icon: Icons.calendar_today_outlined,
@@ -65,8 +64,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     NotificationItem(
       id: 'notif_2',
       title: 'Daily Azkar Reminder',
-      subtitle:
-          'Take 5 minutes to read your morning protection supplications.',
+      subtitle: 'Take 5 minutes to read your morning protection supplications.',
       time: '08:00 AM',
       category: 'Reminders',
       icon: Icons.notifications_none_rounded,
@@ -77,8 +75,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     NotificationItem(
       id: 'notif_3',
       title: 'New Message Received',
-      subtitle:
-          "Dr. Salma Rahman replied: 'Make sure to keep drinking the Ruqyah water...'",
+      subtitle: "Dr. Salma Rahman replied: 'Make sure to keep drinking the Ruqyah water...'",
       time: 'Yesterday',
       category: 'Messages',
       icon: Icons.mail_outline_rounded,
@@ -117,8 +114,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final filteredNotifications = _selectedCategory == 'All'
         ? _allNotifications
         : _allNotifications
-            .where((n) => n.category == _selectedCategory)
-            .toList();
+              .where((n) => n.category == _selectedCategory)
+              .toList();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -195,8 +192,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13.5,
-                          fontWeight:
-                              isSelected ? FontWeight.w700 : FontWeight.w500,
+                          fontWeight: isSelected
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           color: isSelected
                               ? Colors.white
                               : context.textPrimary,
@@ -226,7 +224,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   : ListView.separated(
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 8.0),
+                        horizontal: 20.0,
+                        vertical: 8.0,
+                      ),
                       itemCount: filteredNotifications.length,
                       separatorBuilder: (context, index) =>
                           const SizedBox(height: 14),
@@ -323,17 +323,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 HapticFeedback.selectionClick();
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const SettingsScreen(),
+                    pageBuilder: (_, _, _) => const SettingsScreen(),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        ),
-                        child: child,
-                      );
-                    },
+                          return FadeTransition(
+                            opacity: CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut,
+                            ),
+                            child: child,
+                          );
+                        },
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
                 );
@@ -376,14 +376,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     targetWidget,
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -403,11 +403,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Center(
-                    child: Icon(
-                      item.icon,
-                      color: item.iconColor,
-                      size: 22,
-                    ),
+                    child: Icon(item.icon, color: item.iconColor, size: 22),
                   ),
                 ),
 

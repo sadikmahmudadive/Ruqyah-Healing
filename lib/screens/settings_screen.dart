@@ -13,12 +13,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String _selectedLanguage = 'English';
-  String _textSize = 'Medium';
+  final String _selectedLanguage = 'English';
+  final String _textSize = 'Medium';
   bool _highContrast = false;
   bool _reduceMotion = false;
   bool _prayerReminders = true;
-  String _audioDownloads = 'Wi-Fi Only';
+  final String _audioDownloads = 'Wi-Fi Only';
   bool _biometricLock = true;
 
   @override
@@ -181,7 +181,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildDivider(),
           _buildSettingItem(
             title: 'Display',
-            trailingText: _highContrast ? 'High Contrast On' : 'High Contrast Off',
+            trailingText: _highContrast
+                ? 'High Contrast On'
+                : 'High Contrast Off',
             onTap: () {
               HapticFeedback.selectionClick();
               setState(() => _highContrast = !_highContrast);
@@ -385,8 +387,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               if (badgeText != null) ...[
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: badgeBg ?? const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(10),
@@ -519,9 +523,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text(
           'Delete Account',
           style: TextStyle(
@@ -559,10 +561,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 type: ToastType.warning,
               );
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: const Text('Delete', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -572,10 +571,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        height: 1,
-        color: context.cardBorder,
-      ),
+      child: Container(height: 1, color: context.cardBorder),
     );
   }
 }

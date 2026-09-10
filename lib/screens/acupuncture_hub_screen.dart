@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../widgets/acupuncture_icon.dart';
-import '../widgets/app_toast.dart';
 import 'acupuncture_point_map_screen.dart';
 import 'pain_stress_monitor_screen.dart';
 import 'therapist_marketplace_screen.dart';
@@ -17,8 +16,8 @@ class AcupunctureHubScreen extends StatefulWidget {
 
 class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
   final TextEditingController _searchController = TextEditingController();
-  int _painLevel = 6;
-  int _stressLevel = 4;
+  final int _painLevel = 6;
+  final int _stressLevel = 4;
 
   @override
   void dispose() {
@@ -85,7 +84,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                         HapticFeedback.selectionClick();
                         Navigator.of(context).push(
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) =>
+                            pageBuilder: (_, _, _) =>
                                 const AcupuncturePointMapScreen(),
                           ),
                         );
@@ -103,7 +102,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                         HapticFeedback.selectionClick();
                         Navigator.of(context).push(
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) =>
+                            pageBuilder: (_, _, _) =>
                                 const TherapistMarketplaceScreen(),
                           ),
                         );
@@ -258,8 +257,10 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFEBF7F0),
                       borderRadius: BorderRadius.circular(10),
@@ -291,10 +292,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
               borderRadius: BorderRadius.circular(18),
             ),
             child: const Center(
-              child: AcupunctureIcon(
-                color: Color(0xFF2980B9),
-                size: 42,
-              ),
+              child: AcupunctureIcon(color: Color(0xFF2980B9), size: 42),
             ),
           ),
         ],
@@ -320,11 +318,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.search_rounded,
-            color: Color(0xFF90A4AE),
-            size: 20,
-          ),
+          const Icon(Icons.search_rounded, color: Color(0xFF90A4AE), size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -443,7 +437,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         HapticFeedback.selectionClick();
         Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const PainStressMonitorScreen(),
+            pageBuilder: (_, _, _) => const PainStressMonitorScreen(),
           ),
         );
       },
@@ -460,150 +454,150 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             ),
           ],
         ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
-                  borderRadius: BorderRadius.circular(14),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEBF7F0),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(
+                    Icons.show_chart_rounded,
+                    color: Color(0xFF0B4632),
+                    size: 22,
+                  ),
                 ),
-                child: const Icon(
-                  Icons.show_chart_rounded,
-                  color: Color(0xFF0B4632),
-                  size: 22,
-                ),
-              ),
 
-              const SizedBox(width: 14),
+                const SizedBox(width: 14),
 
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Pain & Stress Tracker',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 15.5,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Pain & Stress Tracker',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFF15221D),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      'Track your progress over time',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        color: Color(0xFF6E7E77),
+                      SizedBox(height: 2),
+                      Text(
+                        'Track your progress over time',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          color: Color(0xFF6E7E77),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              Container(
-                width: 36,
-                height: 36,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF5F7F6),
-                  shape: BoxShape.circle,
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF5F7F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: Color(0xFF90A4AE),
+                    size: 20,
+                  ),
                 ),
-                child: const Icon(
-                  Icons.chevron_right_rounded,
-                  color: Color(0xFF90A4AE),
-                  size: 20,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 16),
-
-          // Pain Level Row
-          Row(
-            children: [
-              const Text(
-                'Pain Level',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12.5,
-                  color: Color(0xFF6E7E77),
-                ),
-              ),
-              const Spacer(),
-              Text(
-                '$_painLevel / 10',
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFFE74C3C),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 6),
-
-          // Pain Bar
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: _painLevel / 10.0,
-              backgroundColor: const Color(0xFFF5F7F6),
-              color: const Color(0xFFE74C3C),
-              minHeight: 6,
+              ],
             ),
-          ),
 
-          const SizedBox(height: 14),
+            const SizedBox(height: 16),
 
-          // Stress Level Row
-          Row(
-            children: [
-              const Text(
-                'Stress Level',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12.5,
-                  color: Color(0xFF6E7E77),
+            // Pain Level Row
+            Row(
+              children: [
+                const Text(
+                  'Pain Level',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12.5,
+                    color: Color(0xFF6E7E77),
+                  ),
                 ),
-              ),
-              const Spacer(),
-              Text(
-                '$_stressLevel / 10',
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF0B4632),
+                const Spacer(),
+                Text(
+                  '$_painLevel / 10',
+                  style: const TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFFE74C3C),
+                  ),
                 ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 6),
-
-          // Stress Bar
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: _stressLevel / 10.0,
-              backgroundColor: const Color(0xFFF5F7F6),
-              color: const Color(0xFF0B4632),
-              minHeight: 6,
+              ],
             ),
-          ),
-        ],
+
+            const SizedBox(height: 6),
+
+            // Pain Bar
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: _painLevel / 10.0,
+                backgroundColor: const Color(0xFFF5F7F6),
+                color: const Color(0xFFE74C3C),
+                minHeight: 6,
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
+            // Stress Level Row
+            Row(
+              children: [
+                const Text(
+                  'Stress Level',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12.5,
+                    color: Color(0xFF6E7E77),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '$_stressLevel / 10',
+                  style: const TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF0B4632),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 6),
+
+            // Stress Bar
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: _stressLevel / 10.0,
+                backgroundColor: const Color(0xFFF5F7F6),
+                color: const Color(0xFF0B4632),
+                minHeight: 6,
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   // 7. Safety & Education Card
   Widget _buildSafetyEducationCard() {
@@ -814,8 +808,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
               HapticFeedback.heavyImpact();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) =>
-                      const TherapistMarketplaceScreen(),
+                  pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
                 ),
               );
             },

@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,8 +67,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
     HijamaPoint(
       code: 'GB 43',
       name: 'Al-Kahil',
-      location:
-          'On the dorsum of the foot, in the depression anterior to the 4th and 5th metatarsal junction.',
+      location: 'On the dorsum of the foot, in the depression anterior to the 4th and 5th metatarsal junction.',
       purpose: 'May support headaches, eye strain and tension relief.',
       evidence: 'Traditional use with moderate evidence',
       frontPos: Offset(0.35, 0.85),
@@ -79,8 +77,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
     HijamaPoint(
       code: 'GV 14',
       name: 'Al-Katah',
-      location:
-          'Below the spinous process of the 7th cervical vertebra, at the base of the neck.',
+      location: 'Below the spinous process of the 7th cervical vertebra, at the base of the neck.',
       purpose: 'Primary Sunnah point for immune support and detox.',
       evidence: 'High clinical & traditional consensus',
       frontPos: Offset(0.50, 0.18),
@@ -90,8 +87,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
     HijamaPoint(
       code: 'BL 23',
       name: 'Shenshu',
-      location:
-          '1.5 cun lateral to the lower border of the spinous process of the 2nd lumbar vertebra.',
+      location: '1.5 cun lateral to the lower border of the spinous process of the 2nd lumbar vertebra.',
       purpose: 'Supports kidney energy, lower back relief, and vitality.',
       evidence: 'Supported by clinical observational studies',
       frontPos: Offset(0.48, 0.48),
@@ -101,8 +97,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
     HijamaPoint(
       code: 'BL 13',
       name: 'Feishu',
-      location:
-          '1.5 cun lateral to the lower border of the spinous process of the 3rd thoracic vertebra.',
+      location: '1.5 cun lateral to the lower border of the spinous process of the 3rd thoracic vertebra.',
       purpose: 'Promotes respiratory wellness and stress relaxation.',
       evidence: 'Moderate evidence base',
       frontPos: Offset(0.42, 0.32),
@@ -170,8 +165,10 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                   ),
                 ),
                 trailing: isSelected
-                    ? const Icon(Icons.check_circle_rounded,
-                        color: Color(0xFF0B4632))
+                    ? const Icon(
+                        Icons.check_circle_rounded,
+                        color: Color(0xFF0B4632),
+                      )
                     : null,
                 onTap: () {
                   HapticFeedback.selectionClick();
@@ -238,8 +235,10 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                   ),
                 ),
                 trailing: isSelected
-                    ? const Icon(Icons.check_circle_rounded,
-                        color: Color(0xFF0B4632))
+                    ? const Icon(
+                        Icons.check_circle_rounded,
+                        color: Color(0xFF0B4632),
+                      )
                     : null,
                 onTap: () {
                   HapticFeedback.selectionClick();
@@ -262,10 +261,10 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _FullScreen3DAnatomyViewer(
-          points: _points,
-          initialPoint: _selectedPoint,
-          initialViewAngle: _viewAngle,
-        ),
+              points: _points,
+              initialPoint: _selectedPoint,
+              initialViewAngle: _viewAngle,
+            ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: CurvedAnimation(
@@ -331,14 +330,21 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(
+                    color: const Color(0xFFE2E8E5),
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -596,7 +602,9 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                   icon: Icons.add_rounded,
                   onTap: () {
                     HapticFeedback.selectionClick();
-                    setState(() => _zoomLevel = (_zoomLevel + 0.2).clamp(1.0, 2.0));
+                    setState(
+                      () => _zoomLevel = (_zoomLevel + 0.2).clamp(1.0, 2.0),
+                    );
                   },
                 ),
                 const SizedBox(height: 6),
@@ -604,7 +612,9 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                   icon: Icons.remove_rounded,
                   onTap: () {
                     HapticFeedback.selectionClick();
-                    setState(() => _zoomLevel = (_zoomLevel - 0.2).clamp(1.0, 2.0));
+                    setState(
+                      () => _zoomLevel = (_zoomLevel - 0.2).clamp(1.0, 2.0),
+                    );
                   },
                 ),
               ],
@@ -619,7 +629,10 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
               onTap: _showFullScreen3DViewerModal,
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0B4632),
                   borderRadius: BorderRadius.circular(10),
@@ -663,10 +676,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.92),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: const Color(0xFFE2E8E5),
-                  width: 1.0,
-                ),
+                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
@@ -678,20 +688,14 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  _LegendItem(
-                    color: Color(0xFF0B4632),
-                    label: 'Active Point',
-                  ),
+                  _LegendItem(color: Color(0xFF0B4632), label: 'Active Point'),
                   SizedBox(height: 4),
                   _LegendItem(
                     color: Color(0xFFD49E35),
                     label: 'Previously Treated',
                   ),
                   SizedBox(height: 4),
-                  _LegendItem(
-                    color: Color(0xFF2ECC71),
-                    label: 'Secondary',
-                  ),
+                  _LegendItem(color: Color(0xFF2ECC71), label: 'Secondary'),
                 ],
               ),
             ),
@@ -705,8 +709,8 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
     final Color dotColor = pt.status == 'Active'
         ? const Color(0xFF0B4632)
         : pt.status == 'Treated'
-            ? const Color(0xFFD49E35)
-            : const Color(0xFF2ECC71);
+        ? const Color(0xFFD49E35)
+        : const Color(0xFF2ECC71);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
@@ -715,10 +719,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
       decoration: BoxDecoration(
         color: dotColor,
         shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.white,
-          width: isSelected ? 2.5 : 1.5,
-        ),
+        border: Border.all(color: Colors.white, width: isSelected ? 2.5 : 1.5),
         boxShadow: isSelected
             ? [
                 BoxShadow(
@@ -868,8 +869,10 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 borderRadius: BorderRadius.circular(16),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(16),
@@ -885,8 +888,9 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12.5,
-                      fontWeight:
-                          isSelected ? FontWeight.w700 : FontWeight.w600,
+                      fontWeight: isSelected
+                          ? FontWeight.w700
+                          : FontWeight.w600,
                       color: const Color(0xFF0B4632),
                     ),
                   ),
@@ -1170,8 +1174,9 @@ class _HumanBodyAnatomyPainter extends CustomPainter {
 
     // Drawing Full Anatomical Human Silhouette
     final Path headPath = Path()
-      ..addOval(Rect.fromCircle(
-          center: Offset(centerX, h * 0.09), radius: w * 0.12));
+      ..addOval(
+        Rect.fromCircle(center: Offset(centerX, h * 0.09), radius: w * 0.12),
+      );
 
     final Path neckPath = Path()
       ..moveTo(centerX - w * 0.06, h * 0.14)
@@ -1184,42 +1189,102 @@ class _HumanBodyAnatomyPainter extends CustomPainter {
       ..moveTo(centerX - w * 0.08, h * 0.18)
       // Left Shoulder (Deltoid)
       ..quadraticBezierTo(
-          centerX - w * 0.28, h * 0.19, centerX - w * 0.32, h * 0.23)
+        centerX - w * 0.28,
+        h * 0.19,
+        centerX - w * 0.32,
+        h * 0.23,
+      )
       // Left Arm & Bicep
-      ..cubicTo(centerX - w * 0.38, h * 0.35, centerX - w * 0.40, h * 0.45,
-          centerX - w * 0.38, h * 0.52)
-      ..cubicTo(centerX - w * 0.33, h * 0.52, centerX - w * 0.30, h * 0.45,
-          centerX - w * 0.26, h * 0.34)
+      ..cubicTo(
+        centerX - w * 0.38,
+        h * 0.35,
+        centerX - w * 0.40,
+        h * 0.45,
+        centerX - w * 0.38,
+        h * 0.52,
+      )
+      ..cubicTo(
+        centerX - w * 0.33,
+        h * 0.52,
+        centerX - w * 0.30,
+        h * 0.45,
+        centerX - w * 0.26,
+        h * 0.34,
+      )
       // Left Waist & Hip
       ..quadraticBezierTo(
-          centerX - w * 0.20, h * 0.42, centerX - w * 0.18, h * 0.52)
+        centerX - w * 0.20,
+        h * 0.42,
+        centerX - w * 0.18,
+        h * 0.52,
+      )
       // Left Thigh & Quad
-      ..cubicTo(centerX - w * 0.22, h * 0.65, centerX - w * 0.16, h * 0.78,
-          centerX - w * 0.12, h * 0.92)
+      ..cubicTo(
+        centerX - w * 0.22,
+        h * 0.65,
+        centerX - w * 0.16,
+        h * 0.78,
+        centerX - w * 0.12,
+        h * 0.92,
+      )
       // Left Foot / Ankle
       ..lineTo(centerX - w * 0.03, h * 0.92)
       ..quadraticBezierTo(
-          centerX - w * 0.06, h * 0.75, centerX - w * 0.01, h * 0.55)
+        centerX - w * 0.06,
+        h * 0.75,
+        centerX - w * 0.01,
+        h * 0.55,
+      )
       // Center Crotch Junction
       ..lineTo(centerX + w * 0.01, h * 0.55)
       // Right Thigh & Quad
       ..quadraticBezierTo(
-          centerX + w * 0.06, h * 0.75, centerX + w * 0.03, h * 0.92)
+        centerX + w * 0.06,
+        h * 0.75,
+        centerX + w * 0.03,
+        h * 0.92,
+      )
       // Right Foot / Ankle
       ..lineTo(centerX + w * 0.12, h * 0.92)
-      ..cubicTo(centerX + w * 0.16, h * 0.78, centerX + w * 0.22, h * 0.65,
-          centerX + w * 0.18, h * 0.52)
+      ..cubicTo(
+        centerX + w * 0.16,
+        h * 0.78,
+        centerX + w * 0.22,
+        h * 0.65,
+        centerX + w * 0.18,
+        h * 0.52,
+      )
       // Right Waist & Hip
       ..quadraticBezierTo(
-          centerX + w * 0.20, h * 0.42, centerX + w * 0.26, h * 0.34)
+        centerX + w * 0.20,
+        h * 0.42,
+        centerX + w * 0.26,
+        h * 0.34,
+      )
       // Right Arm & Bicep
-      ..cubicTo(centerX + w * 0.30, h * 0.45, centerX + w * 0.33, h * 0.52,
-          centerX + w * 0.38, h * 0.52)
-      ..cubicTo(centerX + w * 0.40, h * 0.45, centerX + w * 0.38, h * 0.35,
-          centerX + w * 0.32, h * 0.23)
+      ..cubicTo(
+        centerX + w * 0.30,
+        h * 0.45,
+        centerX + w * 0.33,
+        h * 0.52,
+        centerX + w * 0.38,
+        h * 0.52,
+      )
+      ..cubicTo(
+        centerX + w * 0.40,
+        h * 0.45,
+        centerX + w * 0.38,
+        h * 0.35,
+        centerX + w * 0.32,
+        h * 0.23,
+      )
       // Right Shoulder
       ..quadraticBezierTo(
-          centerX + w * 0.28, h * 0.19, centerX + w * 0.08, h * 0.18)
+        centerX + w * 0.28,
+        h * 0.19,
+        centerX + w * 0.08,
+        h * 0.18,
+      )
       ..close();
 
     // Draw Base Fills
@@ -1239,37 +1304,54 @@ class _HumanBodyAnatomyPainter extends CustomPainter {
         ..moveTo(centerX - w * 0.18, h * 0.23)
         ..quadraticBezierTo(centerX - w * 0.08, h * 0.28, centerX, h * 0.26)
         ..quadraticBezierTo(
-            centerX + w * 0.08, h * 0.28, centerX + w * 0.18, h * 0.23);
+          centerX + w * 0.08,
+          h * 0.28,
+          centerX + w * 0.18,
+          h * 0.23,
+        );
       canvas.drawPath(chestPath, contourPaint);
 
       // Abdominals Center Line
-      canvas.drawLine(Offset(centerX, h * 0.26), Offset(centerX, h * 0.50),
-          contourPaint);
+      canvas.drawLine(
+        Offset(centerX, h * 0.26),
+        Offset(centerX, h * 0.50),
+        contourPaint,
+      );
 
       // Abdominal Rib Contours
       for (int i = 0; i < 3; i++) {
         final double y = h * (0.31 + i * 0.06);
         canvas.drawLine(
-            Offset(centerX - w * 0.08, y), Offset(centerX + w * 0.08, y), contourPaint);
+          Offset(centerX - w * 0.08, y),
+          Offset(centerX + w * 0.08, y),
+          contourPaint,
+        );
       }
 
       // Knee Caps
       canvas.drawOval(
-          Rect.fromCenter(
-              center: Offset(centerX - w * 0.08, h * 0.72),
-              width: 12,
-              height: 16),
-          contourPaint);
+        Rect.fromCenter(
+          center: Offset(centerX - w * 0.08, h * 0.72),
+          width: 12,
+          height: 16,
+        ),
+        contourPaint,
+      );
       canvas.drawOval(
-          Rect.fromCenter(
-              center: Offset(centerX + w * 0.08, h * 0.72),
-              width: 12,
-              height: 16),
-          contourPaint);
+        Rect.fromCenter(
+          center: Offset(centerX + w * 0.08, h * 0.72),
+          width: 12,
+          height: 16,
+        ),
+        contourPaint,
+      );
     } else {
       // Spine Center Line
-      canvas.drawLine(Offset(centerX, h * 0.18), Offset(centerX, h * 0.54),
-          contourPaint);
+      canvas.drawLine(
+        Offset(centerX, h * 0.18),
+        Offset(centerX, h * 0.54),
+        contourPaint,
+      );
 
       // Trapezius V-Shaped Lines
       final Path trapPath = Path()
@@ -1280,17 +1362,19 @@ class _HumanBodyAnatomyPainter extends CustomPainter {
 
       // Glutes (Buttocks) Contours
       canvas.drawArc(
-          Rect.fromLTWH(centerX - w * 0.15, h * 0.48, w * 0.15, h * 0.12),
-          0,
-          3.14,
-          false,
-          contourPaint);
+        Rect.fromLTWH(centerX - w * 0.15, h * 0.48, w * 0.15, h * 0.12),
+        0,
+        3.14,
+        false,
+        contourPaint,
+      );
       canvas.drawArc(
-          Rect.fromLTWH(centerX, h * 0.48, w * 0.15, h * 0.12),
-          0,
-          3.14,
-          false,
-          contourPaint);
+        Rect.fromLTWH(centerX, h * 0.48, w * 0.15, h * 0.12),
+        0,
+        3.14,
+        false,
+        contourPaint,
+      );
     }
   }
 
@@ -1469,10 +1553,7 @@ class _FullScreen3DAnatomyViewerState
               decoration: BoxDecoration(
                 color: const Color(0xFF12241F),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: const Color(0xFF0B4632),
-                  width: 1.0,
-                ),
+                border: Border.all(color: const Color(0xFF0B4632), width: 1.0),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1501,7 +1582,9 @@ class _FullScreen3DAnatomyViewerState
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFF0B4632),
                           borderRadius: BorderRadius.circular(8),
@@ -1572,8 +1655,8 @@ class _FullScreen3DAnatomyViewerState
     final Color dotColor = pt.status == 'Active'
         ? const Color(0xFF0B4632)
         : pt.status == 'Treated'
-            ? const Color(0xFFD49E35)
-            : const Color(0xFF2ECC71);
+        ? const Color(0xFFD49E35)
+        : const Color(0xFF2ECC71);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),

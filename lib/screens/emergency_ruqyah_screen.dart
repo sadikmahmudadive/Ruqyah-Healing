@@ -17,7 +17,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _pulseController;
   bool _sleepMode = true;
-  String _sleepTimer = '30 minutes';
+  final String _sleepTimer = '30 minutes';
   bool _dimScreen = true;
   bool _quranOnly = true;
   bool _autoStop = true;
@@ -41,7 +41,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
     HapticFeedback.heavyImpact();
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const FullAudioPlayerScreen(
+        pageBuilder: (_, _, _) => const FullAudioPlayerScreen(
           title: 'EMERGENCY RUQYAH',
           verses: 'Calming Spiritual Protection Playlist',
         ),
@@ -390,26 +390,14 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildUtilityItem(
-          icon: Icons.wifi_off_rounded,
-          label: 'Offline Ready',
-        ),
-        _buildUtilityItem(
-          icon: Icons.download_rounded,
-          label: 'Downloaded',
-        ),
-        _buildUtilityItem(
-          icon: Icons.menu_book_rounded,
-          label: 'Quran Only',
-        ),
+        _buildUtilityItem(icon: Icons.wifi_off_rounded, label: 'Offline Ready'),
+        _buildUtilityItem(icon: Icons.download_rounded, label: 'Downloaded'),
+        _buildUtilityItem(icon: Icons.menu_book_rounded, label: 'Quran Only'),
       ],
     );
   }
 
-  Widget _buildUtilityItem({
-    required IconData icon,
-    required String label,
-  }) {
+  Widget _buildUtilityItem({required IconData icon, required String label}) {
     return Column(
       children: [
         Container(
@@ -423,11 +411,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
               width: 1.0,
             ),
           ),
-          child: Icon(
-            icon,
-            color: const Color(0xFF81C784),
-            size: 22,
-          ),
+          child: Icon(icon, color: const Color(0xFF81C784), size: 22),
         ),
         const SizedBox(height: 6),
         Text(
@@ -604,7 +588,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
             scale: 0.8,
             child: Switch(
               value: value,
-              activeColor: Colors.white,
+              activeThumbColor: Colors.white,
               activeTrackColor: const Color(0xFF2ECC71),
               inactiveThumbColor: Colors.white,
               inactiveTrackColor: const Color(0xFF133F2E),
@@ -701,11 +685,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.error_outline_rounded,
-            color: Color(0xFFEF5350),
-            size: 18,
-          ),
+          Icon(Icons.error_outline_rounded, color: Color(0xFFEF5350), size: 18),
           SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -724,9 +704,6 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
   }
 
   Widget _buildDivider() {
-    return Container(
-      height: 1,
-      color: Colors.white.withValues(alpha: 0.08),
-    );
+    return Container(height: 1, color: Colors.white.withValues(alpha: 0.08));
   }
 }
