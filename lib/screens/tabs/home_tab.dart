@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../services/firebase_service.dart';
+import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../ai_symptom_guide_screen.dart';
+import '../audio_library_screen.dart';
 import '../book_appointment_screen.dart';
 import '../emergency_ruqyah_screen.dart';
 import '../full_audio_player_screen.dart';
@@ -22,7 +25,7 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   bool _isPlaying = false;
-  final double _audioProgress = 0.22; // 01:15 out of 05:42
+  double _audioProgress = 0.22; // 01:15 out of 05:42
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,7 @@ class _HomeTabState extends State<HomeTab> {
 
                 // 4. Holistic Services Section Title
                 Text(
-                  'Holistic Services',
+                  context.tr('holistic_services'),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 18,
@@ -93,7 +96,7 @@ class _HomeTabState extends State<HomeTab> {
                 // 7. Featured Specialist Consultation Card
                 _buildSpecialistCard(),
 
-                const SizedBox(height: 110),
+                const SizedBox(height: 120),
               ],
             ),
           ),
@@ -187,14 +190,14 @@ class _HomeTabState extends State<HomeTab> {
                       const NotificationScreen(),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeInOut,
-                          ),
-                          child: child,
-                        );
-                      },
+                    return FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeInOut,
+                      ),
+                      child: child,
+                    );
+                  },
                   transitionDuration: const Duration(milliseconds: 400),
                 ),
               );
@@ -231,14 +234,14 @@ class _HomeTabState extends State<HomeTab> {
                     const HealthProfileDetailScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        ),
-                        child: child,
-                      );
-                    },
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -252,7 +255,7 @@ class _HomeTabState extends State<HomeTab> {
                 Row(
                   children: [
                     Text(
-                      'Health Index',
+                      context.tr('health_index'),
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 13,
@@ -284,9 +287,9 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Text(
-                      'Good',
-                      style: TextStyle(
+                    Text(
+                      context.tr('good'),
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -335,7 +338,7 @@ class _HomeTabState extends State<HomeTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'NEXT APPOINTMENT',
+            context.tr('next_appointment'),
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 10,
@@ -403,17 +406,17 @@ class _HomeTabState extends State<HomeTab> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, _, _) => const FullAudioPlayerScreen(),
+                pageBuilder: (_, __, ___) => const FullAudioPlayerScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        ),
-                        child: child,
-                      );
-                    },
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -462,115 +465,111 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
 
-                    // Play Button
-                    InkWell(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        setState(() {
-                          _isPlaying = !_isPlaying;
-                        });
-                      },
-                      borderRadius: BorderRadius.circular(24),
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF0B4632),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          _isPlaying
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 16),
-
-                // Progress Bar
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: _audioProgress,
-                    backgroundColor: const Color(0xFFE2E8E5),
-                    color: const Color(0xFF0B4632),
-                    minHeight: 4,
+              // Play Button
+              InkWell(
+                onTap: () {
+                  HapticFeedback.mediumImpact();
+                  setState(() {
+                    _isPlaying = !_isPlaying;
+                  });
+                },
+                borderRadius: BorderRadius.circular(24),
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF0B4632),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 28,
                   ),
                 ),
+              ),
+            ],
+          ),
 
-                const SizedBox(height: 8),
+          const SizedBox(height: 16),
 
-                // Timestamps
-                Row(
-                  children: [
-                    Text(
-                      '01:15',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 11,
-                        color: const Color(0xFF6E7E77),
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      '05:42',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 11,
-                        color: const Color(0xFF6E7E77),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+          // Progress Bar
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: _audioProgress,
+              backgroundColor: const Color(0xFFE2E8E5),
+              color: const Color(0xFF0B4632),
+              minHeight: 4,
             ),
           ),
-        ),
+
+          const SizedBox(height: 8),
+
+          // Timestamps
+          Row(
+            children: [
+              Text(
+                '01:15',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11,
+                  color: const Color(0xFF6E7E77),
+                ),
+              ),
+              const Spacer(),
+              Text(
+                '05:42',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11,
+                  color: const Color(0xFF6E7E77),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  ),
+),
+);
+}
 
   // Holistic Services Row
   Widget _buildServicesRow() {
     final isDark = context.isDarkMode;
-    final iconColorRuqyah = isDark
-        ? const Color(0xFFD49E35)
-        : const Color(0xFF0B4632);
-    final iconColorHijama = isDark
-        ? const Color(0xFFD49E35)
-        : const Color(0xFFE67E22);
-    final iconColorAcupuncture = isDark
-        ? const Color(0xFFD49E35)
-        : const Color(0xFF2980B9);
-    final iconColorEmergency = isDark
-        ? const Color(0xFFD49E35)
-        : const Color(0xFFE74C3C);
+    final iconColorRuqyah = isDark ? const Color(0xFFD49E35) : const Color(0xFF0B4632);
+    final iconColorHijama = isDark ? const Color(0xFFD49E35) : const Color(0xFFE67E22);
+    final iconColorAcupuncture = isDark ? const Color(0xFFD49E35) : const Color(0xFF2980B9);
+    final iconColorEmergency = isDark ? const Color(0xFFD49E35) : const Color(0xFFE74C3C);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildServiceIconCard(
-          label: 'Ruqyah',
-          customIcon: RuqyahDuaIcon(color: iconColorRuqyah, size: 28),
+          label: context.tr('ruqyah'),
+          customIcon: RuqyahDuaIcon(
+            color: iconColorRuqyah,
+            size: 28,
+          ),
           bgColor: const Color(0xFFEBF7F0),
           iconColor: iconColorRuqyah,
           onTap: () {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, _, _) => const AISymptomGuideScreen(),
+                pageBuilder: (_, __, ___) => const AISymptomGuideScreen(),
               ),
             );
           },
         ),
         _buildServiceIconCard(
-          label: 'Hijama',
-          customIcon: HijamaCuppingIcon(color: iconColorHijama, size: 28),
+          label: context.tr('hijama'),
+          customIcon: HijamaCuppingIcon(
+            color: iconColorHijama,
+            size: 28,
+          ),
           bgColor: const Color(0xFFFFF3E8),
           iconColor: iconColorHijama,
           onTap: () {
@@ -578,8 +577,11 @@ class _HomeTabState extends State<HomeTab> {
           },
         ),
         _buildServiceIconCard(
-          label: 'Acupuncture',
-          customIcon: AcupunctureIcon(color: iconColorAcupuncture, size: 28),
+          label: context.tr('acupuncture'),
+          customIcon: AcupunctureIcon(
+            color: iconColorAcupuncture,
+            size: 28,
+          ),
           bgColor: const Color(0xFFE6F7FF),
           iconColor: iconColorAcupuncture,
           onTap: () {
@@ -587,7 +589,7 @@ class _HomeTabState extends State<HomeTab> {
           },
         ),
         _buildServiceIconCard(
-          label: 'Emergency',
+          label: context.tr('emergency'),
           icon: Icons.error_outline_rounded,
           bgColor: const Color(0xFFFFEBEB),
           iconColor: iconColorEmergency,
@@ -595,7 +597,7 @@ class _HomeTabState extends State<HomeTab> {
             HapticFeedback.selectionClick();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, _, _) => const EmergencyRuqyahScreen(),
+                pageBuilder: (_, __, ___) => const EmergencyRuqyahScreen(),
               ),
             );
           },
@@ -620,7 +622,9 @@ class _HomeTabState extends State<HomeTab> {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: context.isDarkMode ? const Color(0xFF132620) : bgColor,
+              color: context.isDarkMode
+                  ? const Color(0xFF132620)
+                  : bgColor,
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -663,7 +667,7 @@ class _HomeTabState extends State<HomeTab> {
           Row(
             children: [
               Text(
-                "Today's Prayer Times",
+                context.tr('prayer_times'),
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
@@ -880,19 +884,19 @@ class _HomeTabState extends State<HomeTab> {
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           const BookAppointmentScreen(
-                            therapistName: 'Dr. Salma Rahman',
-                            basePrice: 1200,
-                          ),
+                        therapistName: 'Dr. Salma Rahman',
+                        basePrice: 1200,
+                      ),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
-                            return FadeTransition(
-                              opacity: CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeInOut,
-                              ),
-                              child: child,
-                            );
-                          },
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
                       transitionDuration: const Duration(milliseconds: 400),
                     ),
                   );

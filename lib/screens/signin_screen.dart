@@ -6,8 +6,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import '../models/user_model.dart';
 import '../services/firebase_service.dart';
+import '../services/push_notification_service.dart';
 import '../widgets/country_code_picker.dart';
 import '../widgets/google_logo.dart';
 import 'main_navigation_shell.dart';
@@ -197,6 +199,7 @@ class _SignInScreenState extends State<SignInScreen>
 
   Future<void> _ensureUserProfile(User user) async {
     try {
+      final token = await PushNotificationService.getFcmToken() ?? '';
       final profile = await FirebaseService.getUserProfile(user.uid);
       if (profile == null) {
         final newUser = UserModel(
@@ -207,12 +210,15 @@ class _SignInScreenState extends State<SignInScreen>
               ? user.displayName!
               : 'Ruqyah User',
           role: 'patient',
+          fcmToken: token,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           healthProfile: HealthProfile.empty(),
           billing: BillingProfile.empty(),
         );
         await FirebaseService.saveUserProfile(newUser);
+      } else if (token.isNotEmpty) {
+        await FirebaseService.updateFcmToken(token);
       }
     } catch (e) {
       debugPrint('Error saving user profile: $e');
@@ -266,7 +272,7 @@ class _SignInScreenState extends State<SignInScreen>
       final email = _emailController.text.trim();
       final password = _passwordController.text;
 
-      if (email.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      if (email.isEmpty || !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
         _showSnackBar('Please enter a valid email address', isError: true);
         return;
       }
@@ -518,9 +524,9 @@ class _SignInScreenState extends State<SignInScreen>
                         SizedBox(height: screenHeight * 0.20),
 
                         // Main Header Title
-                        const Text(
-                          'SIGN IN TO YOUR ACCOUNT',
-                          style: TextStyle(
+                        Text(
+                          context.tr('sign_in_account'),
+                          style: const TextStyle(
                             fontFamily: 'Cinzel',
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -562,13 +568,13 @@ class _SignInScreenState extends State<SignInScreen>
 
                         if (!_isPhoneLogin) ...[
                           // --- EMAIL LOGIN FORM ---
-                          _buildFieldLabel('Email Address'),
+                          _buildFieldLabel(context.tr('email_address')),
                           const SizedBox(height: 8),
                           _buildEmailInputField(),
 
                           const SizedBox(height: 16),
 
-                          _buildFieldLabel('Password'),
+                          _buildFieldLabel(context.tr('password')),
                           const SizedBox(height: 8),
                           _buildPasswordInputField(),
 
@@ -579,9 +585,9 @@ class _SignInScreenState extends State<SignInScreen>
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: _handleForgotPassword,
-                              child: const Text(
-                                'Forgot Password?',
-                                style: TextStyle(
+                              child: Text(
+                                context.tr('forgot_password'),
+                                style: const TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -762,7 +768,7 @@ class _SignInScreenState extends State<SignInScreen>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Email',
+                      context.tr('email'),
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
@@ -817,7 +823,7 @@ class _SignInScreenState extends State<SignInScreen>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Phone',
+                      context.tr('phone'),
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
@@ -1119,9 +1125,9 @@ class _SignInScreenState extends State<SignInScreen>
                       strokeWidth: 2,
                     ),
                   )
-                : const Text(
-                    'Send OTP',
-                    style: TextStyle(
+                : Text(
+                    context.tr('send_otp'),
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 15.5,
                       fontWeight: FontWeight.w600,
@@ -1249,9 +1255,9 @@ class _SignInScreenState extends State<SignInScreen>
                       strokeWidth: 2,
                     ),
                   )
-                : const Text(
-                    'Sign In',
-                    style: TextStyle(
+                : Text(
+                    context.tr('sign_in'),
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 15.5,
                       fontWeight: FontWeight.w600,
@@ -1277,7 +1283,7 @@ class _SignInScreenState extends State<SignInScreen>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14.0),
           child: Text(
-            'or continue with',
+            context.tr('or_continue_with'),
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 13,
@@ -1321,12 +1327,12 @@ class _SignInScreenState extends State<SignInScreen>
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  GoogleLogo(size: 20),
-                  SizedBox(width: 12),
+                children: [
+                  const GoogleLogo(size: 20),
+                  const SizedBox(width: 12),
                   Text(
-                    'Continue with Google',
-                    style: TextStyle(
+                    context.tr('continue_google'),
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 15.5,
                       fontWeight: FontWeight.w600,

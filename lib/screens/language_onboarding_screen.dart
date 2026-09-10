@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import 'onboarding_screen_1.dart';
 
 class LanguageOption {
@@ -38,7 +39,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
     LanguageOption(code: 'en', nativeName: 'English', englishName: 'English'),
     LanguageOption(code: 'bn', nativeName: 'বাংলা', englishName: 'Bangla'),
     LanguageOption(code: 'ar', nativeName: 'العربية', englishName: 'Arabic'),
-    LanguageOption(code: 'fa', nativeName: 'فارسی', englishName: 'Farsi'),
+    LanguageOption(code: 'ur', nativeName: 'اردو', englishName: 'Urdu'),
   ];
 
   String _selectedLanguageCode = 'en';
@@ -78,6 +79,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
     setState(() {
       _selectedLanguageCode = code;
     });
+    AppLocalizations.setLocale(code);
     widget.onLanguageSelected?.call(code);
   }
 
@@ -198,7 +200,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
 
                                   // Header: WELCOME TO
                                   Text(
-                                    'WELCOME TO',
+                                    context.tr('welcome_to'),
                                     style: TextStyle(
                                       fontFamily: 'Inter',
                                       fontSize: 12,
@@ -213,9 +215,9 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
                                   const SizedBox(height: 6),
 
                                   // Brand Title: RUQYAH HEALING
-                                  const Text(
-                                    'RUQYAH HEALING',
-                                    style: TextStyle(
+                                  Text(
+                                    context.tr('ruqyah_healing'),
+                                    style: const TextStyle(
                                       fontFamily: 'Cinzel',
                                       fontSize: 27,
                                       fontWeight: FontWeight.w700,
@@ -236,7 +238,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
 
                                   // Tagline
                                   Text(
-                                    'Compassionate care for body, mind and soul',
+                                    context.tr('tagline'),
                                     style: TextStyle(
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 14.5,
@@ -251,9 +253,9 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
                                   const SizedBox(height: 32),
 
                                   // Section Title: Choose your language
-                                  const Text(
-                                    'Choose your language',
-                                    style: TextStyle(
+                                  Text(
+                                    context.tr('choose_language'),
+                                    style: const TextStyle(
                                       fontFamily: 'Inter',
                                       fontSize: 15.5,
                                       fontWeight: FontWeight.w600,
@@ -460,10 +462,10 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
                 ],
               ),
               child: Row(
-                children: const [
+                children: [
                   Text(
-                    'Continue',
-                    style: TextStyle(
+                    context.tr('continue'),
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 16.5,
                       fontWeight: FontWeight.w600,
@@ -471,8 +473,8 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
                       color: Colors.white,
                     ),
                   ),
-                  Spacer(),
-                  Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                  const Spacer(),
+                  const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
                 ],
               ),
             ),

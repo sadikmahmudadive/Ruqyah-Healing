@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
@@ -181,7 +182,7 @@ class _BookingsTabState extends State<BookingsTab> {
                     // Primary Action Button: Book a New Appointment
                     _buildBookNewAppointmentButton(),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 120),
                   ],
                 ),
               ),
@@ -215,9 +216,9 @@ class _BookingsTabState extends State<BookingsTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'PATIENT PORTAL',
-                      style: TextStyle(
+                    Text(
+                      context.tr('patient_portal'),
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
@@ -226,9 +227,9 @@ class _BookingsTabState extends State<BookingsTab> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      'My Appointments',
-                      style: TextStyle(
+                    Text(
+                      context.tr('my_appointments'),
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
@@ -266,11 +267,11 @@ class _BookingsTabState extends State<BookingsTab> {
           // Filter Segment Tabs Pill Row
           Row(
             children: [
-              _buildFilterPill('Upcoming'),
+              _buildFilterPill(context.tr('upcoming')),
               const SizedBox(width: 8),
-              _buildFilterPill('Completed'),
+              _buildFilterPill(context.tr('completed')),
               const SizedBox(width: 8),
-              _buildFilterPill('Cancelled'),
+              _buildFilterPill(context.tr('cancelled')),
             ],
           ),
         ],
@@ -355,8 +356,8 @@ class _BookingsTabState extends State<BookingsTab> {
                       color: session.title.contains('Ruqyah')
                           ? const Color(0xFFEBF7F0)
                           : session.title.contains('Hijama')
-                          ? const Color(0xFFFFF3E8)
-                          : const Color(0xFFE6F7FF),
+                              ? const Color(0xFFFFF3E8)
+                              : const Color(0xFFE6F7FF),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Center(child: session.icon),
@@ -437,7 +438,8 @@ class _BookingsTabState extends State<BookingsTab> {
                       if (value == 'join' && session.mode == 'Online Video') {
                         Navigator.of(context).push(
                           PageRouteBuilder(
-                            pageBuilder: (_, _, _) => VideoConsultationScreen(
+                            pageBuilder: (_, __, ___) =>
+                                VideoConsultationScreen(
                               doctorName: session.doctorName,
                             ),
                           ),
@@ -457,11 +459,8 @@ class _BookingsTabState extends State<BookingsTab> {
                           value: 'join',
                           child: Row(
                             children: [
-                              Icon(
-                                Icons.videocam_rounded,
-                                color: Color(0xFF0B4632),
-                                size: 18,
-                              ),
+                              Icon(Icons.videocam_rounded,
+                                  color: Color(0xFF0B4632), size: 18),
                               SizedBox(width: 8),
                               Text('Join Video Call'),
                             ],
@@ -471,11 +470,8 @@ class _BookingsTabState extends State<BookingsTab> {
                         value: 'reschedule',
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.edit_calendar_rounded,
-                              color: Color(0xFF15221D),
-                              size: 18,
-                            ),
+                            Icon(Icons.edit_calendar_rounded,
+                                color: Color(0xFF15221D), size: 18),
                             SizedBox(width: 8),
                             Text('Reschedule'),
                           ],
@@ -485,11 +481,8 @@ class _BookingsTabState extends State<BookingsTab> {
                         value: 'cancel',
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.cancel_outlined,
-                              color: Color(0xFFE74C3C),
-                              size: 18,
-                            ),
+                            Icon(Icons.cancel_outlined,
+                                color: Color(0xFFE74C3C), size: 18),
                             SizedBox(width: 8),
                             Text('Cancel Appointment'),
                           ],
@@ -554,14 +547,18 @@ class _BookingsTabState extends State<BookingsTab> {
           width: 1.0,
         ),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.info_outline_rounded, color: Color(0xFF0B4632), size: 20),
-          SizedBox(width: 10),
+          const Icon(
+            Icons.info_outline_rounded,
+            color: Color(0xFF0B4632),
+            size: 20,
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Free rescheduling or cancellation is allowed up to 24 hours prior to the scheduled session.',
-              style: TextStyle(
+              context.tr('rescheduling_info'),
+              style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 12,
                 color: Color(0xFF52625B),
@@ -592,25 +589,25 @@ class _BookingsTabState extends State<BookingsTab> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           child: Row(
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.calendar_month_rounded,
                 color: Color(0xFF0B4632),
                 size: 20,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Add all upcoming to calendar',
+                  context.tr('add_to_calendar'),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.chevron_right_rounded,
                 color: Color(0xFFB0BEC5),
                 size: 20,
@@ -645,31 +642,36 @@ class _BookingsTabState extends State<BookingsTab> {
             HapticFeedback.heavyImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
+                pageBuilder: (_, __, ___) =>
+                    const TherapistMarketplaceScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        ),
-                        child: child,
-                      );
-                    },
+                  return FadeTransition(
+                    opacity: CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    ),
+                    child: child,
+                  );
+                },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
           },
           borderRadius: BorderRadius.circular(18),
           splashColor: Colors.white.withValues(alpha: 0.15),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.add_rounded, color: Colors.white, size: 22),
-              SizedBox(width: 8),
+              const Icon(
+                Icons.add_rounded,
+                color: Colors.white,
+                size: 22,
+              ),
+              const SizedBox(width: 8),
               Text(
-                'Book a New Appointment',
-                style: TextStyle(
+                context.tr('book_new_appointment'),
+                style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
                   fontWeight: FontWeight.w700,

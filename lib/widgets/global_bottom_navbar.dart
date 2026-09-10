@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import 'navbar_icons.dart';
 
 enum NavigationTab {
@@ -67,7 +68,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                   _buildNavItem(
                     context,
                     tab: NavigationTab.home,
-                    label: 'Home',
+                    label: context.tr('home'),
                     iconBuilder: (isSelected, color) => HomeNavIcon(
                       isSelected: isSelected,
                       color: color,
@@ -77,7 +78,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                   _buildNavItem(
                     context,
                     tab: NavigationTab.services,
-                    label: 'Services',
+                    label: context.tr('services'),
                     iconBuilder: (isSelected, color) => ServicesNavIcon(
                       isSelected: isSelected,
                       color: color,
@@ -87,7 +88,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                   _buildNavItem(
                     context,
                     tab: NavigationTab.bookings,
-                    label: 'Bookings',
+                    label: context.tr('bookings'),
                     iconBuilder: (isSelected, color) => BookingsNavIcon(
                       isSelected: isSelected,
                       color: color,
@@ -97,7 +98,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                   _buildNavItem(
                     context,
                     tab: NavigationTab.learn,
-                    label: 'Learn',
+                    label: context.tr('learn'),
                     iconBuilder: (isSelected, color) => LearnNavIcon(
                       isSelected: isSelected,
                       color: color,
@@ -107,7 +108,7 @@ class GlobalBottomNavBar extends StatelessWidget {
                   _buildNavItem(
                     context,
                     tab: NavigationTab.profile,
-                    label: 'Profile',
+                    label: context.tr('profile'),
                     iconBuilder: (isSelected, color) => ProfileNavIcon(
                       isSelected: isSelected,
                       color: color,

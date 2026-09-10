@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../localization/app_localizations.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
@@ -13,12 +16,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final String _selectedLanguage = 'English';
-  final String _textSize = 'Medium';
+  String _selectedLanguage = 'English';
+  String _textSize = 'Medium';
   bool _highContrast = false;
   bool _reduceMotion = false;
   bool _prayerReminders = true;
-  final String _audioDownloads = 'Wi-Fi Only';
+  String _audioDownloads = 'Wi-Fi Only';
   bool _biometricLock = true;
 
   @override
@@ -48,21 +51,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Group 1: PREFERENCES
-                    _buildSectionHeader('PREFERENCES'),
+                    _buildSectionHeader(context.tr('preferences')),
                     const SizedBox(height: 8),
                     _buildPreferencesCard(),
 
                     const SizedBox(height: 20),
 
                     // Group 2: SECURITY & PRIVACY
-                    _buildSectionHeader('SECURITY & PRIVACY'),
+                    _buildSectionHeader(context.tr('security_privacy')),
                     const SizedBox(height: 8),
                     _buildSecurityPrivacyCard(),
 
                     const SizedBox(height: 20),
 
                     // Group 3: ABOUT & LEGAL
-                    _buildSectionHeader('ABOUT & LEGAL'),
+                    _buildSectionHeader(context.tr('about_legal')),
                     const SizedBox(height: 8),
                     _buildAboutLegalCard(),
 
@@ -157,22 +160,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         children: [
           _buildSettingItem(
-            title: 'Theme Mode',
+            title: context.tr('theme_mode'),
             trailingText: _getThemeModeLabel(AppTheme.themeModeNotifier.value),
             isTrailingActive: true,
             onTap: _showThemeModeDialog,
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Language',
-            trailingText: _selectedLanguage,
-            onTap: () {
-              HapticFeedback.selectionClick();
-            },
+            title: context.tr('language'),
+            trailingText: AppLocalizations.getLanguageName(
+                AppLocalizations.currentLocale.languageCode),
+            isTrailingActive: true,
+            onTap: _showLanguageDialog,
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Text Size',
+            title: context.tr('text_size'),
             trailingText: _textSize,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -180,10 +183,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Display',
-            trailingText: _highContrast
-                ? 'High Contrast On'
-                : 'High Contrast Off',
+            title: context.tr('display'),
+            trailingText: _highContrast ? 'High Contrast On' : 'High Contrast Off',
             onTap: () {
               HapticFeedback.selectionClick();
               setState(() => _highContrast = !_highContrast);
@@ -191,7 +192,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Reduce Motion',
+            title: context.tr('reduce_motion'),
             trailingText: _reduceMotion ? 'On' : 'Off',
             onTap: () {
               HapticFeedback.selectionClick();
@@ -200,7 +201,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Prayer Reminders',
+            title: context.tr('prayer_reminders'),
             hasActiveDot: true,
             trailingText: _prayerReminders ? 'On' : 'Off',
             isTrailingActive: _prayerReminders,
@@ -211,7 +212,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Audio Downloads',
+            title: context.tr('audio_downloads'),
             trailingText: _audioDownloads,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -240,7 +241,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         children: [
           _buildSettingItem(
-            title: 'Biometric Lock',
+            title: context.tr('biometric_lock'),
             hasActiveDot: true,
             trailingText: _biometricLock ? 'On' : 'Off',
             isTrailingActive: _biometricLock,
@@ -251,7 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Connected Devices',
+            title: context.tr('connected_devices'),
             badgeText: '2 devices',
             badgeBg: const Color(0xFFEBF7F0),
             badgeColor: const Color(0xFF0B4632),
@@ -261,7 +262,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Health Connect',
+            title: context.tr('health_connect'),
             badgeText: 'Connected',
             badgeBg: const Color(0xFFEBF7F0),
             badgeColor: const Color(0xFF0B4632),
@@ -271,7 +272,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Notification Settings',
+            title: context.tr('notification_settings'),
             trailingText: 'Manage alerts',
             onTap: () {
               HapticFeedback.selectionClick();
@@ -279,14 +280,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Export My Data',
+            title: context.tr('export_my_data'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Delete Account',
+            title: context.tr('delete_account'),
             isDestructive: true,
             onTap: () {
               HapticFeedback.heavyImpact();
@@ -316,21 +317,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         children: [
           _buildSettingItem(
-            title: 'Privacy Policy',
+            title: context.tr('privacy_policy'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'Terms of Service',
+            title: context.tr('terms_of_service'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
           ),
           _buildDivider(),
           _buildSettingItem(
-            title: 'About Ruqyah Healing',
+            title: context.tr('about_ruqyah'),
             trailingText: 'v1.2.0',
             onTap: () {
               HapticFeedback.selectionClick();
@@ -387,10 +388,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               if (badgeText != null) ...[
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: badgeBg ?? const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(10),
@@ -519,11 +518,165 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _showLanguageDialog() {
+    HapticFeedback.selectionClick();
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        final currentCode = AppLocalizations.currentLocale.languageCode;
+
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(21),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
+                decoration: BoxDecoration(
+                  color: const Color(0x33E6E6E6),
+                  borderRadius: BorderRadius.circular(21),
+                  border: Border.all(
+                    color: const Color(0xFFBCBCBC),
+                    width: 2.0,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.18),
+                      blurRadius: 20,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Choose your language',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildLanguageDialogCard('English', 'English', 'en', currentCode, dialogContext),
+                    const SizedBox(height: 10),
+                    _buildLanguageDialogCard('বাংলা', 'Bangla', 'bn', currentCode, dialogContext),
+                    const SizedBox(height: 10),
+                    _buildLanguageDialogCard('العربية', 'Arabic', 'ar', currentCode, dialogContext),
+                    const SizedBox(height: 10),
+                    _buildLanguageDialogCard('اردو', 'Urdu', 'ur', currentCode, dialogContext),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageDialogCard(
+    String nativeName,
+    String englishName,
+    String code,
+    String currentCode,
+    BuildContext dialogContext,
+  ) {
+    final isSelected = code == currentCode;
+
+    return InkWell(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        setState(() {
+          AppLocalizations.setLocale(code);
+        });
+        Navigator.of(dialogContext).pop();
+      },
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: isSelected ? 0.60 : 0.35),
+            width: isSelected ? 1.5 : 1.0,
+          ),
+        ),
+        child: Row(
+          children: [
+            // Radio Circle Indicator
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? const Color(0xFF082F21) : Colors.transparent,
+                border: Border.all(
+                  color: isSelected
+                      ? const Color(0xFF082F21)
+                      : Colors.white.withValues(alpha: 0.60),
+                  width: 2.0,
+                ),
+              ),
+              child: isSelected
+                  ? Center(
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+
+            const SizedBox(width: 14),
+
+            // Native Name
+            Expanded(
+              child: Text(
+                nativeName,
+                style: const TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
+            // English Subtitle
+            Text(
+              englishName,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.white.withValues(alpha: 0.70),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showDeleteAccountDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         title: const Text(
           'Delete Account',
           style: TextStyle(
@@ -561,7 +714,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 type: ToastType.warning,
               );
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.white)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -571,7 +727,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(height: 1, color: context.cardBorder),
+      child: Container(
+        height: 1,
+        color: context.cardBorder,
+      ),
     );
   }
 }

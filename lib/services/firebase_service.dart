@@ -10,6 +10,7 @@ import '../models/course_model.dart';
 import '../models/order_model.dart';
 import '../models/therapist_model.dart';
 import '../models/user_model.dart';
+import 'push_notification_service.dart';
 
 /// Centralized service handling Firebase Authentication, Firestore NoSQL Database operations,
 /// and Firebase Storage connections for the Ruqyah Healing Super-App.
@@ -24,6 +25,7 @@ class FirebaseService {
         options: DefaultFirebaseOptions.currentPlatform,
       );
       debugPrint('Firebase initialized successfully');
+      await PushNotificationService.initialize();
     } catch (e) {
       debugPrint('Firebase initialization note: $e');
     }
@@ -85,6 +87,7 @@ class FirebaseService {
 
       if (user != null) {
         try {
+          final fcmToken = await PushNotificationService.getFcmToken() ?? '';
           final existingProfile = await getUserProfile(user.uid);
           if (existingProfile == null) {
             final newUser = UserModel(
@@ -93,12 +96,15 @@ class FirebaseService {
               phone: user.phoneNumber ?? '',
               name: user.displayName ?? 'User',
               role: 'patient',
+              fcmToken: fcmToken,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
               healthProfile: HealthProfile.empty(),
               billing: BillingProfile.empty(),
             );
             await saveUserProfile(newUser);
+          } else {
+            await updateFcmToken(fcmToken);
           }
         } catch (firestoreError) {
           debugPrint('Firestore profile fetch/save note: $firestoreError');
@@ -151,10 +157,32 @@ class FirebaseService {
   }
 
   static Future<void> saveUserProfile(UserModel user) async {
+    final token = await PushNotificationService.getFcmToken() ?? '';
+    final userMap = user.toFirestore();
+    if (token.isNotEmpty && (userMap['fcm_token'] == null || (userMap['fcm_token'] as String).isEmpty)) {
+      userMap['fcm_token'] = token;
+    }
     await _firestore
         .collection('users')
         .doc(user.userId)
-        .set(user.toFirestore(), SetOptions(merge: true));
+        .set(userMap, SetOptions(merge: true));
+  }
+
+  /// Updates FCM token in Firestore for current logged-in user.
+  static Future<void> updateFcmToken(String? token) async {
+    if (token == null || token.isEmpty) return;
+    final user = currentUser;
+    if (user != null) {
+      try {
+        await _firestore.collection('users').doc(user.uid).set({
+          'fcm_token': token,
+          'updated_at': DateTime.now().toIso8601String(),
+        }, SetOptions(merge: true));
+        debugPrint('FCM token updated in Firestore for user ${user.uid}');
+      } catch (e) {
+        debugPrint('Error updating FCM token in Firestore: $e');
+      }
+    }
   }
 
   static Future<void> updateHealthProfile(

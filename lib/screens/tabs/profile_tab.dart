@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/app_localizations.dart';
 import '../../services/firebase_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/global_bottom_navbar.dart';
@@ -125,7 +126,7 @@ class _ProfileTabState extends State<ProfileTab> {
               // 4. Logout Action Card
               _buildLogoutCard(),
 
-              const SizedBox(height: 110),
+              const SizedBox(height: 120),
             ],
           ),
         ),
@@ -220,7 +221,7 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: '12',
-            label: 'SESSIONS',
+            label: context.tr('sessions_completed'),
             subtitle: 'Completed',
             subtitleColor: const Color(0xFF6E7E77),
           ),
@@ -238,7 +239,7 @@ class _ProfileTabState extends State<ProfileTab> {
             },
             child: _buildBentoCard(
               number: '78',
-              label: 'HEALTH INDEX',
+              label: context.tr('health_index_label'),
               subtitle: 'Good State',
               subtitleColor: const Color(0xFF1E6B45),
             ),
@@ -248,7 +249,7 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: '45',
-            label: 'DAYS ACTIVE',
+            label: context.tr('days_active'),
             subtitle: 'Streak Tracker',
             subtitleColor: const Color(0xFF6E7E77),
           ),
@@ -329,7 +330,7 @@ class _ProfileTabState extends State<ProfileTab> {
         children: [
           _buildSettingsTile(
             icon: Icons.tune_rounded,
-            title: 'Personal Information',
+            title: context.tr('personal_info'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -342,7 +343,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.calendar_today_outlined,
-            title: 'My Appointments',
+            title: context.tr('my_appointments'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).pushAndRemoveUntil(
@@ -357,7 +358,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.workspace_premium_rounded,
-            title: 'Subscription Plans',
+            title: context.tr('subscription_plans'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -370,7 +371,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.credit_card_outlined,
-            title: 'Payment Methods',
+            title: context.tr('payment_methods'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
@@ -378,7 +379,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.notifications_none_rounded,
-            title: 'Notifications',
+            title: context.tr('notifications'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -390,17 +391,8 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           _buildDivider(),
           _buildSettingsTile(
-            icon: Icons.language_rounded,
-            title: 'Language',
-            trailingText: 'English',
-            onTap: () {
-              HapticFeedback.selectionClick();
-            },
-          ),
-          _buildDivider(),
-          _buildSettingsTile(
             icon: Icons.shield_outlined,
-            title: 'Privacy & Security',
+            title: context.tr('privacy_security'),
             onTap: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -413,7 +405,7 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildDivider(),
           _buildSettingsTile(
             icon: Icons.help_outline_rounded,
-            title: 'Help & Support',
+            title: context.tr('help_support'),
             onTap: () {
               HapticFeedback.selectionClick();
             },
@@ -534,9 +526,9 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 ),
                 const SizedBox(width: 14),
-                const Text(
-                  'Logout',
-                  style: TextStyle(
+                Text(
+                  context.tr('logout'),
+                  style: const TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

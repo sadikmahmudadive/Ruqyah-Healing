@@ -3,7 +3,8 @@ class UserModel {
   final String email;
   final String phone;
   final String name;
-  final String role; // "patient", "therapist", "admin", "scholar"
+  final String role; // "patient", "therapist", "admin", "scholar", "raki"
+  final String fcmToken;
   final DateTime createdAt;
   final DateTime updatedAt;
   final HealthProfile healthProfile;
@@ -15,6 +16,7 @@ class UserModel {
     required this.phone,
     required this.name,
     required this.role,
+    this.fcmToken = '',
     required this.createdAt,
     required this.updatedAt,
     required this.healthProfile,
@@ -28,6 +30,7 @@ class UserModel {
       'phone': phone,
       'name': name,
       'role': role,
+      'fcm_token': fcmToken,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
       'health_profile': healthProfile.toMap(),
@@ -42,6 +45,7 @@ class UserModel {
       phone: map['phone'] ?? '',
       name: map['name'] ?? '',
       role: map['role'] ?? 'patient',
+      fcmToken: map['fcm_token'] ?? '',
       createdAt: map['created_at'] != null
           ? DateTime.parse(map['created_at'])
           : DateTime.now(),
