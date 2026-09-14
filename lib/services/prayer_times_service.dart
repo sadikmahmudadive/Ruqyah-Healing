@@ -9,6 +9,11 @@ class PrayerTimesModel {
   final String maghrib;
   final String isha;
   final String jummah;
+  final String fajr24;
+  final String dhuhr24;
+  final String asr24;
+  final String maghrib24;
+  final String isha24;
 
   const PrayerTimesModel({
     required this.fajr,
@@ -17,6 +22,11 @@ class PrayerTimesModel {
     required this.maghrib,
     required this.isha,
     required this.jummah,
+    required this.fajr24,
+    required this.dhuhr24,
+    required this.asr24,
+    required this.maghrib24,
+    required this.isha24,
   });
 
   factory PrayerTimesModel.fallback() {
@@ -27,6 +37,11 @@ class PrayerTimesModel {
       maghrib: '6:45',
       isha: '8:15',
       jummah: '1:30',
+      fajr24: '04:05',
+      dhuhr24: '12:30',
+      asr24: '16:45',
+      maghrib24: '18:45',
+      isha24: '20:15',
     );
   }
 }
@@ -46,13 +61,24 @@ class PrayerTimesService {
         final data = json.decode(response.body);
         final timings = data['data']['timings'];
 
+        final rawFajr = _cleanTime24(timings['Fajr'] ?? '04:05');
+        final rawDhuhr = _cleanTime24(timings['Dhuhr'] ?? '12:30');
+        final rawAsr = _cleanTime24(timings['Asr'] ?? '16:45');
+        final rawMaghrib = _cleanTime24(timings['Maghrib'] ?? '18:45');
+        final rawIsha = _cleanTime24(timings['Isha'] ?? '20:15');
+
         return PrayerTimesModel(
-          fajr: _formatTime(timings['Fajr'] ?? '04:05'),
-          dhuhr: _formatTime(timings['Dhuhr'] ?? '12:30'),
-          asr: _formatTime(timings['Asr'] ?? '16:45'),
-          maghrib: _formatTime(timings['Maghrib'] ?? '18:45'),
-          isha: _formatTime(timings['Isha'] ?? '20:15'),
+          fajr: _formatTime12(rawFajr),
+          dhuhr: _formatTime12(rawDhuhr),
+          asr: _formatTime12(rawAsr),
+          maghrib: _formatTime12(rawMaghrib),
+          isha: _formatTime12(rawIsha),
           jummah: '1:30',
+          fajr24: rawFajr,
+          dhuhr24: rawDhuhr,
+          asr24: rawAsr,
+          maghrib24: rawMaghrib,
+          isha24: rawIsha,
         );
       }
     } catch (e) {
@@ -61,10 +87,13 @@ class PrayerTimesService {
     return PrayerTimesModel.fallback();
   }
 
-  static String _formatTime(String time24) {
+  static String _cleanTime24(String time) {
+    return time.split(' ').first;
+  }
+
+  static String _formatTime12(String time24) {
     try {
-      final cleanTime = time24.split(' ').first;
-      final parts = cleanTime.split(':');
+      final parts = time24.split(':');
       if (parts.length >= 2) {
         int hour = int.parse(parts[0]);
         final minute = parts[1];
@@ -72,5 +101,41 @@ class PrayerTimesService {
       }
     } catch (_) {}
     return time24;
+  }
+
+  /// Calculates which prayer is active at [now].
+  static String getActivePrayerName(PrayerTimesModel model, [DateTime? targetTime]) {
+    final now = targetTime ?? DateTime.now();
+    final nowMinutes = now.hour * 60 + now.minute;
+
+    final fajrMinutes = _timeToMinutes(model.fajr24);
+    final dhuhrMinutes = _timeToMinutes(model.dhuhr24);
+    final asrMinutes = _timeToMinutes(model.asr24);
+    final maghribMinutes = _timeToMinutes(model.maghrib24);
+    final ishaMinutes = _timeToMinutes(model.isha24);
+
+    if (nowMinutes >= fajrMinutes && nowMinutes < dhuhrMinutes) {
+      return 'Fajr';
+    } else if (nowMinutes >= dhuhrMinutes && nowMinutes < asrMinutes) {
+      return now.weekday == DateTime.friday ? 'Jummah' : 'Dhuhr';
+    } else if (nowMinutes >= asrMinutes && nowMinutes < maghribMinutes) {
+      return 'Asr';
+    } else if (nowMinutes >= maghribMinutes && nowMinutes < ishaMinutes) {
+      return 'Maghrib';
+    } else {
+      return 'Isha';
+    }
+  }
+
+  static int _timeToMinutes(String time24) {
+    try {
+      final parts = time24.split(':');
+      if (parts.length >= 2) {
+        final hours = int.parse(parts[0]);
+        final minutes = int.parse(parts[1]);
+        return hours * 60 + minutes;
+      }
+    } catch (_) {}
+    return 0;
   }
 }

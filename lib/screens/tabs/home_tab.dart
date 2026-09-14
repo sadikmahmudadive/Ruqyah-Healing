@@ -774,6 +774,7 @@ class _HomeTabState extends State<HomeTab> {
             future: PrayerTimesService.fetchPrayerTimes(),
             builder: (context, snapshot) {
               final times = snapshot.data ?? PrayerTimesModel.fallback();
+              final activePrayer = PrayerTimesService.getActivePrayerName(times);
 
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -784,37 +785,37 @@ class _HomeTabState extends State<HomeTab> {
                     _buildPrayerSlot(
                       name: 'Fajr',
                       time: times.fajr,
-                      isActive: false,
+                      isActive: activePrayer == 'Fajr',
                     ),
                     const SizedBox(width: 8),
                     _buildPrayerSlot(
                       name: 'Dhuhr',
                       time: times.dhuhr,
-                      isActive: true,
+                      isActive: activePrayer == 'Dhuhr',
                     ),
                     const SizedBox(width: 8),
                     _buildPrayerSlot(
                       name: 'Asr',
                       time: times.asr,
-                      isActive: false,
+                      isActive: activePrayer == 'Asr',
                     ),
                     const SizedBox(width: 8),
                     _buildPrayerSlot(
                       name: 'Maghrib',
                       time: times.maghrib,
-                      isActive: false,
+                      isActive: activePrayer == 'Maghrib',
                     ),
                     const SizedBox(width: 8),
                     _buildPrayerSlot(
                       name: 'Isha',
                       time: times.isha,
-                      isActive: false,
+                      isActive: activePrayer == 'Isha',
                     ),
                     const SizedBox(width: 8),
                     _buildPrayerSlot(
                       name: 'Jummah',
                       time: times.jummah,
-                      isActive: false,
+                      isActive: activePrayer == 'Jummah',
                     ),
                   ],
                 ),
