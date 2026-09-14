@@ -42,14 +42,14 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Navigate to MainNavigationShell if user is logged in, else Language Onboarding Screen
+    // Auto-navigate after 2 seconds based on login state
     _timer = Timer(const Duration(seconds: 2), () {
       if (mounted) {
         if (widget.onFinished != null) {
           widget.onFinished!();
         } else {
-          final currentUser = FirebaseService.currentUser;
-          final Widget targetScreen = currentUser != null
+          final bool isLoggedIn = FirebaseService.currentUser != null;
+          final Widget targetScreen = isLoggedIn
               ? const MainNavigationShell()
               : const LanguageOnboardingScreen();
 
