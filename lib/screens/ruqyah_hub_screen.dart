@@ -166,20 +166,6 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
               ],
             ),
           ),
-
-          // Ruqyah Dua Icon Button Badge
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0B4632),
-              shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFD49E35), width: 1.5),
-            ),
-            child: const Center(
-              child: RuqyahDuaIcon(color: Color(0xFFD49E35), size: 22),
-            ),
-          ),
         ],
       ),
     );
