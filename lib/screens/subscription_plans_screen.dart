@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 
 class SubscriptionPlansScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -51,12 +52,12 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Choose a plan that supports your healing journey.',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13.5,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
 
@@ -86,8 +87,12 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                       price: '৳249',
                       period: '/month',
                       tagLabel: 'Most Popular',
-                      tagColor: const Color(0xFFEBF7F0),
-                      tagTextColor: const Color(0xFF0B4632),
+                      tagColor: context.isDarkMode
+                          ? const Color(0xFF182E25)
+                          : const Color(0xFFEBF7F0),
+                      tagTextColor: context.isDarkMode
+                          ? const Color(0xFF81C784)
+                          : const Color(0xFF0B4632),
                       features: [
                         'Offline audio',
                         'Premium playlists',
@@ -108,7 +113,9 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                       period: '/year',
                       subtitle: 'equiv. ৳199/month',
                       tagLabel: 'Save 20%',
-                      tagColor: const Color(0xFFFFF8E1),
+                      tagColor: context.isDarkMode
+                          ? const Color(0xFF2E2412)
+                          : const Color(0xFFFFF8E1),
                       tagTextColor: const Color(0xFFD49E35),
                       isPremium: true,
                       footerText: 'Cancel anytime • Billed yearly',
@@ -247,9 +254,9 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -329,10 +336,10 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.cardBg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? const Color(0xFF0B4632) : const Color(0xFFE2E8E5),
+            color: isSelected ? const Color(0xFF0B4632) : context.cardBorder,
             width: isSelected ? 2.0 : 1.0,
           ),
           boxShadow: [
@@ -361,8 +368,10 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
                           color: isPremium
-                              ? const Color(0xFF0B4632)
-                              : const Color(0xFF15221D),
+                              ? (context.isDarkMode
+                                  ? const Color(0xFF81C784)
+                                  : const Color(0xFF0B4632))
+                              : context.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -377,8 +386,10 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                               fontSize: 24,
                               fontWeight: FontWeight.w800,
                               color: isPremium
-                                  ? const Color(0xFF0B4632)
-                                  : const Color(0xFF52625B),
+                                  ? (context.isDarkMode
+                                      ? const Color(0xFF81C784)
+                                      : const Color(0xFF0B4632))
+                                  : context.textPrimary,
                             ),
                           ),
                           Text(
@@ -477,7 +488,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                             fontFamily: 'Inter',
                             fontSize: 12.5,
                             fontWeight: isPremium ? FontWeight.w600 : FontWeight.w400,
-                            color: const Color(0xFF15221D),
+                            color: context.textPrimary,
                           ),
                         ),
                       ],
@@ -513,11 +524,11 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
         const SizedBox(width: 4),
         Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 11.5,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF52625B),
+            color: context.textSecondary,
           ),
         ),
       ],
