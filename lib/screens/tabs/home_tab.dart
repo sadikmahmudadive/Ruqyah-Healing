@@ -7,6 +7,7 @@ import '../../services/firebase_service.dart';
 import '../../services/prayer_times_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
+import '../../widgets/ai_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/prayer_time_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
@@ -202,6 +203,52 @@ class _HomeTabState extends State<HomeTab> {
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
                       const NotificationScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeInOut,
+                      ),
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 400),
+                ),
+              );
+            },
+          ),
+        ),
+
+        const SizedBox(width: 10),
+
+        // AI Assistant Button
+        Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: context.cardBg,
+            shape: BoxShape.circle,
+            border: Border.all(color: context.cardBorder, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: IconButton(
+            icon: AiIcon(
+              color: context.textPrimary,
+              size: 22,
+            ),
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const AISymptomGuideScreen(),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                     return FadeTransition(
