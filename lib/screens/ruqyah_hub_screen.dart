@@ -871,16 +871,6 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                   ],
                 ),
               ),
-                      'For protection & healing • 15 pages',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
               Container(
                 width: 38,
