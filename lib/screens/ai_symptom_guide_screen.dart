@@ -593,19 +593,12 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   ),
                   const SizedBox(width: 14),
 
-                  // Dotted Waveform
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        '· · · · · · · · · · · · · · · · · · · · · · · · · ·',
-                        style: TextStyle(
-                          fontFamily: 'monospace',
-                          fontSize: 14,
-                          letterSpacing: 2.0,
-                          color: Colors.white.withValues(alpha: 0.60),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                  // Animated Audio Waveform Bars
+                  const Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Center(
+                        child: _AnimatedWaveformBars(),
                       ),
                     ),
                   ),
@@ -893,6 +886,60 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
           ),
         ),
       ),
+    );
+  }
+}
+
+class _AnimatedWaveformBars extends StatefulWidget {
+  const _AnimatedWaveformBars();
+
+  @override
+  State<_AnimatedWaveformBars> createState() => _AnimatedWaveformBarsState();
+}
+
+class _AnimatedWaveformBarsState extends State<_AnimatedWaveformBars>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(24, (index) {
+            final factor = (index % 5 + 1) * 0.18;
+            final val = (_controller.value + factor) % 1.0;
+            final dotHeight = 3.0 + (val * 16.0);
+
+            return Container(
+              width: 2.5,
+              height: dotHeight,
+              margin: const EdgeInsets.symmetric(horizontal: 2.0),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.35 + (val * 0.65)),
+                borderRadius: BorderRadius.circular(1.5),
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 }
