@@ -16,8 +16,11 @@ class AISymptomGuideScreen extends StatefulWidget {
 class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
     with SingleTickerProviderStateMixin {
   final TextEditingController _symptomController = TextEditingController();
+
   final Set<String> _selectedExperiences = {'Poor sleep'};
+
   bool _isRecordingVoice = false;
+
   late AnimationController _pulseController;
 
   final List<String> _commonExperiences = const [
@@ -34,9 +37,10 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
   @override
   void initState() {
     super.initState();
+
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1800),
     )..repeat(reverse: true);
   }
 
@@ -48,130 +52,154 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
   }
 
   void _handleGetGuidance() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.mediumImpact();
+
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const GuidanceResultsScreen(),
+        const GuidanceResultsScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: CurvedAnimation(
               parent: animation,
-              curve: Curves.easeInOut,
+              curve: Curves.easeOutCubic,
             ),
-            child: child,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.025),
+                end: Offset.zero,
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOutCubic,
+                ),
+              ),
+              child: child,
+            ),
           );
         },
-        transitionDuration: const Duration(milliseconds: 400),
+        transitionDuration: const Duration(milliseconds: 420),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
+      value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
+        statusBarIconBrightness:
+        isDark ? Brightness.light : Brightness.light,
         statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: context.pageBg,
+        systemNavigationBarIconBrightness:
+        isDark ? Brightness.light : Brightness.dark,
       ),
       child: Scaffold(
         backgroundColor: context.pageBg,
-        body: Column(
-          children: [
-            // 1. Top Modern AI Header Area
-            _buildTopHeader(),
+        body: SafeArea(
+          top: false,
+          child: Column(
+            children: [
+              _buildHeader(),
 
-            // 2. Scrollable Body Content
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 18.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 1. Premium Intro Greeting Card
-                    _buildIntroCard(),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  keyboardDismissBehavior:
+                  ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: const EdgeInsets.fromLTRB(18, 18, 18, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildWelcomeCard(),
 
-                    const SizedBox(height: 22),
+                      const SizedBox(height: 28),
 
-                    // 2. Common Experiences Section
-                    _buildSectionTitle('COMMON EXPERIENCES'),
-                    const SizedBox(height: 12),
-                    _buildCommonExperiencesWrap(),
+                      _buildSectionHeader(
+                        title: 'How are you feeling?',
+                        subtitle: 'Select everything that feels relevant',
+                      ),
 
-                    const SizedBox(height: 22),
+                      const SizedBox(height: 14),
 
-                    // 3. Describe in Detail Section
-                    _buildSectionTitle('DESCRIBE YOUR SYMPTOMS'),
-                    const SizedBox(height: 12),
-                    _buildDetailInputCard(),
+                      _buildExperienceChips(),
 
-                    const SizedBox(height: 22),
+                      const SizedBox(height: 28),
 
-                    // 4. Medical Safety Disclaimer Banner
-                    _buildDisclaimerBanner(),
+                      _buildSectionHeader(
+                        title: 'Tell us more',
+                        subtitle: 'Describe what you are experiencing',
+                      ),
 
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 14),
 
-                    // 5. Primary Action Button: Get Guidance ->
-                    _buildGetGuidanceButton(),
+                      _buildSymptomComposer(),
 
-                    const SizedBox(height: 28),
-                  ],
+                      const SizedBox(height: 18),
+
+                      _buildSafetyNotice(),
+
+                      const SizedBox(height: 24),
+
+                      _buildGenerateButton(),
+
+                      const SizedBox(height: 10),
+
+                      Center(
+                        child: Text(
+                          'Your information is used only to personalize your guidance.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 10.5,
+                            height: 1.4,
+                            color: context.textSecondary.withValues(
+                              alpha: 0.65,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // Top Modern AI Header Area
-  Widget _buildTopHeader() {
+  // ---------------------------------------------------------------------------
+  // HEADER
+  // ---------------------------------------------------------------------------
+
+  Widget _buildHeader() {
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 12,
-        bottom: 22,
-        left: 20,
-        right: 20,
+        top: MediaQuery.of(context).padding.top + 10,
+        left: 18,
+        right: 18,
+        bottom: 18,
       ),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF082F21).withValues(alpha: 0.35),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
-          ),
-        ],
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(22),
+        ),
       ),
       child: Row(
         children: [
-          // Back Button
-          Container(
-            width: 44,
-            height: 44,
-            margin: const EdgeInsets.only(right: 14),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
-              onPressed: () => Navigator.of(context).pop(),
-              padding: EdgeInsets.zero,
-            ),
+          _buildHeaderButton(
+            icon: Icons.arrow_back_rounded,
+            onTap: () => Navigator.of(context).pop(),
           ),
+
+          const SizedBox(width: 14),
 
           Expanded(
             child: Column(
@@ -180,35 +208,36 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD49E35).withValues(alpha: 0.20),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: const Color(0xFFD49E35).withValues(alpha: 0.40),
-                        ),
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFD4A43A),
+                        shape: BoxShape.circle,
                       ),
-                      child: const Text(
-                        'AI ASSISTANT',
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 10,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.0,
-                          color: Color(0xFFD49E35),
-                        ),
+                    ),
+                    const SizedBox(width: 7),
+                    const Text(
+                      'AI ASSISTANT',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.2,
+                        color: Color(0xFFD4A43A),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
+
+                const SizedBox(height: 4),
+
                 const Text(
-                  'AI SYMPTOM GUIDE',
+                  'AI Symptom Guide',
                   style: TextStyle(
                     fontFamily: 'Cinzel',
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
+                    letterSpacing: 0.4,
                     color: Colors.white,
                   ),
                 ),
@@ -220,295 +249,444 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
     );
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Row(
-      children: [
-        Container(
-          width: 4,
-          height: 14,
+  Widget _buildHeaderButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(13),
+        child: Ink(
+          width: 42,
+          height: 42,
           decoration: BoxDecoration(
-            color: const Color(0xFFD49E35),
-            borderRadius: BorderRadius.circular(2),
+            color: Colors.white.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(13),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.12),
+            ),
+          ),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 20,
           ),
         ),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 12,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 1.0,
-            color: context.textSecondary,
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // WELCOME CARD
+  // ---------------------------------------------------------------------------
+
+  Widget _buildWelcomeCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: context.cardBg,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: context.cardBorder.withValues(alpha: 0.75),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'A quiet space to share',
+            style: TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: context.textPrimary,
+            ),
+          ),
+
+          const SizedBox(height: 6),
+
+          Text(
+            'Tell us what you are going through. '
+                'The AI will help you explore relevant Quranic duas '
+                'and spiritual support.',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12.5,
+              height: 1.55,
+              color: context.textSecondary,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+              const Icon(
+                Icons.verified_user_outlined,
+                size: 14,
+                color: Color(0xFF0B4632),
+              ),
+              const SizedBox(width: 5),
+              Text(
+                'Private & supportive',
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  color: context.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // SECTION HEADER
+  // ---------------------------------------------------------------------------
+
+  Widget _buildSectionHeader({
+    required String title,
+    required String subtitle,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 3,
+              height: 18,
+              decoration: BoxDecoration(
+                color: const Color(0xFFD4A43A),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+
+            const SizedBox(width: 9),
+
+            Text(
+              title,
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                color: context.textPrimary,
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 4),
+
+        Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Text(
+            subtitle,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 11,
+              color: context.textSecondary.withValues(alpha: 0.75),
+            ),
           ),
         ),
       ],
     );
   }
 
-  // 1. Premium Intro Greeting Card
-  Widget _buildIntroCard() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: context.cardBg,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Glowing Avatar
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF0B4632), Color(0xFF1E6B45)],
-              ),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF0B4632).withValues(alpha: 0.30),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: const Center(
-              child: Icon(
-                Icons.auto_awesome_rounded,
-                color: Color(0xFFD49E35),
-                size: 24,
-              ),
-            ),
-          ),
+  // ---------------------------------------------------------------------------
+  // EXPERIENCE CHIPS
+  // ---------------------------------------------------------------------------
 
-          const SizedBox(width: 16),
-
-          // Content Column
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'How are you feeling today?',
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    color: context.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Share what you are experiencing and our AI will generate personalized Quranic duas and spiritual support.',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 13,
-                    color: context.textSecondary,
-                    height: 1.45,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // 2. Common Experiences Wrap Pills
-  Widget _buildCommonExperiencesWrap() {
+  Widget _buildExperienceChips() {
     return Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      children: _commonExperiences.map((exp) {
-        final isSelected = _selectedExperiences.contains(exp);
+      spacing: 8,
+      runSpacing: 9,
+      children: _commonExperiences.map((experience) {
+        final selected = _selectedExperiences.contains(experience);
 
-        return InkWell(
+        return _buildExperienceChip(
+          label: experience,
+          selected: selected,
           onTap: () {
             HapticFeedback.selectionClick();
+
             setState(() {
-              if (isSelected) {
-                _selectedExperiences.remove(exp);
+              if (selected) {
+                _selectedExperiences.remove(experience);
               } else {
-                _selectedExperiences.add(exp);
+                _selectedExperiences.add(experience);
               }
             });
           },
-          borderRadius: BorderRadius.circular(22),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 220),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFF0B4632) : context.cardBg,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(
-                color: isSelected
-                    ? const Color(0xFF0B4632)
-                    : context.cardBorder,
-                width: isSelected ? 1.5 : 1.0,
-              ),
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
-                        color: const Color(0xFF0B4632).withValues(alpha: 0.25),
-                        blurRadius: 12,
-                        offset: const Offset(0, 3),
-                      ),
-                    ]
-                  : [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.02),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (isSelected) ...[
-                  const Icon(Icons.check_rounded, color: Color(0xFFD49E35), size: 16),
-                  const SizedBox(width: 6),
-                ],
-                Text(
-                  exp,
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 13.5,
-                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected ? Colors.white : context.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
         );
       }).toList(),
     );
   }
 
-  // 3. Detail Text Input Card with Floating Mic & AI Sparkle
-  Widget _buildDetailInputCard() {
+  Widget _buildExperienceChip({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return AnimatedScale(
+      scale: selected ? 1.0 : 0.98,
+      duration: const Duration(milliseconds: 160),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(13),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 13,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: selected
+                  ? const Color(0xFF0B4632)
+                  : context.cardBg,
+              borderRadius: BorderRadius.circular(13),
+              border: Border.all(
+                color: selected
+                    ? const Color(0xFF0B4632)
+                    : context.cardBorder.withValues(alpha: 0.85),
+                width: 1,
+              ),
+              boxShadow: selected
+                  ? [
+                BoxShadow(
+                  color: const Color(0xFF0B4632).withValues(
+                    alpha: 0.18,
+                  ),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+                  : null,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 17,
+                  height: 17,
+                  decoration: BoxDecoration(
+                    color: selected
+                        ? const Color(0xFFD4A43A)
+                        : Colors.transparent,
+                    shape: BoxShape.circle,
+                    border: selected
+                        ? null
+                        : Border.all(
+                      color: context.textSecondary.withValues(
+                        alpha: 0.35,
+                      ),
+                    ),
+                  ),
+                  child: selected
+                      ? const Icon(
+                    Icons.check_rounded,
+                    size: 12,
+                    color: Colors.white,
+                  )
+                      : null,
+                ),
+
+                const SizedBox(width: 7),
+
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11.5,
+                    fontWeight:
+                    selected ? FontWeight.w700 : FontWeight.w600,
+                    color: selected
+                        ? Colors.white
+                        : context.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // SYMPTOM COMPOSER
+  // ---------------------------------------------------------------------------
+
+  Widget _buildSymptomComposer() {
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
         color: context.cardBg,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(
+          color: _isRecordingVoice
+              ? const Color(0xFF3F51B5).withValues(alpha: 0.60)
+              : context.cardBorder.withValues(alpha: 0.85),
+          width: _isRecordingVoice ? 1.5 : 1.0,
+        ),
       ),
-      child: Stack(
+      child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 18.0,
-              right: 18.0,
-              top: 16.0,
-              bottom: 56.0,
-            ),
-            child: TextField(
-              controller: _symptomController,
-              maxLines: 4,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 14.5,
-                color: context.textPrimary,
-              ),
-              decoration: InputDecoration(
-                hintText: 'Describe in your own words what you are experiencing (e.g. heavy chest at night, bad dreams, continuous worry)...',
-                hintStyle: TextStyle(
+          if (!_isRecordingVoice) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 15, 16, 8),
+              child: TextField(
+                controller: _symptomController,
+                maxLines: 5,
+                minLines: 4,
+                textCapitalization: TextCapitalization.sentences,
+                style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: context.textSecondary.withValues(alpha: 0.70),
-                  height: 1.4,
+                  height: 1.45,
+                  color: context.textPrimary,
                 ),
-                border: InputBorder.none,
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-          ),
-
-          // Bottom Action Row inside Card (Voice Record & AI Polish)
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 12,
-            child: Row(
-              children: [
-                // Voice Record Button with Wave Animation
-                GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() => _isRecordingVoice = !_isRecordingVoice);
-                    AppToast.show(
-                      context,
-                      title: _isRecordingVoice ? 'Voice Recording Active' : 'Recording Stopped',
-                      message: _isRecordingVoice
-                          ? 'Listening to your voice input...'
-                          : 'Voice recording saved.',
-                      type: ToastType.info,
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: _isRecordingVoice
-                          ? const Color(0xFFE74C3C)
-                          : (context.isDarkMode ? const Color(0xFF182E25) : const Color(0xFFEBF7F0)),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: _isRecordingVoice ? const Color(0xFFE74C3C) : const Color(0xFF0B4632).withValues(alpha: 0.20),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _isRecordingVoice ? Icons.graphic_eq_rounded : Icons.mic_rounded,
-                          color: _isRecordingVoice ? Colors.white : const Color(0xFF0B4632),
-                          size: 18,
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          _isRecordingVoice ? 'Listening...' : 'Voice Input',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: _isRecordingVoice ? Colors.white : const Color(0xFF0B4632),
-                          ),
-                        ),
-                      ],
+                decoration: InputDecoration(
+                  hintText:
+                  'Write freely about what you are experiencing...',
+                  hintStyle: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13,
+                    height: 1.45,
+                    color: context.textSecondary.withValues(
+                      alpha: 0.55,
                     ),
                   ),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
                 ),
+              ),
+            ),
+          ] else ...[
+            // Active Voice Recording Bar view matching reference image
+            Container(
+              height: 56,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  // Plus Button
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.add, color: Colors.white70, size: 18),
+                  ),
+                  const SizedBox(width: 14),
+
+                  // Dotted Waveform
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        '· · · · · · · · · · · · · · · · · · · · · · · · · ·',
+                        style: TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 14,
+                          letterSpacing: 2.0,
+                          color: Colors.white.withValues(alpha: 0.60),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 14),
+
+                  // Stop Button
+                  GestureDetector(
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      setState(() => _isRecordingVoice = false);
+                    },
+                    child: Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 10),
+
+                  // Submit Arrow Button (Blue/Indigo accent)
+                  GestureDetector(
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      setState(() => _isRecordingVoice = false);
+                      _handleGetGuidance();
+                    },
+                    child: Container(
+                      width: 38,
+                      height: 38,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF3F51B5),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.arrow_upward_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+            child: Row(
+              children: [
+                if (!_isRecordingVoice) _buildVoiceButton(),
 
                 const Spacer(),
 
-                // Character count / AI badge
                 Text(
-                  'AI Powered',
+                  _isRecordingVoice ? 'Recording voice audio...' : 'AI assisted',
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 11,
+                    fontSize: 10,
                     fontWeight: FontWeight.w600,
-                    color: context.textSecondary.withValues(alpha: 0.60),
+                    color: _isRecordingVoice
+                        ? const Color(0xFF3F51B5)
+                        : context.textSecondary.withValues(
+                      alpha: 0.60,
+                    ),
                   ),
                 ),
               ],
@@ -519,37 +697,133 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
     );
   }
 
-  // 4. Medical Safety Disclaimer Banner
-  Widget _buildDisclaimerBanner() {
+  Widget _buildVoiceButton() {
+    final isRecording = _isRecordingVoice;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          HapticFeedback.selectionClick();
+
+          setState(() {
+            _isRecordingVoice = !_isRecordingVoice;
+          });
+
+          AppToast.show(
+            context,
+            title: isRecording
+                ? 'Recording Stopped'
+                : 'Voice Recording Active',
+            message: isRecording
+                ? 'Voice recording saved.'
+                : 'Listening to your voice input...',
+            type: ToastType.info,
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 11,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+            color: isRecording
+                ? const Color(0xFFE05245)
+                : context.isDarkMode
+                ? const Color(0xFF163328)
+                : const Color(0xFFEDF7F1),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isRecording
+                  ? const Color(0xFFE05245)
+                  : const Color(0xFF0B4632).withValues(alpha: 0.12),
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isRecording
+                    ? Icons.graphic_eq_rounded
+                    : Icons.mic_none_rounded,
+                size: 17,
+                color: isRecording
+                    ? Colors.white
+                    : const Color(0xFF0B4632),
+              ),
+
+              const SizedBox(width: 6),
+
+              Text(
+                isRecording ? 'Listening...' : 'Voice',
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  color: isRecording
+                      ? Colors.white
+                      : const Color(0xFF0B4632),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // SAFETY NOTICE
+  // ---------------------------------------------------------------------------
+
+  Widget _buildSafetyNotice() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 13,
+        vertical: 12,
+      ),
       decoration: BoxDecoration(
         color: context.isDarkMode
-            ? const Color(0xFF2E2412)
-            : const Color(0xFFFFF8E1),
-        borderRadius: BorderRadius.circular(18),
+            ? const Color(0xFF292313)
+            : const Color(0xFFFFFAEE),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: const Color(0xFFD49E35).withValues(alpha: 0.40),
-          width: 1.0,
+          color: const Color(0xFFD4A43A).withValues(alpha: 0.22),
         ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.warning_amber_rounded,
-            color: Color(0xFFD49E35),
-            size: 20,
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: const Color(0xFFD4A43A).withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.info_outline_rounded,
+              color: Color(0xFFD4A43A),
+              size: 16,
+            ),
           ),
-          const SizedBox(width: 12),
+
+          const SizedBox(width: 10),
+
           Expanded(
             child: Text(
-              'Spiritual guidance & Ruqyah supplications only — not a formal medical diagnosis. If you are experiencing severe medical conditions, please consult a qualified healthcare professional.',
+              'This provides spiritual guidance and Ruqyah supplications, '
+                  'not a medical diagnosis. For severe or persistent symptoms, '
+                  'please consult a qualified healthcare professional.',
               style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 12,
-                color: context.isDarkMode ? const Color(0xFFE5A93C) : const Color(0xFF8F630C),
-                height: 1.4,
+                fontSize: 10.5,
+                height: 1.45,
+                color: context.isDarkMode
+                    ? const Color(0xFFE3B85A)
+                    : const Color(0xFF80600F),
               ),
             ),
           ),
@@ -558,19 +832,22 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
     );
   }
 
-  // 5. Primary Action Button: Get Guidance ->
-  Widget _buildGetGuidanceButton() {
+  // ---------------------------------------------------------------------------
+  // PRIMARY BUTTON
+  // ---------------------------------------------------------------------------
+
+  Widget _buildGenerateButton() {
     return Container(
       width: double.infinity,
-      height: 58,
+      height: 56,
       decoration: BoxDecoration(
         gradient: AppGradients.greenButtonGradient,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF082F21).withValues(alpha: 0.35),
-            offset: const Offset(0, 6),
-            blurRadius: 20,
+            color: const Color(0xFF0B4632).withValues(alpha: 0.24),
+            blurRadius: 18,
+            offset: const Offset(0, 7),
           ),
         ],
       ),
@@ -578,28 +855,41 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
         color: Colors.transparent,
         child: InkWell(
           onTap: _handleGetGuidance,
-          borderRadius: BorderRadius.circular(20),
-          splashColor: Colors.white.withValues(alpha: 0.15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'Generate Spiritual Guidance',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  letterSpacing: 0.2,
+          borderRadius: BorderRadius.circular(16),
+          splashColor: Colors.white.withValues(alpha: 0.10),
+          highlightColor: Colors.white.withValues(alpha: 0.05),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Generate Spiritual Guidance',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              SizedBox(width: 10),
-              Icon(
-                Icons.auto_awesome_rounded,
-                color: Color(0xFFD49E35),
-                size: 20,
-              ),
-            ],
+
+                const SizedBox(width: 8),
+
+                Container(
+                  width: 26,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.10),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Colors.white,
+                    size: 15,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
