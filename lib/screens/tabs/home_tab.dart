@@ -629,7 +629,7 @@ class _HomeTabState extends State<HomeTab> {
           label: context.tr('ruqyah'),
           customIcon: RuqyahDuaIcon(
             color: iconColorRuqyah,
-            size: 28,
+            size: 30,
           ),
           bgColor: const Color(0xFFEBF7F0),
           iconColor: iconColorRuqyah,
@@ -646,7 +646,7 @@ class _HomeTabState extends State<HomeTab> {
           label: context.tr('hijama'),
           customIcon: HijamaCuppingIcon(
             color: iconColorHijama,
-            size: 28,
+            size: 30,
           ),
           bgColor: const Color(0xFFFFF3E8),
           iconColor: iconColorHijama,
@@ -658,7 +658,7 @@ class _HomeTabState extends State<HomeTab> {
           label: context.tr('acupuncture'),
           customIcon: AcupunctureIcon(
             color: iconColorAcupuncture,
-            size: 28,
+            size: 30,
           ),
           bgColor: const Color(0xFFE6F7FF),
           iconColor: iconColorAcupuncture,
@@ -706,7 +706,7 @@ class _HomeTabState extends State<HomeTab> {
               shape: BoxShape.circle,
             ),
             child: Center(
-              child: customIcon ?? Icon(icon, color: iconColor, size: 26),
+              child: customIcon ?? Icon(icon, color: iconColor, size: 30),
             ),
           ),
           const SizedBox(height: 8),

@@ -158,8 +158,9 @@ class _RuqyahDuaIconPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Path rawPath = _parseSvgPath(_pathData);
 
-    final double scale = size.width / 114.0;
-    canvas.scale(scale, scale * (86.0 / 114.0) * (size.height / size.width));
+    final double scale = size.width / 92.0;
+    canvas.scale(scale, scale * (size.height / size.width));
+    canvas.translate(-11.0, 2.0);
 
     final Paint paint = Paint()
       ..color = color
