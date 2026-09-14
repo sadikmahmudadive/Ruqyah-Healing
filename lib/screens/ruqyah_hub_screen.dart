@@ -522,8 +522,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
         Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.cardBg,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -576,24 +577,24 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
 
               const SizedBox(height: 10),
 
-              const Text(
+              Text(
                 'Ruqyah Live Session',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16.5,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
 
               const SizedBox(height: 2),
 
-              const Text(
+              Text(
                 'Ustazh Salim • Interactive healing & Q&A',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.5,
-                  color: Color(0xFF6E7E77),
+                  color: context.textSecondary,
                 ),
               ),
 
@@ -654,13 +655,13 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Your Progress',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -700,8 +701,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
           child: Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -712,11 +714,11 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'MINUTES LISTENED',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
@@ -726,18 +728,18 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                           color: Color(0xFF90A4AE),
                         ),
                       ),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 6),
                       Text(
                         '112 min',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 24,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF0B4632),
+                          color: context.textPrimary,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
+                      const SizedBox(height: 4),
+                      const Text(
                         'This week\'s goal: 150 min',
                         style: TextStyle(
                           fontFamily: 'Inter',
@@ -780,13 +782,13 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'PDF Guides',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -812,8 +814,9 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.cardBg,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -843,7 +846,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
 
               const SizedBox(width: 14),
 
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -853,11 +856,21 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
+                      'For protection & healing • 15 pages',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12.5,
+                        color: context.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
                       'For protection & healing • 15 pages',
                       style: TextStyle(
                         fontFamily: 'Inter',
