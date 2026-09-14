@@ -392,7 +392,9 @@ class _ServicesTabState extends State<ServicesTab> {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: iconBgColor,
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : iconBgColor,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Center(
@@ -489,7 +491,9 @@ class _ServicesTabState extends State<ServicesTab> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: iconBgColor,
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : iconBgColor,
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Center(
@@ -510,11 +514,11 @@ class _ServicesTabState extends State<ServicesTab> {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14.5,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF15221D),
+                          color: context.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -522,10 +526,10 @@ class _ServicesTabState extends State<ServicesTab> {
                         description,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 11.5,
-                          color: Color(0xFF6E7E77),
+                          color: context.textSecondary,
                         ),
                       ),
                     ],
