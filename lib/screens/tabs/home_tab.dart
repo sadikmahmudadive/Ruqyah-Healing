@@ -620,67 +620,95 @@ class _HomeTabState extends State<HomeTab> {
     final iconColorRuqyah = isDark ? const Color(0xFFD49E35) : const Color(0xFF0B4632);
     final iconColorHijama = isDark ? const Color(0xFFD49E35) : const Color(0xFFE67E22);
     final iconColorAcupuncture = isDark ? const Color(0xFFD49E35) : const Color(0xFF2980B9);
+    final iconColorAyurvedic = isDark ? const Color(0xFFD49E35) : const Color(0xFF27AE60);
+    final iconColorPathology = isDark ? const Color(0xFFD49E35) : const Color(0xFF8E44AD);
     final iconColorEmergency = isDark ? const Color(0xFFD49E35) : const Color(0xFFE74C3C);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildServiceIconCard(
-          label: context.tr('ruqyah'),
-          customIcon: RuqyahDuaIcon(
-            color: iconColorRuqyah,
-            size: 30,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      child: Row(
+        children: [
+          _buildServiceIconCard(
+            label: context.tr('ruqyah'),
+            customIcon: RuqyahDuaIcon(
+              color: iconColorRuqyah,
+              size: 30,
+            ),
+            bgColor: const Color(0xFFEBF7F0),
+            iconColor: iconColorRuqyah,
+            onTap: () {
+              HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const AISymptomGuideScreen(),
+                ),
+              );
+            },
           ),
-          bgColor: const Color(0xFFEBF7F0),
-          iconColor: iconColorRuqyah,
-          onTap: () {
-            HapticFeedback.selectionClick();
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const AISymptomGuideScreen(),
-              ),
-            );
-          },
-        ),
-        _buildServiceIconCard(
-          label: context.tr('hijama'),
-          customIcon: HijamaCuppingIcon(
-            color: iconColorHijama,
-            size: 30,
+          const SizedBox(width: 14),
+          _buildServiceIconCard(
+            label: context.tr('hijama'),
+            customIcon: HijamaCuppingIcon(
+              color: iconColorHijama,
+              size: 30,
+            ),
+            bgColor: const Color(0xFFFFF3E8),
+            iconColor: iconColorHijama,
+            onTap: () {
+              HapticFeedback.selectionClick();
+            },
           ),
-          bgColor: const Color(0xFFFFF3E8),
-          iconColor: iconColorHijama,
-          onTap: () {
-            HapticFeedback.selectionClick();
-          },
-        ),
-        _buildServiceIconCard(
-          label: context.tr('acupuncture'),
-          customIcon: AcupunctureIcon(
-            color: iconColorAcupuncture,
-            size: 30,
+          const SizedBox(width: 14),
+          _buildServiceIconCard(
+            label: context.tr('acupuncture'),
+            customIcon: AcupunctureIcon(
+              color: iconColorAcupuncture,
+              size: 30,
+            ),
+            bgColor: const Color(0xFFE6F7FF),
+            iconColor: iconColorAcupuncture,
+            onTap: () {
+              HapticFeedback.selectionClick();
+            },
           ),
-          bgColor: const Color(0xFFE6F7FF),
-          iconColor: iconColorAcupuncture,
-          onTap: () {
-            HapticFeedback.selectionClick();
-          },
-        ),
-        _buildServiceIconCard(
-          label: context.tr('emergency'),
-          icon: Icons.error_outline_rounded,
-          bgColor: const Color(0xFFFFEBEB),
-          iconColor: iconColorEmergency,
-          onTap: () {
-            HapticFeedback.selectionClick();
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const EmergencyRuqyahScreen(),
-              ),
-            );
-          },
-        ),
-      ],
+          const SizedBox(width: 14),
+          _buildServiceIconCard(
+            label: context.tr('ayurvedic'),
+            icon: Icons.spa_outlined,
+            bgColor: const Color(0xFFE8F8F5),
+            iconColor: iconColorAyurvedic,
+            onTap: () {
+              HapticFeedback.selectionClick();
+            },
+          ),
+          const SizedBox(width: 14),
+          _buildServiceIconCard(
+            label: context.tr('pathology'),
+            icon: Icons.biotech_outlined,
+            bgColor: const Color(0xFFF4ECF7),
+            iconColor: iconColorPathology,
+            onTap: () {
+              HapticFeedback.selectionClick();
+            },
+          ),
+          const SizedBox(width: 14),
+          _buildServiceIconCard(
+            label: context.tr('emergency'),
+            icon: Icons.error_outline_rounded,
+            bgColor: const Color(0xFFFFEBEB),
+            iconColor: iconColorEmergency,
+            onTap: () {
+              HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const EmergencyRuqyahScreen(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 

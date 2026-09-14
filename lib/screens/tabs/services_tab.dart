@@ -268,6 +268,34 @@ class _ServicesTabState extends State<ServicesTab> {
 
               const SizedBox(height: 16),
 
+              // 4. AYURVEDIC Service Card
+              _buildMainServiceCard(
+                title: context.tr('ayurvedic_title'),
+                description: context.tr('ayurvedic_sub'),
+                icon: Icons.spa_outlined,
+                iconBgColor: const Color(0xFFE8F8F5),
+                iconColor: const Color(0xFF27AE60),
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // 5. PATHOLOGY Service Card
+              _buildMainServiceCard(
+                title: context.tr('pathology_title'),
+                description: context.tr('pathology_sub'),
+                icon: Icons.biotech_outlined,
+                iconBgColor: const Color(0xFFF4ECF7),
+                iconColor: const Color(0xFF8E44AD),
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                },
+              ),
+
+              const SizedBox(height: 16),
+
               // 4. Bottom Bento Row: Courses & Store
               Row(
                 children: [
