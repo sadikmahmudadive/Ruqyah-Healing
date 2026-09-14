@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
-import '../widgets/ai_icon.dart';
 import '../widgets/app_toast.dart';
 import 'guidance_results_screen.dart';
 
@@ -216,31 +215,6 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
               ],
             ),
           ),
-
-          // Glowing AI Badge
-          ScaleTransition(
-            scale: Tween<double>(begin: 0.95, end: 1.05).animate(_pulseController),
-            child: Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF0B4632), Color(0xFF1E6B45)],
-                ),
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFD49E35), width: 1.8),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFD49E35).withValues(alpha: 0.40),
-                    blurRadius: 14,
-                  ),
-                ],
-              ),
-              child: const Center(
-                child: AiIcon(color: Color(0xFFD49E35), size: 24),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -291,15 +265,15 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // AI Glowing Avatar
+          // Glowing Avatar
           Container(
-            width: 56,
-            height: 56,
+            width: 52,
+            height: 52,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [Color(0xFF0B4632), Color(0xFF1E6B45)],
               ),
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
                   color: const Color(0xFF0B4632).withValues(alpha: 0.30),
@@ -309,7 +283,11 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
               ],
             ),
             child: const Center(
-              child: AiIcon(color: Color(0xFFD49E35), size: 28),
+              child: Icon(
+                Icons.auto_awesome_rounded,
+                color: Color(0xFFD49E35),
+                size: 24,
+              ),
             ),
           ),
 
