@@ -59,14 +59,19 @@ class AppToastWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ToastStyle style = _getStyle(type);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF0F1F1A) : Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isDark ? const Color(0xFF1C362C) : const Color(0xFFE2E8E5),
+          width: 1.0,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: Colors.black.withValues(alpha: isDark ? 0.30 : 0.08),
             blurRadius: 20,
             offset: const Offset(0, 6),
           ),
@@ -96,13 +101,15 @@ class AppToastWidget extends StatelessWidget {
                       width: 42,
                       height: 42,
                       decoration: BoxDecoration(
-                        color: style.iconBgColor,
+                        color: isDark
+                            ? style.accentColor.withValues(alpha: 0.22)
+                            : style.iconBgColor,
                         shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: Icon(
                           style.icon,
-                          color: style.accentColor,
+                          color: isDark ? const Color(0xFF81C784) : style.accentColor,
                           size: 20,
                         ),
                       ),
@@ -118,20 +125,20 @@ class AppToastWidget extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFF15221D),
+                              color: isDark ? Colors.white : const Color(0xFF15221D),
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             message,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 12.5,
-                              color: Color(0xFF6E7E77),
+                              color: isDark ? const Color(0xFF92A89F) : const Color(0xFF6E7E77),
                               height: 1.3,
                             ),
                           ),
@@ -152,11 +159,11 @@ class AppToastWidget extends StatelessWidget {
                         }
                       },
                       borderRadius: BorderRadius.circular(12),
-                      child: const Padding(
-                        padding: EdgeInsets.all(4.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
                         child: Icon(
                           Icons.cancel_outlined,
-                          color: Color(0xFF90A4AE),
+                          color: isDark ? const Color(0xFF627870) : const Color(0xFF90A4AE),
                           size: 20,
                         ),
                       ),
