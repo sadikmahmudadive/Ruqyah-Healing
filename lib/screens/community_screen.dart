@@ -165,7 +165,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: Border.all(color: context.cardBorder),
+                    borderSide: BorderSide(color: context.cardBorder),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
