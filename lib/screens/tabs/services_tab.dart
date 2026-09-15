@@ -9,8 +9,10 @@ import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../acupuncture_hub_screen.dart';
 import '../ai_symptom_guide_screen.dart';
+import '../ayurvedic_hub_screen.dart';
 import '../equipment_store_screen.dart';
 import '../hijama_hub_screen.dart';
+import '../pathology_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
 
 class ServicesTab extends StatefulWidget {
@@ -277,6 +279,23 @@ class _ServicesTabState extends State<ServicesTab> {
                 iconColor: const Color(0xFF27AE60),
                 onTap: () {
                   HapticFeedback.selectionClick();
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const AyurvedicHubScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
                 },
               ),
 
@@ -291,6 +310,23 @@ class _ServicesTabState extends State<ServicesTab> {
                 iconColor: const Color(0xFF8E44AD),
                 onTap: () {
                   HapticFeedback.selectionClick();
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const PathologyHubScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
                 },
               ),
 
