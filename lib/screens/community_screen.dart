@@ -690,7 +690,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             ),
                           ),
                         ),
-                        if (post.isVerified) ...[
+                        if (post.isVerified == true) ...[
                           const SizedBox(width: 4),
                           const Icon(
                             Icons.check_circle_rounded,
