@@ -900,18 +900,36 @@ class _AnimatedWaveformBars extends StatefulWidget {
 class _AnimatedWaveformBarsState extends State<_AnimatedWaveformBars>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  Timer? _speechTimer;
+  double _currentAmplitude = 0.2; // Simulated live voice level (0.1 to 1.0)
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 300),
     )..repeat(reverse: true);
+
+    // Simulate natural voice volume fluctuations (speech bursts + pauses)
+    _speechTimer = Timer.periodic(const Duration(milliseconds: 220), (timer) {
+      if (mounted) {
+        setState(() {
+          // 75% chance speaking, 25% chance brief silence/pause
+          final isSpeaking = (timer.tick % 6) != 0;
+          if (isSpeaking) {
+            _currentAmplitude = 0.35 + ((timer.tick * 13) % 65) / 100.0;
+          } else {
+            _currentAmplitude = 0.12; // Idle/silence state
+          }
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
+    _speechTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -930,14 +948,17 @@ class _AnimatedWaveformBarsState extends State<_AnimatedWaveformBars>
               children: List.generate(barCount, (index) {
                 final factor = (index % 5 + 1) * 0.18;
                 final val = (_controller.value + factor) % 1.0;
-                final dotHeight = 3.0 + (val * 16.0);
+                final dotHeight = 3.0 + (val * 16.0 * _currentAmplitude);
 
-                return Container(
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
                   width: 2.2,
                   height: dotHeight,
                   margin: const EdgeInsets.symmetric(horizontal: 1.8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.35 + (val * 0.65)),
+                    color: Colors.white.withValues(
+                      alpha: 0.25 + (_currentAmplitude * 0.75),
+                    ),
                     borderRadius: BorderRadius.circular(1.5),
                   ),
                 );
