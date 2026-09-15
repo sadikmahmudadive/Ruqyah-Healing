@@ -7,6 +7,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
+import '../community_screen.dart';
 import '../course_detail_screen.dart';
 
 class CourseModel {
@@ -96,6 +97,11 @@ class _LearnTabState extends State<LearnTab> {
                   children: [
                     // 1. Continue Learning Hero Progress Card
                     _buildContinueLearningHeroCard(),
+
+                    const SizedBox(height: 16),
+
+                    // Community & Support Banner Card
+                    _buildCommunityBanner(),
 
                     const SizedBox(height: 20),
 
@@ -751,6 +757,91 @@ class _LearnTabState extends State<LearnTab> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCommunityBanner() {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: AppGradients.greenHeaderGradient,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF082F21).withValues(alpha: 0.25),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: const Center(
+              child: Icon(Icons.people_alt_rounded, color: Color(0xFFD49E35), size: 24),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Community & Dua',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Share duas, healing stories & scholar Q&A',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    color: Colors.white.withValues(alpha: 0.80),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFD49E35),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              elevation: 0,
+            ),
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const CommunityScreen(),
+                ),
+              );
+            },
+            child: const Text(
+              'Join',
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 13.5,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
