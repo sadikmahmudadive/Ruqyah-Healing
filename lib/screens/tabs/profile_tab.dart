@@ -291,9 +291,9 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: sessionsCompleted,
-            label: context.tr('sessions_completed'),
+            label: 'SESSIONS',
             subtitle: 'Completed',
-            subtitleColor: const Color(0xFF6E7E77),
+            subtitleColor: context.textSecondary,
           ),
         ),
         const SizedBox(width: 10),
@@ -309,8 +309,8 @@ class _ProfileTabState extends State<ProfileTab> {
             },
             child: _buildBentoCard(
               number: healthIndex,
-              label: context.tr('health_index_label'),
-              subtitle: 'State',
+              label: 'HEALTH INDEX',
+              subtitle: 'Good State',
               subtitleColor: const Color(0xFF1E6B45),
             ),
           ),
@@ -319,9 +319,9 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: daysActive,
-            label: context.tr('days_active'),
-            subtitle: 'Streak',
-            subtitleColor: const Color(0xFF6E7E77),
+            label: 'DAYS ACTIVE',
+            subtitle: 'Streak Tracker',
+            subtitleColor: context.textSecondary,
           ),
         ),
       ],
@@ -335,7 +335,7 @@ class _ProfileTabState extends State<ProfileTab> {
     required Color subtitleColor,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
       decoration: BoxDecoration(
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
@@ -345,9 +345,12 @@ class _ProfileTabState extends State<ProfileTab> {
         ),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             number,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
@@ -358,6 +361,9 @@ class _ProfileTabState extends State<ProfileTab> {
           const SizedBox(height: 4),
           Text(
             label,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 10,
@@ -369,11 +375,14 @@ class _ProfileTabState extends State<ProfileTab> {
           const SizedBox(height: 2),
           Text(
             subtitle,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 10.5,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: context.textSecondary,
+              color: subtitleColor,
             ),
           ),
         ],
