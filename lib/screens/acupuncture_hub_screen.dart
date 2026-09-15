@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/acupuncture_icon.dart';
 import 'acupuncture_point_map_screen.dart';
 import 'pain_stress_monitor_screen.dart';
@@ -34,7 +35,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -62,14 +63,14 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                     const SizedBox(height: 20),
 
                     // 3. Discover Section Title
-                    const Text(
+                    Text(
                       'DISCOVER',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
-                        color: Color(0xFF90A4AE),
+                        color: context.textSecondary,
                       ),
                     ),
 
@@ -149,9 +150,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -178,8 +179,8 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'ACUPUNCTURE HUB',
                   style: TextStyle(
                     fontFamily: 'Cinzel',
@@ -189,7 +190,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                     color: Color(0xFFD49E35),
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'HOLISTIC HEALING • VERIFIED CARE',
                   style: TextStyle(
@@ -197,7 +198,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                     fontSize: 10.5,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.8,
-                    color: Color(0xFF81C784),
+                    color: const Color(0xFF81C784),
                   ),
                 ),
               ],
@@ -213,8 +214,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -230,23 +232,25 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'BALANCE. RESTORE. THRIVE.',
                   style: TextStyle(
                     fontFamily: 'Cinzel',
                     fontSize: 16.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF0B4632),
+                    color: context.isDarkMode
+                        ? const Color(0xFF81C784)
+                        : const Color(0xFF0B4632),
                     letterSpacing: 0.5,
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   'Acupuncture is a time-tested practice that supports natural healing, pain relief and emotional balance.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                     height: 1.35,
                   ),
                 ),
@@ -262,17 +266,21 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEBF7F0),
+                      color: context.isDarkMode
+                          ? const Color(0xFF182E25)
+                          : const Color(0xFFEBF7F0),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Text(
+                    child: Text(
                       'EXPLORE LIBRARY',
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.5,
-                        color: Color(0xFF0B4632),
+                        color: context.isDarkMode
+                            ? const Color(0xFF81C784)
+                            : const Color(0xFF0B4632),
                       ),
                     ),
                   ),
@@ -288,7 +296,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             width: 76,
             height: 76,
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : const Color(0xFFF5F7F6),
               borderRadius: BorderRadius.circular(18),
             ),
             child: const Center(
@@ -306,8 +316,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -323,10 +334,10 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
           Expanded(
             child: TextField(
               controller: _searchController,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
               decoration: const InputDecoration(
                 hintText: 'Search conditions or concerns...',
@@ -355,8 +366,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -376,7 +388,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(icon, color: const Color(0xFF0B4632), size: 20),
@@ -390,20 +404,20 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
@@ -413,8 +427,10 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
               Container(
                 width: 36,
                 height: 36,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF5F7F6),
+                decoration: BoxDecoration(
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFF5F7F6),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -444,8 +460,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.cardBg,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: context.cardBorder, width: 1.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -462,7 +479,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEBF7F0),
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : const Color(0xFFEBF7F0),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Icon(
@@ -474,7 +493,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
 
                 const SizedBox(width: 14),
 
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -484,16 +503,16 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15.5,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF15221D),
+                          color: context.textPrimary,
                         ),
                       ),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
                         'Track your progress over time',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12,
-                          color: Color(0xFF6E7E77),
+                          color: context.textSecondary,
                         ),
                       ),
                     ],
@@ -503,8 +522,10 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                 Container(
                   width: 36,
                   height: 36,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF5F7F6),
+                  decoration: BoxDecoration(
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : const Color(0xFFF5F7F6),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -521,18 +542,18 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             // Pain Level Row
             Row(
               children: [
-                const Text(
+                Text(
                   'Pain Level',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
                 const Spacer(),
-                Text(
-                  '$_painLevel / 10',
-                  style: const TextStyle(
+                const Text(
+                  '6 / 10',
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w800,
@@ -548,8 +569,10 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
-                value: _painLevel / 10.0,
-                backgroundColor: const Color(0xFFF5F7F6),
+                value: 6 / 10.0,
+                backgroundColor: context.isDarkMode
+                    ? const Color(0xFF182E25)
+                    : const Color(0xFFF5F7F6),
                 color: const Color(0xFFE74C3C),
                 minHeight: 6,
               ),
@@ -560,18 +583,18 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             // Stress Level Row
             Row(
               children: [
-                const Text(
+                Text(
                   'Stress Level',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
                 const Spacer(),
-                Text(
-                  '$_stressLevel / 10',
-                  style: const TextStyle(
+                const Text(
+                  '4 / 10',
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w800,
@@ -587,8 +610,10 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
-                value: _stressLevel / 10.0,
-                backgroundColor: const Color(0xFFF5F7F6),
+                value: 4 / 10.0,
+                backgroundColor: context.isDarkMode
+                    ? const Color(0xFF182E25)
+                    : const Color(0xFFF5F7F6),
                 color: const Color(0xFF0B4632),
                 minHeight: 6,
               ),
@@ -604,7 +629,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0),
+        color: context.isDarkMode
+            ? const Color(0xFF182E25)
+            : const Color(0xFFEBF7F0),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.20),
@@ -629,11 +656,11 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
 
           const SizedBox(width: 14),
 
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Safety & Education',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
@@ -642,13 +669,15 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                     color: Color(0xFF0B4632),
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'Evidence-based safety guidelines',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
-                    color: Color(0xFF52625B),
+                    color: context.isDarkMode
+                        ? const Color(0xFF81C784)
+                        : const Color(0xFF52625B),
                   ),
                 ),
               ],
@@ -658,8 +687,10 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
           Container(
             width: 36,
             height: 36,
-            decoration: const BoxDecoration(
-              color: Color(0xFFD6ECE0),
+            decoration: BoxDecoration(
+              color: context.isDarkMode
+                  ? const Color(0xFF233F33)
+                  : const Color(0xFFD6ECE0),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -678,8 +709,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -694,7 +726,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFF8E1),
+              color: context.isDarkMode
+                  ? const Color(0xFF382B14)
+                  : const Color(0xFFFFF8E1),
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Icon(
@@ -706,7 +740,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
 
           const SizedBox(width: 14),
 
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -716,16 +750,16 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'Personalized recommendations',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import '../widgets/hijama_cupping_icon.dart';
 import 'hijama_body_map_screen.dart';
 import 'hijama_session_detail_screen.dart';
@@ -24,7 +25,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -89,9 +90,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         left: 20,
         right: 20,
       ),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -118,8 +119,8 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'HIJAMA HUB',
                   style: TextStyle(
                     fontFamily: 'Cinzel',
@@ -129,14 +130,14 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                     color: Color(0xFFD49E35),
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'A Sunnah of Healing for Body & Soul',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF81C784),
+                    color: const Color(0xFF81C784),
                   ),
                 ),
               ],
@@ -173,8 +174,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -186,7 +188,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -196,17 +198,17 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                     height: 1.25,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
                   'Cupping therapy supports natural detox, balance and overall wellbeing when done by a qualified therapist.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                     height: 1.35,
                   ),
                 ),
@@ -221,7 +223,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : const Color(0xFFF5F7F6),
               borderRadius: BorderRadius.circular(18),
             ),
             child: const Center(
@@ -239,13 +243,13 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               'Services',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                color: context.textPrimary,
               ),
             ),
             const Spacer(),
@@ -300,8 +304,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -328,7 +333,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Center(
@@ -344,20 +351,20 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        color: context.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF6E7E77),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
@@ -368,7 +375,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -389,7 +398,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFEBEB),
+        color: context.isDarkMode
+            ? const Color(0xFF321E1E)
+            : const Color(0xFFFFEBEB),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFFE74C3C).withValues(alpha: 0.20),
@@ -407,7 +418,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
 
           const SizedBox(width: 12),
 
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -417,27 +428,33 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFFC0392B),
+                    color: context.isDarkMode
+                        ? const Color(0xFFE74C3C)
+                        : const Color(0xFFC0392B),
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   'Hijama may not be suitable for everyone. Screening by a qualified therapist is essential.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFFC0392B),
+                    color: context.isDarkMode
+                        ? const Color(0xFFE74C3C).withValues(alpha: 0.90)
+                        : const Color(0xFFC0392B),
                     height: 1.35,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
                   'Professional-Only: App does not provide instructions for invasive procedures.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFFC0392B),
+                    color: context.isDarkMode
+                        ? const Color(0xFFE74C3C)
+                        : const Color(0xFFC0392B),
                   ),
                 ),
               ],
@@ -453,7 +470,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF8E1),
+        color: context.isDarkMode
+            ? const Color(0xFF2E2412)
+            : const Color(0xFFFFF8E1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFFD49E35).withValues(alpha: 0.30),
@@ -466,7 +485,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFF3E8),
+              color: context.isDarkMode
+                  ? const Color(0xFF382B14)
+                  : const Color(0xFFFFF3E8),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Icon(
@@ -478,36 +499,36 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
 
           const SizedBox(width: 14),
 
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Next Sunnah Day (Recommended)',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFFB78103),
+                    color: Color(0xFFD49E35),
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'Hijrah 17, 1446 AH • Thu, May 23, 2024',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'Consider scheduling on this day for reward.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11.5,
-                    color: Color(0xFF6E7E77),
+                    color: context.textSecondary,
                   ),
                 ),
               ],
@@ -577,11 +598,10 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
   Widget _buildQuickActionsRow() {
     return Row(
       children: [
-        // Find Therapist
         Expanded(
           child: _buildBentoActionCard(
             title: 'Find Therapist',
-            subtitle: 'Verified professionals',
+            subtitle: 'Verified pros',
             icon: Icons.person_outline_rounded,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -594,12 +614,10 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
           ),
         ),
         const SizedBox(width: 10),
-
-        // My Sessions
         Expanded(
           child: _buildBentoActionCard(
             title: 'My Sessions',
-            subtitle: 'View your history',
+            subtitle: 'View history',
             icon: Icons.assignment_outlined,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -612,12 +630,10 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
           ),
         ),
         const SizedBox(width: 10),
-
-        // Body Map
         Expanded(
           child: _buildBentoActionCard(
             title: 'Body Map',
-            subtitle: 'Point reference',
+            subtitle: 'Point ref',
             icon: Icons.content_paste_rounded,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -642,8 +658,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -662,8 +679,10 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               Container(
                 width: 40,
                 height: 40,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFEBF7F0),
+                decoration: BoxDecoration(
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -674,21 +693,21 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 13,
+                  fontSize: 12.5,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 subtitle,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 10.5,
-                  color: Color(0xFF90A4AE),
+                  fontSize: 10,
+                  color: context.textSecondary,
                 ),
               ),
             ],
