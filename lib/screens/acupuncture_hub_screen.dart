@@ -660,13 +660,15 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Safety & Education',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF0B4632),
+                    color: context.isDarkMode
+                        ? Colors.white
+                        : const Color(0xFF0B4632),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -693,9 +695,11 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   : const Color(0xFFD6ECE0),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.chevron_right_rounded,
-              color: Color(0xFF0B4632),
+              color: context.isDarkMode
+                  ? Colors.white
+                  : const Color(0xFF0B4632),
               size: 20,
             ),
           ),
