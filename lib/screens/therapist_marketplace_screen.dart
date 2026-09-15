@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import 'tabs/bookings_tab.dart';
 import 'therapist_profile_screen.dart';
 
@@ -131,9 +132,9 @@ class _TherapistMarketplaceScreenState
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF082F21),
+          backgroundColor: context.isDarkMode ? context.pageBg : const Color(0xFF082F21),
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
@@ -178,14 +179,14 @@ class _TherapistMarketplaceScreenState
                     _buildFilterControlsRow(),
                     const SizedBox(height: 16),
                     if (filteredTherapists.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.all(32.0),
+                      Padding(
+                        padding: const EdgeInsets.all(32.0),
                         child: Text(
                           'No specialists found matching your criteria',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 14,
-                            color: Color(0xFF6E7E77),
+                            color: context.textSecondary,
                           ),
                         ),
                       )
@@ -216,9 +217,9 @@ class _TherapistMarketplaceScreenState
   Widget _buildTopHeader() {
     return Container(
       padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-      decoration: const BoxDecoration(
-        gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppGradients.headerGradient(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,8 +228,9 @@ class _TherapistMarketplaceScreenState
             height: 52,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.08),
@@ -249,10 +251,10 @@ class _TherapistMarketplaceScreenState
                   child: TextField(
                     controller: _searchController,
                     onChanged: (_) => setState(() {}),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14.5,
-                      color: Color(0xFF15221D),
+                      color: context.textPrimary,
                     ),
                     decoration: const InputDecoration(
                       hintText: 'Search specialists, services...',
@@ -271,12 +273,16 @@ class _TherapistMarketplaceScreenState
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5EE),
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : const Color(0xFFE8F5EE),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.tune_rounded,
-                    color: Color(0xFF0B4632),
+                    color: context.isDarkMode
+                        ? const Color(0xFF81C784)
+                        : const Color(0xFF0B4632),
                     size: 20,
                   ),
                 ),
@@ -313,12 +319,12 @@ class _TherapistMarketplaceScreenState
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF0B4632) : Colors.white,
+                color: isSelected ? const Color(0xFF0B4632) : context.cardBg,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFE2E8E5),
+                      : context.cardBorder,
                   width: 1.0,
                 ),
                 boxShadow: isSelected
@@ -338,7 +344,7 @@ class _TherapistMarketplaceScreenState
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13.5,
                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                  color: isSelected ? Colors.white : const Color(0xFF52625B),
+                  color: isSelected ? Colors.white : context.textPrimary,
                 ),
               ),
             ),
@@ -353,13 +359,13 @@ class _TherapistMarketplaceScreenState
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          const Text(
+          Text(
             'Verified Only',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(width: 8),
@@ -370,7 +376,9 @@ class _TherapistMarketplaceScreenState
               activeThumbColor: Colors.white,
               activeTrackColor: const Color(0xFF0B4632),
               inactiveThumbColor: Colors.white,
-              inactiveTrackColor: const Color(0xFFE2E8E5),
+              inactiveTrackColor: context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : const Color(0xFFE2E8E5),
               onChanged: (val) {
                 HapticFeedback.selectionClick();
                 setState(() {
@@ -383,9 +391,9 @@ class _TherapistMarketplaceScreenState
           Container(
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+              border: Border.all(color: context.cardBorder, width: 1.0),
             ),
             child: Row(
               children: [
@@ -413,7 +421,11 @@ class _TherapistMarketplaceScreenState
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFE8F5EE) : Colors.transparent,
+          color: isSelected
+              ? (context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : const Color(0xFFE8F5EE))
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(9),
         ),
         child: Text(
@@ -423,8 +435,10 @@ class _TherapistMarketplaceScreenState
             fontSize: 12.5,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
             color: isSelected
-                ? const Color(0xFF0B4632)
-                : const Color(0xFF6E7E77),
+                ? (context.isDarkMode
+                    ? const Color(0xFF81C784)
+                    : const Color(0xFF0B4632))
+                : context.textSecondary,
           ),
         ),
       ),
@@ -434,8 +448,9 @@ class _TherapistMarketplaceScreenState
   Widget _buildTherapistCard(Therapist therapist) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -499,11 +514,11 @@ class _TherapistMarketplaceScreenState
                               Flexible(
                                 child: Text(
                                   therapist.name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w800,
-                                    color: Color(0xFF15221D),
+                                    color: context.textPrimary,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -516,7 +531,9 @@ class _TherapistMarketplaceScreenState
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFFFF8E1),
+                                    color: context.isDarkMode
+                                        ? const Color(0xFF382B14)
+                                        : const Color(0xFFFFF8E1),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: const Row(
@@ -546,10 +563,10 @@ class _TherapistMarketplaceScreenState
                           const SizedBox(height: 2),
                           Text(
                             therapist.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 12.5,
-                              color: Color(0xFF6E7E77),
+                              color: context.textSecondary,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -563,27 +580,27 @@ class _TherapistMarketplaceScreenState
                               const SizedBox(width: 4),
                               Text(
                                 '${therapist.rating} ',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xFF15221D),
+                                  color: context.textPrimary,
                                 ),
                               ),
                               Text(
                                 '(${therapist.reviewsCount} reviews) • ',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 12,
-                                  color: Color(0xFF6E7E77),
+                                  color: context.textSecondary,
                                 ),
                               ),
                               Text(
                                 therapist.experience,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 12,
-                                  color: Color(0xFF6E7E77),
+                                  color: context.textSecondary,
                                 ),
                               ),
                             ],
@@ -594,7 +611,7 @@ class _TherapistMarketplaceScreenState
                   ],
                 ),
                 const SizedBox(height: 12),
-                Container(height: 1, color: const Color(0xFFE2E8E5)),
+                Container(height: 1, color: context.cardBorder),
                 const SizedBox(height: 12),
                 Row(
                   children: [
@@ -604,18 +621,18 @@ class _TherapistMarketplaceScreenState
                         children: [
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.location_on_outlined,
-                                color: Color(0xFF6E7E77),
+                                color: context.textSecondary,
                                 size: 14,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 '${therapist.distance} • ${therapist.languages.join(', ')}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 11.5,
-                                  color: Color(0xFF6E7E77),
+                                  color: context.textSecondary,
                                 ),
                               ),
                             ],
@@ -623,18 +640,18 @@ class _TherapistMarketplaceScreenState
                           const SizedBox(height: 4),
                           Text.rich(
                             TextSpan(
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 12,
-                                color: Color(0xFF6E7E77),
+                                color: context.textSecondary,
                               ),
                               children: [
                                 const TextSpan(text: 'Next: '),
                                 TextSpan(
                                   text: therapist.nextSlot,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xFF15221D),
+                                    color: context.textPrimary,
                                   ),
                                 ),
                               ],
@@ -648,19 +665,19 @@ class _TherapistMarketplaceScreenState
                       children: [
                         Text(
                           '৳${therapist.price}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF15221D),
+                            color: context.textPrimary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'per session',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 11,
-                            color: Color(0xFF6E7E77),
+                            color: context.textSecondary,
                           ),
                         ),
                       ],
