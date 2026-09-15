@@ -12,6 +12,7 @@ import '../models/course_model.dart';
 import '../models/order_model.dart';
 import '../models/therapist_model.dart';
 import '../models/user_model.dart';
+import 'prayer_notification_service.dart';
 import 'push_notification_service.dart';
 
 /// Centralized service handling Firebase Authentication, Firestore NoSQL Database operations,
@@ -36,6 +37,7 @@ class FirebaseService {
 
     // Initialize push notifications asynchronously so it never blocks UI launch
     unawaited(PushNotificationService.initialize());
+    unawaited(PrayerNotificationService.schedulePrayerNotifications());
   }
 
   // ===========================================================================
