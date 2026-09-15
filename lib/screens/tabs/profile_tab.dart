@@ -35,14 +35,14 @@ class _ProfileTabState extends State<ProfileTab> {
           elevation: 0,
           titleSpacing: 20,
           automaticallyImplyLeading: false,
-          title: const Text(
+          title: Text(
             'PROFILE',
             style: TextStyle(
               fontFamily: 'Cinzel',
               fontSize: 24,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.5,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           actions: [
@@ -56,10 +56,10 @@ class _ProfileTabState extends State<ProfileTab> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.cardBg,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: context.cardBorder,
                     width: 1.0,
                   ),
                   boxShadow: [
@@ -71,9 +71,9 @@ class _ProfileTabState extends State<ProfileTab> {
                   ],
                 ),
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.settings_outlined,
-                    color: Color(0xFF15221D),
+                    color: context.textPrimary,
                     size: 20,
                   ),
                   onPressed: () {
@@ -258,11 +258,11 @@ class _ProfileTabState extends State<ProfileTab> {
 
         Text(
           name,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 21,
             fontWeight: FontWeight.w800,
-            color: Color(0xFF0B4632),
+            color: context.textPrimary,
           ),
         ),
 
@@ -270,10 +270,10 @@ class _ProfileTabState extends State<ProfileTab> {
 
         Text(
           email,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 13,
-            color: Color(0xFF6E7E77),
+            color: context.textSecondary,
           ),
         ),
       ],
@@ -337,10 +337,10 @@ class _ProfileTabState extends State<ProfileTab> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0).withValues(alpha: 0.60),
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFFE2E8E5).withValues(alpha: 0.80),
+          color: context.cardBorder,
           width: 1.0,
         ),
       ),
@@ -348,22 +348,22 @@ class _ProfileTabState extends State<ProfileTab> {
         children: [
           Text(
             number,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.4,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(height: 2),
@@ -373,7 +373,7 @@ class _ProfileTabState extends State<ProfileTab> {
               fontFamily: 'Inter',
               fontSize: 10.5,
               fontWeight: FontWeight.w600,
-              color: subtitleColor,
+              color: context.textSecondary,
             ),
           ),
         ],
@@ -504,39 +504,47 @@ class _ProfileTabState extends State<ProfileTab> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
-                  child: Icon(icon, color: const Color(0xFF0B4632), size: 20),
+                  child: Icon(
+                    icon,
+                    color: context.isDarkMode
+                        ? const Color(0xFF81C784)
+                        : const Color(0xFF0B4632),
+                    size: 20,
+                  ),
                 ),
               ),
               const SizedBox(width: 14),
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF0B4632),
+                    color: context.textPrimary,
                   ),
                 ),
               ),
               if (trailingText != null) ...[
                 Text(
                   trailingText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,
-                    color: Color(0xFF90A4AE),
+                    color: context.textSecondary,
                   ),
                 ),
                 const SizedBox(width: 4),
               ],
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
-                color: Color(0xFF6E7E77),
+                color: context.textSecondary,
                 size: 20,
               ),
             ],
@@ -601,8 +609,9 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget _buildLogoutCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -635,7 +644,9 @@ class _ProfileTabState extends State<ProfileTab> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFEBEB),
+                    color: context.isDarkMode
+                        ? const Color(0xFF321E1E)
+                        : const Color(0xFFFFEBEB),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
@@ -669,7 +680,7 @@ class _ProfileTabState extends State<ProfileTab> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         height: 1,
-        color: const Color(0xFFE2E8E5).withValues(alpha: 0.80),
+        color: context.cardBorder,
       ),
     );
   }
