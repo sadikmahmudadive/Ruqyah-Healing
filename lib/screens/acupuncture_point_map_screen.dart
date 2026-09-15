@@ -41,6 +41,14 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   String _viewAngle = 'Front'; // 'Front' or 'Back'
   String _selectedMeridian = 'Lung (LU)';
   bool _isBookmarked = false;
+  final TransformationController _transformationController =
+      TransformationController();
+
+  @override
+  void dispose() {
+    _transformationController.dispose();
+    super.dispose();
+  }
 
   final List<String> _meridians = const [
     'All',
@@ -424,10 +432,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
 
         const SizedBox(width: 12),
 
-        // Right 3D Meridian Body Canvas Card
+        // Right Interactive 3D Meridian Body Canvas Card
         Expanded(
           child: Container(
-            height: 350,
+            height: 380,
             decoration: BoxDecoration(
               color: context.cardBg,
               borderRadius: BorderRadius.circular(24),
@@ -440,76 +448,182 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                 ),
               ],
             ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                // 3D Human Body Anatomy with Meridian Channel Lines
-                CustomPaint(
-                  size: const Size(160, 320),
-                  painter: _MeridianAnatomyPainter(
-                    isBack: _viewAngle == 'Back',
-                  ),
-                ),
-
-                // Acupoint Markers Overlay
-                ..._points.map((pt) {
-                  final pos = _viewAngle == 'Back' ? pt.backPos : pt.frontPos;
-                  final isSelected = pt == _selectedPoint;
-
-                  return Positioned(
-                    left: 160 * pos.dx,
-                    top: 320 * pos.dy,
-                    child: GestureDetector(
-                      onTap: () {
-                        HapticFeedback.selectionClick();
-                        setState(() => _selectedPoint = pt);
-                      },
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  InteractiveViewer(
+                    transformationController: _transformationController,
+                    minScale: 0.8,
+                    maxScale: 4.0,
+                    boundaryMargin: const EdgeInsets.all(40),
+                    clipBehavior: Clip.none,
+                    child: SizedBox(
+                      width: 180,
+                      height: 360,
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          if (isSelected) ...[
-                            // Tag Tooltip
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF15221D),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                pt.code,
-                                style: const TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white,
-                                ),
-                              ),
+                          // 3D Human Body Anatomy with Shaded Muscle Contours & Meridian Channels
+                          CustomPaint(
+                            size: const Size(180, 360),
+                            painter: _MeridianAnatomyPainter(
+                              isBack: _viewAngle == 'Back',
+                              isDarkMode: context.isDarkMode,
                             ),
-                            const SizedBox(height: 2),
-                          ],
+                          ),
 
-                          // Marker Circle
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            width: isSelected ? 22 : 14,
-                            height: isSelected ? 22 : 14,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0B4632),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: const Color(0xFFD49E35),
-                                width: isSelected ? 3.0 : 2.0,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF0B4632)
-                                      .withValues(alpha: 0.50),
-                                  blurRadius: isSelected ? 12 : 6,
+                          // Interactive Acupoint Markers Overlay
+                          ..._points.map((pt) {
+                            final pos =
+                                _viewAngle == 'Back' ? pt.backPos : pt.frontPos;
+                            final isSelected = pt == _selectedPoint;
+
+                            return Positioned(
+                              left: 180 * pos.dx - (isSelected ? 11 : 7),
+                              top: 360 * pos.dy - (isSelected ? 24 : 7),
+                              child: GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.selectionClick();
+                                  setState(() => _selectedPoint = pt);
+                                },
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (isSelected) ...[
+                                      // Tag Tooltip
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 6,
+                                          vertical: 2,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF15221D),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          pt.code,
+                                          style: const TextStyle(
+                                            fontFamily: 'PlusJakartaSans',
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w800,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                    ],
+
+                                    // Marker Circle
+                                    AnimatedContainer(
+                                      duration: const Duration(milliseconds: 200),
+                                      width: isSelected ? 22 : 14,
+                                      height: isSelected ? 22 : 14,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF0B4632),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: const Color(0xFFD49E35),
+                                          width: isSelected ? 3.0 : 2.0,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0xFF0B4632)
+                                                .withValues(alpha: 0.50),
+                                            blurRadius: isSelected ? 12 : 6,
+                                          ),
+                                        ],
+                                      ),
+                                      child: isSelected
+                                          ? Center(
+                                              child: Container(
+                                                width: 6,
+                                                height: 6,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFD49E35),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              ),
+                                            )
+                                          : null,
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Floating Zoom Controls Overlay
+                  Positioned(
+                    right: 10,
+                    bottom: 10,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildZoomIconButton(
+                          icon: Icons.add_rounded,
+                          onTap: () {
+                            HapticFeedback.selectionClick();
+                            final matrix =
+                                _transformationController.value.clone();
+                            matrix.scale(1.25);
+                            _transformationController.value = matrix;
+                          },
+                        ),
+                        const SizedBox(height: 6),
+                        _buildZoomIconButton(
+                          icon: Icons.remove_rounded,
+                          onTap: () {
+                            HapticFeedback.selectionClick();
+                            final matrix =
+                                _transformationController.value.clone();
+                            matrix.scale(0.8);
+                            _transformationController.value = matrix;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Pinch to Zoom Pill Notice
+                  Positioned(
+                    bottom: 10,
+                    left: 10,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.45),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.pinch_rounded,
+                              color: Colors.white70, size: 13),
+                          SizedBox(width: 4),
+                          Text(
+                            'Pinch to Zoom',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
                             ),
                             child: isSelected
                                 ? Center(
@@ -849,13 +963,44 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       ],
     );
   }
+
+  Widget _buildZoomIconButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: context.isDarkMode
+            ? const Color(0xFF182E25)
+            : const Color(0xFF0B4632).withValues(alpha: 0.85),
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.20),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: Colors.white, size: 18),
+        onPressed: onTap,
+        padding: EdgeInsets.zero,
+      ),
+    );
+  }
 }
 
 // CustomPainter for 3D Anatomy Figure with Glowing Meridian Channels
 class _MeridianAnatomyPainter extends CustomPainter {
   final bool isBack;
+  final bool isDarkMode;
 
-  const _MeridianAnatomyPainter({required this.isBack});
+  const _MeridianAnatomyPainter({
+    required this.isBack,
+    this.isDarkMode = false,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -868,22 +1013,34 @@ class _MeridianAnatomyPainter extends CustomPainter {
       ..shader = LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: isBack
-            ? [const Color(0xFFD6E2DD), const Color(0xFFB5C8C1)]
-            : [const Color(0xFFE4EDE9), const Color(0xFFC2D4CD)],
+        colors: isDarkMode
+            ? (isBack
+                ? [const Color(0xFF1B332B), const Color(0xFF11241C)]
+                : [const Color(0xFF223E35), const Color(0xFF142921)])
+            : (isBack
+                ? [const Color(0xFFD6E2DD), const Color(0xFFB5C8C1)]
+                : [const Color(0xFFE4EDE9), const Color(0xFFC2D4CD)]),
       ).createShader(Rect.fromLTWH(0, 0, w, h));
 
     // Outer Line Paint
     final Paint outlinePaint = Paint()
-      ..color = const Color(0xFF425E57)
+      ..color = isDarkMode ? const Color(0xFF81C784) : const Color(0xFF425E57)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.6;
 
+    // Muscle Shading Paint
+    final Paint musclePaint = Paint()
+      ..color = isDarkMode
+          ? Colors.white.withValues(alpha: 0.12)
+          : Colors.black.withValues(alpha: 0.10)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2;
+
     // Glowing Green Meridian Lines Paint
     final Paint meridianPaint = Paint()
-      ..color = const Color(0xFF2ECC71).withValues(alpha: 0.85)
+      ..color = const Color(0xFF2ECC71)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 2.2
       ..strokeCap = StrokeCap.round;
 
     // Head
@@ -989,6 +1146,26 @@ class _MeridianAnatomyPainter extends CustomPainter {
 
     canvas.drawPath(torsoPath, bodyFillPaint);
     canvas.drawPath(torsoPath, outlinePaint);
+
+    // Anatomical 3D Muscle Contour Accents
+    canvas.drawArc(
+      Rect.fromCircle(center: Offset(centerX - w * 0.10, h * 0.26), radius: w * 0.08),
+      0.2,
+      2.5,
+      false,
+      musclePaint,
+    );
+    canvas.drawArc(
+      Rect.fromCircle(center: Offset(centerX + w * 0.10, h * 0.26), radius: w * 0.08),
+      0.4,
+      2.5,
+      false,
+      musclePaint,
+    );
+
+    // Knee Joints
+    canvas.drawCircle(Offset(centerX - w * 0.08, h * 0.72), w * 0.035, musclePaint);
+    canvas.drawCircle(Offset(centerX + w * 0.08, h * 0.72), w * 0.035, musclePaint);
 
     // Glowing Meridian Channel Lines
     final Path meridianLineLeft = Path()
