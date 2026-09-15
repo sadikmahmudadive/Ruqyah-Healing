@@ -44,12 +44,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   final TransformationController _transformationController =
       TransformationController();
 
-  @override
-  void dispose() {
-    _transformationController.dispose();
-    super.dispose();
-  }
-
   final List<String> _meridians = const [
     'All',
     'Lung (LU)',
@@ -70,7 +64,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       commonUse:
           'May help with headaches, facial pain, stress and pain relief.',
       evidence: 'Moderate',
-      safetyNotice: 'Not recommended during pregnancy. Always consult a qualified practitioner.',
+      safetyNotice:
+          'Not recommended during pregnancy. Always consult a qualified practitioner.',
       frontPos: Offset(0.38, 0.22),
       backPos: Offset(0.40, 0.24),
     ),
@@ -78,7 +73,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       code: 'LU7',
       name: 'Lieque',
       meridian: 'Lung 7',
-      location: '1.5 cun proximal to the wrist crease, above the styloid process of the radius.',
+      location:
+          '1.5 cun proximal to the wrist crease, above the styloid process of the radius.',
       commonUse: 'Supports respiratory function and neck stiffness relief.',
       evidence: 'High',
       safetyNotice:
@@ -106,6 +102,12 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   void initState() {
     super.initState();
     _selectedPoint = _points[0];
+  }
+
+  @override
+  void dispose() {
+    _transformationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -1126,14 +1128,16 @@ class _MeridianAnatomyPainter extends CustomPainter {
 
     // Anatomical 3D Muscle Contour Accents
     canvas.drawArc(
-      Rect.fromCircle(center: Offset(centerX - w * 0.10, h * 0.26), radius: w * 0.08),
+      Rect.fromCircle(
+          center: Offset(centerX - w * 0.10, h * 0.26), radius: w * 0.08),
       0.2,
       2.5,
       false,
       musclePaint,
     );
     canvas.drawArc(
-      Rect.fromCircle(center: Offset(centerX + w * 0.10, h * 0.26), radius: w * 0.08),
+      Rect.fromCircle(
+          center: Offset(centerX + w * 0.10, h * 0.26), radius: w * 0.08),
       0.4,
       2.5,
       false,
@@ -1141,8 +1145,10 @@ class _MeridianAnatomyPainter extends CustomPainter {
     );
 
     // Knee Joints
-    canvas.drawCircle(Offset(centerX - w * 0.08, h * 0.72), w * 0.035, musclePaint);
-    canvas.drawCircle(Offset(centerX + w * 0.08, h * 0.72), w * 0.035, musclePaint);
+    canvas.drawCircle(
+        Offset(centerX - w * 0.08, h * 0.72), w * 0.035, musclePaint);
+    canvas.drawCircle(
+        Offset(centerX + w * 0.08, h * 0.72), w * 0.035, musclePaint);
 
     // Glowing Meridian Channel Lines
     final Path meridianLineLeft = Path()
@@ -1168,5 +1174,5 @@ class _MeridianAnatomyPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _MeridianAnatomyPainter oldDelegate) =>
-      oldDelegate.isBack != isBack;
+      oldDelegate.isBack != isBack || oldDelegate.isDarkMode != isDarkMode;
 }
