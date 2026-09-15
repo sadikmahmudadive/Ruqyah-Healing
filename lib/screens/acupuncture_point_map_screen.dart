@@ -415,7 +415,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 12,
                         fontWeight: isSelected
-                            ? FontWeight.w800,
+                            ? FontWeight.w800
                             : FontWeight.w500,
                         color: isSelected
                             ? Colors.white
@@ -621,29 +621,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   ),
                 ],
               ),
-            ),
-          ),
-        ),
-                            ),
-                            child: isSelected
-                                ? Center(
-                                    child: Container(
-                                      width: 6,
-                                      height: 6,
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xFFD49E35),
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              ],
             ),
           ),
         ),
