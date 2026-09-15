@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
+import '../theme/app_theme.dart';
 import 'therapist_marketplace_screen.dart';
 
 class Acupoint {
@@ -108,17 +109,17 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: context.pageBg,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: context.pageBg,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.cardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: context.cardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
@@ -128,9 +129,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                 ],
               ),
               child: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -140,23 +141,23 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           ),
           centerTitle: true,
           title: Column(
-            children: const [
+            children: [
               Text(
                 'Acupuncture Point Map',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  color: context.textPrimary,
                 ),
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Text(
                 'Lung (LU) Meridian • 11 Points',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
-                  color: Color(0xFF6E7E77),
+                  color: context.textSecondary,
                 ),
               ),
             ],
@@ -172,10 +173,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.cardBg,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: context.cardBorder,
                     width: 1.0,
                   ),
                   boxShadow: [
@@ -187,9 +188,11 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   ],
                 ),
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.info_outline_rounded,
-                    color: Color(0xFF0B4632),
+                    color: context.isDarkMode
+                        ? const Color(0xFF81C784)
+                        : const Color(0xFF0B4632),
                     size: 20,
                   ),
                   onPressed: () {
@@ -233,13 +236,13 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   Widget _buildViewControlsRow() {
     return Row(
       children: [
-        const Text(
+        Text(
           'View',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF6E7E77),
+            color: context.textSecondary,
           ),
         ),
 
@@ -249,7 +252,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         Container(
           padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
-            color: const Color(0xFFE8EEEA),
+            color: context.isDarkMode
+                ? const Color(0xFF182E25)
+                : const Color(0xFFE8EEEA),
             borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
@@ -281,9 +286,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           width: 38,
           height: 38,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.cardBg,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+            border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -292,9 +297,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
             ],
           ),
           child: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.rotate_right_rounded,
-              color: Color(0xFF15221D),
+              color: context.textPrimary,
               size: 20,
             ),
             onPressed: () {
@@ -328,7 +333,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 13,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-            color: isSelected ? Colors.white : const Color(0xFF52625B),
+            color: isSelected ? Colors.white : context.textSecondary,
           ),
         ),
       ),
@@ -345,8 +350,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           width: 105,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.cardBg,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
@@ -401,11 +407,11 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 12,
                         fontWeight: isSelected
-                            ? FontWeight.w800
+                            ? FontWeight.w800,
                             : FontWeight.w500,
                         color: isSelected
                             ? Colors.white
-                            : const Color(0xFF52625B),
+                            : context.textSecondary,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -423,8 +429,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           child: Container(
             height: 350,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.cardBg,
               borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
@@ -537,8 +544,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -580,20 +588,22 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   children: [
                     Text(
                       '${pt.code} ${pt.name}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16.5,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF0B4632),
+                        color: context.isDarkMode
+                            ? const Color(0xFF81C784)
+                            : const Color(0xFF0B4632),
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       pt.meridian,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF90A4AE),
+                        color: context.textSecondary,
                       ),
                     ),
                   ],
@@ -609,7 +619,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8E1),
+                    color: context.isDarkMode
+                        ? const Color(0xFF382B14)
+                        : const Color(0xFFFFF8E1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -645,17 +657,21 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: context.isDarkMode
+                      ? const Color(0xFF182E25)
+                      : const Color(0xFFEBF7F0),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
+                child: Text(
                   'EVIDENCE',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.5,
-                    color: Color(0xFF0B4632),
+                    color: context.isDarkMode
+                        ? const Color(0xFF81C784)
+                        : const Color(0xFF0B4632),
                   ),
                 ),
               ),
@@ -666,7 +682,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1),
+                  color: context.isDarkMode
+                      ? const Color(0xFF382B14)
+                      : const Color(0xFFFFF8E1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -688,7 +706,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFFFF8E1),
+              color: context.isDarkMode
+                  ? const Color(0xFF2E2412)
+                  : const Color(0xFFFFF8E1),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: const Color(0xFFD49E35).withValues(alpha: 0.30),
@@ -708,22 +728,26 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Safety Notice',
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFFB78103),
+                          color: context.isDarkMode
+                              ? const Color(0xFFE5A93C)
+                              : const Color(0xFFB78103),
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         pt.safetyNotice,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 11.5,
-                          color: Color(0xFFB78103),
+                          color: context.isDarkMode
+                              ? const Color(0xFFE5A93C)
+                              : const Color(0xFFB78103),
                           height: 1.35,
                         ),
                       ),
@@ -792,17 +816,21 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFFEBF7F0),
+            color: context.isDarkMode
+                ? const Color(0xFF182E25)
+                : const Color(0xFFEBF7F0),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 10.5,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.5,
-              color: Color(0xFF0B4632),
+              color: context.isDarkMode
+                  ? const Color(0xFF81C784)
+                  : const Color(0xFF0B4632),
             ),
           ),
         ),
@@ -810,10 +838,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         Expanded(
           child: Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 12.5,
-              color: Color(0xFF6E7E77),
+              color: context.textSecondary,
               height: 1.35,
             ),
           ),
