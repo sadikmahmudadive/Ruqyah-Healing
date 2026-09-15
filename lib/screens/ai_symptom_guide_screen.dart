@@ -918,26 +918,32 @@ class _AnimatedWaveformBarsState extends State<_AnimatedWaveformBars>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(24, (index) {
-            final factor = (index % 5 + 1) * 0.18;
-            final val = (_controller.value + factor) % 1.0;
-            final dotHeight = 3.0 + (val * 16.0);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final barCount = (constraints.maxWidth / 6.1).floor().clamp(6, 18);
 
-            return Container(
-              width: 2.5,
-              height: dotHeight,
-              margin: const EdgeInsets.symmetric(horizontal: 2.0),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.35 + (val * 0.65)),
-                borderRadius: BorderRadius.circular(1.5),
-              ),
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(barCount, (index) {
+                final factor = (index % 5 + 1) * 0.18;
+                final val = (_controller.value + factor) % 1.0;
+                final dotHeight = 3.0 + (val * 16.0);
+
+                return Container(
+                  width: 2.2,
+                  height: dotHeight,
+                  margin: const EdgeInsets.symmetric(horizontal: 1.8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.35 + (val * 0.65)),
+                    borderRadius: BorderRadius.circular(1.5),
+                  ),
+                );
+              }),
             );
-          }),
+          },
         );
       },
     );
