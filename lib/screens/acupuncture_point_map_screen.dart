@@ -1,3 +1,33 @@
+// acupuncture_point_map_screen.dart
+//
+// Tap anywhere on the 3D body -> nearest known part is identified ->
+// shown in a confirm card -> user confirms or dismisses.
+//
+// HOW THE TAP DETECTION WORKS -------------------------------------------
+// model-viewer exposes `positionAndNormalFromPoint(x, y)`, a documented
+// public method that raycasts a 2D pixel coordinate into the 3D point on
+// the model's surface (same coordinate space as hotspot `data-position`
+// values). We attach a plain `click` listener to the <model-viewer>
+// element itself via `relatedJs`, call that method, and post the hit
+// point back to Flutter over a JavascriptChannel. Flutter then finds
+// whichever AnatomyPoint is closest to that 3D point.
+//
+// This means matching accuracy is entirely dependent on how well the
+// placeholder `position` values below match your actual .glb's real
+// proportions -- until those are tuned to your model, "nearest match"
+// can pick the wrong region. Tune by trial: tap a spot, see what it
+// resolves to, and nudge the relevant AnatomyPoint's position.
+//
+// KNOWN CAVEAT: if the `ModelViewer` widget from model_viewer_plus does
+// a full webview reload whenever cameraOrbit/cameraTarget/innerHtml
+// change (rather than patching the existing page), you'll see the model
+// flash/reset on every zoom-in. If that happens, the more robust fix is
+// to drop model_viewer_plus's high-level widget and drive a persistent
+// webview_flutter WebViewController directly, calling
+// `controller.runJavaScript(...)` to update model-viewer's properties
+// in place without reloading the page.
+// -------------------------------------------------------------------------
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
@@ -14,7 +44,7 @@ class AnatomyPoint {
   final String position; // "x y z" in metres, model space
   final String normal; // "nx ny nz"
   final AnatomyLevel level;
-  final String? parentRegionId; // null for regions
+  final String? parentRegionId;
   final String about;
   final String commonCauses;
   final String evidence;
@@ -32,6 +62,9 @@ class AnatomyPoint {
     required this.evidence,
     required this.safetyNotice,
   });
+
+  List<double> get xyz =>
+      position.split(' ').map((s) => double.parse(s)).toList();
 }
 
 class AcupuncturePointMapScreen extends StatefulWidget {
@@ -47,9 +80,15 @@ class _AcupuncturePointMapScreenState
   static const _defaultOrbit = '0deg 75deg 2.4m';
   static const _defaultTarget = '0m 0.9m 0m';
 
+  // How far (metres) a tap's raycast hit may be from a point before we
+  // stop treating it as a match. Loosen/tighten once real coordinates
+  // are tuned.
+  static const _matchThreshold = 0.6;
+
   AnatomyLevel _level = AnatomyLevel.region;
   String? _activeRegionId;
-  AnatomyPoint? _selectedOrgan;
+  AnatomyPoint? _pendingPoint; // tapped, awaiting confirm
+  AnatomyPoint? _selectedOrgan; // confirmed, showing full detail
   String _cameraOrbit = _defaultOrbit;
   String _cameraTarget = _defaultTarget;
 
@@ -75,7 +114,7 @@ class _AcupuncturePointMapScreenState
       commonCauses: 'Musculoskeletal strain, respiratory, cardiac.',
       evidence: 'General',
       safetyNotice:
-          'Chest pain with shortness of breath or pressure needs emergency evaluation.',
+      'Chest pain with shortness of breath or pressure needs emergency evaluation.',
     ),
     AnatomyPoint(
       id: 'abdomen',
@@ -131,7 +170,7 @@ class _AcupuncturePointMapScreenState
       commonCauses: 'Joint wear, muscular strain, sciatica.',
       evidence: 'General',
       safetyNotice:
-          'Sudden swelling or inability to bear weight needs urgent care.',
+      'Sudden swelling or inability to bear weight needs urgent care.',
     ),
     AnatomyPoint(
       id: 'leg_right',
@@ -143,7 +182,7 @@ class _AcupuncturePointMapScreenState
       commonCauses: 'Joint wear, muscular strain, sciatica.',
       evidence: 'General',
       safetyNotice:
-          'Sudden swelling or inability to bear weight needs urgent care.',
+      'Sudden swelling or inability to bear weight needs urgent care.',
     ),
   ];
 
@@ -160,7 +199,7 @@ class _AcupuncturePointMapScreenState
         commonCauses: 'Cardiac, musculoskeletal, anxiety-related chest pain.',
         evidence: 'Consult required',
         safetyNotice:
-            'Pressure, radiating pain, or shortness of breath: seek emergency care immediately.',
+        'Pressure, radiating pain, or shortness of breath: seek emergency care immediately.',
       ),
       AnatomyPoint(
         id: 'lungs',
@@ -211,7 +250,7 @@ class _AcupuncturePointMapScreenState
         commonCauses: 'Kidney stones, infection, referred back pain.',
         evidence: 'Consult required',
         safetyNotice:
-            'Sudden severe flank pain needs prompt medical attention.',
+        'Sudden severe flank pain needs prompt medical attention.',
       ),
     ],
   };
@@ -221,31 +260,71 @@ class _AcupuncturePointMapScreenState
     return _organsByRegion[_activeRegionId] ?? const [];
   }
 
-  void _handleHotspotTap(String payload) {
-    final parts = payload.split(':');
-    if (parts.length != 2) return;
-    final kind = parts[0];
-    final id = parts[1];
+  double _distance(List<double> a, List<double> b) {
+    var sum = 0.0;
+    for (var i = 0; i < 3; i++) {
+      final d = a[i] - b[i];
+      sum += d * d;
+    }
+    return sum; // squared distance is enough for comparison
+  }
+
+  // Called with a raw "hit:x,y,z" message from the model-viewer raycast.
+  void _handleModelTap(String payload) {
+    if (!payload.startsWith('hit:')) return;
+    final coords = payload
+        .substring(4)
+        .split(',')
+        .map((s) => double.tryParse(s) ?? 0.0)
+        .toList();
+    if (coords.length != 3) return;
+
+    final candidates = _visibleHotspots;
+    if (candidates.isEmpty) return;
+
+    AnatomyPoint? nearest;
+    var nearestDist = double.infinity;
+    for (final pt in candidates) {
+      final d = _distance(coords, pt.xyz);
+      if (d < nearestDist) {
+        nearestDist = d;
+        nearest = pt;
+      }
+    }
+
+    if (nearest == null || nearestDist > _matchThreshold * _matchThreshold) {
+      // Tapped somewhere with no close-enough known part yet.
+      return;
+    }
 
     HapticFeedback.selectionClick();
+    setState(() => _pendingPoint = nearest);
+  }
 
-    if (kind == 'region') {
-      final region = _regions.firstWhere((r) => r.id == id);
-      final hasOrgans = _organsByRegion.containsKey(id);
+  void _confirmPending() {
+    final pt = _pendingPoint;
+    if (pt == null) return;
+    HapticFeedback.mediumImpact();
+
+    final hasOrgans = _organsByRegion.containsKey(pt.id);
+    if (pt.level == AnatomyLevel.region && hasOrgans) {
       setState(() {
-        _activeRegionId = id;
-        _selectedOrgan = region;
-        if (hasOrgans) {
-          _level = AnatomyLevel.organ;
-        }
-        _cameraTarget = region.position;
+        _activeRegionId = pt.id;
+        _level = AnatomyLevel.organ;
+        _cameraTarget = pt.position;
         _cameraOrbit = '0deg 75deg 0.9m';
+        _pendingPoint = null;
       });
-    } else if (kind == 'organ') {
-      final organs = _organsByRegion[_activeRegionId] ?? const [];
-      final organ = organs.firstWhere((o) => o.id == id);
-      setState(() => _selectedOrgan = organ);
+    } else {
+      setState(() {
+        _selectedOrgan = pt;
+        _pendingPoint = null;
+      });
     }
+  }
+
+  void _dismissPending() {
+    setState(() => _pendingPoint = null);
   }
 
   void _resetToRegions() {
@@ -254,71 +333,34 @@ class _AcupuncturePointMapScreenState
       _level = AnatomyLevel.region;
       _activeRegionId = null;
       _selectedOrgan = null;
+      _pendingPoint = null;
       _cameraOrbit = _defaultOrbit;
       _cameraTarget = _defaultTarget;
     });
   }
 
-  String _buildHotspotsHtml() {
-    final buffer = StringBuffer();
-    for (final pt in _visibleHotspots) {
-      final kind = pt.level == AnatomyLevel.region ? 'region' : 'organ';
-      final isActive = pt.id == _activeRegionId || pt == _selectedOrgan;
-      buffer.write('''
-        <button slot="hotspot-${pt.id}" class="anatomy-hotspot${isActive ? ' active' : ''}"
-          data-position="${pt.position}" data-normal="${pt.normal}"
-          onclick="AnatomyChannel.postMessage('$kind:${pt.id}')">
-          <span class="label-badge">${pt.label}</span>
-          <span class="dot"></span>
-        </button>
-      ''');
-    }
-    return buffer.toString();
-  }
-
-  String get _hotspotCss => '''
-    .anatomy-hotspot {
-      border: none;
-      background: transparent;
-      padding: 0;
-      cursor: pointer;
-      pointer-events: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .anatomy-hotspot.active {
-      opacity: 1;
-    }
-    .anatomy-hotspot .label-badge {
-      background: #15221D;
-      color: #FFFFFF;
-      font-family: 'PlusJakartaSans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 8px;
-      margin-bottom: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-      white-space: nowrap;
-      pointer-events: none;
-    }
-    .anatomy-hotspot .dot {
-      display: block;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #0B4632;
-      border: 3px solid #D49E35;
-      box-shadow: 0 0 14px rgba(212, 158, 53, 0.85);
-      transform: scale(0.9);
-      transition: transform 0.2s ease;
-    }
-    .anatomy-hotspot.active .dot {
-      transform: scale(1.15);
-    }
+  static const String _tapRaycastJs = '''
+    (function () {
+      function setup() {
+        var mv = document.querySelector('model-viewer');
+        if (!mv) { return; }
+        mv.addEventListener('click', function (event) {
+          var rect = mv.getBoundingClientRect();
+          var x = event.clientX - rect.left;
+          var y = event.clientY - rect.top;
+          if (typeof mv.positionAndNormalFromPoint !== 'function') { return; }
+          var hit = mv.positionAndNormalFromPoint(x, y);
+          if (hit && hit.position) {
+            var p = hit.position;
+            AnatomyChannel.postMessage(
+              'hit:' + p.x.toFixed(3) + ',' + p.y.toFixed(3) + ',' + p.z.toFixed(3)
+            );
+          }
+        });
+      }
+      if (document.readyState === 'complete') { setup(); }
+      else { window.addEventListener('load', setup); }
+    })();
   ''';
 
   @override
@@ -331,7 +373,7 @@ class _AcupuncturePointMapScreenState
         leading: IconButton(
           icon: Icon(Icons.arrow_back_rounded, color: context.textPrimary),
           onPressed: () {
-            if (_level == AnatomyLevel.organ && _selectedOrgan == null) {
+            if (_activeRegionId != null && _selectedOrgan == null) {
               _resetToRegions();
             } else {
               Navigator.of(context).pop();
@@ -341,8 +383,8 @@ class _AcupuncturePointMapScreenState
         centerTitle: true,
         title: Text(
           _level == AnatomyLevel.region
-              ? 'Where does it hurt?'
-              : 'Select an area',
+              ? 'Tap where it hurts'
+              : 'Tap the specific spot',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
@@ -362,7 +404,6 @@ class _AcupuncturePointMapScreenState
         children: [
           Expanded(
             child: ModelViewer(
-              key: ValueKey('$_level-$_activeRegionId'),
               backgroundColor: Colors.transparent,
               src: 'assets/models/body_full.glb',
               alt: 'Interactive human body model',
@@ -371,21 +412,80 @@ class _AcupuncturePointMapScreenState
               disableZoom: false,
               cameraOrbit: _cameraOrbit,
               cameraTarget: _cameraTarget,
-              minHotspotOpacity: 0,
-              maxHotspotOpacity: 1,
-              innerModelViewerHtml: _buildHotspotsHtml(),
-              relatedCss: _hotspotCss,
+              relatedJs: _tapRaycastJs,
               javascriptChannels: {
                 JavascriptChannel(
                   'AnatomyChannel',
                   onMessageReceived: (message) {
-                    _handleHotspotTap(message.message);
+                    _handleModelTap(message.message);
                   },
                 ),
               },
             ),
           ),
+          if (_pendingPoint != null) _buildConfirmBar(_pendingPoint!),
           if (_selectedOrgan != null) _buildDetailCard(_selectedOrgan!),
+        ],
+      ),
+    );
+  }
+
+  // Shown right after a tap resolves to a candidate part, before the
+  // user commits to it.
+  Widget _buildConfirmBar(AnatomyPoint pt) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: context.cardBg,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: const BoxDecoration(
+              color: Color(0xFFD49E35),
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              'Is it your ${pt.label}?',
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 14.5,
+                fontWeight: FontWeight.w700,
+                color: context.textPrimary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: _dismissPending,
+            child: const Text('No'),
+          ),
+          const SizedBox(width: 4),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF0B4632),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: _confirmPending,
+            child: const Text('Yes'),
+          ),
         ],
       ),
     );
@@ -501,8 +601,8 @@ class _AcupuncturePointMapScreenState
                   HapticFeedback.heavyImpact();
                   Navigator.of(context).push(
                     PageRouteBuilder(
-                      pageBuilder: (_, _, _) =>
-                          const TherapistMarketplaceScreen(),
+                      pageBuilder: (_, __, ___) =>
+                      const TherapistMarketplaceScreen(),
                     ),
                   );
                 },
