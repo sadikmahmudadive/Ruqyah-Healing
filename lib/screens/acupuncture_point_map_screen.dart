@@ -14,11 +14,7 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import 'therapist_marketplace_screen.dart';
 
-enum AnatomyLayer {
-  surface,
-  skeleton,
-  organs,
-}
+enum AnatomyLayer { surface, skeleton, organs }
 
 class AnatomyPoint {
   final String id;
@@ -26,7 +22,8 @@ class AnatomyPoint {
   final String position; // "x y z" in metres, model space (+Y Up)
   final String normal; // "nx ny nz"
   final AnatomyLayer layer;
-  final String category; // 'Head', 'Chest', 'Abdomen', 'Back', 'Limbs', 'Organs'
+  final String
+  category; // 'Head', 'Chest', 'Abdomen', 'Back', 'Limbs', 'Organs'
   final String? deepDiveTargetLayer; // 'skeleton' or 'organs'
   final String? deepDivePointId;
   final String anatomicalDescription;
@@ -62,10 +59,10 @@ class AcupuncturePointMapScreen extends StatefulWidget {
 }
 
 class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
-  static const _defaultOrbit = '0deg 75deg 2.5m';
-  static const _defaultTarget = '0m 0.95m 0m';
   static const _defaultOrbit = '0deg 90deg 3.2m';
   static const _defaultTarget = '0m 0.875m 0m';
+  static const _defaultOrbit = '0deg 85deg 2.7m';
+  static const _defaultTarget = '0m 0.85m 0m';
   static const _matchThreshold = 0.55; // metres
 
   AnatomyLayer _currentLayer = AnatomyLayer.surface;
@@ -91,7 +88,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Head',
       deepDiveTargetLayer: 'organs',
       deepDivePointId: 'brain',
-      anatomicalDescription: 'Cranium, forehead, temples, and frontal sinonasal area.',
+      anatomicalDescription:
+          'Cranium, forehead, temples, and frontal sinonasal area.',
       commonCauses: 'Tension headache, migraine, sinus pressure, eye strain, mental fatigue.',
       islamicRuqyahNote: 'Sunnah Ruqyah recitation on the forehead (Al-Fatihah, Ayat al-Kursi, Al-Mu’awwidhat). Recommended Hijama point: Yafokh (top of head) & Hama (forehead).',
       safetyNotice: 'Sudden "thunderclap" headache or accompanied by vision loss requires immediate ER assessment.',
@@ -105,7 +103,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Head',
       deepDiveTargetLayer: 'skeleton',
       deepDivePointId: 'cervical_spine',
-      anatomicalDescription: 'Sternocleidomastoid, anterior neck, thyroid region, and throat.',
+      anatomicalDescription:
+          'Sternocleidomastoid, anterior neck, thyroid region, and throat.',
       commonCauses: 'Postural neck strain, tech-neck, vocal strain, pharyngitis, lymphadenopathy.',
       islamicRuqyahNote: 'Sunnah Hijama points: Al-Akhda’ain (bilateral lateral neck vessels). Recite Ayat ash-Shifa for throat ailments.',
       safetyNotice: 'Difficulty swallowing, breathing, or rapid swelling warrants urgent medical care.',
@@ -119,7 +118,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Chest',
       deepDiveTargetLayer: 'organs',
       deepDivePointId: 'heart',
-      anatomicalDescription: 'Upper thoracic musculature, sternum, and anterior pectoral region.',
+      anatomicalDescription:
+          'Upper thoracic musculature, sternum, and anterior pectoral region.',
       commonCauses: 'Costochondritis, muscular strain, emotional grief/anxiety tightness, reflux.',
       islamicRuqyahNote: 'Placing right hand on chest: "Bismillah (3x), A’udhu bi’izzatillahi wa qudratihi..." (Sahih Muslim). Relieves tightness and spiritual heaviness.',
       safetyNotice: 'Crushing chest pressure, radiating arm/jaw pain, or shortness of breath requires emergency 911/ER.',
@@ -133,8 +133,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Abdomen',
       deepDiveTargetLayer: 'organs',
       deepDivePointId: 'stomach',
-      anatomicalDescription: 'Epigastric, umbilical, and lower abdominal quadrants.',
-      commonCauses: 'Gastritis, bloating, IBS, indigestion, menstrual discomfort.',
+      anatomicalDescription:
+          'Epigastric, umbilical, and lower abdominal quadrants.',
+      commonCauses:
+          'Gastritis, bloating, IBS, indigestion, menstrual discomfort.',
       islamicRuqyahNote: 'Abdominal pain from spiritual afflictions (Hasad/Evil Eye/Sihr) benefits from Ruqyah water, olive oil, and Senna/Ajwa dates.',
       safetyNotice: 'Acute localized lower-right rebound pain (appendicitis) warrants urgent surgery evaluation.',
     ),
@@ -147,8 +149,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Back',
       deepDiveTargetLayer: 'skeleton',
       deepDivePointId: 'thoracic_spine',
-      anatomicalDescription: 'Trapezius, rhomboids, interscapular muscular plane.',
-      commonCauses: 'Stress knots, poor desk posture, myofascial trigger points.',
+      anatomicalDescription:
+          'Trapezius, rhomboids, interscapular muscular plane.',
+      commonCauses:
+          'Stress knots, poor desk posture, myofascial trigger points.',
       islamicRuqyahNote: 'Premier Sunnah Hijama spot: Al-Kahal (between the shoulder blades) — praised in Prophetic Medicine for overall wellbeing.',
       safetyNotice: 'Numbness radiating around the ribcage should be clinically reviewed.',
     ),
@@ -161,8 +165,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Back',
       deepDiveTargetLayer: 'skeleton',
       deepDivePointId: 'lumbar_spine',
-      anatomicalDescription: 'Erector spinae, quadratus lumborum, and lumbosacral junction.',
-      commonCauses: 'Lumbago, muscular spasm, disc bulge, sciatica, prolonged sitting.',
+      anatomicalDescription:
+          'Erector spinae, quadratus lumborum, and lumbosacral junction.',
+      commonCauses:
+          'Lumbago, muscular spasm, disc bulge, sciatica, prolonged sitting.',
       islamicRuqyahNote: 'Cupping on lower lumbar points (Al-Warik / Al-Qatan) provides significant physical decompression.',
       safetyNotice: 'Loss of bladder/bowel control or bilateral leg numbness is a medical emergency (Cauda Equina).',
     ),
@@ -175,9 +181,12 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Limbs',
       deepDiveTargetLayer: 'skeleton',
       deepDivePointId: 'clavicle_left',
-      anatomicalDescription: 'Glenohumeral joint, rotator cuff, and lateral deltoid.',
-      commonCauses: 'Impingement, bursitis, rotator cuff tendinitis, frozen shoulder.',
-      islamicRuqyahNote: 'Gentle Ruqyah olive oil massage combined with dry cupping.',
+      anatomicalDescription:
+          'Glenohumeral joint, rotator cuff, and lateral deltoid.',
+      commonCauses:
+          'Impingement, bursitis, rotator cuff tendinitis, frozen shoulder.',
+      islamicRuqyahNote:
+          'Gentle Ruqyah olive oil massage combined with dry cupping.',
       safetyNotice: 'Inability to lift arm after trauma requires X-ray for fracture or dislocation.',
     ),
     AnatomyPoint(
@@ -189,7 +198,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Limbs',
       deepDiveTargetLayer: 'skeleton',
       deepDivePointId: 'clavicle_right',
-      anatomicalDescription: 'Glenohumeral joint, rotator cuff, and lateral deltoid.',
+      anatomicalDescription:
+          'Glenohumeral joint, rotator cuff, and lateral deltoid.',
       commonCauses: 'Repetitive strain, mouse-arm, overhead lifting injury.',
       islamicRuqyahNote: 'Ruqyah oil massage and joint mobilizing exercises.',
       safetyNotice: 'Sudden onset deformity requires orthopedic review.',
@@ -218,7 +228,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       deepDiveTargetLayer: 'skeleton',
       deepDivePointId: 'patella_right',
       anatomicalDescription: 'Patella, patellar tendon, knee joint capsule.',
-      commonCauses: 'Chondromalacia patellae, osteoarthritis, sports twisting injury.',
+      commonCauses:
+          'Chondromalacia patellae, osteoarthritis, sports twisting injury.',
       islamicRuqyahNote: 'Dry cupping surrounding patella points (excluding directly over knee cap).',
       safetyNotice: 'Severe joint effusion (water on knee) or redness/heat warrants urgent check.',
     ),
@@ -259,8 +270,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Back',
       deepDiveTargetLayer: 'organs',
       deepDivePointId: 'heart',
-      anatomicalDescription: 'T1-T12 vertebrae articulating with 12 pairs of ribs.',
-      commonCauses: 'Thoracic facet joint syndrome, postural kyphosis, scoliosis.',
+      anatomicalDescription:
+          'T1-T12 vertebrae articulating with 12 pairs of ribs.',
+      commonCauses:
+          'Thoracic facet joint syndrome, postural kyphosis, scoliosis.',
       islamicRuqyahNote: 'Spinal cupping stimulates autonomic nervous system balance and eases chest constriction.',
       safetyNotice: 'Unexplained mid-thoracic bone pain in elderly warrants radiological imaging.',
     ),
@@ -273,8 +286,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       category: 'Back',
       deepDiveTargetLayer: 'organs',
       deepDivePointId: 'kidneys',
-      anatomicalDescription: 'Large weight-bearing vertebrae and lumbosacral disc spaces.',
-      commonCauses: 'L4-L5 / L5-S1 disc herniation, spinal stenosis, spondylolisthesis.',
+      anatomicalDescription:
+          'Large weight-bearing vertebrae and lumbosacral disc spaces.',
+      commonCauses:
+          'L4-L5 / L5-S1 disc herniation, spinal stenosis, spondylolisthesis.',
       islamicRuqyahNote: 'Hijama on lower back points alongside gentle spinal decompression and Ruqyah oil.',
       safetyNotice: 'Progressive foot drop or numbness in groin requires emergency spine decompression.',
     ),
@@ -285,10 +300,14 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       normal: '0 0 1',
       layer: AnatomyLayer.skeleton,
       category: 'Back',
-      anatomicalDescription: 'Ilium, ischium, pubis, and sacred pelvic ring joints.',
-      commonCauses: 'SI joint dysfunction, piriformis syndrome, pelvic girdle pain.',
-      islamicRuqyahNote: 'Hijama on hip and sacral points eases pelvic nerve congestion.',
-      safetyNotice: 'Inability to bear weight after fall requires pelvic X-ray.',
+      anatomicalDescription:
+          'Ilium, ischium, pubis, and sacred pelvic ring joints.',
+      commonCauses:
+          'SI joint dysfunction, piriformis syndrome, pelvic girdle pain.',
+      islamicRuqyahNote:
+          'Hijama on hip and sacral points eases pelvic nerve congestion.',
+      safetyNotice:
+          'Inability to bear weight after fall requires pelvic X-ray.',
     ),
     AnatomyPoint(
       id: 'patella_left',
@@ -297,9 +316,11 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       normal: '0 0 1',
       layer: AnatomyLayer.skeleton,
       category: 'Limbs',
-      anatomicalDescription: 'Kneecap sesamoid bone and distal femoral condyle.',
+      anatomicalDescription:
+          'Kneecap sesamoid bone and distal femoral condyle.',
       commonCauses: 'Patellofemoral syndrome, cartilage thinning, osteophytes.',
-      islamicRuqyahNote: 'Application of warm blessed olive oil with intention of shifa.',
+      islamicRuqyahNote:
+          'Application of warm blessed olive oil with intention of shifa.',
       safetyNotice: 'Sudden knee locking where joint cannot straighten requires orthopedic review.',
     ),
     AnatomyPoint(
@@ -309,10 +330,14 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       normal: '0 0 1',
       layer: AnatomyLayer.skeleton,
       category: 'Limbs',
-      anatomicalDescription: 'Kneecap sesamoid bone and distal femoral condyle.',
-      commonCauses: 'Cartilage wear, joint effusion, patellar tracking disorder.',
-      islamicRuqyahNote: 'Gentle circular massage with black seed and olive oil.',
-      safetyNotice: 'Severe instability or knee giving way requires ligament evaluation.',
+      anatomicalDescription:
+          'Kneecap sesamoid bone and distal femoral condyle.',
+      commonCauses:
+          'Cartilage wear, joint effusion, patellar tracking disorder.',
+      islamicRuqyahNote:
+          'Gentle circular massage with black seed and olive oil.',
+      safetyNotice:
+          'Severe instability or knee giving way requires ligament evaluation.',
     ),
 
     // --- INTERNAL ORGANS LAYER ---
@@ -324,7 +349,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       layer: AnatomyLayer.organs,
       category: 'Organs',
       anatomicalDescription: 'Cerebral hemispheres, cerebellum, and brainstem.',
-      commonCauses: 'Mental exhaustion, severe migraine, brain fog, anxiety, insomnia.',
+      commonCauses:
+          'Mental exhaustion, severe migraine, brain fog, anxiety, insomnia.',
       islamicRuqyahNote: 'Prophetic medicine highlights head cupping (Al-Munqidhah: "the savior") for cognitive clarity and relief from whispering (Waswas).',
       safetyNotice: 'Sudden weakness, facial droop, or slurred speech is an acute stroke alert — call 911 immediately.',
     ),
@@ -335,8 +361,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       normal: '0 0 1',
       layer: AnatomyLayer.organs,
       category: 'Organs',
-      anatomicalDescription: 'Left thoracic cavity, ventricles, atria, and coronary vessels.',
-      commonCauses: 'Palpitations, stress-induced arrhythmia, angina, spiritual grief.',
+      anatomicalDescription:
+          'Left thoracic cavity, ventricles, atria, and coronary vessels.',
+      commonCauses:
+          'Palpitations, stress-induced arrhythmia, angina, spiritual grief.',
       islamicRuqyahNote: '"Verily, in the remembrance of Allah do hearts find rest" (13:28). Place hand over heart and recite Surah Ash-Sharh and Surah Al-Ikhlas.',
       safetyNotice: 'Chest tightness radiating to back or arm with sweating is a medical emergency.',
     ),
@@ -347,8 +375,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       normal: '0 0 1',
       layer: AnatomyLayer.organs,
       category: 'Organs',
-      anatomicalDescription: 'Right and left pulmonary lobes, bronchial airways, and pleura.',
-      commonCauses: 'Bronchial asthma, post-viral cough, chest congestion, pleurisy.',
+      anatomicalDescription:
+          'Right and left pulmonary lobes, bronchial airways, and pleura.',
+      commonCauses:
+          'Bronchial asthma, post-viral cough, chest congestion, pleurisy.',
       islamicRuqyahNote: 'Cupping between shoulder blades opens airways. Steam inhalation with black seed oil assists breathing.',
       safetyNotice: 'Acute shortness of breath or blue-tinted lips requires emergency care.',
     ),
@@ -371,8 +401,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       normal: '0 0 1',
       layer: AnatomyLayer.organs,
       category: 'Organs',
-      anatomicalDescription: 'Right hypochondrium, largest visceral metabolic organ.',
-      commonCauses: 'Fatty liver inflammation, biliary colic, gallstones, toxic burden.',
+      anatomicalDescription:
+          'Right hypochondrium, largest visceral metabolic organ.',
+      commonCauses:
+          'Fatty liver inflammation, biliary colic, gallstones, toxic burden.',
       islamicRuqyahNote: 'Cupping on corresponding right thoracic points. Olive oil consumption supports hepatic detox.',
       safetyNotice: 'Yellowing of skin/eyes (jaundice) or severe right upper pain needs urgent doctor review.',
     ),
@@ -383,9 +415,12 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       normal: '0 0 -1',
       layer: AnatomyLayer.organs,
       category: 'Organs',
-      anatomicalDescription: 'Retroperitoneal organs located bilaterally along T12-L3 spine.',
-      commonCauses: 'Renal colic, kidney stones, urinary tract infection, dehydration.',
-      islamicRuqyahNote: 'Drinking plenty of Zamzam water with intention of shifa and detox.',
+      anatomicalDescription:
+          'Retroperitoneal organs located bilaterally along T12-L3 spine.',
+      commonCauses:
+          'Renal colic, kidney stones, urinary tract infection, dehydration.',
+      islamicRuqyahNote:
+          'Drinking plenty of Zamzam water with intention of shifa and detox.',
       safetyNotice: 'High fever with flank pain, chills, or blood in urine warrants urgent emergency care.',
     ),
   ];
@@ -491,7 +526,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       SnackBar(
         content: Text(
           'Deep diving into ${targetLayer == AnatomyLayer.organs ? 'Internal Organs' : 'Skeletal System'}...',
-          style: const TextStyle(fontFamily: 'PlusJakartaSans', fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontFamily: 'PlusJakartaSans',
+            fontWeight: FontWeight.w600,
+          ),
         ),
         backgroundColor: const Color(0xFF0B4632),
         duration: const Duration(seconds: 2),
@@ -511,10 +549,12 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   }
 
   String get _tapRaycastJs {
-    final pointsJson = _currentLayerPoints.map((pt) {
-      final isSelected = _selectedPoint?.id == pt.id;
-      return "{id:'${pt.id}',pos:'${pt.position}',norm:'${pt.normal}',sel:$isSelected}";
-    }).join(',');
+    final pointsJson = _currentLayerPoints
+        .map((pt) {
+          final isSelected = _selectedPoint?.id == pt.id;
+          return "{id:'${pt.id}',pos:'${pt.position}',norm:'${pt.normal}',sel:$isSelected}";
+        })
+        .join(',');
 
     return '''
     (function () {
@@ -585,7 +625,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
     }
     return ModelViewer(
       key: ValueKey(_currentModelSrc),
-      backgroundColor: Colors.transparent,
       backgroundColor: const Color(0xFF0D1117),
       src: _currentModelSrc,
       alt: '3D Human Anatomy Interactive Model',
@@ -602,7 +641,18 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       maxFieldOfView: '45deg',
       shadowIntensity: 0.6,
       shadowSoftness: 0.8,
+      fieldOfView: 'auto',
+      minCameraOrbit: 'auto 20deg 1.0m',
+      maxCameraOrbit: 'auto 160deg 5m',
+      minFieldOfView: '15deg',
+      maxFieldOfView: '60deg',
+      shadowIntensity: 0.7,
+      shadowSoftness: 0.9,
       relatedCss: '''
+        * {
+          box-sizing: border-box;
+          -webkit-tap-highlight-color: transparent;
+        }
         html, body {
           width: 100%;
           height: 100%;
@@ -610,12 +660,29 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           padding: 0;
           overflow: hidden;
           background: #0D1117;
+          width: 100vw !important;
+          height: 100vh !important;
+          min-height: 100vh !important;
+          max-height: 100vh !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden !important;
+          background: #0D1117 !important;
         }
         model-viewer {
           width: 100%;
           height: 100%;
           display: block;
           background: #0D1117;
+          width: 100vw !important;
+          height: 100vh !important;
+          min-height: 100vh !important;
+          max-height: 100vh !important;
+          display: block !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          background: #0D1117 !important;
         }
       ''',
       relatedJs: _tapRaycastJs,
@@ -643,14 +710,11 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.pageBg,
       backgroundColor: const Color(0xFF0D1117),
       body: Stack(
         children: [
           // 1. 3D Model Viewport
-          Positioned.fill(
-            child: _buildModelViewport(),
-          ),
+          Positioned.fill(child: _buildModelViewport()),
 
           // 2. Top Header & Glassmorphic Layer Selector
           SafeArea(
@@ -855,7 +919,15 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   }
 
   Widget _buildQuickFilterChips() {
-    final categories = ['All', 'Head', 'Chest', 'Abdomen', 'Back', 'Limbs', 'Organs'];
+    final categories = [
+      'All',
+      'Head',
+      'Chest',
+      'Abdomen',
+      'Back',
+      'Limbs',
+      'Organs',
+    ];
 
     return SizedBox(
       height: 34,
@@ -922,8 +994,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
     final layerLabel = pt.layer == AnatomyLayer.surface
         ? 'Surface Region'
         : pt.layer == AnatomyLayer.skeleton
-            ? 'Skeletal Structure'
-            : 'Visceral Organ';
+        ? 'Skeletal Structure'
+        : 'Visceral Organ';
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -975,7 +1047,10 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                     ),
                     const SizedBox(height: 2),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFD49E35).withValues(alpha: 0.14),
                         borderRadius: BorderRadius.circular(6),
@@ -994,7 +1069,11 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.close_rounded, color: context.textSecondary, size: 20),
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: context.textSecondary,
+                  size: 20,
+                ),
                 onPressed: () => setState(() => _selectedPoint = null),
               ),
             ],
@@ -1129,7 +1208,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
               padding: const EdgeInsets.fromLTRB(22, 16, 22, 32),
               decoration: BoxDecoration(
                 color: context.cardBg,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(32),
+                ),
                 border: Border.all(color: context.cardBorder, width: 1.0),
               ),
               child: Column(
@@ -1194,16 +1275,16 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                           color: _painSeverity >= 7
                               ? const Color(0xFFC0392B)
                               : _painSeverity >= 4
-                                  ? const Color(0xFFD49E35)
-                                  : const Color(0xFF0B4632),
+                              ? const Color(0xFFD49E35)
+                              : const Color(0xFF0B4632),
                         ),
                       ),
                       Text(
                         _painSeverity >= 7
                             ? 'Severe'
                             : _painSeverity >= 4
-                                ? 'Moderate'
-                                : 'Mild',
+                            ? 'Moderate'
+                            : 'Mild',
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12,
@@ -1217,8 +1298,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                       activeTrackColor: _painSeverity >= 7
                           ? const Color(0xFFC0392B)
                           : _painSeverity >= 4
-                              ? const Color(0xFFD49E35)
-                              : const Color(0xFF0B4632),
+                          ? const Color(0xFFD49E35)
+                          : const Color(0xFF0B4632),
                       thumbColor: const Color(0xFF0B4632),
                     ),
                     child: Slider(
@@ -1248,46 +1329,53 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: [
-                      'Aching',
-                      'Sharp Stabbing',
-                      'Burning',
-                      'Throbbing',
-                      'Stiffness',
-                      'Numbness / Tingling',
-                      'Spiritual Heaviness',
-                    ].map((sensation) {
-                      final isSelected = _selectedSymptoms.contains(sensation);
-                      return FilterChip(
-                        label: Text(sensation),
-                        selected: isSelected,
-                        labelStyle: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 11.5,
-                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                          color: isSelected ? Colors.white : context.textPrimary,
-                        ),
-                        selectedColor: const Color(0xFF0B4632),
-                        backgroundColor: context.cardBg,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(
-                            color: isSelected
-                                ? const Color(0xFF0B4632)
-                                : context.cardBorder,
-                          ),
-                        ),
-                        onSelected: (selected) {
-                          setSheetState(() {
-                            if (selected) {
-                              _selectedSymptoms.add(sensation);
-                            } else {
-                              _selectedSymptoms.remove(sensation);
-                            }
-                          });
-                        },
-                      );
-                    }).toList(),
+                    children:
+                        [
+                          'Aching',
+                          'Sharp Stabbing',
+                          'Burning',
+                          'Throbbing',
+                          'Stiffness',
+                          'Numbness / Tingling',
+                          'Spiritual Heaviness',
+                        ].map((sensation) {
+                          final isSelected = _selectedSymptoms.contains(
+                            sensation,
+                          );
+                          return FilterChip(
+                            label: Text(sensation),
+                            selected: isSelected,
+                            labelStyle: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 11.5,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: isSelected
+                                  ? Colors.white
+                                  : context.textPrimary,
+                            ),
+                            selectedColor: const Color(0xFF0B4632),
+                            backgroundColor: context.cardBg,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(
+                                color: isSelected
+                                    ? const Color(0xFF0B4632)
+                                    : context.cardBorder,
+                              ),
+                            ),
+                            onSelected: (selected) {
+                              setSheetState(() {
+                                if (selected) {
+                                  _selectedSymptoms.add(sensation);
+                                } else {
+                                  _selectedSymptoms.remove(sensation);
+                                }
+                              });
+                            },
+                          );
+                        }).toList(),
                   ),
                   const SizedBox(height: 16),
 
@@ -1306,8 +1394,11 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                       children: [
                         const Row(
                           children: [
-                            Icon(Icons.auto_awesome_rounded,
-                                color: Color(0xFF0B4632), size: 16),
+                            Icon(
+                              Icons.auto_awesome_rounded,
+                              color: Color(0xFF0B4632),
+                              size: 16,
+                            ),
                             SizedBox(width: 8),
                             Text(
                               'Prophetic Medicine & Ruqyah Recommendation',
@@ -1344,7 +1435,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF0B4632).withValues(alpha: 0.30),
+                          color: const Color(0xFF0B4632)
+                              .withValues(alpha: 0.30),
                           blurRadius: 14,
                           offset: const Offset(0, 4),
                         ),
@@ -1358,8 +1450,11 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(
                             PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) =>
-                                  const TherapistMarketplaceScreen(),
+                              pageBuilder: (
+                                context,
+                                animation,
+                                secondaryAnimation,
+                              ) => const TherapistMarketplaceScreen(),
                             ),
                           );
                         },
