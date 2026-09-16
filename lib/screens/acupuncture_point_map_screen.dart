@@ -234,16 +234,13 @@ class _AcupuncturePointMapScreenState
       final hasOrgans = _organsByRegion.containsKey(id);
       setState(() {
         _activeRegionId = id;
-        _selectedOrgan = null;
+        _selectedOrgan = region;
         if (hasOrgans) {
           _level = AnatomyLevel.organ;
         }
         _cameraTarget = region.position;
         _cameraOrbit = '0deg 75deg 0.9m';
       });
-      if (!hasOrgans) {
-        setState(() => _selectedOrgan = region);
-      }
     } else if (kind == 'organ') {
       final organs = _organsByRegion[_activeRegionId] ?? const [];
       final organ = organs.firstWhere((o) => o.id == id);
@@ -271,6 +268,7 @@ class _AcupuncturePointMapScreenState
         <button slot="hotspot-${pt.id}" class="anatomy-hotspot${isActive ? ' active' : ''}"
           data-position="${pt.position}" data-normal="${pt.normal}"
           onclick="AnatomyChannel.postMessage('$kind:${pt.id}')">
+          <span class="label-badge">${pt.label}</span>
           <span class="dot"></span>
         </button>
       ''');
@@ -285,11 +283,27 @@ class _AcupuncturePointMapScreenState
       padding: 0;
       cursor: pointer;
       pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       opacity: 0;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
     .anatomy-hotspot.active {
       opacity: 1;
+    }
+    .anatomy-hotspot .label-badge {
+      background: #15221D;
+      color: #FFFFFF;
+      font-family: 'PlusJakartaSans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      white-space: nowrap;
+      pointer-events: none;
     }
     .anatomy-hotspot .dot {
       display: block;
