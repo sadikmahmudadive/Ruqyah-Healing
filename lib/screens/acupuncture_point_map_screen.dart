@@ -285,20 +285,25 @@ class _AcupuncturePointMapScreenState
       padding: 0;
       cursor: pointer;
       pointer-events: auto;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .anatomy-hotspot.active {
+      opacity: 1;
     }
     .anatomy-hotspot .dot {
       display: block;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #0B4632;
-      border: 2px solid #D49E35;
-      box-shadow: 0 0 8px rgba(11,70,50,0.6);
-    }
-    .anatomy-hotspot.active .dot {
       width: 22px;
       height: 22px;
-      border-width: 3px;
+      border-radius: 50%;
+      background: #0B4632;
+      border: 3px solid #D49E35;
+      box-shadow: 0 0 14px rgba(212, 158, 53, 0.85);
+      transform: scale(0.9);
+      transition: transform 0.2s ease;
+    }
+    .anatomy-hotspot.active .dot {
+      transform: scale(1.15);
     }
   ''';
 
