@@ -143,7 +143,6 @@ class _SignInScreenState extends State<SignInScreen>
 
   // Handle Sending Phone OTP Code
   Future<void> _handleSendOtp() async {
-    _navigateToHome();
     final phone = _phoneController.text.trim();
     if (phone.isEmpty || phone.length < 6) {
       _showSnackBar('Please enter a valid phone number', isError: true);
@@ -232,7 +231,6 @@ class _SignInScreenState extends State<SignInScreen>
 
   // Handle Sign In (Email or Phone OTP)
   Future<void> _handleSignIn() async {
-    _navigateToHome();
     HapticFeedback.mediumImpact();
 
     if (_isPhoneLogin) {
@@ -335,28 +333,9 @@ class _SignInScreenState extends State<SignInScreen>
 
   // Handle Google Sign In
   Future<void> _handleGoogleSignIn() async {
-    _navigateToHome();
-  }
     HapticFeedback.mediumImpact();
     setState(() => _isLoading = true);
 
-  Future<void> _onAuthSuccess(String uid) async {
-    final profile = await FirebaseService.getUserProfile(uid);
-    if (profile == null) {
-      final currentUser = FirebaseAuth.instance.currentUser;
-      final newUser = UserModel(
-        userId: uid,
-        email: currentUser?.email ?? '',
-        phone: currentUser?.phoneNumber ??
-            '${_selectedCountry.code}${_phoneController.text.trim()}',
-        name: currentUser?.displayName ?? 'Patient User',
-        role: 'patient',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        healthProfile: HealthProfile.empty(),
-        billing: BillingProfile.empty(),
-      );
-      await FirebaseService.saveUserProfile(newUser);
     try {
       final userCred = await FirebaseService.signInWithGoogle();
       if (userCred != null && userCred.user != null) {
@@ -372,21 +351,6 @@ class _SignInScreenState extends State<SignInScreen>
     }
   }
 
-    if (mounted) {
-      setState(() => _isLoading = false);
-      if (widget.onSignInSuccess != null) {
-        widget.onSignInSuccess!();
-      } else {
-        Navigator.of(context).pushAndRemoveUntil(
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const MainNavigationShell(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeInOut,
   // Handle Forgot Password Reset Email
   Future<void> _handleForgotPassword() async {
     final emailController = TextEditingController(
@@ -436,8 +400,6 @@ class _SignInScreenState extends State<SignInScreen>
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(color: Color(0xFF1E302A)),
                 ),
-                child: child,
-              );
               ),
             ),
           ],
@@ -476,16 +438,11 @@ class _SignInScreenState extends State<SignInScreen>
                 _showSnackBar('Failed to send reset email: $e', isError: true);
               }
             },
-            transitionDuration: const Duration(milliseconds: 600),
             child: const Text(
               'Send Link',
               style: TextStyle(color: Colors.white),
             ),
           ),
-          (route) => false,
-        );
-      }
-    }
         ],
       ),
     );
@@ -540,7 +497,6 @@ class _SignInScreenState extends State<SignInScreen>
               width: double.infinity,
               height: double.infinity,
               errorBuilder: (context, error, stackTrace) {
-                debugPrint('Error loading bg_signin.jpg: $error');
                 return const SizedBox();
               },
             ),
@@ -582,15 +538,10 @@ class _SignInScreenState extends State<SignInScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Top spacing to position content below the crescent moon artwork
-                        SizedBox(height: screenHeight * 0.25),
                         // Top spacing to position content below artwork
                         SizedBox(height: screenHeight * 0.20),
 
                         // Main Header Title
-                        const Text(
-                          'SIGN IN TO YOUR ACCOUNT',
-                          style: TextStyle(
                         Text(
                           context.tr('sign_in_account'),
                           style: const TextStyle(
@@ -614,7 +565,6 @@ class _SignInScreenState extends State<SignInScreen>
 
                         // Subtitle
                         Text(
-                          "We'll send a verification code to your phone.",
                           _isPhoneLogin
                               ? "We'll send a verification code to your phone."
                               : "Sign in with your registered email and password.",
@@ -627,39 +577,27 @@ class _SignInScreenState extends State<SignInScreen>
                           ),
                         ),
 
-                        const SizedBox(height: 28),
                         const SizedBox(height: 20),
 
-                        // Phone Number Section Label
-                        _buildFieldLabel('Phone Number'),
                         // Login Method Tab Switcher Segment (Email vs Phone)
                         _buildLoginTabSwitcher(),
 
-                        const SizedBox(height: 8),
                         const SizedBox(height: 24),
 
-                        // Phone Number Input Container
-                        _buildPhoneInputField(),
                         if (!_isPhoneLogin) ...[
                           // --- EMAIL LOGIN FORM ---
                           _buildFieldLabel(context.tr('email_address')),
                           const SizedBox(height: 8),
                           _buildEmailInputField(),
 
-                        const SizedBox(height: 12),
                           const SizedBox(height: 16),
 
-                        // Send OTP Button
-                        _buildSendOtpButton(),
                           _buildFieldLabel(context.tr('password')),
                           const SizedBox(height: 8),
                           _buildPasswordInputField(),
 
-                        const SizedBox(height: 20),
                           const SizedBox(height: 8),
 
-                        // OTP Code Section Label
-                        _buildFieldLabel('OTP Code'),
                           // Forgot Password
                           Align(
                             alignment: Alignment.centerRight,
@@ -677,11 +615,8 @@ class _SignInScreenState extends State<SignInScreen>
                             ),
                           ),
 
-                        const SizedBox(height: 8),
                           const SizedBox(height: 20),
 
-                        // OTP Input Container
-                        _buildOtpInputField(),
                           _buildSignInButton(),
                         ] else ...[
                           // --- PHONE OTP LOGIN FORM ---
@@ -689,11 +624,8 @@ class _SignInScreenState extends State<SignInScreen>
                           const SizedBox(height: 8),
                           _buildPhoneInputField(),
 
-                        const SizedBox(height: 12),
                           const SizedBox(height: 12),
 
-                        // Sign In Action Button
-                        _buildSignInButton(),
                           _buildSendOtpButton(),
 
                           const SizedBox(height: 20),
@@ -717,7 +649,6 @@ class _SignInScreenState extends State<SignInScreen>
                         // Google Sign-In Button
                         _buildGoogleSignInButton(),
 
-                        const SizedBox(height: 32),
                         const SizedBox(height: 16),
 
                         // Guest Access Button
@@ -760,7 +691,6 @@ class _SignInScreenState extends State<SignInScreen>
                         // Terms & Privacy Disclaimer
                         Center(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                             ),
@@ -773,7 +703,6 @@ class _SignInScreenState extends State<SignInScreen>
                                   color: Colors.white.withValues(alpha: 0.65),
                                 ),
                                 children: const [
-                                  TextSpan(text: 'By continuing, you agree to our '),
                                   TextSpan(
                                     text: 'By continuing, you agree to our ',
                                   ),
@@ -1223,9 +1152,6 @@ class _SignInScreenState extends State<SignInScreen>
                       strokeWidth: 2,
                     ),
                   )
-                : const Text(
-                    'Send OTP',
-                    style: TextStyle(
                 : Text(
                     context.tr('send_otp'),
                     style: const TextStyle(
@@ -1356,9 +1282,6 @@ class _SignInScreenState extends State<SignInScreen>
                       strokeWidth: 2,
                     ),
                   )
-                : const Text(
-                    'Sign In',
-                    style: TextStyle(
                 : Text(
                     context.tr('sign_in'),
                     style: const TextStyle(
@@ -1387,7 +1310,6 @@ class _SignInScreenState extends State<SignInScreen>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14.0),
           child: Text(
-            'or continue with',
             context.tr('or_continue_with'),
             style: TextStyle(
               fontFamily: 'Inter',
@@ -1432,15 +1354,10 @@ class _SignInScreenState extends State<SignInScreen>
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  GoogleLogo(size: 20),
-                  SizedBox(width: 12),
                 children: [
                   const GoogleLogo(size: 20),
                   const SizedBox(width: 12),
                   Text(
-                    'Continue with Google',
-                    style: TextStyle(
                     context.tr('continue_google'),
                     style: const TextStyle(
                       fontFamily: 'Inter',

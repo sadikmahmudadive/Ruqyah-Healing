@@ -18,7 +18,7 @@ import 'push_notification_service.dart';
 /// Centralized service handling Firebase Authentication, Firestore NoSQL Database operations,
 /// and Firebase Storage connections for the Ruqyah Healing Super-App.
 class FirebaseService {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseAuth get _auth => FirebaseAuth.instance;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// Safely initializes Firebase Core with platform options.
@@ -26,7 +26,6 @@ class FirebaseService {
     try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
-      );
       ).timeout(const Duration(seconds: 3));
       if (kDebugMode && !kIsWeb) {
         await _auth.setSettings(appVerificationDisabledForTesting: true);
@@ -45,8 +44,21 @@ class FirebaseService {
   // AUTHENTICATION API
   // ===========================================================================
 
-  static User? get currentUser => _auth.currentUser;
-  static Stream<User?> get authStateChanges => _auth.authStateChanges();
+  static User? get currentUser {
+    try {
+      return _auth.currentUser;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Stream<User?> get authStateChanges {
+    try {
+      return _auth.authStateChanges();
+    } catch (_) {
+      return const Stream.empty();
+    }
+  }
 
   /// Initiates Phone Number OTP Verification.
   static Future<void> verifyPhoneNumber({
@@ -81,7 +93,6 @@ class FirebaseService {
   /// Signs in with Google Authentication.
   static Future<UserCredential?> signInWithGoogle() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignIn googleSignIn = GoogleSignIn(
         clientId: kIsWeb || defaultTargetPlatform == TargetPlatform.iOS
             ? '968913433241-rfo96nqtrm1brrbcnmesngcnkcltim1g.apps.googleusercontent.com'
@@ -101,20 +112,6 @@ class FirebaseService {
       final user = userCredential.user;
 
       if (user != null) {
-        final existingProfile = await getUserProfile(user.uid);
-        if (existingProfile == null) {
-          final newUser = UserModel(
-            userId: user.uid,
-            email: user.email ?? '',
-            phone: user.phoneNumber ?? '',
-            name: user.displayName ?? 'User',
-            role: 'patient',
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-            healthProfile: HealthProfile.empty(),
-            billing: BillingProfile.empty(),
-          );
-          await saveUserProfile(newUser);
         try {
           final fcmToken = await PushNotificationService.getFcmToken() ?? '';
           final existingProfile = await getUserProfile(user.uid);
@@ -196,7 +193,6 @@ class FirebaseService {
     await _firestore
         .collection('users')
         .doc(user.userId)
-        .set(user.toFirestore(), SetOptions(merge: true));
         .set(userMap, SetOptions(merge: true));
   }
 
