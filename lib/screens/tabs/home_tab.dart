@@ -210,14 +210,14 @@ class _HomeTabState extends State<HomeTab> {
                       const NotificationScreen(),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeInOut,
-                      ),
-                      child: child,
-                    );
-                  },
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
                   transitionDuration: const Duration(milliseconds: 400),
                 ),
               );
@@ -244,10 +244,7 @@ class _HomeTabState extends State<HomeTab> {
             ],
           ),
           child: IconButton(
-            icon: AiIcon(
-              color: context.textPrimary,
-              size: 22,
-            ),
+            icon: AiIcon(color: context.textPrimary, size: 22),
             onPressed: () {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
@@ -256,14 +253,14 @@ class _HomeTabState extends State<HomeTab> {
                       const AISymptomGuideScreen(),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeInOut,
-                      ),
-                      child: child,
-                    );
-                  },
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          ),
+                          child: child,
+                        );
+                      },
                   transitionDuration: const Duration(milliseconds: 400),
                 ),
               );
@@ -300,14 +297,14 @@ class _HomeTabState extends State<HomeTab> {
                     const HealthProfileDetailScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -539,14 +536,14 @@ class _HomeTabState extends State<HomeTab> {
                 pageBuilder: (_, __, ___) => const FullAudioPlayerScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -595,86 +592,100 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
 
-              // Play Button
-              InkWell(
-                onTap: () {
-                  HapticFeedback.mediumImpact();
-                  setState(() {
-                    _isPlaying = !_isPlaying;
-                  });
-                },
-                borderRadius: BorderRadius.circular(24),
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF0B4632),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                    color: Colors.white,
-                    size: 28,
+                    // Play Button
+                    InkWell(
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        setState(() {
+                          _isPlaying = !_isPlaying;
+                        });
+                      },
+                      borderRadius: BorderRadius.circular(24),
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF0B4632),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _isPlaying
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Progress Bar
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: _audioProgress,
+                    backgroundColor: const Color(0xFFE2E8E5),
+                    color: const Color(0xFF0B4632),
+                    minHeight: 4,
                   ),
                 ),
-              ),
-            ],
-          ),
 
-          const SizedBox(height: 16),
+                const SizedBox(height: 8),
 
-          // Progress Bar
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: _audioProgress,
-              backgroundColor: const Color(0xFFE2E8E5),
-              color: const Color(0xFF0B4632),
-              minHeight: 4,
+                // Timestamps
+                Row(
+                  children: [
+                    Text(
+                      '01:15',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 11,
+                        color: const Color(0xFF6E7E77),
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '05:42',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 11,
+                        color: const Color(0xFF6E7E77),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-
-          const SizedBox(height: 8),
-
-          // Timestamps
-          Row(
-            children: [
-              Text(
-                '01:15',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11,
-                  color: const Color(0xFF6E7E77),
-                ),
-              ),
-              const Spacer(),
-              Text(
-                '05:42',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11,
-                  color: const Color(0xFF6E7E77),
-                ),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
-    ),
-  ),
-),
-);
-}
+    );
+  }
 
   // Holistic Services Row
   Widget _buildServicesRow() {
     final isDark = context.isDarkMode;
-    final iconColorRuqyah = isDark ? const Color(0xFFD49E35) : const Color(0xFF0B4632);
-    final iconColorHijama = isDark ? const Color(0xFFD49E35) : const Color(0xFFE67E22);
-    final iconColorAcupuncture = isDark ? const Color(0xFFD49E35) : const Color(0xFF2980B9);
-    final iconColorAyurvedic = isDark ? const Color(0xFFD49E35) : const Color(0xFF27AE60);
-    final iconColorPathology = isDark ? const Color(0xFFD49E35) : const Color(0xFF8E44AD);
-    final iconColorEmergency = isDark ? const Color(0xFFD49E35) : const Color(0xFFE74C3C);
+    final iconColorRuqyah = isDark
+        ? const Color(0xFFD49E35)
+        : const Color(0xFF0B4632);
+    final iconColorHijama = isDark
+        ? const Color(0xFFD49E35)
+        : const Color(0xFFE67E22);
+    final iconColorAcupuncture = isDark
+        ? const Color(0xFFD49E35)
+        : const Color(0xFF2980B9);
+    final iconColorAyurvedic = isDark
+        ? const Color(0xFFD49E35)
+        : const Color(0xFF27AE60);
+    final iconColorPathology = isDark
+        ? const Color(0xFFD49E35)
+        : const Color(0xFF8E44AD);
+    final iconColorEmergency = isDark
+        ? const Color(0xFFD49E35)
+        : const Color(0xFFE74C3C);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -683,10 +694,7 @@ class _HomeTabState extends State<HomeTab> {
         children: [
           _buildServiceIconCard(
             label: context.tr('ruqyah'),
-            customIcon: RuqyahDuaIcon(
-              color: iconColorRuqyah,
-              size: 30,
-            ),
+            customIcon: RuqyahDuaIcon(color: iconColorRuqyah, size: 30),
             bgColor: const Color(0xFFEBF7F0),
             iconColor: iconColorRuqyah,
             onTap: () {
@@ -701,10 +709,7 @@ class _HomeTabState extends State<HomeTab> {
           const SizedBox(width: 14),
           _buildServiceIconCard(
             label: context.tr('hijama'),
-            customIcon: HijamaCuppingIcon(
-              color: iconColorHijama,
-              size: 30,
-            ),
+            customIcon: HijamaCuppingIcon(color: iconColorHijama, size: 30),
             bgColor: const Color(0xFFFFF3E8),
             iconColor: iconColorHijama,
             onTap: () {
@@ -719,10 +724,7 @@ class _HomeTabState extends State<HomeTab> {
           const SizedBox(width: 14),
           _buildServiceIconCard(
             label: context.tr('acupuncture'),
-            customIcon: AcupunctureIcon(
-              color: iconColorAcupuncture,
-              size: 30,
-            ),
+            customIcon: AcupunctureIcon(color: iconColorAcupuncture, size: 30),
             bgColor: const Color(0xFFE6F7FF),
             iconColor: iconColorAcupuncture,
             onTap: () {
@@ -800,9 +802,7 @@ class _HomeTabState extends State<HomeTab> {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: context.isDarkMode
-                  ? const Color(0xFF132620)
-                  : bgColor,
+              color: context.isDarkMode ? const Color(0xFF132620) : bgColor,
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -874,7 +874,9 @@ class _HomeTabState extends State<HomeTab> {
             future: PrayerTimesService.fetchPrayerTimes(),
             builder: (context, snapshot) {
               final times = snapshot.data ?? PrayerTimesModel.fallback();
-              final activePrayer = PrayerTimesService.getActivePrayerName(times);
+              final activePrayer = PrayerTimesService.getActivePrayerName(
+                times,
+              );
 
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -950,11 +952,7 @@ class _HomeTabState extends State<HomeTab> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PrayerTimeIcon(
-              prayerName: name,
-              color: Colors.white,
-              size: 20,
-            ),
+            PrayerTimeIcon(prayerName: name, color: Colors.white, size: 20),
             const SizedBox(height: 6),
             Text(
               name,
@@ -1124,19 +1122,19 @@ class _HomeTabState extends State<HomeTab> {
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           const BookAppointmentScreen(
-                        therapistName: 'Dr. Salma Rahman',
-                        basePrice: 1200,
-                      ),
+                            therapistName: 'Dr. Salma Rahman',
+                            basePrice: 1200,
+                          ),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.easeInOut,
-                          ),
-                          child: child,
-                        );
-                      },
+                            return FadeTransition(
+                              opacity: CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                              child: child,
+                            );
+                          },
                       transitionDuration: const Duration(milliseconds: 400),
                     ),
                   );

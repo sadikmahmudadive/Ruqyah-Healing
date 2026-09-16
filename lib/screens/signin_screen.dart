@@ -107,12 +107,11 @@ class _SignInScreenState extends State<SignInScreen>
           message,
           style: const TextStyle(fontFamily: 'Inter', color: Colors.white),
         ),
-        backgroundColor:
-            isError ? const Color(0xFFC0392B) : const Color(0xFF1E6B45),
+        backgroundColor: isError
+            ? const Color(0xFFC0392B)
+            : const Color(0xFF1E6B45),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         duration: const Duration(seconds: 3),
       ),
     );
@@ -159,7 +158,9 @@ class _SignInScreenState extends State<SignInScreen>
         phoneNumber: fullPhoneNumber,
         onVerificationCompleted: (PhoneAuthCredential credential) async {
           try {
-            final userCred = await FirebaseAuth.instance.signInWithCredential(credential);
+            final userCred = await FirebaseAuth.instance.signInWithCredential(
+              credential,
+            );
             if (userCred.user != null) {
               await _ensureUserProfile(userCred.user!);
               _showSnackBar('Phone verification completed automatically!');
@@ -172,7 +173,10 @@ class _SignInScreenState extends State<SignInScreen>
         onVerificationFailed: (FirebaseAuthException e) {
           if (mounted) {
             setState(() => _isLoading = false);
-            _showSnackBar(e.message ?? 'Phone verification failed', isError: true);
+            _showSnackBar(
+              e.message ?? 'Phone verification failed',
+              isError: true,
+            );
           }
         },
         onCodeSent: (String verificationId, int? resendToken) {
@@ -272,7 +276,8 @@ class _SignInScreenState extends State<SignInScreen>
       final email = _emailController.text.trim();
       final password = _passwordController.text;
 
-      if (email.isEmpty || !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      if (email.isEmpty ||
+          !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
         _showSnackBar('Please enter a valid email address', isError: true);
         return;
       }
@@ -348,7 +353,9 @@ class _SignInScreenState extends State<SignInScreen>
 
   // Handle Forgot Password Reset Email
   Future<void> _handleForgotPassword() async {
-    final emailController = TextEditingController(text: _emailController.text.trim());
+    final emailController = TextEditingController(
+      text: _emailController.text.trim(),
+    );
 
     showDialog(
       context: context,
@@ -400,7 +407,10 @@ class _SignInScreenState extends State<SignInScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel', style: TextStyle(color: Color(0xFF92A89F))),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Color(0xFF92A89F)),
+            ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -412,18 +422,26 @@ class _SignInScreenState extends State<SignInScreen>
             onPressed: () async {
               final resetEmail = emailController.text.trim();
               if (resetEmail.isEmpty || !resetEmail.contains('@')) {
-                _showSnackBar('Please enter a valid email address', isError: true);
+                _showSnackBar(
+                  'Please enter a valid email address',
+                  isError: true,
+                );
                 return;
               }
               Navigator.of(context).pop();
               try {
-                await FirebaseAuth.instance.sendPasswordResetEmail(email: resetEmail);
+                await FirebaseAuth.instance.sendPasswordResetEmail(
+                  email: resetEmail,
+                );
                 _showSnackBar('Password reset email sent to $resetEmail');
               } catch (e) {
                 _showSnackBar('Failed to send reset email: $e', isError: true);
               }
             },
-            child: const Text('Send Link', style: TextStyle(color: Colors.white)),
+            child: const Text(
+              'Send Link',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -673,7 +691,9 @@ class _SignInScreenState extends State<SignInScreen>
                         // Terms & Privacy Disclaimer
                         Center(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
                             child: Text.rich(
                               TextSpan(
                                 style: TextStyle(
@@ -683,7 +703,9 @@ class _SignInScreenState extends State<SignInScreen>
                                   color: Colors.white.withValues(alpha: 0.65),
                                 ),
                                 children: const [
-                                  TextSpan(text: 'By continuing, you agree to our '),
+                                  TextSpan(
+                                    text: 'By continuing, you agree to our ',
+                                  ),
                                   TextSpan(
                                     text: 'Terms of Service',
                                     style: TextStyle(

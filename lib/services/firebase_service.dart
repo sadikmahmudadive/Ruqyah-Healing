@@ -172,7 +172,9 @@ class FirebaseService {
   static Future<void> saveUserProfile(UserModel user) async {
     final token = await PushNotificationService.getFcmToken() ?? '';
     final userMap = user.toFirestore();
-    if (token.isNotEmpty && (userMap['fcm_token'] == null || (userMap['fcm_token'] as String).isEmpty)) {
+    if (token.isNotEmpty &&
+        (userMap['fcm_token'] == null ||
+            (userMap['fcm_token'] as String).isEmpty)) {
       userMap['fcm_token'] = token;
     }
     await _firestore

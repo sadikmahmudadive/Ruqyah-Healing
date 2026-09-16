@@ -6,13 +6,7 @@ import 'package:flutter/services.dart';
 import '../localization/app_localizations.dart';
 import 'navbar_icons.dart';
 
-enum NavigationTab {
-  home,
-  services,
-  bookings,
-  learn,
-  profile,
-}
+enum NavigationTab { home, services, bookings, learn, profile }
 
 class GlobalBottomNavBar extends StatelessWidget {
   final NavigationTab currentTab;
@@ -164,7 +158,9 @@ class GlobalBottomNavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             iconBuilder(
-                isSelected, isSelected ? Colors.white : inactiveIconColor),
+              isSelected,
+              isSelected ? Colors.white : inactiveIconColor,
+            ),
             if (isSelected) ...[
               const SizedBox(width: 8),
               Text(

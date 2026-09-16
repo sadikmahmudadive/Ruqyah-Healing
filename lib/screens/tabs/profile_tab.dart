@@ -58,10 +58,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 decoration: BoxDecoration(
                   color: context.cardBg,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: context.cardBorder,
-                    width: 1.0,
-                  ),
+                  border: Border.all(color: context.cardBorder, width: 1.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -132,12 +129,13 @@ class _ProfileTabState extends State<ProfileTab> {
                   final resolvedEmail = userModel?.email.isNotEmpty == true
                       ? userModel!.email
                       : (currentUser.email?.isNotEmpty == true
-                          ? currentUser.email!
-                          : (currentUser.phoneNumber ?? ''));
+                            ? currentUser.email!
+                            : (currentUser.phoneNumber ?? ''));
 
                   final sessionsCount =
-                      userModel?.healthProfile.ruqyahAudioLogs.length.toString() ??
-                          '0';
+                      userModel?.healthProfile.ruqyahAudioLogs.length
+                          .toString() ??
+                      '0';
                   final healthScore = userModel?.healthProfile != null
                       ? '${100 - (userModel!.healthProfile.stressLevelIndex * 4)}'
                       : '80';
@@ -339,10 +337,7 @@ class _ProfileTabState extends State<ProfileTab> {
       decoration: BoxDecoration(
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: context.cardBorder,
-          width: 1.0,
-        ),
+        border: Border.all(color: context.cardBorder, width: 1.0),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -583,9 +578,7 @@ class _ProfileTabState extends State<ProfileTab> {
           onTap: () {
             HapticFeedback.heavyImpact();
             Navigator.of(context).pushAndRemoveUntil(
-              PageRouteBuilder(
-                pageBuilder: (_, _, _) => const SignInScreen(),
-              ),
+              PageRouteBuilder(pageBuilder: (_, _, _) => const SignInScreen()),
               (route) => false,
             );
           },
@@ -687,10 +680,7 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        height: 1,
-        color: context.cardBorder,
-      ),
+      child: Container(height: 1, color: context.cardBorder),
     );
   }
 }

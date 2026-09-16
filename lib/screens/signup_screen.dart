@@ -30,7 +30,8 @@ class _SignUpScreenState extends State<SignUpScreen>
   late Animation<Offset> _slideAnimation;
 
   bool _isPhoneSignUp = false; // false = Email Sign Up, true = Phone Sign Up
-  String _selectedRole = 'patient'; // 'patient' (User), 'raki' (Raki), 'therapist' (Therapist)
+  String _selectedRole =
+      'patient'; // 'patient' (User), 'raki' (Raki), 'therapist' (Therapist)
 
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -115,12 +116,11 @@ class _SignUpScreenState extends State<SignUpScreen>
           message,
           style: const TextStyle(fontFamily: 'Inter', color: Colors.white),
         ),
-        backgroundColor:
-            isError ? const Color(0xFFC0392B) : const Color(0xFF1E6B45),
+        backgroundColor: isError
+            ? const Color(0xFFC0392B)
+            : const Color(0xFF1E6B45),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         duration: const Duration(seconds: 3),
       ),
     );
@@ -171,7 +171,10 @@ class _SignUpScreenState extends State<SignUpScreen>
         onVerificationFailed: (FirebaseAuthException e) {
           if (mounted) {
             setState(() => _isLoading = false);
-            _showSnackBar(e.message ?? 'Phone verification failed', isError: true);
+            _showSnackBar(
+              e.message ?? 'Phone verification failed',
+              isError: true,
+            );
           }
         },
         onCodeSent: (String verificationId, int? resendToken) {
@@ -217,12 +220,16 @@ class _SignUpScreenState extends State<SignUpScreen>
     if (!_isPhoneSignUp) {
       // --- EMAIL SIGN UP ---
       final email = _emailController.text.trim();
-      if (email.isEmpty || !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      if (email.isEmpty ||
+          !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
         _showSnackBar('Please enter a valid email address', isError: true);
         return;
       }
       if (password.isEmpty || password.length < 6) {
-        _showSnackBar('Password must be at least 6 characters long', isError: true);
+        _showSnackBar(
+          'Password must be at least 6 characters long',
+          isError: true,
+        );
         return;
       }
       if (password != confirmPassword) {
@@ -257,7 +264,9 @@ class _SignUpScreenState extends State<SignUpScreen>
           );
 
           await FirebaseService.saveUserProfile(newUser);
-          _showSnackBar('Account created successfully! Welcome to Ruqyah Healing.');
+          _showSnackBar(
+            'Account created successfully! Welcome to Ruqyah Healing.',
+          );
           _navigateToHome();
         }
       } on FirebaseAuthException catch (e) {
@@ -283,7 +292,8 @@ class _SignUpScreenState extends State<SignUpScreen>
       final phone = _phoneController.text.trim();
       final otpCode = _otpController.text.trim();
 
-      if (email.isEmpty || !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      if (email.isEmpty ||
+          !RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
         _showSnackBar('Please enter a valid email address', isError: true);
         return;
       }
@@ -300,7 +310,10 @@ class _SignUpScreenState extends State<SignUpScreen>
         return;
       }
       if (password.isEmpty || password.length < 6) {
-        _showSnackBar('Password must be at least 6 characters long', isError: true);
+        _showSnackBar(
+          'Password must be at least 6 characters long',
+          isError: true,
+        );
         return;
       }
       if (password != confirmPassword) {
@@ -562,7 +575,8 @@ class _SignUpScreenState extends State<SignUpScreen>
                           obscureText: _obscureConfirmPassword,
                           onToggleVisibility: () {
                             setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword;
                             });
                           },
                         ),
@@ -894,11 +908,7 @@ class _SignUpScreenState extends State<SignUpScreen>
           ),
           child: Row(
             children: [
-              Icon(
-                icon,
-                color: Colors.white.withValues(alpha: 0.70),
-                size: 20,
-              ),
+              Icon(icon, color: Colors.white.withValues(alpha: 0.70), size: 20),
               const SizedBox(width: 12),
               Expanded(
                 child: TextField(
