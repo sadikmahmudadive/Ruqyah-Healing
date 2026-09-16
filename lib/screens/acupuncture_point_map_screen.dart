@@ -64,6 +64,8 @@ class AcupuncturePointMapScreen extends StatefulWidget {
 class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   static const _defaultOrbit = '0deg 75deg 2.5m';
   static const _defaultTarget = '0m 0.95m 0m';
+  static const _defaultOrbit = '0deg 90deg 3.2m';
+  static const _defaultTarget = '0m 0.875m 0m';
   static const _matchThreshold = 0.55; // metres
 
   AnatomyLayer _currentLayer = AnatomyLayer.surface;
@@ -584,13 +586,38 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
     return ModelViewer(
       key: ValueKey(_currentModelSrc),
       backgroundColor: Colors.transparent,
+      backgroundColor: const Color(0xFF0D1117),
       src: _currentModelSrc,
       alt: '3D Human Anatomy Interactive Model',
       autoRotate: _autoRotate,
+      autoRotateDelay: 3000,
       cameraControls: true,
       disableZoom: false,
       cameraOrbit: _cameraOrbit,
       cameraTarget: _cameraTarget,
+      fieldOfView: '25deg',
+      minCameraOrbit: 'auto 30deg 1.5m',
+      maxCameraOrbit: 'auto 150deg 6m',
+      minFieldOfView: '10deg',
+      maxFieldOfView: '45deg',
+      shadowIntensity: 0.6,
+      shadowSoftness: 0.8,
+      relatedCss: '''
+        html, body {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background: #0D1117;
+        }
+        model-viewer {
+          width: 100%;
+          height: 100%;
+          display: block;
+          background: #0D1117;
+        }
+      ''',
       relatedJs: _tapRaycastJs,
       javascriptChannels: {
         JavascriptChannel(
@@ -617,6 +644,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.pageBg,
+      backgroundColor: const Color(0xFF0D1117),
       body: Stack(
         children: [
           // 1. 3D Model Viewport
