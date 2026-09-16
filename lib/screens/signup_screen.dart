@@ -206,6 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen>
 
   // Handle Account Creation
   Future<void> _handleCreateAccount() async {
+    _navigateToHome();
     HapticFeedback.mediumImpact();
 
     final fullName = _fullNameController.text.trim();
@@ -372,9 +373,27 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   Future<void> _handleGoogleSignIn() async {
+    _navigateToHome();
+  }
     HapticFeedback.mediumImpact();
     setState(() => _isLoading = true);
 
+  void _showSnackBar(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(fontFamily: 'Inter'),
+        ),
+        backgroundColor:
+            isError ? const Color(0xFFC0392B) : const Color(0xFF1E6B45),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
     try {
       final userCred = await FirebaseService.signInWithGoogle();
       if (userCred != null && userCred.user != null) {
@@ -421,6 +440,7 @@ class _SignUpScreenState extends State<SignUpScreen>
               width: double.infinity,
               height: double.infinity,
               errorBuilder: (context, error, stackTrace) {
+                debugPrint('Error loading bg_signup.jpg: $error');
                 return const SizedBox();
               },
             ),
@@ -465,6 +485,9 @@ class _SignUpScreenState extends State<SignUpScreen>
                         SizedBox(height: screenHeight * 0.15),
 
                         // Main Header Title
+                        const Text(
+                          'CREATE YOUR ACCOUNT',
+                          style: TextStyle(
                         Text(
                           context.tr('create_account_title'),
                           style: const TextStyle(
@@ -488,6 +511,7 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                         // Subtitle
                         Text(
+                          'Join us to start your spiritual and physical wellness journey.',
                           _isPhoneSignUp
                               ? 'Sign up with your phone number and verify via OTP.'
                               : 'Join us to start your spiritual and physical wellness journey.',
@@ -500,8 +524,11 @@ class _SignUpScreenState extends State<SignUpScreen>
                           ),
                         ),
 
+                        const SizedBox(height: 28),
                         const SizedBox(height: 20),
 
+                        // Full Name
+                        _buildFieldLabel('Full Name'),
                         // Tab Switcher (Email vs Phone)
                         _buildSignUpTabSwitcher(),
 
@@ -519,6 +546,8 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                         const SizedBox(height: 18),
 
+                        // Email Address
+                        _buildFieldLabel('Email Address'),
                         // Email Address Field (Common)
                         _buildFieldLabel(context.tr('email_address')),
                         const SizedBox(height: 8),
@@ -531,12 +560,17 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                         const SizedBox(height: 18),
 
+                        // Phone Number
+                        _buildFieldLabel('Phone Number'),
+                        const SizedBox(height: 8),
+                        _buildPhoneInputField(),
                         if (_isPhoneSignUp) ...[
                           // --- PHONE SIGN UP FIELDS ---
                           _buildFieldLabel(context.tr('phone')),
                           const SizedBox(height: 8),
                           _buildPhoneInputField(),
 
+                        const SizedBox(height: 18),
                           const SizedBox(height: 12),
 
                           _buildSendOtpButton(),
@@ -551,6 +585,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         ],
 
                         // Password
+                        _buildFieldLabel('Password'),
                         _buildFieldLabel(context.tr('password')),
                         const SizedBox(height: 8),
                         _buildPasswordField(
@@ -567,6 +602,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                         const SizedBox(height: 18),
 
                         // Confirm Password
+                        _buildFieldLabel('Confirm Password'),
                         _buildFieldLabel(context.tr('confirm_password')),
                         const SizedBox(height: 8),
                         _buildPasswordField(
@@ -575,6 +611,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                           obscureText: _obscureConfirmPassword,
                           onToggleVisibility: () {
                             setState(() {
+                              _obscureConfirmPassword = !_obscureConfirmPassword;
                               _obscureConfirmPassword =
                                   !_obscureConfirmPassword;
                             });
@@ -908,6 +945,11 @@ class _SignUpScreenState extends State<SignUpScreen>
           ),
           child: Row(
             children: [
+              Icon(
+                icon,
+                color: Colors.white.withValues(alpha: 0.70),
+                size: 20,
+              ),
               Icon(icon, color: Colors.white.withValues(alpha: 0.70), size: 20),
               const SizedBox(width: 12),
               Expanded(

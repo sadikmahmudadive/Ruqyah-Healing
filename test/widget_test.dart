@@ -3,6 +3,7 @@ import 'package:ruqyahhealing/main.dart';
 
 void main() {
   testWidgets(
+    'Full flow test: SplashScreen -> LanguageOnboarding -> Onboarding 1, 2, 3 -> SignInScreen -> SignUpScreen',
     'Full flow test: SplashScreen -> LanguageOnboarding -> Onboarding 1, 2, 3 -> MainNavigationShell with BottomNavBar',
     (WidgetTester tester) async {
       // 1. Launch App
@@ -52,10 +53,23 @@ void main() {
       expect(find.text('TRUSTED COMMUNITY'), findsOneWidget);
       expect(find.text('Get Started'), findsOneWidget);
 
+      // 11. Tap Get Started to navigate to SignInScreen
       // 11. Tap Get Started to navigate to MainNavigationShell
       await tester.tap(find.text('Get Started'));
       await tester.pumpAndSettle();
 
+      // 12. Verify SignInScreen elements
+      expect(find.text('SIGN IN TO YOUR ACCOUNT'), findsOneWidget);
+      expect(
+        find.text("We'll send a verification code to your phone."),
+        findsOneWidget,
+      );
+      expect(find.text('Phone Number'), findsOneWidget);
+      expect(find.text('Send OTP'), findsOneWidget);
+      expect(find.text('OTP Code'), findsOneWidget);
+      expect(find.text('Sign In'), findsOneWidget);
+      expect(find.text('Continue with Google'), findsOneWidget);
+      expect(find.text('Sign Up'), findsOneWidget);
       // 12. Verify Main Navigation & Bottom Navigation Bar items
       expect(find.text('Home'), findsOneWidget);
       expect(find.text('Services'), findsOneWidget);
@@ -63,10 +77,26 @@ void main() {
       expect(find.text('Learn'), findsOneWidget);
       expect(find.text('Profile'), findsOneWidget);
 
+      // 13. Tap Sign Up to navigate to SignUpScreen
+      await tester.tap(find.text('Sign Up'));
       // 13. Tap Services Tab
       await tester.tap(find.text('Services'));
       await tester.pumpAndSettle();
 
+      // 14. Verify SignUpScreen elements
+      expect(find.text('CREATE YOUR ACCOUNT'), findsOneWidget);
+      expect(
+        find.text(
+          'Join us to start your spiritual and physical wellness journey.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('Full Name'), findsOneWidget);
+      expect(find.text('Email Address'), findsOneWidget);
+      expect(find.text('Password'), findsOneWidget);
+      expect(find.text('Confirm Password'), findsOneWidget);
+      expect(find.text('Create Account'), findsOneWidget);
+      expect(find.text('Sign In'), findsOneWidget);
       // 14. Tap Bookings Tab
       await tester.tap(find.text('Bookings'));
       await tester.pumpAndSettle();
