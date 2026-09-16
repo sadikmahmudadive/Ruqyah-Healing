@@ -59,8 +59,6 @@ class AcupuncturePointMapScreen extends StatefulWidget {
 }
 
 class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
-  static const _defaultOrbit = '0deg 90deg 3.2m';
-  static const _defaultTarget = '0m 0.875m 0m';
   static const _defaultOrbit = '0deg 85deg 2.7m';
   static const _defaultTarget = '0m 0.85m 0m';
   static const _matchThreshold = 0.55; // metres
@@ -634,13 +632,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       disableZoom: false,
       cameraOrbit: _cameraOrbit,
       cameraTarget: _cameraTarget,
-      fieldOfView: '25deg',
-      minCameraOrbit: 'auto 30deg 1.5m',
-      maxCameraOrbit: 'auto 150deg 6m',
-      minFieldOfView: '10deg',
-      maxFieldOfView: '45deg',
-      shadowIntensity: 0.6,
-      shadowSoftness: 0.8,
       fieldOfView: 'auto',
       minCameraOrbit: 'auto 20deg 1.0m',
       maxCameraOrbit: 'auto 160deg 5m',
@@ -654,12 +645,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           -webkit-tap-highlight-color: transparent;
         }
         html, body {
-          width: 100%;
-          height: 100%;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          background: #0D1117;
           width: 100vw !important;
           height: 100vh !important;
           min-height: 100vh !important;
@@ -670,10 +655,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           background: #0D1117 !important;
         }
         model-viewer {
-          width: 100%;
-          height: 100%;
-          display: block;
-          background: #0D1117;
           width: 100vw !important;
           height: 100vh !important;
           min-height: 100vh !important;
