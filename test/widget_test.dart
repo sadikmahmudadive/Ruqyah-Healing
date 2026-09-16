@@ -1,10 +1,11 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ruqyahhealing/main.dart';
 
 void main() {
   testWidgets(
     'Full flow test: SplashScreen -> LanguageOnboarding -> Onboarding 1, 2, 3 -> SignInScreen -> SignUpScreen',
-    'Full flow test: SplashScreen -> LanguageOnboarding -> Onboarding 1, 2, 3 -> MainNavigationShell with BottomNavBar',
     (WidgetTester tester) async {
       // 1. Launch App
       await tester.pumpWidget(const RuqyahHealingApp());
@@ -24,7 +25,7 @@ void main() {
       expect(find.text('English'), findsWidgets);
       expect(find.text('বাংলা'), findsOneWidget);
       expect(find.text('العربية'), findsOneWidget);
-      expect(find.text('فارسی'), findsOneWidget);
+      expect(find.text('اردو'), findsOneWidget);
       expect(find.text('Continue'), findsOneWidget);
 
       // 5. Tap Continue to navigate to OnboardingScreen1
@@ -54,33 +55,35 @@ void main() {
       expect(find.text('Get Started'), findsOneWidget);
 
       // 11. Tap Get Started to navigate to SignInScreen
-      // 11. Tap Get Started to navigate to MainNavigationShell
       await tester.tap(find.text('Get Started'));
       await tester.pumpAndSettle();
 
       // 12. Verify SignInScreen elements
       expect(find.text('SIGN IN TO YOUR ACCOUNT'), findsOneWidget);
       expect(
-        find.text("We'll send a verification code to your phone."),
+        find.text("Sign in with your registered email and password."),
         findsOneWidget,
       );
-      expect(find.text('Phone Number'), findsOneWidget);
-      expect(find.text('Send OTP'), findsOneWidget);
-      expect(find.text('OTP Code'), findsOneWidget);
+      expect(find.text('Email Address'), findsOneWidget);
+      expect(find.text('Password'), findsOneWidget);
       expect(find.text('Sign In'), findsOneWidget);
       expect(find.text('Continue with Google'), findsOneWidget);
-      expect(find.text('Sign Up'), findsOneWidget);
-      // 12. Verify Main Navigation & Bottom Navigation Bar items
-      expect(find.text('Home'), findsOneWidget);
-      expect(find.text('Services'), findsOneWidget);
-      expect(find.text('Bookings'), findsOneWidget);
-      expect(find.text('Learn'), findsOneWidget);
-      expect(find.text('Profile'), findsOneWidget);
 
-      // 13. Tap Sign Up to navigate to SignUpScreen
-      await tester.tap(find.text('Sign Up'));
-      // 13. Tap Services Tab
-      await tester.tap(find.text('Services'));
+      final signUpFinder = find.byWidgetPredicate(
+        (widget) =>
+            widget is RichText &&
+            widget.text.toPlainText().contains('Sign Up'),
+      );
+      expect(signUpFinder, findsOneWidget);
+
+      // 13. Ensure visible in viewport and tap Sign Up span to navigate to SignUpScreen
+      await tester.ensureVisible(signUpFinder);
+      await tester.pumpAndSettle();
+
+      final RichText richText = tester.widget(signUpFinder);
+      final TextSpan text = richText.text as TextSpan;
+      final TextSpan signUpSpan = text.children![1] as TextSpan;
+      (signUpSpan.recognizer as TapGestureRecognizer).onTap!();
       await tester.pumpAndSettle();
 
       // 14. Verify SignUpScreen elements
@@ -96,18 +99,13 @@ void main() {
       expect(find.text('Password'), findsOneWidget);
       expect(find.text('Confirm Password'), findsOneWidget);
       expect(find.text('Create Account'), findsOneWidget);
-      expect(find.text('Sign In'), findsOneWidget);
-      // 14. Tap Bookings Tab
-      await tester.tap(find.text('Bookings'));
-      await tester.pumpAndSettle();
 
-      // 15. Tap Learn Tab
-      await tester.tap(find.text('Learn'));
-      await tester.pumpAndSettle();
-
-      // 16. Tap Profile Tab
-      await tester.tap(find.text('Profile'));
-      await tester.pumpAndSettle();
+      final signInBackFinder = find.byWidgetPredicate(
+        (widget) =>
+            widget is RichText &&
+            widget.text.toPlainText().contains('Sign In'),
+      );
+      expect(signInBackFinder, findsOneWidget);
     },
   );
 }
