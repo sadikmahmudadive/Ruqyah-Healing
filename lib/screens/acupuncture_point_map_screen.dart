@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import 'therapist_marketplace_screen.dart';
 
-class Acupoint {
-  final String code;
-  final String name;
-  final String meridian;
-  final String location;
-  final String commonUse;
+enum AnatomyLevel { region, organ }
+
+class AnatomyPoint {
+  final String id;
+  final String label;
+  final String position; // "x y z" in metres, model space
+  final String normal; // "nx ny nz"
+  final AnatomyLevel level;
+  final String? parentRegionId; // null for regions
+  final String about;
+  final String commonCauses;
   final String evidence;
   final String safetyNotice;
-  final Offset frontPos;
-  final Offset backPos;
 
-  const Acupoint({
-    required this.code,
-    required this.name,
-    required this.meridian,
-    required this.location,
-    required this.commonUse,
+  const AnatomyPoint({
+    required this.id,
+    required this.label,
+    required this.position,
+    required this.normal,
+    required this.level,
+    this.parentRegionId,
+    required this.about,
+    required this.commonCauses,
     required this.evidence,
     required this.safetyNotice,
-    required this.frontPos,
-    required this.backPos,
   });
 }
 
@@ -37,604 +42,339 @@ class AcupuncturePointMapScreen extends StatefulWidget {
       _AcupuncturePointMapScreenState();
 }
 
-class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
-  String _viewAngle = 'Front'; // 'Front' or 'Back'
-  String _selectedMeridian = 'Lung (LU)';
-  bool _isBookmarked = false;
-  final TransformationController _transformationController =
-      TransformationController();
+class _AcupuncturePointMapScreenState
+    extends State<AcupuncturePointMapScreen> {
+  static const _defaultOrbit = '0deg 75deg 2.4m';
+  static const _defaultTarget = '0m 0.9m 0m';
 
-  final List<String> _meridians = const [
-    'All',
-    'Lung (LU)',
-    'L. Intest.',
-    'Stomach',
-    'Spleen',
-    'Heart',
-    'Kidney',
-    'Others',
+  AnatomyLevel _level = AnatomyLevel.region;
+  String? _activeRegionId;
+  AnatomyPoint? _selectedOrgan;
+  String _cameraOrbit = _defaultOrbit;
+  String _cameraTarget = _defaultTarget;
+
+  final List<AnatomyPoint> _regions = const [
+    AnatomyPoint(
+      id: 'head',
+      label: 'Head & Neck',
+      position: '0 1.62 0.08',
+      normal: '0 0 1',
+      level: AnatomyLevel.region,
+      about: 'Head, neck, and jaw.',
+      commonCauses: 'Tension, migraine, sinus, TMJ.',
+      evidence: 'General',
+      safetyNotice: 'Sudden severe head pain warrants urgent care.',
+    ),
+    AnatomyPoint(
+      id: 'chest',
+      label: 'Chest',
+      position: '0 1.32 0.14',
+      normal: '0 0 1',
+      level: AnatomyLevel.region,
+      about: 'Ribcage, sternum, and thoracic organs.',
+      commonCauses: 'Musculoskeletal strain, respiratory, cardiac.',
+      evidence: 'General',
+      safetyNotice:
+          'Chest pain with shortness of breath or pressure needs emergency evaluation.',
+    ),
+    AnatomyPoint(
+      id: 'abdomen',
+      label: 'Abdomen',
+      position: '0 1.02 0.14',
+      normal: '0 0 1',
+      level: AnatomyLevel.region,
+      about: 'Stomach, liver, kidneys, and intestines.',
+      commonCauses: 'Digestive, muscular, referred pain.',
+      evidence: 'General',
+      safetyNotice: 'Severe or worsening abdominal pain needs medical review.',
+    ),
+    AnatomyPoint(
+      id: 'back',
+      label: 'Back',
+      position: '0 1.15 -0.14',
+      normal: '0 0 -1',
+      level: AnatomyLevel.region,
+      about: 'Upper, mid, and lower back.',
+      commonCauses: 'Posture, strain, disc-related.',
+      evidence: 'General',
+      safetyNotice: 'Consult a practitioner before manual therapy.',
+    ),
+    AnatomyPoint(
+      id: 'arm_left',
+      label: 'Left Arm',
+      position: '-0.28 1.05 0.05',
+      normal: '-1 0 0',
+      level: AnatomyLevel.region,
+      about: 'Shoulder to hand, left side.',
+      commonCauses: 'Overuse, joint strain, nerve irritation.',
+      evidence: 'General',
+      safetyNotice: 'Numbness or weakness should be checked promptly.',
+    ),
+    AnatomyPoint(
+      id: 'arm_right',
+      label: 'Right Arm',
+      position: '0.28 1.05 0.05',
+      normal: '1 0 0',
+      level: AnatomyLevel.region,
+      about: 'Shoulder to hand, right side.',
+      commonCauses: 'Overuse, joint strain, nerve irritation.',
+      evidence: 'General',
+      safetyNotice: 'Numbness or weakness should be checked promptly.',
+    ),
+    AnatomyPoint(
+      id: 'leg_left',
+      label: 'Left Leg',
+      position: '-0.11 0.5 0.05',
+      normal: '-1 0 0',
+      level: AnatomyLevel.region,
+      about: 'Hip to foot, left side.',
+      commonCauses: 'Joint wear, muscular strain, sciatica.',
+      evidence: 'General',
+      safetyNotice:
+          'Sudden swelling or inability to bear weight needs urgent care.',
+    ),
+    AnatomyPoint(
+      id: 'leg_right',
+      label: 'Right Leg',
+      position: '0.11 0.5 0.05',
+      normal: '1 0 0',
+      level: AnatomyLevel.region,
+      about: 'Hip to foot, right side.',
+      commonCauses: 'Joint wear, muscular strain, sciatica.',
+      evidence: 'General',
+      safetyNotice:
+          'Sudden swelling or inability to bear weight needs urgent care.',
+    ),
   ];
 
-  final List<Acupoint> _points = const [
-    Acupoint(
-      code: 'LI4',
-      name: 'Hegu',
-      meridian: 'Large Intestine 4',
-      location: 'On the back of the hand, between the thumb and index finger.',
-      commonUse:
-          'May help with headaches, facial pain, stress and pain relief.',
-      evidence: 'Moderate',
-      safetyNotice:
-          'Not recommended during pregnancy. Always consult a qualified practitioner.',
-      frontPos: Offset(0.38, 0.22),
-      backPos: Offset(0.40, 0.24),
-    ),
-    Acupoint(
-      code: 'LU7',
-      name: 'Lieque',
-      meridian: 'Lung 7',
-      location:
-          '1.5 cun proximal to the wrist crease, above the styloid process of the radius.',
-      commonUse: 'Supports respiratory function and neck stiffness relief.',
-      evidence: 'High',
-      safetyNotice:
-          'Avoid deep insertion. Seek guidance from a certified practitioner.',
-      frontPos: Offset(0.32, 0.35),
-      backPos: Offset(0.34, 0.36),
-    ),
-    Acupoint(
-      code: 'ST36',
-      name: 'Zusanli',
-      meridian: 'Stomach 36',
-      location:
-          '3 cun below the knee, one finger-breadth lateral to the tibia.',
-      commonUse: 'Boosts energy, digestive harmony, and overall immunity.',
-      evidence: 'Strong',
-      safetyNotice: 'Clinical use only - consult a verified acupuncturist.',
-      frontPos: Offset(0.42, 0.72),
-      backPos: Offset(0.44, 0.74),
-    ),
-  ];
+  late final Map<String, List<AnatomyPoint>> _organsByRegion = {
+    'chest': const [
+      AnatomyPoint(
+        id: 'heart',
+        label: 'Heart',
+        position: '-0.04 1.34 0.16',
+        normal: '0 0 1',
+        level: AnatomyLevel.organ,
+        parentRegionId: 'chest',
+        about: 'Cardiac region, left of sternum.',
+        commonCauses: 'Cardiac, musculoskeletal, anxiety-related chest pain.',
+        evidence: 'Consult required',
+        safetyNotice:
+            'Pressure, radiating pain, or shortness of breath: seek emergency care immediately.',
+      ),
+      AnatomyPoint(
+        id: 'lungs',
+        label: 'Lungs',
+        position: '0.08 1.34 0.15',
+        normal: '0 0 1',
+        level: AnatomyLevel.organ,
+        parentRegionId: 'chest',
+        about: 'Respiratory region, either side of the sternum.',
+        commonCauses: 'Respiratory infection, strain, pleuritic pain.',
+        evidence: 'Consult required',
+        safetyNotice: 'Sharp pain when breathing deeply should be evaluated.',
+      ),
+    ],
+    'abdomen': const [
+      AnatomyPoint(
+        id: 'stomach',
+        label: 'Stomach',
+        position: '-0.03 1.06 0.15',
+        normal: '0 0 1',
+        level: AnatomyLevel.organ,
+        parentRegionId: 'abdomen',
+        about: 'Upper-left abdomen.',
+        commonCauses: 'Indigestion, gastritis, ulcers.',
+        evidence: 'General',
+        safetyNotice: 'Persistent or severe pain needs medical review.',
+      ),
+      AnatomyPoint(
+        id: 'liver',
+        label: 'Liver',
+        position: '0.1 1.08 0.15',
+        normal: '0 0 1',
+        level: AnatomyLevel.organ,
+        parentRegionId: 'abdomen',
+        about: 'Upper-right abdomen.',
+        commonCauses: 'Referred pain, inflammation.',
+        evidence: 'Consult required',
+        safetyNotice: 'Right-upper pain with jaundice needs urgent evaluation.',
+      ),
+      AnatomyPoint(
+        id: 'kidneys',
+        label: 'Kidneys',
+        position: '0.0 1.0 -0.1',
+        normal: '0 0 -1',
+        level: AnatomyLevel.organ,
+        parentRegionId: 'abdomen',
+        about: 'Flank region, either side of the spine.',
+        commonCauses: 'Kidney stones, infection, referred back pain.',
+        evidence: 'Consult required',
+        safetyNotice:
+            'Sudden severe flank pain needs prompt medical attention.',
+      ),
+    ],
+  };
 
-  late Acupoint _selectedPoint;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedPoint = _points[0];
+  List<AnatomyPoint> get _visibleHotspots {
+    if (_level == AnatomyLevel.region) return _regions;
+    return _organsByRegion[_activeRegionId] ?? const [];
   }
 
-  @override
-  void dispose() {
-    _transformationController.dispose();
-    super.dispose();
+  void _handleHotspotTap(String payload) {
+    final parts = payload.split(':');
+    if (parts.length != 2) return;
+    final kind = parts[0];
+    final id = parts[1];
+
+    HapticFeedback.selectionClick();
+
+    if (kind == 'region') {
+      final region = _regions.firstWhere((r) => r.id == id);
+      final hasOrgans = _organsByRegion.containsKey(id);
+      setState(() {
+        _activeRegionId = id;
+        _selectedOrgan = null;
+        if (hasOrgans) {
+          _level = AnatomyLevel.organ;
+        }
+        _cameraTarget = region.position;
+        _cameraOrbit = '0deg 75deg 0.9m';
+      });
+      if (!hasOrgans) {
+        setState(() => _selectedOrgan = region);
+      }
+    } else if (kind == 'organ') {
+      final organs = _organsByRegion[_activeRegionId] ?? const [];
+      final organ = organs.firstWhere((o) => o.id == id);
+      setState(() => _selectedOrgan = organ);
+    }
   }
+
+  void _resetToRegions() {
+    HapticFeedback.selectionClick();
+    setState(() {
+      _level = AnatomyLevel.region;
+      _activeRegionId = null;
+      _selectedOrgan = null;
+      _cameraOrbit = _defaultOrbit;
+      _cameraTarget = _defaultTarget;
+    });
+  }
+
+  String _buildHotspotsHtml() {
+    final buffer = StringBuffer();
+    for (final pt in _visibleHotspots) {
+      final kind = pt.level == AnatomyLevel.region ? 'region' : 'organ';
+      final isActive = pt.id == _activeRegionId || pt == _selectedOrgan;
+      buffer.write('''
+        <button slot="hotspot-${pt.id}" class="anatomy-hotspot${isActive ? ' active' : ''}"
+          data-position="${pt.position}" data-normal="${pt.normal}"
+          onclick="AnatomyChannel.postMessage('$kind:${pt.id}')">
+          <span class="dot"></span>
+        </button>
+      ''');
+    }
+    return buffer.toString();
+  }
+
+  String get _hotspotCss => '''
+    .anatomy-hotspot {
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    .anatomy-hotspot .dot {
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #0B4632;
+      border: 2px solid #D49E35;
+      box-shadow: 0 0 8px rgba(11,70,50,0.6);
+    }
+    .anatomy-hotspot.active .dot {
+      width: 22px;
+      height: 22px;
+      border-width: 3px;
+    }
+  ''';
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-      ),
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: context.pageBg,
+      appBar: AppBar(
         backgroundColor: context.pageBg,
-        appBar: AppBar(
-          backgroundColor: context.pageBg,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: context.cardBg,
-                shape: BoxShape.circle,
-                border: Border.all(color: context.cardBorder, width: 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_rounded,
-                  color: context.textPrimary,
-                  size: 20,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                padding: EdgeInsets.zero,
-              ),
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_rounded, color: context.textPrimary),
+          onPressed: () {
+            if (_level == AnatomyLevel.organ && _selectedOrgan == null) {
+              _resetToRegions();
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+        centerTitle: true,
+        title: Text(
+          _level == AnatomyLevel.region
+              ? 'Where does it hurt?'
+              : 'Select an area',
+          style: TextStyle(
+            fontFamily: 'PlusJakartaSans',
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: context.textPrimary,
+          ),
+        ),
+        actions: [
+          if (_activeRegionId != null)
+            TextButton(
+              onPressed: _resetToRegions,
+              child: const Text('Reset view'),
             ),
-          ),
-          centerTitle: true,
-          title: Column(
-            children: [
-              Text(
-                'Acupuncture Point Map',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: context.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                'Lung (LU) Meridian • 11 Points',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12,
-                  color: context.textSecondary,
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 16.0,
-                top: 8.0,
-                bottom: 8.0,
-              ),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: context.cardBg,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: context.cardBorder,
-                    width: 1.0,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.info_outline_rounded,
-                    color: context.isDarkMode
-                        ? const Color(0xFF81C784)
-                        : const Color(0xFF0B4632),
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    HapticFeedback.selectionClick();
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ModelViewer(
+              key: ValueKey('$_level-$_activeRegionId'),
+              backgroundColor: Colors.transparent,
+              src: 'assets/models/body_full.glb',
+              alt: 'Interactive human body model',
+              autoRotate: false,
+              cameraControls: true,
+              disableZoom: false,
+              cameraOrbit: _cameraOrbit,
+              cameraTarget: _cameraTarget,
+              minHotspotOpacity: 0,
+              maxHotspotOpacity: 1,
+              innerModelViewerHtml: _buildHotspotsHtml(),
+              relatedCss: _hotspotCss,
+              javascriptChannels: {
+                JavascriptChannel(
+                  'AnatomyChannel',
+                  onMessageReceived: (message) {
+                    _handleHotspotTap(message.message);
                   },
-                  padding: EdgeInsets.zero,
                 ),
-              ),
+              },
             ),
-          ],
-          toolbarHeight: 68,
-        ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 1. Sub-Header View Controls Row (View Label, Front/Back Toggle, Refresh Button)
-              _buildViewControlsRow(),
-
-              const SizedBox(height: 16),
-
-              // 2. Meridian Sidebar + 3D Meridian Body Map Canvas Row
-              _buildMeridianMapCanvasRow(),
-
-              const SizedBox(height: 20),
-
-              // 3. Acupoint Detail Card
-              _buildPointDetailCard(),
-
-              const SizedBox(height: 24),
-            ],
           ),
-        ),
+          if (_selectedOrgan != null) _buildDetailCard(_selectedOrgan!),
+        ],
       ),
     );
   }
 
-  // 1. Sub-Header View Controls Row
-  Widget _buildViewControlsRow() {
-    return Row(
-      children: [
-        Text(
-          'View',
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            color: context.textSecondary,
-          ),
-        ),
-
-        const SizedBox(width: 14),
-
-        // Front / Back Toggle Segment
-        Container(
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            color: context.isDarkMode
-                ? const Color(0xFF182E25)
-                : const Color(0xFFE8EEEA),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Row(
-            children: [
-              _buildViewPill(
-                label: 'Front',
-                isSelected: _viewAngle == 'Front',
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  setState(() => _viewAngle = 'Front');
-                },
-              ),
-              _buildViewPill(
-                label: 'Back',
-                isSelected: _viewAngle == 'Back',
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  setState(() => _viewAngle = 'Back');
-                },
-              ),
-            ],
-          ),
-        ),
-
-        const Spacer(),
-
-        // Refresh / Reset View Button
-        Container(
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            color: context.cardBg,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: context.cardBorder, width: 1.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 8,
-              ),
-            ],
-          ),
-          child: IconButton(
-            icon: Icon(
-              Icons.rotate_right_rounded,
-              color: context.textPrimary,
-              size: 20,
-            ),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              setState(() => _viewAngle = 'Front');
-            },
-            padding: EdgeInsets.zero,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildViewPill({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
-          borderRadius: BorderRadius.circular(11),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 13,
-            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-            color: isSelected ? Colors.white : context.textSecondary,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // 2. Meridian Sidebar + 3D Meridian Body Map Canvas Row
-  Widget _buildMeridianMapCanvasRow() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Left Meridian Sidebar
-        Container(
-          width: 105,
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            color: context.cardBg,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: context.cardBorder, width: 1.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 6.0, bottom: 8.0),
-                child: Text(
-                  'MERIDIAN',
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 10,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.8,
-                    color: Color(0xFF90A4AE),
-                  ),
-                ),
-              ),
-
-              ..._meridians.map((m) {
-                final isSelected = m == _selectedMeridian;
-
-                return InkWell(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() => _selectedMeridian = m);
-                  },
-                  borderRadius: BorderRadius.circular(10),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 4.0),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xFF0B4632)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      m,
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 12,
-                        fontWeight: isSelected
-                            ? FontWeight.w800
-                            : FontWeight.w500,
-                        color: isSelected
-                            ? Colors.white
-                            : context.textSecondary,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                );
-              }),
-            ],
-          ),
-        ),
-
-        const SizedBox(width: 12),
-
-        // Right Interactive 3D Meridian Body Canvas Card
-        Expanded(
-          child: Container(
-            height: 380,
-            decoration: BoxDecoration(
-              color: context.cardBg,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: context.cardBorder, width: 1.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  InteractiveViewer(
-                    transformationController: _transformationController,
-                    minScale: 0.8,
-                    maxScale: 4.0,
-                    boundaryMargin: const EdgeInsets.all(40),
-                    clipBehavior: Clip.none,
-                    child: SizedBox(
-                      width: 180,
-                      height: 360,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // 3D Human Body Anatomy with Shaded Muscle Contours & Meridian Channels
-                          CustomPaint(
-                            size: const Size(180, 360),
-                            painter: _MeridianAnatomyPainter(
-                              isBack: _viewAngle == 'Back',
-                              isDarkMode: context.isDarkMode,
-                            ),
-                          ),
-
-                          // Interactive Acupoint Markers Overlay
-                          ..._points.map((pt) {
-                            final pos =
-                                _viewAngle == 'Back' ? pt.backPos : pt.frontPos;
-                            final isSelected = pt == _selectedPoint;
-
-                            return Positioned(
-                              left: 180 * pos.dx - (isSelected ? 11 : 7),
-                              top: 360 * pos.dy - (isSelected ? 24 : 7),
-                              child: GestureDetector(
-                                onTap: () {
-                                  HapticFeedback.selectionClick();
-                                  setState(() => _selectedPoint = pt);
-                                },
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (isSelected) ...[
-                                      // Tag Tooltip
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 6,
-                                          vertical: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF15221D),
-                                          borderRadius: BorderRadius.circular(6),
-                                        ),
-                                        child: Text(
-                                          pt.code,
-                                          style: const TextStyle(
-                                            fontFamily: 'PlusJakartaSans',
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                    ],
-
-                                    // Marker Circle
-                                    AnimatedContainer(
-                                      duration: const Duration(milliseconds: 200),
-                                      width: isSelected ? 22 : 14,
-                                      height: isSelected ? 22 : 14,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFF0B4632),
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: const Color(0xFFD49E35),
-                                          width: isSelected ? 3.0 : 2.0,
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color(0xFF0B4632)
-                                                .withValues(alpha: 0.50),
-                                            blurRadius: isSelected ? 12 : 6,
-                                          ),
-                                        ],
-                                      ),
-                                      child: isSelected
-                                          ? Center(
-                                              child: Container(
-                                                width: 6,
-                                                height: 6,
-                                                decoration: const BoxDecoration(
-                                                  color: Color(0xFFD49E35),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                              ),
-                                            )
-                                          : null,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Floating Zoom Controls Overlay
-                  Positioned(
-                    right: 10,
-                    bottom: 10,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildZoomIconButton(
-                          icon: Icons.add_rounded,
-                          onTap: () {
-                            HapticFeedback.selectionClick();
-                            final matrix =
-                                _transformationController.value.clone();
-                            matrix.scale(1.25);
-                            _transformationController.value = matrix;
-                          },
-                        ),
-                        const SizedBox(height: 6),
-                        _buildZoomIconButton(
-                          icon: Icons.remove_rounded,
-                          onTap: () {
-                            HapticFeedback.selectionClick();
-                            final matrix =
-                                _transformationController.value.clone();
-                            matrix.scale(0.8);
-                            _transformationController.value = matrix;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Pinch to Zoom Pill Notice
-                  Positioned(
-                    bottom: 10,
-                    left: 10,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.45),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.pinch_rounded,
-                              color: Colors.white70, size: 13),
-                          SizedBox(width: 4),
-                          Text(
-                            'Pinch to Zoom',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // 3. Acupoint Detail Card
-  Widget _buildPointDetailCard() {
-    final pt = _selectedPoint;
-
+  Widget _buildDetailCard(AnatomyPoint pt) {
     return Container(
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: context.cardBg,
@@ -642,7 +382,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -651,151 +391,48 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row
           Row(
             children: [
-              Container(
-                width: 32,
-                height: 32,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF0B4632),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFD49E35),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(width: 12),
-
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${pt.code} ${pt.name}',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 16.5,
-                        fontWeight: FontWeight.w800,
-                        color: context.isDarkMode
-                            ? const Color(0xFF81C784)
-                            : const Color(0xFF0B4632),
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      pt.meridian,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        color: context.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              InkWell(
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  setState(() => _isBookmarked = !_isBookmarked);
-                },
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: context.isDarkMode
-                        ? const Color(0xFF382B14)
-                        : const Color(0xFFFFF8E1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(
-                    _isBookmarked
-                        ? Icons.bookmark_rounded
-                        : Icons.bookmark_outline_rounded,
-                    color: const Color(0xFFD49E35),
-                    size: 18,
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 16),
-
-          // LOCATION Row
-          _buildDetailPillRow(label: 'LOCATION', value: pt.location),
-
-          const SizedBox(height: 12),
-
-          // COMMON USE Row
-          _buildDetailPillRow(label: 'COMMON USE', value: pt.commonUse),
-
-          const SizedBox(height: 12),
-
-          // EVIDENCE Row
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: context.isDarkMode
-                      ? const Color(0xFF182E25)
-                      : const Color(0xFFEBF7F0),
-                  borderRadius: BorderRadius.circular(8),
-                ),
                 child: Text(
-                  'EVIDENCE',
+                  pt.label,
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
-                    fontSize: 10.5,
+                    fontSize: 16.5,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: 0.5,
                     color: context.isDarkMode
                         ? const Color(0xFF81C784)
                         : const Color(0xFF0B4632),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: context.isDarkMode
-                      ? const Color(0xFF382B14)
-                      : const Color(0xFFFFF8E1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  pt.evidence,
-                  style: const TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFFD49E35),
-                  ),
-                ),
+              IconButton(
+                icon: Icon(Icons.close_rounded, color: context.textSecondary),
+                onPressed: () => setState(() => _selectedOrgan = null),
               ),
             ],
           ),
-
-          const SizedBox(height: 16),
-
-          // Safety Notice Box
+          const SizedBox(height: 8),
+          Text(
+            pt.about,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12.5,
+              color: context.textSecondary,
+              height: 1.35,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Common causes: ${pt.commonCauses}',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12.5,
+              color: context.textSecondary,
+              height: 1.35,
+            ),
+          ),
+          const SizedBox(height: 14),
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -805,72 +442,42 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: const Color(0xFFD49E35).withValues(alpha: 0.30),
-                width: 1.0,
               ),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.warning_amber_rounded,
-                  color: Color(0xFFD49E35),
-                  size: 18,
-                ),
+                const Icon(Icons.warning_amber_rounded,
+                    color: Color(0xFFD49E35), size: 18),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Safety Notice',
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                          color: context.isDarkMode
-                              ? const Color(0xFFE5A93C)
-                              : const Color(0xFFB78103),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        pt.safetyNotice,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 11.5,
-                          color: context.isDarkMode
-                              ? const Color(0xFFE5A93C)
-                              : const Color(0xFFB78103),
-                          height: 1.35,
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    pt.safetyNotice,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 11.5,
+                      color: context.isDarkMode
+                          ? const Color(0xFFE5A93C)
+                          : const Color(0xFFB78103),
+                      height: 1.35,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-
           const SizedBox(height: 16),
-
-          // Primary Button: Consult a Verified Practitioner
           Container(
             width: double.infinity,
             height: 52,
             decoration: BoxDecoration(
               gradient: AppGradients.greenButtonGradient,
               borderRadius: BorderRadius.circular(18),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF082F21).withValues(alpha: 0.30),
-                  offset: const Offset(0, 6),
-                  blurRadius: 18,
-                ),
-              ],
             ),
             child: Material(
               color: Colors.transparent,
               child: InkWell(
+                borderRadius: BorderRadius.circular(18),
                 onTap: () {
                   HapticFeedback.heavyImpact();
                   Navigator.of(context).push(
@@ -880,17 +487,14 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                     ),
                   );
                 },
-                borderRadius: BorderRadius.circular(18),
-                splashColor: Colors.white.withValues(alpha: 0.15),
                 child: const Center(
                   child: Text(
-                    'Consult a Verified Practitioner',
+                    'Consult a Practitioner',
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15.5,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
-                      letterSpacing: 0.2,
                     ),
                   ),
                 ),
@@ -901,278 +505,4 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       ),
     );
   }
-
-  Widget _buildDetailPillRow({required String label, required String value}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(
-            color: context.isDarkMode
-                ? const Color(0xFF182E25)
-                : const Color(0xFFEBF7F0),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 10.5,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0.5,
-              color: context.isDarkMode
-                  ? const Color(0xFF81C784)
-                  : const Color(0xFF0B4632),
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.5,
-              color: context.textSecondary,
-              height: 1.35,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildZoomIconButton({
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: context.isDarkMode
-            ? const Color(0xFF182E25)
-            : const Color(0xFF0B4632).withValues(alpha: 0.85),
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.20),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: IconButton(
-        icon: Icon(icon, color: Colors.white, size: 18),
-        onPressed: onTap,
-        padding: EdgeInsets.zero,
-      ),
-    );
-  }
-}
-
-// CustomPainter for 3D Anatomy Figure with Glowing Meridian Channels
-class _MeridianAnatomyPainter extends CustomPainter {
-  final bool isBack;
-  final bool isDarkMode;
-
-  const _MeridianAnatomyPainter({
-    required this.isBack,
-    this.isDarkMode = false,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final centerX = size.width / 2;
-    final w = size.width;
-    final h = size.height;
-
-    // Body Fill Paint
-    final Paint bodyFillPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: isDarkMode
-            ? (isBack
-                ? [const Color(0xFF1B332B), const Color(0xFF11241C)]
-                : [const Color(0xFF223E35), const Color(0xFF142921)])
-            : (isBack
-                ? [const Color(0xFFD6E2DD), const Color(0xFFB5C8C1)]
-                : [const Color(0xFFE4EDE9), const Color(0xFFC2D4CD)]),
-      ).createShader(Rect.fromLTWH(0, 0, w, h));
-
-    // Outer Line Paint
-    final Paint outlinePaint = Paint()
-      ..color = isDarkMode ? const Color(0xFF81C784) : const Color(0xFF425E57)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.6;
-
-    // Muscle Shading Paint
-    final Paint musclePaint = Paint()
-      ..color = isDarkMode
-          ? Colors.white.withValues(alpha: 0.12)
-          : Colors.black.withValues(alpha: 0.10)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2;
-
-    // Glowing Green Meridian Lines Paint
-    final Paint meridianPaint = Paint()
-      ..color = const Color(0xFF2ECC71)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.2
-      ..strokeCap = StrokeCap.round;
-
-    // Head
-    final Path headPath = Path()
-      ..addOval(
-        Rect.fromCircle(center: Offset(centerX, h * 0.10), radius: w * 0.12),
-      );
-
-    // Torso & Limbs
-    final Path torsoPath = Path()
-      ..moveTo(centerX - w * 0.08, h * 0.18)
-      ..quadraticBezierTo(
-        centerX - w * 0.28,
-        h * 0.19,
-        centerX - w * 0.32,
-        h * 0.23,
-      )
-      ..cubicTo(
-        centerX - w * 0.38,
-        h * 0.35,
-        centerX - w * 0.40,
-        h * 0.45,
-        centerX - w * 0.38,
-        h * 0.52,
-      )
-      ..cubicTo(
-        centerX - w * 0.33,
-        h * 0.52,
-        centerX - w * 0.30,
-        h * 0.45,
-        centerX - w * 0.26,
-        h * 0.34,
-      )
-      ..quadraticBezierTo(
-        centerX - w * 0.20,
-        h * 0.42,
-        centerX - w * 0.18,
-        h * 0.52,
-      )
-      ..cubicTo(
-        centerX - w * 0.22,
-        h * 0.65,
-        centerX - w * 0.16,
-        h * 0.78,
-        centerX - w * 0.12,
-        h * 0.92,
-      )
-      ..lineTo(centerX - w * 0.03, h * 0.92)
-      ..quadraticBezierTo(
-        centerX - w * 0.06,
-        h * 0.75,
-        centerX - w * 0.01,
-        h * 0.55,
-      )
-      ..lineTo(centerX + w * 0.01, h * 0.55)
-      ..quadraticBezierTo(
-        centerX + w * 0.06,
-        h * 0.75,
-        centerX + w * 0.03,
-        h * 0.92,
-      )
-      ..lineTo(centerX + w * 0.12, h * 0.92)
-      ..cubicTo(
-        centerX + w * 0.16,
-        h * 0.78,
-        centerX + w * 0.22,
-        h * 0.65,
-        centerX + w * 0.18,
-        h * 0.52,
-      )
-      ..quadraticBezierTo(
-        centerX + w * 0.20,
-        h * 0.42,
-        centerX + w * 0.26,
-        h * 0.34,
-      )
-      ..cubicTo(
-        centerX + w * 0.30,
-        h * 0.45,
-        centerX + w * 0.33,
-        h * 0.52,
-        centerX + w * 0.38,
-        h * 0.52,
-      )
-      ..cubicTo(
-        centerX + w * 0.40,
-        h * 0.45,
-        centerX + w * 0.38,
-        h * 0.35,
-        centerX + w * 0.32,
-        h * 0.23,
-      )
-      ..quadraticBezierTo(
-        centerX + w * 0.28,
-        h * 0.19,
-        centerX + w * 0.08,
-        h * 0.18,
-      )
-      ..close();
-
-    canvas.drawPath(headPath, bodyFillPaint);
-    canvas.drawPath(headPath, outlinePaint);
-
-    canvas.drawPath(torsoPath, bodyFillPaint);
-    canvas.drawPath(torsoPath, outlinePaint);
-
-    // Anatomical 3D Muscle Contour Accents
-    canvas.drawArc(
-      Rect.fromCircle(
-          center: Offset(centerX - w * 0.10, h * 0.26), radius: w * 0.08),
-      0.2,
-      2.5,
-      false,
-      musclePaint,
-    );
-    canvas.drawArc(
-      Rect.fromCircle(
-          center: Offset(centerX + w * 0.10, h * 0.26), radius: w * 0.08),
-      0.4,
-      2.5,
-      false,
-      musclePaint,
-    );
-
-    // Knee Joints
-    canvas.drawCircle(
-        Offset(centerX - w * 0.08, h * 0.72), w * 0.035, musclePaint);
-    canvas.drawCircle(
-        Offset(centerX + w * 0.08, h * 0.72), w * 0.035, musclePaint);
-
-    // Glowing Meridian Channel Lines
-    final Path meridianLineLeft = Path()
-      ..moveTo(centerX - w * 0.10, h * 0.18)
-      ..lineTo(centerX - w * 0.28, h * 0.23)
-      ..lineTo(centerX - w * 0.34, h * 0.38)
-      ..lineTo(centerX - w * 0.36, h * 0.50);
-
-    final Path meridianLineRight = Path()
-      ..moveTo(centerX + w * 0.10, h * 0.18)
-      ..lineTo(centerX + w * 0.28, h * 0.23)
-      ..lineTo(centerX + w * 0.34, h * 0.38)
-      ..lineTo(centerX + w * 0.36, h * 0.50);
-
-    final Path meridianLineCenter = Path()
-      ..moveTo(centerX, h * 0.10)
-      ..lineTo(centerX, h * 0.90);
-
-    canvas.drawPath(meridianLineLeft, meridianPaint);
-    canvas.drawPath(meridianLineRight, meridianPaint);
-    canvas.drawPath(meridianLineCenter, meridianPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _MeridianAnatomyPainter oldDelegate) =>
-      oldDelegate.isBack != isBack || oldDelegate.isDarkMode != isDarkMode;
 }
