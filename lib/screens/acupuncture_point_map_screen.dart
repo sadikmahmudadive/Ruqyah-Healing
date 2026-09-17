@@ -713,8 +713,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       maxCameraOrbit: 'auto 160deg 6m',
       minFieldOfView: '15deg',
       maxFieldOfView: '60deg',
-      shadowIntensity: 0.7,
-      shadowSoftness: 0.9,
       onWebViewCreated: (controller) {
         _webViewController = controller;
       },
@@ -1049,20 +1047,25 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 icon,
-                size: 16,
+                size: 15,
                 color: isSelected ? Colors.white : context.textSecondary,
               ),
-              const SizedBox(width: 6),
-              Text(
-                title,
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 12.5,
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                  color: isSelected ? Colors.white : context.textSecondary,
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11.5,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    color: isSelected ? Colors.white : context.textSecondary,
+                  ),
                 ),
               ),
             ],
