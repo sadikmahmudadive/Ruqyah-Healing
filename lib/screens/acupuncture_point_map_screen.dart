@@ -650,7 +650,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       maxCameraOrbit: 'auto 160deg 5m',
       minFieldOfView: '20deg',
       maxFieldOfView: '45deg',
-      bounds: 'tight', // Forces model viewer to frame the actual bounding box of the model
       shadowIntensity: 0.7,
       shadowSoftness: 0.9,
       relatedCss: '''
