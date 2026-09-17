@@ -724,7 +724,15 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                     children: [
                       _buildGlassIconButton(
                         icon: Icons.arrow_back_rounded,
-                        onTap: () => Navigator.of(context).pop(),
+                        onTap: () {
+                          if (_pendingPoint != null) {
+                            _dismissPending();
+                          } else if (_selectedPoint != null) {
+                            _resetCamera();
+                          } else {
+                            Navigator.of(context).pop();
+                          }
+                        },
                       ),
                       const SizedBox(width: 12),
                       Expanded(
