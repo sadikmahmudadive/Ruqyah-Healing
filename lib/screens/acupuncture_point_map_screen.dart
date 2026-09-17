@@ -645,11 +645,13 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       disableZoom: false,
       cameraOrbit: _cameraOrbit,
       cameraTarget: _cameraTarget,
-      fieldOfView: '45deg', // Lock standard FOV to prevent squishing/stretching
-      minCameraOrbit: 'auto 20deg 1.0m',
-      maxCameraOrbit: 'auto 160deg 5m',
+      // Increase fieldOfView to pull the camera back naturally, showing the full body
+      fieldOfView: '45deg',
+      // Adjust standard zoom limits to keep the model appropriately framed
+      minCameraOrbit: 'auto 20deg 1.5m',
+      maxCameraOrbit: 'auto 160deg 8m',
       minFieldOfView: '20deg',
-      maxFieldOfView: '45deg',
+      maxFieldOfView: '60deg',
       shadowIntensity: 0.7,
       shadowSoftness: 0.9,
       relatedCss: '''
