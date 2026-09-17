@@ -550,7 +550,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
     final pointsJson = _currentLayerPoints
         .map((pt) {
           final isSelected = _selectedPoint?.id == pt.id;
-          return "{id:'${pt.id}',pos:'${pt.position}',norm:'${pt.normal}',sel:$isSelected}";
+          return "{id:'${pt.id}',pos:'${pt.position}',norm:'${pt.normal}',sel:$isSelected,lbl:'${pt.label.replaceAll("'", "\\'")}'}";
         })
         .join(',');
 
@@ -561,33 +561,46 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         if (!mv) { return; }
         
         // Clear previous hotspots
-        var oldPins = mv.querySelectorAll('.hotspot');
+        var oldPins = mv.querySelectorAll('.hotspot-container');
         for (var i = 0; i < oldPins.length; i++) {
           oldPins[i].remove();
         }
 
-        // Add 3D hotspots
+        // Add 3D hotspots (only for the selected point)
         var pts = [$pointsJson];
         pts.forEach(function(pt) {
-          var btn = document.createElement('button');
-          btn.className = 'hotspot';
-          btn.slot = 'hotspot-' + pt.id;
-          btn.dataset.position = pt.pos;
-          btn.dataset.normal = pt.norm;
-          var color = pt.sel ? '#E5A93C' : '#0B4632';
-          var size = pt.sel ? '20px' : '14px';
-          var border = pt.sel ? '3px solid #FFFFFF' : '2px solid rgba(255,255,255,0.9)';
-          btn.style.cssText = 'width:' + size + ';height:' + size + ';border-radius:50%;background-color:' + color + ';border:' + border + ';box-shadow:0 0 12px ' + color + ';cursor:pointer;outline:none;';
-          btn.onclick = function(e) {
+          if (!pt.sel) return; // Only show hotspot if selected
+
+          var container = document.createElement('div');
+          container.className = 'hotspot-container';
+          container.slot = 'hotspot-' + pt.id;
+          container.dataset.position = pt.pos;
+          container.dataset.normal = pt.norm;
+          container.style.cssText = 'display:flex;flex-direction:column;align-items:center;pointer-events:auto;transform:translateY(-50%);';
+
+          var badge = document.createElement('div');
+          badge.textContent = pt.lbl;
+          badge.style.cssText = 'background:#15221D;color:#FFFFFF;font-family:sans-serif;font-size:12px;font-weight:bold;padding:4px 10px;border-radius:10px;margin-bottom:6px;box-shadow:0 2px 8px rgba(0,0,0,0.4);white-space:nowrap;pointer-events:none;';
+          
+          var dot = document.createElement('button');
+          var color = '#E5A93C';
+          var size = '22px';
+          var border = '3px solid #FFFFFF';
+          dot.style.cssText = 'width:' + size + ';height:' + size + ';border-radius:50%;background-color:' + color + ';border:' + border + ';box-shadow:0 0 16px ' + color + ';cursor:pointer;outline:none;padding:0;';
+          
+          dot.onclick = function(e) {
             e.stopPropagation();
             AnatomyChannel.postMessage('select:' + pt.id);
           };
-          mv.appendChild(btn);
+
+          container.appendChild(badge);
+          container.appendChild(dot);
+          mv.appendChild(container);
         });
 
         // Raycast surface tap
         mv.addEventListener('click', function (event) {
-          if (event.target && event.target.classList.contains('hotspot')) {
+          if (event.target && (event.target.tagName === 'BUTTON' || event.target.closest('.hotspot-container'))) {
             return;
           }
           var rect = mv.getBoundingClientRect();
@@ -736,6 +749,59 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                           ],
                         ),
                       ),
+                      
+                      // Floating Zoom Buttons (+ / -)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: context.cardBg.withValues(alpha: 0.92),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: context.cardBorder, width: 1.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.06),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            _buildIconBtnCompact(
+                              icon: Icons.add_rounded,
+                              onTap: () {
+                                HapticFeedback.selectionClick();
+                                setState(() {
+                                  // Update the cameraOrbit radius zoom (the "m" component)
+                                  final parts = _cameraOrbit.split(' ');
+                                  if (parts.length == 3) {
+                                    final currentM = double.tryParse(parts[2].replaceAll('m', '')) ?? 2.7;
+                                    final zoomed = (currentM - 0.4).clamp(0.5, 4.0);
+                                    _cameraOrbit = '${parts[0]} ${parts[1]} ${zoomed}m';
+                                  }
+                                });
+                              },
+                            ),
+                            Container(width: 1, height: 20, color: context.cardBorder),
+                            _buildIconBtnCompact(
+                              icon: Icons.remove_rounded,
+                              onTap: () {
+                                HapticFeedback.selectionClick();
+                                setState(() {
+                                  final parts = _cameraOrbit.split(' ');
+                                  if (parts.length == 3) {
+                                    final currentM = double.tryParse(parts[2].replaceAll('m', '')) ?? 2.7;
+                                    final unzoomed = (currentM + 0.4).clamp(0.5, 4.0);
+                                    _cameraOrbit = '${parts[0]} ${parts[1]} ${unzoomed}m';
+                                  }
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      const SizedBox(width: 8),
+
                       _buildGlassIconButton(
                         icon: _autoRotate
                             ? Icons.pause_circle_rounded
@@ -806,6 +872,25 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
           borderRadius: BorderRadius.circular(14),
           onTap: onTap,
           child: Icon(icon, color: context.textPrimary, size: 21),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconBtnCompact({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: 44,
+          height: 44,
+          alignment: Alignment.center,
+          child: Icon(icon, color: context.textPrimary, size: 20),
         ),
       ),
     );
