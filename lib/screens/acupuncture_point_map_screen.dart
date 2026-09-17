@@ -61,8 +61,8 @@ class AcupuncturePointMapScreen extends StatefulWidget {
 }
 
 class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
-  static const _defaultOrbit = '0deg 85deg 2.1m';
-  static const _defaultTarget = '0m 0.85m 0m';
+  static const _defaultOrbit = '0deg 88deg 2.5m';
+  static const _defaultTarget = '0m 1.05m 0m';
   static const _matchThreshold = 0.55; // metres
 
   WebViewController? _webViewController;
@@ -708,8 +708,8 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
       disableZoom: false,
       cameraOrbit: _cameraOrbit,
       cameraTarget: _cameraTarget,
-      fieldOfView: '38deg',
-      minCameraOrbit: 'auto 20deg 0.6m',
+      fieldOfView: '40deg',
+      minCameraOrbit: 'auto 20deg 0.7m',
       maxCameraOrbit: 'auto 160deg 6m',
       minFieldOfView: '15deg',
       maxFieldOfView: '60deg',
@@ -820,15 +820,20 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                                 children: [
                                   Text(
                                     '3D Anatomy Pain Map',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontFamily: 'PlusJakartaSans',
-                                      fontSize: 17.5,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w800,
                                       color: context.textPrimary,
                                     ),
                                   ),
+                                  const SizedBox(height: 2),
                                   Text(
                                     'Tap the model where you feel discomfort',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontFamily: 'Inter',
                                       fontSize: 11.5,
@@ -838,63 +843,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                                 ],
                               ),
                             ),
-
-                            // Floating Zoom Buttons (+ / -)
-                            Container(
-                              decoration: BoxDecoration(
-                                color: context.cardBg.withValues(alpha: 0.92),
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: context.cardBorder,
-                                  width: 1.0,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.06),
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  _buildIconBtnCompact(
-                                    icon: Icons.add_rounded,
-                                    onTap: _zoomIn,
-                                  ),
-                                  Container(
-                                    width: 1,
-                                    height: 20,
-                                    color: context.cardBorder,
-                                  ),
-                                  _buildIconBtnCompact(
-                                    icon: Icons.remove_rounded,
-                                    onTap: _zoomOut,
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            const SizedBox(width: 8),
-
-                            _buildGlassIconButton(
-                              icon: _autoRotate
-                                  ? Icons.pause_circle_rounded
-                                  : Icons.rotate_right_rounded,
-                              onTap: () {
-                                HapticFeedback.selectionClick();
-                                setState(() => _autoRotate = !_autoRotate);
-                                _webViewController?.runJavaScript('''
-                                  (function() {
-                                    var mv = document.querySelector('model-viewer');
-                                    if (mv) {
-                                      mv.autoRotate = $_autoRotate;
-                                    }
-                                  })();
-                                ''');
-                              },
-                            ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 10),
                             _buildGlassIconButton(
                               icon: Icons.center_focus_strong_rounded,
                               onTap: _resetCamera,
@@ -914,7 +863,70 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   ),
                 ),
 
-                // 3. Bottom Pain Selection Dock / Deep-Dive Card
+                // 3. Floating 3D Navigation Controls (Zoom In, Zoom Out, 360 Rotate)
+                Positioned(
+                  right: 18,
+                  top: 250,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: context.cardBg.withValues(alpha: 0.94),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: context.cardBorder,
+                        width: 1.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.14),
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildIconBtnCompact(
+                          icon: Icons.add_rounded,
+                          onTap: _zoomIn,
+                        ),
+                        Container(
+                          width: 24,
+                          height: 1,
+                          color: context.cardBorder,
+                        ),
+                        _buildIconBtnCompact(
+                          icon: Icons.remove_rounded,
+                          onTap: _zoomOut,
+                        ),
+                        Container(
+                          width: 24,
+                          height: 1,
+                          color: context.cardBorder,
+                        ),
+                        _buildIconBtnCompact(
+                          icon: _autoRotate
+                              ? Icons.pause_circle_rounded
+                              : Icons.rotate_right_rounded,
+                          onTap: () {
+                            HapticFeedback.selectionClick();
+                            setState(() => _autoRotate = !_autoRotate);
+                            _webViewController?.runJavaScript('''
+                              (function() {
+                                var mv = document.querySelector('model-viewer');
+                                if (mv) {
+                                  mv.autoRotate = $_autoRotate;
+                                }
+                              })();
+                            ''');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // 4. Bottom Pain Selection Dock / Deep-Dive Card
                 if (_selectedPoint != null)
                   Positioned(
                     left: 16,
