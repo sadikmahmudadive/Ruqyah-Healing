@@ -429,7 +429,7 @@ class _TherapistMarketplaceScreenState
         decoration: BoxDecoration(
           color: isSelected
               ? (context.isDarkMode
-                  ? const Color(0xFF0B4632)
+                  ? const Color(0xFF182E25)
                   : const Color(0xFFE8F5EE))
               : Colors.transparent,
           borderRadius: BorderRadius.circular(9),
@@ -438,18 +438,6 @@ class _TherapistMarketplaceScreenState
           mode,
           style: TextStyle(
             fontFamily: 'Inter',
-            fontSize: 12.5,
-            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            color: isSelected
-                ? (context.isDarkMode
-                    ? const Color(0xFF81C784)
-                    : const Color(0xFF0B4632))
-                : context.textSecondary,
-          ),
-        ),
-      ),
-    );
-  }
             fontSize: 12.5,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
             color: isSelected
