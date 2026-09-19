@@ -25,6 +25,8 @@ class Therapist {
   final bool isVerified;
   final String avatarUrl;
   final String category;
+  final double latitude;
+  final double longitude;
 
   const Therapist({
     required this.id,
@@ -40,6 +42,8 @@ class Therapist {
     this.isVerified = true,
     required this.avatarUrl,
     required this.category,
+    this.latitude = 23.8103, // Default to Dhaka
+    this.longitude = 90.4125,
   });
 }
 

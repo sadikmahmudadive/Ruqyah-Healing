@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
@@ -43,6 +44,8 @@ class _TherapistMarketplaceScreenState
       isVerified: true,
       avatarUrl: 'assets/logo/logo_app.png',
       category: 'Ruqyah',
+      latitude: 23.8103,
+      longitude: 90.4125,
     ),
     Therapist(
       id: 'ther_2',
@@ -58,6 +61,8 @@ class _TherapistMarketplaceScreenState
       isVerified: true,
       avatarUrl: 'assets/logo/logo_app.png',
       category: 'Ruqyah',
+      latitude: 23.7937,
+      longitude: 90.4066,
     ),
     Therapist(
       id: 'ther_3',
@@ -73,6 +78,8 @@ class _TherapistMarketplaceScreenState
       isVerified: true,
       avatarUrl: 'assets/logo/logo_app.png',
       category: 'Ruqyah',
+      latitude: 23.8223,
+      longitude: 90.4276,
     ),
     Therapist(
       id: 'ther_4',
@@ -88,6 +95,8 @@ class _TherapistMarketplaceScreenState
       isVerified: true,
       avatarUrl: 'assets/logo/logo_app.png',
       category: 'Hijama',
+      latitude: 23.8153,
+      longitude: 90.4225,
     ),
     Therapist(
       id: 'ther_5',
@@ -103,12 +112,17 @@ class _TherapistMarketplaceScreenState
       isVerified: true,
       avatarUrl: 'assets/logo/logo_app.png',
       category: 'Acupuncture',
+      latitude: 23.8053,
+      longitude: 90.4025,
     ),
   ];
+
+  late GoogleMapController _mapController;
 
   @override
   void dispose() {
     _searchController.dispose();
+    _mapController.dispose();
     super.dispose();
   }
 
@@ -158,6 +172,8 @@ class _TherapistMarketplaceScreenState
                           ),
                         ),
                       )
+                    else if (_viewMode == 'Map')
+                      _buildMapView(filteredTherapists)
                     else
                       ListView.separated(
                         shrinkWrap: true,
@@ -177,6 +193,47 @@ class _TherapistMarketplaceScreenState
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMapView(List<Therapist> therapists) {
+    return Container(
+      height: 450,
+      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: context.cardBg,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.cardBorder, width: 1.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: GoogleMap(
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(23.8103, 90.4125), // Dhaka center
+            zoom: 12.0,
+          ),
+          markers: therapists.map((t) {
+            return Marker(
+              markerId: MarkerId(t.id),
+              position: LatLng(t.latitude, t.longitude),
+              infoWindow: InfoWindow(
+                title: t.name,
+                snippet: '${t.title} • ৳${t.price}',
+              ),
+            );
+          }).toSet(),
+          onMapCreated: (controller) {
+            _mapController = controller;
+          },
         ),
       ),
     );
