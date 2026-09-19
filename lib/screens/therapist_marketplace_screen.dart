@@ -133,38 +133,6 @@ class _TherapistMarketplaceScreenState
       ),
       child: Scaffold(
         backgroundColor: context.pageBg,
-        appBar: AppBar(
-          backgroundColor: context.isDarkMode ? context.pageBg : const Color(0xFF082F21),
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                padding: EdgeInsets.zero,
-              ),
-            ),
-          ),
-          centerTitle: true,
-          title: const Text(
-            'Therapist Marketplace',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
-        ),
         body: Column(
           children: [
             _buildTopHeader(),
@@ -216,14 +184,78 @@ class _TherapistMarketplaceScreenState
 
   Widget _buildTopHeader() {
     return Container(
-      padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + 16,
+        bottom: 24,
+        left: 20,
+        right: 20,
+      ),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Therapist Marketplace',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on_rounded,
+                          color: Color(0xFFD49E35),
+                          size: 14,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Dhaka, Bangladesh',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 13,
+                            color: Colors.white.withValues(alpha: 0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.notifications_none_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                  },
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
           Container(
             height: 52,
             padding: const EdgeInsets.symmetric(horizontal: 16),
