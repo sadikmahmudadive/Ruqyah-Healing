@@ -257,6 +257,24 @@ class _TherapistMarketplaceScreenState
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                width: 44,
+                height: 44,
+                margin: const EdgeInsets.only(right: 14),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                  padding: EdgeInsets.zero,
+                ),
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,24 +308,6 @@ class _TherapistMarketplaceScreenState
                       ],
                     ),
                   ],
-                ),
-              ),
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.notifications_none_rounded,
-                    color: Colors.white,
-                    size: 22,
-                  ),
-                  onPressed: () {
-                    HapticFeedback.selectionClick();
-                  },
                 ),
               ),
             ],
