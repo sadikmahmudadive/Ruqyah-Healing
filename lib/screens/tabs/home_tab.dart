@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../data/recitation_data.dart';
 import '../../localization/app_localizations.dart';
 import '../../models/appointment_model.dart';
+import '../../models/recitation.dart';
 import '../../services/firebase_service.dart';
+import '../../services/health_index_service.dart';
 import '../../services/prayer_times_service.dart';
+import '../../services/recitation_playback.dart';
+import '../../services/recitation_player_controller.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/ai_icon.dart';
 import '../../widgets/animations/animations.dart';
+import '../../widgets/health_index_builder.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/modern_card.dart';
 import '../../widgets/prayer_time_icon.dart';
@@ -31,7 +37,7 @@ import '../therapist_marketplace_screen.dart';
 ///
 /// Design changes vs. the previous version:
 ///   - Every section fades + slides in on first render (staggered).
-///   - Health Index number counts up from 0 → 78.
+///   - Health Index is computed from the user's profile and counts up from 0.
 ///   - Health Index gets an animated gradient fill bar below the number.
 ///   - The "Next Appointment" card uses the emerald gradient instead of
 ///     a flat primary color, with a sweeping shine overlay.
@@ -48,8 +54,26 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  bool _isPlaying = false;
-  double _audioProgress = 0.22; // 01:15 out of 05:42
+  // Held in state so rebuilds don't re-hit the network; replaced on refresh.
+  late Future<PrayerTimesModel> _prayerTimesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _prayerTimesFuture = PrayerTimesService.fetchPrayerTimes();
+  }
+
+  /// Pull-to-refresh: re-fetch prayer times. Health index and appointments
+  /// are live Firestore streams, so they are already current.
+  Future<void> _onRefresh() async {
+    final future = PrayerTimesService.fetchPrayerTimes();
+    setState(() => _prayerTimesFuture = future);
+    // Keep the spinner up long enough to read as a deliberate refresh.
+    await Future.wait<void>([
+      future.then<void>((_) {}).catchError((_) {}),
+      Future<void>.delayed(const Duration(milliseconds: 900)),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +104,7 @@ class _HomeTabState extends State<HomeTab> {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             slivers: [
+              AppRefreshSliver(onRefresh: _onRefresh),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20.0,
@@ -257,6 +282,14 @@ class _HomeTabState extends State<HomeTab> {
 
   // ─────────────────── Health Index Card ────────────────────────────
   Widget _buildHealthIndexCard() {
+    return HealthIndexBuilder(
+      builder: (context, health) => _buildHealthIndexCardBody(health),
+    );
+  }
+
+  Widget _buildHealthIndexCardBody(HealthIndexResult health) {
+    final score = health.score;
+    final toneColor = health.tone.color;
     return ModernCard(
       onTap: () => Navigator.of(context).push(
         AppPageRoute.sharedAxis(const HealthProfileDetailScreen()),
@@ -288,24 +321,39 @@ class _HomeTabState extends State<HomeTab> {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              AnimatedCounter(
-                value: 78,
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800,
-                  color: context.textPrimary,
-                  height: 1.0,
-                ),
-              ),
+              score == null
+                  ? Text(
+                      '--',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: context.textSecondary,
+                        height: 1.0,
+                      ),
+                    )
+                  : AnimatedCounter(
+                      value: score,
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: context.textPrimary,
+                        height: 1.0,
+                      ),
+                    ),
               const SizedBox(width: 8),
-              Text(
-                context.tr('good'),
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.success,
+              Flexible(
+                child: Text(
+                  score == null ? 'No data' : health.label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: score == null ? context.textSecondary : toneColor,
+                  ),
                 ),
               ),
             ],
@@ -313,13 +361,15 @@ class _HomeTabState extends State<HomeTab> {
           const SizedBox(height: 12),
           // Animated bar fill
           AnimatedBarFill(
-            value: 0.78,
+            value: (score ?? 0) / 100,
             height: 5,
-            color: AppColors.success,
+            color: toneColor,
           ),
           const SizedBox(height: 10),
           Text(
-            'Overall physical & spiritual wellness',
+            score == null
+                ? 'Complete a daily check-in to see your index'
+                : 'Overall physical & spiritual wellness',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 11,
@@ -460,10 +510,68 @@ class _HomeTabState extends State<HomeTab> {
 
   // ───────────────────── Audio Player Card ──────────────────────────
   Widget _buildAudioPlayerCard() {
+    // Shares one controller with the full player, so playback started here
+    // carries over when the card is opened (and back).
+    return ListenableBuilder(
+      listenable: RecitationPlayback.instance,
+      builder: (context, _) {
+        final controller = RecitationPlayback.instance.controller;
+        if (controller == null) {
+          return _buildAudioPlayerCardBody(
+            kRecitationTracks[RecitationPlayback.defaultTrackId]!,
+            null,
+          );
+        }
+        return ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) =>
+              _buildAudioPlayerCardBody(controller.content, controller),
+        );
+      },
+    );
+  }
+
+  void _onMiniPlayerPlayTap(RecitationPlayerController? controller) {
+    if (controller == null) {
+      // Nothing loaded yet: load the default recitation and start it.
+      RecitationPlayback.instance.open(RecitationPlayback.defaultTrackId);
+    } else {
+      controller.togglePlayPause();
+    }
+  }
+
+  String _clock(Duration d) {
+    final mins = d.inMinutes.toString().padLeft(2, '0');
+    final secs = (d.inSeconds % 60).toString().padLeft(2, '0');
+    return '$mins:$secs';
+  }
+
+  Widget _buildAudioPlayerCardBody(
+    RecitationContent content,
+    RecitationPlayerController? controller,
+  ) {
+    final playing = controller?.playing ?? false;
+    final loading = controller?.loading ?? false;
+    final failed = controller?.error != null;
+
+    // "Surah Al-Baqarah · Ayah 2:3" once loaded, plain title before that.
+    final subtitle = controller == null
+        ? content.title
+        : '${content.title} · Ayah ${controller.currentAyah.ref}';
+
     return ModernCard(
       padding: const EdgeInsets.all(18),
       onTap: () => Navigator.of(context).push(
-        AppPageRoute.sharedAxis(const FullAudioPlayerScreen()),
+        AppPageRoute.sharedAxis(
+          FullAudioPlayerScreen(
+            title: content.title,
+            verses: '${content.ayahs.length} ayahs',
+            trackId: content.id,
+            // Opening the card must not restart or change what is playing.
+            autoplay: false,
+            continueInBackground: true,
+          ),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -474,9 +582,9 @@ class _HomeTabState extends State<HomeTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'سورة البقرة',
-                      style: TextStyle(
+                    Text(
+                      content.arabicTitle,
+                      style: const TextStyle(
                         fontFamily: 'Cinzel',
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
@@ -485,7 +593,9 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Surah Al-Baqarah (Ayet 1–5)',
+                      subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 14,
@@ -495,11 +605,15 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'Recited by Sheikh Al-Afasy',
+                      failed
+                          ? "Couldn't load audio. Tap play to retry."
+                          : 'Recited by Sheikh Al-Afasy',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: context.textSecondary,
+                        color: failed ? AppColors.danger : context.textSecondary,
                       ),
                     ),
                   ],
@@ -509,14 +623,14 @@ class _HomeTabState extends State<HomeTab> {
               // Play button with swap animation + ring glow when playing
               PressScale(
                 hapticType: HapticFeedbackType.medium,
-                onTap: () => setState(() => _isPlaying = !_isPlaying),
+                onTap: () => _onMiniPlayerPlayTap(controller),
                 child: SizedBox(
                   width: 56,
                   height: 56,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      if (_isPlaying)
+                      if (playing)
                         const PulseRing(
                           color: AppColors.primaryGreen,
                           maxRadius: 28,
@@ -533,17 +647,28 @@ class _HomeTabState extends State<HomeTab> {
                             strength: 0.3,
                           ),
                         ),
-                        child: SwapReveal(
-                          duration: AppMotion.fast,
-                          child: Icon(
-                            _isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
-                            key: ValueKey<bool>(_isPlaying),
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                        ),
+                        child: loading
+                            ? const Center(
+                                child: SizedBox(
+                                  width: 22,
+                                  height: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.4,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : SwapReveal(
+                                duration: AppMotion.fast,
+                                child: Icon(
+                                  playing
+                                      ? Icons.pause_rounded
+                                      : Icons.play_arrow_rounded,
+                                  key: ValueKey<bool>(playing),
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                              ),
                       ),
                     ],
                   ),
@@ -552,39 +677,70 @@ class _HomeTabState extends State<HomeTab> {
             ],
           ),
 
-          const SizedBox(height: 16),
-
-          AnimatedBarFill(
-            value: _audioProgress,
-            height: 4,
-            color: AppColors.primaryGreen,
-          ),
-
           const SizedBox(height: 8),
 
-          Row(
-            children: [
-              Text(
-                '01:15',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11,
-                  color: context.textSecondary,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                '05:42',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11,
-                  color: context.textSecondary,
-                ),
-              ),
-            ],
-          ),
+          // Progress + times follow the playhead; tap the bar to jump to
+          // that part of the recitation (by ayah).
+          if (controller == null)
+            _buildMiniProgress(content, null)
+          else
+            ValueListenableBuilder<Duration>(
+              valueListenable: controller.position,
+              builder: (context, _, _) => _buildMiniProgress(content, controller),
+            ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMiniProgress(
+    RecitationContent content,
+    RecitationPlayerController? controller,
+  ) {
+    final total = controller?.estimatedTotal ?? Duration.zero;
+    final timeStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 11,
+      color: context.textSecondary,
+    );
+
+    return Column(
+      children: [
+        LayoutBuilder(
+          builder: (context, constraints) => GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTapDown: controller == null
+                ? null
+                : (d) {
+                    final n = content.ayahs.length;
+                    final i = (d.localPosition.dx / constraints.maxWidth * n)
+                        .floor()
+                        .clamp(0, n - 1);
+                    controller.playAyah(i);
+                  },
+            // Taller hit area than the 4px bar so it is easy to hit.
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: AnimatedBarFill(
+                value: controller?.overallProgress ?? 0,
+                height: 4,
+                color: AppColors.primaryGreen,
+                duration: const Duration(milliseconds: 250),
+              ),
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            Text(_clock(controller?.elapsed ?? Duration.zero), style: timeStyle),
+            const Spacer(),
+            Text(
+              total == Duration.zero ? '--:--' : _clock(total),
+              style: timeStyle,
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -762,7 +918,7 @@ class _HomeTabState extends State<HomeTab> {
           ),
           const SizedBox(height: 12),
           FutureBuilder<PrayerTimesModel>(
-            future: PrayerTimesService.fetchPrayerTimes(),
+            future: _prayerTimesFuture,
             builder: (context, snapshot) {
               final times = snapshot.data ?? PrayerTimesModel.fallback();
               final activePrayer =

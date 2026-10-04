@@ -5,6 +5,7 @@ import 'localization/app_localizations.dart';
 import 'screens/splash_screen.dart';
 import 'services/firebase_service.dart';
 import 'theme/app_theme.dart';
+import 'widgets/app_toast.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,9 @@ class RuqyahHealingApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
+              // Toasts live above the Navigator so they survive navigation.
+              builder: (context, child) =>
+                  AppToastHost(child: child ?? const SizedBox.shrink()),
               home: const SplashScreen(),
             );
           },

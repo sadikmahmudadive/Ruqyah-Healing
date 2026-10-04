@@ -223,6 +223,65 @@ class FirebaseService {
     });
   }
 
+  /// Live view of the signed-in user's profile document.
+  static Stream<UserModel?> getUserProfileStream(String userId) {
+    return _firestore.collection('users').doc(userId).snapshots().map((doc) {
+      if (!doc.exists || doc.data() == null) return null;
+      return UserModel.fromMap(doc.data()!, doc.id);
+    });
+  }
+
+  static const int _maxStoredCheckIns = 60;
+
+  /// Appends a daily check-in to the user's health profile and keeps the
+  /// legacy `stress_level_index` in sync.
+  static Future<void> addHealthCheckIn(
+    String userId,
+    HealthCheckIn checkIn,
+  ) {
+    return _updateHealthProfile(userId, (profile) {
+      final all = [...profile.checkIns, checkIn];
+      final capped = all.length > _maxStoredCheckIns
+          ? all.sublist(all.length - _maxStoredCheckIns)
+          : all;
+      return profile.copyWith(
+        checkIns: capped,
+        stressLevelIndex: checkIn.stress < 1 ? 1 : checkIn.stress,
+      );
+    });
+  }
+
+  static Future<void> logRuqyahSession(String userId, RuqyahAudioLog log) {
+    return _updateHealthProfile(
+      userId,
+      (profile) => profile.copyWith(
+        ruqyahAudioLogs: [...profile.ruqyahAudioLogs, log],
+      ),
+    );
+  }
+
+  /// Read-modify-write of `health_profile` inside a transaction so
+  /// concurrent writers (check-in vs. audio log) don't drop each other's data.
+  static Future<void> _updateHealthProfile(
+    String userId,
+    HealthProfile Function(HealthProfile current) change,
+  ) {
+    final ref = _firestore.collection('users').doc(userId);
+    return _firestore.runTransaction((tx) async {
+      final doc = await tx.get(ref);
+      final data = doc.data();
+      final current = data?['health_profile'] != null
+          ? HealthProfile.fromMap(
+              Map<String, dynamic>.from(data!['health_profile']),
+            )
+          : HealthProfile.empty();
+      tx.set(ref, {
+        'health_profile': change(current).toMap(),
+        'updated_at': DateTime.now().toIso8601String(),
+      }, SetOptions(merge: true));
+    });
+  }
+
   // 2. Therapists Collection (/therapists/{therapist_id})
   static Stream<List<TherapistModel>> getTherapistsStream({
     String? specialty,

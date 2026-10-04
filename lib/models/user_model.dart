@@ -71,6 +71,8 @@ class HealthProfile {
   final List<String> hijamaPointingHistory;
   final List<String> acupuncturePointLog;
   final List<RuqyahAudioLog> ruqyahAudioLogs;
+  final List<String> medications;
+  final List<HealthCheckIn> checkIns; // oldest first, capped by the writer
 
   const HealthProfile({
     required this.medicalHistory,
@@ -80,7 +82,27 @@ class HealthProfile {
     required this.hijamaPointingHistory,
     required this.acupuncturePointLog,
     required this.ruqyahAudioLogs,
+    this.medications = const [],
+    this.checkIns = const [],
   });
+
+  HealthProfile copyWith({
+    int? stressLevelIndex,
+    List<RuqyahAudioLog>? ruqyahAudioLogs,
+    List<HealthCheckIn>? checkIns,
+  }) {
+    return HealthProfile(
+      medicalHistory: medicalHistory,
+      allergies: allergies,
+      symptoms: symptoms,
+      stressLevelIndex: stressLevelIndex ?? this.stressLevelIndex,
+      hijamaPointingHistory: hijamaPointingHistory,
+      acupuncturePointLog: acupuncturePointLog,
+      ruqyahAudioLogs: ruqyahAudioLogs ?? this.ruqyahAudioLogs,
+      medications: medications,
+      checkIns: checkIns ?? this.checkIns,
+    );
+  }
 
   factory HealthProfile.empty() {
     return const HealthProfile(
@@ -103,6 +125,8 @@ class HealthProfile {
       'hijama_pointing_history': hijamaPointingHistory,
       'acupuncture_point_log': acupuncturePointLog,
       'ruqyah_audio_logs': ruqyahAudioLogs.map((e) => e.toMap()).toList(),
+      'medications': medications,
+      'check_ins': checkIns.map((e) => e.toMap()).toList(),
     };
   }
 
@@ -119,6 +143,54 @@ class HealthProfile {
       ruqyahAudioLogs: (map['ruqyah_audio_logs'] as List? ?? [])
           .map((e) => RuqyahAudioLog.fromMap(Map<String, dynamic>.from(e)))
           .toList(),
+      medications: List<String>.from(map['medications'] ?? []),
+      checkIns: (map['check_ins'] as List? ?? [])
+          .map((e) => HealthCheckIn.fromMap(Map<String, dynamic>.from(e)))
+          .toList(),
+    );
+  }
+}
+
+/// One daily self-report. All levels are on a 0-10 scale: pain and stress
+/// (10 = worst) and sleep quality (10 = best).
+class HealthCheckIn {
+  final String date; // ISO-8601
+  final int pain;
+  final int stress;
+  final int sleep;
+  final String notes;
+  final List<String> redFlags;
+
+  const HealthCheckIn({
+    required this.date,
+    required this.pain,
+    required this.stress,
+    required this.sleep,
+    this.notes = '',
+    this.redFlags = const [],
+  });
+
+  DateTime? get timestamp => DateTime.tryParse(date);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'date': date,
+      'pain': pain,
+      'stress': stress,
+      'sleep': sleep,
+      'notes': notes,
+      'red_flags': redFlags,
+    };
+  }
+
+  factory HealthCheckIn.fromMap(Map<String, dynamic> map) {
+    return HealthCheckIn(
+      date: map['date'] ?? '',
+      pain: (map['pain'] ?? 0).toInt(),
+      stress: (map['stress'] ?? 0).toInt(),
+      sleep: (map['sleep'] ?? 0).toInt(),
+      notes: map['notes'] ?? '',
+      redFlags: List<String>.from(map['red_flags'] ?? []),
     );
   }
 }

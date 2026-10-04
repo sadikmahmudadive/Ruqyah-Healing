@@ -391,6 +391,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 pageBuilder: (_, _, _) => FullAudioPlayerScreen(
                   title: track.title,
                   verses: track.subtitle,
+                  trackId: track.id,
                 ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {

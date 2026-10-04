@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../localization/app_localizations.dart';
 import '../../models/user_model.dart';
 import '../../services/firebase_service.dart';
+import '../../services/health_index_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/global_bottom_navbar.dart';
 import '../health_profile_detail_screen.dart';
@@ -136,9 +137,12 @@ class _ProfileTabState extends State<ProfileTab> {
                       userModel?.healthProfile.ruqyahAudioLogs.length
                           .toString() ??
                       '0';
-                  final healthScore = userModel?.healthProfile != null
-                      ? '${100 - (userModel!.healthProfile.stressLevelIndex * 4)}'
-                      : '80';
+                  final healthScore = userModel == null
+                      ? '--'
+                      : (HealthIndexService.compute(
+                              userModel.healthProfile,
+                            ).score?.toString() ??
+                            '--');
                   final activeDays = userModel?.createdAt != null
                       ? '${DateTime.now().difference(userModel!.createdAt).inDays + 1}'
                       : '1';

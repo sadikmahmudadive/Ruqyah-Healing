@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../services/health_index_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/acupuncture_icon.dart';
+import '../widgets/health_index_builder.dart';
 import '../widgets/hijama_cupping_icon.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 import 'settings_screen.dart';
@@ -131,19 +133,24 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
+        body: HealthIndexBuilder(
+          withAppointments: true,
+          builder: (context, health) => SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 1. Top Health Index Overview Card
-              _buildHealthIndexOverviewCard(),
+              _buildHealthIndexOverviewCard(health),
+
+              const SizedBox(height: 20),
+              _buildInsightsCard(health),
 
               const SizedBox(height: 20),
 
               // 2. Medical & Spiritual Wellness Logs Card
-              _buildWellnessLogsCard(),
+              _buildWellnessLogsCard(health),
 
               const SizedBox(height: 24),
 
@@ -168,12 +175,102 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             ],
           ),
         ),
+        ),
+      ),
+    );
+  }
+
+  static const _months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+
+  String _lastUpdatedText(DateTime? t) {
+    if (t == null) return 'Not updated yet';
+    final now = DateTime.now();
+    final days = DateTime(now.year, now.month, now.day)
+        .difference(DateTime(t.year, t.month, t.day))
+        .inDays;
+    if (days <= 0) return 'Last updated: Today';
+    if (days == 1) return 'Last updated: Yesterday';
+    return 'Last updated: ${t.day} ${_months[t.month - 1]}';
+  }
+
+  String _plural(int n, String one, String many) =>
+      n == 1 ? '1 $one' : '$n $many';
+
+  // Insights derived from the user's data
+  Widget _buildInsightsCard(HealthIndexResult health) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: context.cardBg,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: context.cardBorder, width: 1.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Insights for you',
+            style: TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
+              color: context.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 10),
+          for (final tip in health.insights.isEmpty
+              ? const ['You are on track. Keep up your daily check-ins and sessions.']
+              : health.insights)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 2),
+                    child: Icon(
+                      Icons.lightbulb_outline_rounded,
+                      size: 16,
+                      color: Color(0xFFD49E35),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      tip,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12.5,
+                        height: 1.35,
+                        color: context.textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          Text(
+            'Wellness estimate based on your check-ins and profile. '
+            'Not a medical diagnosis.',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 11,
+              fontStyle: FontStyle.italic,
+              color: context.textSecondary,
+            ),
+          ),
+        ],
       ),
     );
   }
 
   // Top Health Index Overview Card
-  Widget _buildHealthIndexOverviewCard() {
+  Widget _buildHealthIndexOverviewCard(HealthIndexResult health) {
+    final score = health.score;
+    final toneColor = health.tone.color;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -213,43 +310,54 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          '78',
+                          score?.toString() ?? '--',
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 34,
                             fontWeight: FontWeight.w800,
-                            color: context.textPrimary,
+                            color: score == null
+                                ? context.textSecondary
+                                : context.textPrimary,
                             height: 1.0,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEBF7F0),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text(
-                            'Good',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF1E6B45),
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: toneColor.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              health.label,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: toneColor,
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
-                    // Trend Sparkline Curve Representation
+                    // Trend sparkline of recent index values
                     SizedBox(
                       height: 24,
                       width: 100,
-                      child: CustomPaint(painter: _TrendLinePainter()),
+                      child: CustomPaint(
+                        painter: _TrendLinePainter(
+                          data: health.trend,
+                          color: toneColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -261,26 +369,11 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               Expanded(
                 child: Column(
                   children: [
-                    _buildMetricRow(
-                      'Spiritual',
-                      'Good',
-                      0.85,
-                      const Color(0xFF0B4632),
-                    ),
+                    _buildMetricRow('Spiritual', health.spiritual),
                     const SizedBox(height: 10),
-                    _buildMetricRow(
-                      'Sleep Quality',
-                      'Good',
-                      0.78,
-                      const Color(0xFF0B4632),
-                    ),
+                    _buildMetricRow('Sleep Quality', health.sleep),
                     const SizedBox(height: 10),
-                    _buildMetricRow(
-                      'Stress Level',
-                      'Moderate',
-                      0.55,
-                      const Color(0xFFE67E22),
-                    ),
+                    _buildMetricRow('Stress Level', health.stress),
                   ],
                 ),
               ),
@@ -295,7 +388,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           Row(
             children: [
               Text(
-                'Last updated: Today',
+                _lastUpdatedText(health.lastUpdated),
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
@@ -334,12 +427,10 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
     );
   }
 
-  Widget _buildMetricRow(
-    String label,
-    String value,
-    double progress,
-    Color color,
-  ) {
+  Widget _buildMetricRow(String label, HealthComponent? component) {
+    final value = component?.label ?? 'No data';
+    final progress = component?.fraction ?? 0.0;
+    final color = component?.tone.color ?? const Color(0xFF90A4AE);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -380,7 +471,14 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
   }
 
   // Medical & Spiritual Wellness Logs Card
-  Widget _buildWellnessLogsCard() {
+  Widget _buildWellnessLogsCard(HealthIndexResult health) {
+    String countOrNone(int n, String one, String many) =>
+        n == 0 ? 'None' : _plural(n, one, many);
+    final concerns = health.symptoms.isEmpty
+        ? 'None'
+        : health.symptoms.length <= 2
+        ? health.symptoms.join(', ')
+        : '${health.symptoms.take(2).join(', ')} +${health.symptoms.length - 2}';
     return Container(
       decoration: BoxDecoration(
         color: context.cardBg,
@@ -401,7 +499,11 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: const Color(0xFFEBF7F0),
             iconColor: const Color(0xFF0B4632),
             title: 'Medical History',
-            badgeText: '2 records',
+            badgeText: countOrNone(
+              health.medicalHistoryCount,
+              'record',
+              'records',
+            ),
             badgeBg: const Color(0xFFEBF7F0),
             badgeColor: const Color(0xFF0B4632),
           ),
@@ -411,7 +513,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: const Color(0xFFFFEBEB),
             iconColor: const Color(0xFFE74C3C),
             title: 'Allergies',
-            badgeText: '1 allergy',
+            badgeText: countOrNone(health.allergyCount, 'allergy', 'allergies'),
             badgeBg: const Color(0xFFFFEBEB),
             badgeColor: const Color(0xFFE74C3C),
           ),
@@ -421,7 +523,9 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: const Color(0xFFFFF3E8),
             iconColor: const Color(0xFFE67E22),
             title: 'Medications',
-            badgeText: '2 active',
+            badgeText: health.medicationCount == 0
+                ? 'None'
+                : '${health.medicationCount} active',
             badgeBg: const Color(0xFFFFF3E8),
             badgeColor: const Color(0xFFE67E22),
           ),
@@ -431,7 +535,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: const Color(0xFFEBF7F0),
             iconColor: const Color(0xFF0B4632),
             title: 'Current Concerns',
-            badgeText: 'Anxiety, Sleep',
+            badgeText: concerns,
             badgeBg: Colors.transparent,
             badgeColor: context.textSecondary,
           ),
@@ -441,7 +545,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: const Color(0xFFEBF7F0),
             iconColor: const Color(0xFF0B4632),
             title: 'Ruqyah Listening Log',
-            badgeText: '12 sessions',
+            badgeText: countOrNone(health.ruqyahSessions, 'session', 'sessions'),
             badgeBg: const Color(0xFFEBF7F0),
             badgeColor: const Color(0xFF0B4632),
           ),
@@ -454,7 +558,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: const Color(0xFFFFF3E8),
             iconColor: const Color(0xFFE67E22),
             title: 'Hijama Session History',
-            badgeText: '4 sessions',
+            badgeText: countOrNone(health.hijamaSessions, 'session', 'sessions'),
             badgeBg: const Color(0xFFFFF3E8),
             badgeColor: const Color(0xFFE67E22),
           ),
@@ -467,19 +571,13 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: const Color(0xFFE6F7FF),
             iconColor: const Color(0xFF2980B9),
             title: 'Acupuncture Point Log',
-            badgeText: '6 sessions',
+            badgeText: countOrNone(
+              health.acupunctureSessions,
+              'session',
+              'sessions',
+            ),
             badgeBg: const Color(0xFFE6F7FF),
             badgeColor: const Color(0xFF2980B9),
-          ),
-          _buildDivider(),
-          _buildLogTile(
-            icon: Icons.calendar_today_outlined,
-            iconBg: const Color(0xFFEBF7F0),
-            iconColor: const Color(0xFF0B4632),
-            title: 'Files & Documents',
-            badgeText: '3 files',
-            badgeBg: const Color(0xFFEBF7F0),
-            badgeColor: const Color(0xFF0B4632),
           ),
         ],
       ),
@@ -671,25 +769,37 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
 
 // Sparkline Trend Curve Painter
 class _TrendLinePainter extends CustomPainter {
+  /// Index values (0-100), oldest first.
+  final List<int> data;
+  final Color color;
+
+  _TrendLinePainter({required this.data, required this.color});
+
   @override
   void paint(Canvas canvas, Size size) {
+    if (data.isEmpty) return;
+
     final paint = Paint()
-      ..color = const Color(0xFF0B4632)
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.2
       ..strokeCap = StrokeCap.round;
 
-    final path = Path()
-      ..moveTo(0, size.height * 0.70)
-      ..lineTo(size.width * 0.25, size.height * 0.55)
-      ..lineTo(size.width * 0.45, size.height * 0.65)
-      ..lineTo(size.width * 0.65, size.height * 0.35)
-      ..lineTo(size.width * 0.85, size.height * 0.40)
-      ..lineTo(size.width, size.height * 0.15);
+    double yFor(int v) =>
+        size.height - (v.clamp(0, 100) / 100) * (size.height - 4) - 2;
 
+    // A single point is drawn as a flat line.
+    final points = data.length == 1 ? [data.first, data.first] : data;
+    final stepX = size.width / (points.length - 1);
+
+    final path = Path()..moveTo(0, yFor(points.first));
+    for (var i = 1; i < points.length; i++) {
+      path.lineTo(i * stepX, yFor(points[i]));
+    }
     canvas.drawPath(path, paint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _TrendLinePainter old) =>
+      old.color != color || old.data.join(',') != data.join(',');
 }

@@ -44,6 +44,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
         pageBuilder: (_, _, _) => const FullAudioPlayerScreen(
           title: 'EMERGENCY RUQYAH',
           verses: 'Calming Spiritual Protection Playlist',
+          trackId: 'emergency',
         ),
       ),
     );

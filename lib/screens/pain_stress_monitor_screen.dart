@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../models/user_model.dart';
+import '../services/firebase_service.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
 import 'secure_messages_screen.dart';
@@ -14,26 +16,31 @@ class PainStressMonitorScreen extends StatefulWidget {
 }
 
 class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
-  double _painLevel = 6.0;
-  double _stressLevel = 4.0;
+  double _painLevel = 0.0;
+  double _stressLevel = 5.0;
+  double _sleepQuality = 5.0;
   final String _trendFilter = 'Pain';
-  final TextEditingController _notesController = TextEditingController(
-    text: 'Tight shoulders, dull headache, fatigue in the evening.',
-  );
+  final TextEditingController _notesController = TextEditingController();
 
   bool _flagSeverePain = false;
   bool _flagNumbness = false;
   bool _flagFever = false;
 
-  final List<double> _weeklyPainTrend = const [
-    5.0,
-    4.0,
-    6.0,
-    5.0,
-    3.0,
-    6.0,
-    5.0,
+  bool _saving = false;
+
+  /// Saved check-ins, oldest first. Drives the trend chart.
+  List<HealthCheckIn> _history = const [];
+
+  static const _months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
 
   @override
   void dispose() {
@@ -41,15 +48,90 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
     super.dispose();
   }
 
-  void _handleSaveCheckIn() {
+  Future<void> _loadHistory() async {
+    final user = FirebaseService.currentUser;
+    if (user == null) return;
+    try {
+      final profile = (await FirebaseService.getUserProfile(user.uid))
+          ?.healthProfile;
+      if (profile == null || !mounted) return;
+      final history =
+          profile.checkIns.where((c) => c.timestamp != null).toList()
+            ..sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
+      setState(() {
+        _history = history;
+        // Start from the most recent levels instead of arbitrary defaults.
+        if (history.isNotEmpty) {
+          _painLevel = history.last.pain.toDouble();
+          _stressLevel = history.last.stress.toDouble();
+          _sleepQuality = history.last.sleep.toDouble();
+        }
+      });
+    } catch (_) {
+      // Offline: the monitor still works, the trend just stays empty.
+    }
+  }
+
+  Future<void> _handleSaveCheckIn() async {
+    if (_saving) return;
     HapticFeedback.heavyImpact();
-    AppToast.show(
-      context,
-      title: 'Check-in Saved',
-      message:
-          'Daily Pain Level (${_painLevel.toInt()}/10) & Stress (${_stressLevel.toInt()}/10) recorded.',
-      type: ToastType.success,
+
+    final user = FirebaseService.currentUser;
+    if (user == null) {
+      AppToast.show(
+        context,
+        title: 'Sign in required',
+        message: 'Sign in to save check-ins and track your Health Index.',
+        type: ToastType.warning,
+      );
+      return;
+    }
+
+    final checkIn = HealthCheckIn(
+      date: DateTime.now().toIso8601String(),
+      pain: _painLevel.toInt(),
+      stress: _stressLevel.toInt(),
+      sleep: _sleepQuality.toInt(),
+      notes: _notesController.text.trim(),
+      redFlags: [
+        if (_flagSeverePain) 'Severe or worsening pain',
+        if (_flagNumbness) 'Numbness or muscle weakness',
+        if (_flagFever) 'Fever or unexplained weight loss',
+      ],
     );
+
+    setState(() => _saving = true);
+    try {
+      await FirebaseService.addHealthCheckIn(user.uid, checkIn);
+      if (!mounted) return;
+      setState(() => _history = [..._history, checkIn]);
+      AppToast.show(
+        context,
+        title: 'Check-in Saved',
+        message:
+            'Pain ${checkIn.pain}/10, stress ${checkIn.stress}/10 and sleep '
+            '${checkIn.sleep}/10 recorded. Your Health Index is updated.',
+        type: ToastType.success,
+      );
+    } catch (_) {
+      if (!mounted) return;
+      AppToast.show(
+        context,
+        title: 'Could not save',
+        message: 'Check your connection and try again.',
+        type: ToastType.error,
+      );
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
+
+  List<HealthCheckIn> get _recent =>
+      _history.length > 7 ? _history.sublist(_history.length - 7) : _history;
+
+  String _axisLabel(HealthCheckIn c) {
+    final t = c.timestamp!;
+    return '${t.day} ${_months[t.month - 1]}';
   }
 
   @override
@@ -596,6 +678,76 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
               },
             ),
           ),
+
+          const SizedBox(height: 12),
+
+          // Sleep Quality Slider
+          Row(
+            children: [
+              Container(
+                width: 10,
+                height: 10,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF2980B9),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Sleep Quality',
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF15221D),
+                ),
+              ),
+              const Spacer(),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${_sleepQuality.toInt()}',
+                      style: const TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF2980B9),
+                      ),
+                    ),
+                    const TextSpan(
+                      text: ' /10',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12.5,
+                        color: Color(0xFF90A4AE),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              activeTrackColor: const Color(0xFF2980B9),
+              inactiveTrackColor: const Color(0xFFF5F7F6),
+              thumbColor: const Color(0xFF2980B9),
+              overlayColor: const Color(0xFF2980B9).withValues(alpha: 0.15),
+              trackHeight: 6,
+            ),
+            child: Slider(
+              value: _sleepQuality,
+              min: 0,
+              max: 10,
+              divisions: 10,
+              onChanged: (val) {
+                HapticFeedback.selectionClick();
+                setState(() => _sleepQuality = val);
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -669,26 +821,32 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
           SizedBox(
             height: 90,
             width: double.infinity,
-            child: CustomPaint(
-              painter: _TrendLineChartPainter(data: _weeklyPainTrend),
-            ),
+            child: _recent.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No check-ins yet. Save one to start your trend.',
+                      style: _axisTextStyle,
+                    ),
+                  )
+                : CustomPaint(
+                    painter: _TrendLineChartPainter(
+                      data: [for (final c in _recent) c.pain.toDouble()],
+                    ),
+                  ),
           ),
 
           const SizedBox(height: 8),
 
-          // X-Axis Dates
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('14 May', style: _axisTextStyle),
-              Text('15', style: _axisTextStyle),
-              Text('16', style: _axisTextStyle),
-              Text('17', style: _axisTextStyle),
-              Text('18', style: _axisTextStyle),
-              Text('19', style: _axisTextStyle),
-              Text('20 May', style: _axisTextStyle),
-            ],
-          ),
+          // X-Axis Dates (first and last check-in)
+          if (_recent.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(_axisLabel(_recent.first), style: _axisTextStyle),
+                if (_recent.length > 1)
+                  Text(_axisLabel(_recent.last), style: _axisTextStyle),
+              ],
+            ),
         ],
       ),
     );
@@ -934,16 +1092,25 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 onTap: _handleSaveCheckIn,
                 borderRadius: BorderRadius.circular(16),
                 splashColor: Colors.white.withValues(alpha: 0.15),
-                child: const Center(
-                  child: Text(
-                    'Save Check-in',
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                    ),
-                  ),
+                child: Center(
+                  child: _saving
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          'Save Check-in',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -1067,7 +1234,7 @@ class _TrendLineChartPainter extends CustomPainter {
 
     if (data.isEmpty) return;
 
-    final double stepX = size.width / (data.length - 1);
+    final double stepX = data.length > 1 ? size.width / (data.length - 1) : 0;
     final Path linePath = Path();
 
     for (int i = 0; i < data.length; i++) {
@@ -1087,5 +1254,6 @@ class _TrendLineChartPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _TrendLineChartPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _TrendLineChartPainter oldDelegate) =>
+      oldDelegate.data.join(',') != data.join(',');
 }
