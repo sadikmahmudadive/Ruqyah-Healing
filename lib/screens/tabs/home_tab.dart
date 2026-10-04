@@ -397,10 +397,6 @@ class _HomeTabState extends State<HomeTab> {
               decoration: BoxDecoration(
                 gradient: AppGradients.emeraldGradient,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: AppElevation.glow(
-                  AppColors.primaryGreen,
-                  strength: 0.3,
-                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -454,13 +450,6 @@ class _HomeTabState extends State<HomeTab> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-              ),
-            ),
-            // Subtle moving shine overlay
-            const Positioned.fill(
-              child: ShineOverlay(
-                opacity: 0.12,
-                borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
             ),
           ],
