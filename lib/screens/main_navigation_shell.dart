@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/global_bottom_navbar.dart';
 import 'tabs/bookings_tab.dart';
 import 'tabs/home_tab.dart';
@@ -9,6 +10,12 @@ import 'tabs/learn_tab.dart';
 import 'tabs/profile_tab.dart';
 import 'tabs/services_tab.dart';
 
+/// Main navigation shell for the authenticated app.
+///
+/// Keeps every tab mounted (via [IndexedStack]) so scroll positions and
+/// in-flight requests survive tab switches, but overlays an
+/// [AnimatedSwitcher] so switches crossfade softly instead of
+/// snapping.
 class MainNavigationShell extends StatefulWidget {
   final NavigationTab initialTab;
 
@@ -40,9 +47,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
   void _handleTabSelected(NavigationTab tab) {
     if (_currentTab != tab) {
-      setState(() {
-        _currentTab = tab;
-      });
+      setState(() => _currentTab = tab);
     }
   }
 
@@ -59,9 +64,35 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
       value: overlayStyle,
       child: Scaffold(
         extendBody: true,
-        body: IndexedStack(
-          index: _currentTab.index,
-          children: _tabPages.values.toList(),
+        body: AnimatedSwitcher(
+          duration: AppMotion.base,
+          switchInCurve: AppMotion.smooth,
+          switchOutCurve: AppMotion.exit,
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 0.015),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              ),
+            );
+          },
+          layoutBuilder: (currentChild, previousChildren) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                ...previousChildren,
+                if (currentChild != null) currentChild,
+              ],
+            );
+          },
+          child: KeyedSubtree(
+            key: ValueKey<NavigationTab>(_currentTab),
+            child: _tabPages[_currentTab]!,
+          ),
         ),
         bottomNavigationBar: GlobalBottomNavBar(
           currentTab: _currentTab,

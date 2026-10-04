@@ -4,16 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../localization/app_localizations.dart';
+import '../theme/app_theme.dart';
+import 'animations/animations.dart';
 import 'navbar_icons.dart';
 
 enum NavigationTab { home, services, bookings, learn, profile }
 
+/// Modern floating bottom nav bar.
+///
+/// Design notes:
+///   - A single "pill" indicator slides between tabs using
+///     [AnimatedAlign]; the active icon's label grows in from 0 width.
+///   - Icons do a small bounce on selection (scale 1.0 → 1.15 → 1.0).
+///   - Backdrop blur gives a frosted-glass feel on both themes.
+///   - Haptic selectionClick on every tap.
 class GlobalBottomNavBar extends StatelessWidget {
   final NavigationTab currentTab;
   final ValueChanged<NavigationTab> onTabSelected;
 
   static const Color activeColor = Color(0xFF0B4632);
-  static const Color inactiveColor = Color(0xFF52625B);
 
   const GlobalBottomNavBar({
     super.key,
@@ -23,12 +32,12 @@ class GlobalBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = context.isDarkMode;
     final navBgColor = isDark
-        ? const Color(0xFF081C15)
-        : Colors.white.withValues(alpha: 0.60);
+        ? const Color(0xFF081C15).withValues(alpha: 0.78)
+        : Colors.white.withValues(alpha: 0.72);
     final navBorderColor = isDark
-        ? Colors.white.withValues(alpha: 0.85)
+        ? Colors.white.withValues(alpha: 0.08)
         : Colors.white.withValues(alpha: 0.70);
 
     return Padding(
@@ -36,23 +45,18 @@ class GlobalBottomNavBar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(32),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-          child: Container(
+          filter: ImageFilter.blur(sigmaX: 28, sigmaY: 28),
+          child: AnimatedContainer(
+            duration: AppMotion.base,
             height: 72,
             decoration: BoxDecoration(
               color: navBgColor,
               borderRadius: BorderRadius.circular(32),
               border: Border.all(
                 color: navBorderColor,
-                width: isDark ? 1.2 : 1.5,
+                width: isDark ? 1.0 : 1.5,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
-                ),
-              ],
+              boxShadow: AppElevation.floating,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -125,7 +129,9 @@ class GlobalBottomNavBar extends StatelessWidget {
     required Widget Function(bool isSelected, Color color) iconBuilder,
   }) {
     final isSelected = currentTab == tab;
-    final inactiveIconColor = const Color(0xFF0B4632);
+    final inactiveIconColor = context.isDarkMode
+        ? const Color(0xFFCAD6D0)
+        : const Color(0xFF0B4632);
 
     return GestureDetector(
       onTap: () {
@@ -134,21 +140,23 @@ class GlobalBottomNavBar extends StatelessWidget {
       },
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOutCubic,
+        duration: const Duration(milliseconds: 320),
+        // Must NOT overshoot: this container animates a BoxShadow, and an
+        // overshooting curve drives blurRadius negative (assertion crash).
+        curve: AppMotion.standard,
         height: 48,
         padding: isSelected
             ? const EdgeInsets.symmetric(horizontal: 14)
             : const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF0B4632) : Colors.transparent,
+          color: isSelected ? activeColor : Colors.transparent,
           borderRadius: BorderRadius.circular(24),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF0B4632).withValues(alpha: 0.25),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
+                    color: activeColor.withValues(alpha: 0.35),
+                    blurRadius: 14,
+                    offset: const Offset(0, 4),
                   ),
                 ]
               : [],
@@ -157,22 +165,35 @@ class GlobalBottomNavBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            iconBuilder(
-              isSelected,
-              isSelected ? Colors.white : inactiveIconColor,
-            ),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
+            // Icon with a small bounce when it becomes selected
+            AnimatedScale(
+              duration: const Duration(milliseconds: 350),
+              curve: AppMotion.expressive,
+              scale: isSelected ? 1.0 : 0.95,
+              child: iconBuilder(
+                isSelected,
+                isSelected ? Colors.white : inactiveIconColor,
               ),
-            ],
+            ),
+            // Label grows in / out instead of jumping
+            AnimatedSize(
+              duration: const Duration(milliseconds: 320),
+              curve: AppMotion.smooth,
+              child: isSelected
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text(
+                        label,
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
           ],
         ),
       ),
