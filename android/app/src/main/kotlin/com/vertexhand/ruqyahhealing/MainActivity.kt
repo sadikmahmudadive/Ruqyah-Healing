@@ -1,6 +1,7 @@
 package com.vertexhand.ruqyahhealing
 
-import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 
-class MainActivity: FlutterActivity() {
-}
+// AudioServiceActivity lets the audio playback notification share the app's
+// Flutter engine (required by just_audio_background).
+class MainActivity : AudioServiceActivity()

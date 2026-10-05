@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:just_audio_platform_interface/just_audio_platform_interface.dart';
 import 'package:ruqyahhealing/screens/tabs/home_tab.dart';
 import 'package:ruqyahhealing/services/recitation_playback.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Stand-in for the native just_audio plugin: loads instantly, reports
 /// "ready", and plays/pauses on request. Lets the shared playback state be
@@ -233,6 +235,21 @@ void main() {
 
   testWidgets('Home mini player: idle, tap play, shows real state, pause',
       (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    // No location plugin in the test runner: report "location off".
+    final messenger = tester.binding.defaultBinaryMessenger;
+    for (final name in [
+      'flutter.baseflow.com/geolocator',
+      'flutter.baseflow.com/geolocator_service_updates',
+    ]) {
+      messenger.setMockMethodCallHandler(MethodChannel(name), (call) async {
+        if (call.method == 'isLocationServiceEnabled') return false;
+        return null;
+      });
+      addTearDown(
+        () => messenger.setMockMethodCallHandler(MethodChannel(name), null),
+      );
+    }
     await tester.binding.setSurfaceSize(const Size(420, 1800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 

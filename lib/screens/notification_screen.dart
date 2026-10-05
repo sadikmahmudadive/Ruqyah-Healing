@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../services/notification_inbox.dart';
 import '../services/push_notification_service.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
@@ -53,7 +54,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
+    // New pushes appear while the screen is open.
+    NotificationInbox.instance.addListener(_onInboxChanged);
     PushNotificationService.markAllAsRead();
+  }
+
+  void _onInboxChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    NotificationInbox.instance.removeListener(_onInboxChanged);
+    super.dispose();
   }
 
   List<NotificationItem> get _allNotifications =>
@@ -162,7 +175,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
               child: filteredNotifications.isEmpty
                   ? Center(
                       child: Text(
-                        'No notifications in $_selectedCategory',
+                        _selectedCategory == 'All'
+                            ? "You're all caught up.\nNew notifications will appear here."
+                            : 'No notifications in $_selectedCategory',
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14,

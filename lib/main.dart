@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
+import 'app_navigator.dart';
 import 'localization/app_localizations.dart';
 import 'screens/splash_screen.dart';
 import 'services/firebase_service.dart';
@@ -9,6 +11,16 @@ import 'widgets/app_toast.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    // Playback notification + lock-screen controls for the recitation player.
+    await JustAudioBackground.init(
+      androidNotificationChannelId: 'com.vertexhand.ruqyahhealing.audio',
+      androidNotificationChannelName: 'Recitation playback',
+      androidNotificationOngoing: true,
+    );
+  } catch (e) {
+    debugPrint('Audio background init note: $e');
+  }
   try {
     await FirebaseService.initialize();
   } catch (e) {
@@ -29,6 +41,7 @@ class RuqyahHealingApp extends StatelessWidget {
           valueListenable: AppLocalizations.currentLocaleNotifier,
           builder: (context, locale, child) {
             return MaterialApp(
+              navigatorKey: appNavigatorKey,
               title: 'Ruqyah Healing',
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,

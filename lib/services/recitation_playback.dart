@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../data/recitation_data.dart';
 import '../models/user_model.dart';
@@ -24,6 +25,13 @@ class RecitationPlayback extends ChangeNotifier {
   static const int _minLoggedSeconds = 30;
 
   RecitationPlayerController? _controller;
+
+  /// One player for the whole app: the playback notification (just_audio_
+  /// background) supports a single instance. Created on first use, disposed
+  /// when playback is stopped.
+  AudioPlayer? _player;
+  Future<void> _playerDisposed = Future.value();
+
   bool _wasPlaying = false;
   int _loggedSeconds = 0;
   bool _notifyScheduled = false;
@@ -46,13 +54,16 @@ class RecitationPlayback extends ChangeNotifier {
       return existing;
     }
 
-    _release();
-    final created = RecitationPlayerController(content);
+    _releaseController();
+    final created = RecitationPlayerController(
+      content,
+      player: _player ??= AudioPlayer(),
+    );
     _controller = created;
     _wasPlaying = false;
     _loggedSeconds = 0;
     created.addListener(_onControllerChanged);
-    created.init(autoplay: autoplay);
+    created.init(autoplay: autoplay, after: _playerDisposed);
     _notifyLater();
     return created;
   }
@@ -60,7 +71,13 @@ class RecitationPlayback extends ChangeNotifier {
   /// Stops playback and unloads the current recitation.
   void stop() {
     if (_controller == null) return;
-    _release();
+    _releaseController();
+    // Dropping the player also removes the playback notification.
+    final player = _player;
+    _player = null;
+    if (player != null) {
+      _playerDisposed = player.dispose().catchError((Object _) {});
+    }
     _notifyLater();
   }
 
@@ -95,7 +112,7 @@ class RecitationPlayback extends ChangeNotifier {
     );
   }
 
-  void _release() {
+  void _releaseController() {
     final c = _controller;
     if (c == null) return;
     _flushListening();

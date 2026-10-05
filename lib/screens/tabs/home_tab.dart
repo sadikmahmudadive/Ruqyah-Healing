@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,6 +9,8 @@ import '../../models/appointment_model.dart';
 import '../../models/recitation.dart';
 import '../../services/firebase_service.dart';
 import '../../services/health_index_service.dart';
+import '../../services/notification_center.dart';
+import '../../services/prayer_location_service.dart';
 import '../../services/prayer_times_service.dart';
 import '../../services/recitation_playback.dart';
 import '../../services/recitation_player_controller.dart';
@@ -18,6 +22,7 @@ import '../../widgets/animations/animations.dart';
 import '../../widgets/health_index_builder.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/modern_card.dart';
+import '../../widgets/prayer_location_sheet.dart';
 import '../../widgets/prayer_time_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../ai_symptom_guide_screen.dart';
@@ -61,13 +66,40 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     _prayerTimesFuture = PrayerTimesService.fetchPrayerTimes();
+    PrayerLocationService.instance.locationNotifier.addListener(
+      _onLocationChanged,
+    );
+    // Load the saved place, then follow the phone's location when it is on.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(PrayerLocationService.instance.start());
+    });
+  }
+
+  @override
+  void dispose() {
+    PrayerLocationService.instance.locationNotifier.removeListener(
+      _onLocationChanged,
+    );
+    super.dispose();
+  }
+
+  /// A different place was chosen or detected: load its prayer times.
+  void _onLocationChanged() {
+    if (!mounted) return;
+    setState(() {
+      _prayerTimesFuture = PrayerTimesService.fetchPrayerTimes();
+    });
   }
 
   /// Pull-to-refresh: re-fetch prayer times. Health index and appointments
   /// are live Firestore streams, so they are already current.
   Future<void> _onRefresh() async {
+    // Pick up a changed phone location first (no permission prompt here).
+    await PrayerLocationService.instance.syncAuto();
     final future = PrayerTimesService.fetchPrayerTimes();
     setState(() => _prayerTimesFuture = future);
+    // Keep the scheduled prayer alerts on the freshly fetched times.
+    unawaited(NotificationCenter.resync());
     // Keep the spinner up long enough to read as a deliberate refresh.
     await Future.wait<void>([
       future.then<void>((_) {}).catchError((_) {}),
@@ -891,27 +923,71 @@ class _HomeTabState extends State<HomeTab> {
                     color: context.textPrimary,
                   ),
                 ),
-                const Spacer(),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on_rounded,
-                      size: 14,
-                      color: AppColors.primaryGreen,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Dhaka, BD',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.w700,
-                        color: context.isDarkMode
-                            ? AppColors.accentGold
-                            : AppColors.primaryGreen,
+                const SizedBox(width: 12),
+                // Tap to choose where prayer times are for.
+                Flexible(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        showPrayerLocationSheet(context);
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 6,
+                        ),
+                        child: ListenableBuilder(
+                          listenable: Listenable.merge([
+                            PrayerLocationService.instance,
+                            PrayerLocationService.instance.locationNotifier,
+                          ]),
+                          builder: (context, _) {
+                            final svc = PrayerLocationService.instance;
+                            final accent = context.isDarkMode
+                                ? AppColors.accentGold
+                                : AppColors.primaryGreen;
+                            final following =
+                                svc.autoDetect &&
+                                svc.status == AutoLocationStatus.detected;
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  following
+                                      ? Icons.my_location_rounded
+                                      : Icons.location_on_rounded,
+                                  size: 14,
+                                  color: accent,
+                                ),
+                                const SizedBox(width: 4),
+                                Flexible(
+                                  child: Text(
+                                    svc.current.label,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: 'PlusJakartaSans',
+                                      fontSize: 13.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: accent,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  size: 18,
+                                  color: accent,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show MissingPluginException;
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import '../models/recitation.dart';
 
@@ -13,12 +14,17 @@ import '../models/recitation.dart';
 /// The playhead lives in [position] instead, so the whole screen is not
 /// rebuilt on every audio tick.
 class RecitationPlayerController extends ChangeNotifier {
+  /// With no [player] the controller makes, and later disposes, its own.
+  /// A supplied player is shared (just_audio_background allows only one) and
+  /// stays with its owner.
   RecitationPlayerController(this.content, {AudioPlayer? player})
     : _player = player ?? AudioPlayer(),
+      _ownsPlayer = player == null,
       _durations = List<Duration?>.filled(content.ayahs.length, null);
 
   final RecitationContent content;
   final AudioPlayer _player;
+  final bool _ownsPlayer;
 
   /// Length of each ayah, filled in as the player learns them.
   final List<Duration?> _durations;
@@ -83,7 +89,12 @@ class RecitationPlayerController extends ChangeNotifier {
   }
 
   /// Loads the audio. [autoplay] false leaves it paused at the start.
-  Future<void> init({bool autoplay = true}) async {
+  ///
+  /// [after] delays loading until a previous player has finished shutting
+  /// down (the background audio plugin supports only one at a time).
+  Future<void> init({bool autoplay = true, Future<void>? after}) async {
+    if (_disposed) return;
+    if (after != null) await after;
     if (_disposed) return;
     _bindOnce();
     _error = null;
@@ -92,7 +103,17 @@ class RecitationPlayerController extends ChangeNotifier {
 
     try {
       await _player.setAudioSources([
-        for (final a in content.ayahs) AudioSource.uri(Uri.parse(a.audioUrl)),
+        for (final a in content.ayahs)
+          AudioSource.uri(
+            Uri.parse(a.audioUrl),
+            // Shown in the playback notification and on the lock screen.
+            tag: MediaItem(
+              id: a.audioUrl,
+              title: '${a.surahName} ${a.ref}',
+              album: content.title,
+              artist: 'Sheikh Mishary Al-Afasy',
+            ),
+          ),
       ]);
       _loaded = true;
       // play() completes only when playback stops, so don't await it.
@@ -200,6 +221,21 @@ class RecitationPlayerController extends ChangeNotifier {
     if (!_player.playing) unawaited(_player.play());
   }
 
+  /// Jumps to [fraction] (0..1) of the whole recitation. Lands inside the
+  /// ayah when its length is known, otherwise at the start of that ayah.
+  Future<void> seekToOverall(double fraction) async {
+    if (!_loaded) return;
+    final n = content.ayahs.length;
+    final scaled = fraction.clamp(0.0, 1.0) * n;
+    final i = scaled.floor().clamp(0, n - 1);
+    final within = scaled - i; // 0..1 inside ayah i
+    final d = _durations[i];
+    final target = (d == null || within <= 0)
+        ? Duration.zero
+        : Duration(milliseconds: (d.inMilliseconds * within).round());
+    await _player.seek(target, index: i);
+  }
+
   Future<void> nextAyah() => playAyah(_index + 1);
 
   /// Restarts the current ayah if it has played for a few seconds, otherwise
@@ -246,9 +282,11 @@ class RecitationPlayerController extends ChangeNotifier {
     for (final s in _subs) {
       s.cancel();
     }
-    // Not awaited (dispose() can't be async); a failure while tearing down the
-    // native player must not surface as an unhandled error.
-    unawaited(_player.dispose().catchError((Object _) {}));
+    if (_ownsPlayer) {
+      // Not awaited (dispose() can't be async); a failure while tearing down
+      // the native player must not surface as an unhandled error.
+      unawaited(_player.dispose().catchError((Object _) {}));
+    }
     position.dispose();
     super.dispose();
   }

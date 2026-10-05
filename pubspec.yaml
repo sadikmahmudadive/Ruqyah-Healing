@@ -49,6 +49,9 @@ dependencies:
   model_viewer_plus: ^1.10.0
   google_maps_flutter: ^2.18.1
   just_audio: ^0.10.6
+  just_audio_background: ^0.0.1-beta.17
+  shared_preferences: ^2.5.5
+  geolocator: ^14.1.1
 
 dev_dependencies:
   flutter_test:

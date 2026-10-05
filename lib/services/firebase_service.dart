@@ -12,7 +12,7 @@ import '../models/course_model.dart';
 import '../models/order_model.dart';
 import '../models/therapist_model.dart';
 import '../models/user_model.dart';
-import 'prayer_notification_service.dart';
+import 'notification_center.dart';
 import 'push_notification_service.dart';
 
 /// Centralized service handling Firebase Authentication, Firestore NoSQL Database operations,
@@ -35,9 +35,12 @@ class FirebaseService {
       debugPrint('Firebase initialization note: $e');
     }
 
-    // Initialize push notifications asynchronously so it never blocks UI launch
-    unawaited(PushNotificationService.initialize());
-    unawaited(PrayerNotificationService.schedulePrayerNotifications());
+    // Notifications start asynchronously so they never block UI launch. Local
+    // setup runs first because it owns the (single) permission prompt.
+    unawaited(() async {
+      await NotificationCenter.start();
+      await PushNotificationService.initialize();
+    }());
   }
 
   // ===========================================================================

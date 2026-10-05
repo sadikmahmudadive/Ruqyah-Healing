@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../localization/app_localizations.dart';
+import '../services/notification_prefs.dart';
+import 'notification_settings_screen.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
@@ -16,10 +18,25 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    NotificationPrefs.instance.addListener(_onNotificationPrefs);
+  }
+
+  @override
+  void dispose() {
+    NotificationPrefs.instance.removeListener(_onNotificationPrefs);
+    super.dispose();
+  }
+
+  void _onNotificationPrefs() {
+    if (mounted) setState(() {});
+  }
+
   String _textSize = 'Medium';
   bool _highContrast = false;
   bool _reduceMotion = false;
-  bool _prayerReminders = true;
   String _audioDownloads = 'Wi-Fi Only';
   bool _biometricLock = true;
 
@@ -202,11 +219,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingItem(
             title: context.tr('prayer_reminders'),
             hasActiveDot: true,
-            trailingText: _prayerReminders ? 'On' : 'Off',
-            isTrailingActive: _prayerReminders,
+            trailingText: NotificationPrefs.instance.prayerEnabled ? 'On' : 'Off',
+            isTrailingActive: NotificationPrefs.instance.prayerEnabled,
             onTap: () {
               HapticFeedback.selectionClick();
-              setState(() => _prayerReminders = !_prayerReminders);
+              NotificationPrefs.instance.setPrayerEnabled(
+                !NotificationPrefs.instance.prayerEnabled,
+              );
             },
           ),
           _buildDivider(),
@@ -275,6 +294,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailingText: 'Manage alerts',
             onTap: () {
               HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const NotificationSettingsScreen(),
+                ),
+              );
             },
           ),
           _buildDivider(),
