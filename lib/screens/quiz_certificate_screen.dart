@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'package:flutter/services.dart';
 
 import '../services/firebase_service.dart';
@@ -423,10 +424,10 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      const Icon(
-                        Icons.workspace_premium_rounded,
-                        color: Color(0xFFD49E35),
-                        size: 96,
+                      const FlatIllustration(
+                        kind: FlatIllustrationKind.certificate,
+                        size: 118,
+                        dark: false,
                       ),
                       Column(
                         mainAxisSize: MainAxisSize.min,

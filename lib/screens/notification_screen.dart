@@ -5,6 +5,7 @@ import '../services/notification_inbox.dart';
 import '../services/push_notification_service.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'order_tracking_screen.dart';
 import 'secure_messages_screen.dart';
 import 'settings_screen.dart';
@@ -174,16 +175,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Expanded(
               child: filteredNotifications.isEmpty
                   ? Center(
-                      child: Text(
-                        _selectedCategory == 'All'
-                            ? "You're all caught up.\nNew notifications will appear here."
-                            : 'No notifications in $_selectedCategory',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 14,
-                          color: Color(0xFF6E7E77),
-                        ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const FlatIllustration(
+                            kind: FlatIllustrationKind.emptyNotifications,
+                            size: 150,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _selectedCategory == 'All'
+                                ? "You're all caught up.\nNew notifications will appear here."
+                                : 'No notifications in $_selectedCategory',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 14,
+                              color: Color(0xFF6E7E77),
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   : ListView.separated(

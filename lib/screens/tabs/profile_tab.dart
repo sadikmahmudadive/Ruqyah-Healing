@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/illustrations/ruqyah_illustrations.dart';
 import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
@@ -564,6 +565,30 @@ class _ProfileTabState extends State<ProfileTab> {
 
   // 4. Guest Sign-In Action Card
   Widget _buildAuthCard() {
+    return Column(
+      children: [
+        const FlatIllustration(
+          kind: FlatIllustrationKind.guest,
+          size: 120,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Sign in to save your progress, bookings and health profile.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 13,
+            height: 1.4,
+            color: context.textSecondary,
+          ),
+        ),
+        const SizedBox(height: 14),
+        _buildAuthButton(),
+      ],
+    );
+  }
+
+  Widget _buildAuthButton() {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF1E6B45),

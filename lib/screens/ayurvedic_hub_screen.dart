@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'therapist_marketplace_screen.dart';
 
 class AyurvedicHubScreen extends StatefulWidget {
@@ -118,16 +119,9 @@ class _AyurvedicHubScreenState extends State<AyurvedicHubScreen> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: const Color(0xFF27AE60).withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Center(
-              child: Icon(Icons.spa_outlined, color: Color(0xFF27AE60), size: 26),
-            ),
+          const FlatIllustration(
+            kind: FlatIllustrationKind.ayurvedic,
+            size: 80,
           ),
           const SizedBox(width: 14),
           Expanded(

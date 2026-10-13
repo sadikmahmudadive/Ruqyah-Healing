@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
-import '../widgets/acupuncture_icon.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'acupuncture_point_map_screen.dart';
 import 'pain_stress_monitor_screen.dart';
 import 'therapist_marketplace_screen.dart';
@@ -291,19 +291,9 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
 
           const SizedBox(width: 12),
 
-          // Needles Graphic Illustration
-          Container(
-            width: 76,
-            height: 76,
-            decoration: BoxDecoration(
-              color: context.isDarkMode
-                  ? const Color(0xFF182E25)
-                  : const Color(0xFFF5F7F6),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: const Center(
-              child: AcupunctureIcon(color: Color(0xFF2980B9), size: 42),
-            ),
+          const FlatIllustration(
+            kind: FlatIllustrationKind.acupuncture,
+            size: 88,
           ),
         ],
       ),

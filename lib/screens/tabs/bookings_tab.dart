@@ -7,6 +7,7 @@ import '../../services/firebase_service.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_toast.dart';
+import '../../widgets/illustrations/ruqyah_illustrations.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../therapist_marketplace_screen.dart';
 import '../video_consultation_screen.dart';
@@ -645,12 +646,11 @@ class _BookingsTabState extends State<BookingsTab> {
       ),
       child: Column(
         children: [
-          const Icon(
-            Icons.event_note_rounded,
-            size: 40,
-            color: Color(0xFF90A4AE),
+          const FlatIllustration(
+            kind: FlatIllustrationKind.emptyBookings,
+            size: 120,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             message,
             textAlign: TextAlign.center,

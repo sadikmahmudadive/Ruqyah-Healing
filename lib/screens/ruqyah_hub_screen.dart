@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 import 'audio_library_screen.dart';
 import 'ruqyah_progress_screen.dart';
@@ -117,7 +118,23 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
-      child: Row(
+      // The skyline sits behind the title, in the header's bottom-right corner.
+      child: Stack(
+        clipBehavior: Clip.hardEdge,
+        children: [
+          const Positioned(
+            right: -24,
+            bottom: -20,
+            child: IgnorePointer(child: SkylineIllustration()),
+          ),
+          _buildHeaderRow(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderRow() {
+    return Row(
         children: [
           // Back Button
           Container(
@@ -167,7 +184,6 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 
@@ -189,24 +205,6 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: context.isDarkMode
-                  ? const Color(0xFF182E25)
-                  : const Color(0xFFEBF7F0),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Icon(
-                Icons.auto_awesome_rounded,
-                color: Color(0xFFD49E35),
-                size: 22,
-              ),
-            ),
-          ),
-          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,6 +231,8 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
               ],
             ),
           ),
+          const SizedBox(width: 6),
+          const MosqueSceneIllustration(width: 118, height: 88),
         ],
       ),
     );
@@ -563,25 +563,36 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
 
               const SizedBox(height: 10),
 
-              Text(
-                'Ruqyah Live Session',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w800,
-                  color: context.textPrimary,
-                ),
-              ),
-
-              const SizedBox(height: 2),
-
-              Text(
-                'Ustazh Salim • Interactive healing & Q&A',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12.5,
-                  color: context.textSecondary,
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Ruqyah Live Session',
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 16.5,
+                            fontWeight: FontWeight.w800,
+                            color: context.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Ustazh Salim • Interactive healing & Q&A',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12.5,
+                            color: context.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const LiveSessionIllustration(size: 78),
+                ],
               ),
 
               const SizedBox(height: 14),

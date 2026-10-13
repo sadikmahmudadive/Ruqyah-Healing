@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/illustrations/ruqyah_illustrations.dart';
 import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
@@ -250,25 +251,39 @@ class _LearnTabState extends State<LearnTab> {
 
           const SizedBox(height: 10),
 
-          Text(
-            'Hijama Practitioner Foundation',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 17,
-              fontWeight: FontWeight.w800,
-              color: context.textPrimary,
-            ),
-          ),
-
-          const SizedBox(height: 2),
-
-          Text(
-            'Lesson 3 of 10 • Cupping Principles',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.5,
-              color: context.textSecondary,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hijama Practitioner Foundation',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                        color: context.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Lesson 3 of 10 • Cupping Principles',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12.5,
+                        color: context.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              const FlatIllustration(
+                kind: FlatIllustrationKind.learn,
+                size: 76,
+              ),
+            ],
           ),
 
           const SizedBox(height: 16),
@@ -777,16 +792,10 @@ class _LearnTabState extends State<LearnTab> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Icon(Icons.people_alt_rounded, color: Color(0xFFD49E35), size: 24),
-            ),
+          const FlatIllustration(
+            kind: FlatIllustrationKind.community,
+            size: 62,
+            dark: true, // sits on the green gradient
           ),
           const SizedBox(width: 14),
           Expanded(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
@@ -92,21 +93,12 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 12),
-            Container(
-              width: 64,
-              height: 64,
-              decoration: const BoxDecoration(
-                color: Color(0xFFEBF7F0),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check_circle_rounded,
-                color: Color(0xFF0B4632),
-                size: 38,
-              ),
+            const FlatIllustration(
+              kind: FlatIllustrationKind.bookingSuccess,
+              size: 120,
+              dark: false, // the dialog is always white
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
             const Text(
               'Booking Confirmed!',
               style: TextStyle(

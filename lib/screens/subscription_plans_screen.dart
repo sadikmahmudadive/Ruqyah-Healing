@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
@@ -52,13 +53,24 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Choose a plan that supports your healing journey.',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 13.5,
-                        color: context.textSecondary,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Choose a plan that supports your healing journey.',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 13.5,
+                              color: context.textSecondary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const FlatIllustration(
+                          kind: FlatIllustrationKind.premium,
+                          size: 92,
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 24),

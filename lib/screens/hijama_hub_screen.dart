@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/hijama_cupping_icon.dart';
 import 'hijama_body_map_screen.dart';
 import 'hijama_session_detail_screen.dart';
@@ -218,19 +219,9 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
 
           const SizedBox(width: 14),
 
-          // Cupping Jars Graphic Container
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: context.isDarkMode
-                  ? const Color(0xFF182E25)
-                  : const Color(0xFFF5F7F6),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: const Center(
-              child: HijamaCuppingIcon(color: Color(0xFFE07B39), size: 48),
-            ),
+          const FlatIllustration(
+            kind: FlatIllustrationKind.hijama,
+            size: 88,
           ),
         ],
       ),
