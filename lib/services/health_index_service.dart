@@ -323,7 +323,7 @@ class HealthIndexService {
     if (s >= 80) return 'Excellent';
     if (s >= 65) return 'Good';
     if (s >= 50) return 'Moderate';
-    return 'Needs attention';
+    return 'Room to grow';
   }
 
   static HealthTone _toneForScore(int s) {

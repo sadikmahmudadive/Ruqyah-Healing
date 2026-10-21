@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/islamic_pattern.dart';
 
 class RuqyahProgressScreen extends StatefulWidget {
   const RuqyahProgressScreen({super.key});
@@ -107,6 +108,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -157,7 +159,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: context.textPrimary,
           ),
         ),
@@ -165,7 +167,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: const Color(0xFFEBF7F0),
+            color: AppColors.tintMint,
             borderRadius: BorderRadius.circular(12),
           ),
           child: const Text(
@@ -196,9 +198,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -210,7 +212,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11.5,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -219,7 +221,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFF0B4632),
                   ),
                 ),
@@ -249,9 +251,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               border: Border.all(color: context.cardBorder, width: 1.0),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -263,7 +265,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11.5,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -272,7 +274,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -292,7 +294,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
 
         const SizedBox(width: 10),
 
-        // Streak 🔥
+        // Days of practice (no streak to protect)
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
@@ -301,9 +303,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF0B4632).withValues(alpha: 0.25),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
+                  color: const Color(0xFF0B4632).withValues(alpha: 0.05),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -313,15 +315,13 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 Row(
                   children: <Widget>[
                     Text(
-                      'Streak',
+                      'Practice',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 11.5,
                         color: Colors.white70,
                       ),
                     ),
-                    SizedBox(width: 3),
-                    Text('🔥', style: TextStyle(fontSize: 11)),
                   ],
                 ),
                 SizedBox(height: 6),
@@ -330,13 +330,13 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 2),
                 Text(
-                  'days',
+                  'Every day counts',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
@@ -361,9 +361,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -376,9 +376,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -425,10 +425,10 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12,
                       fontWeight:
-                          isHighlighted ? FontWeight.w800 : FontWeight.w600,
+                          isHighlighted ? FontWeight.w700 : FontWeight.w600,
                       color: isHighlighted
                           ? const Color(0xFFD49E35)
-                          : const Color(0xFF90A4AE),
+                          : AppColors.lightTextMuted,
                     ),
                   ),
                 ],
@@ -450,9 +450,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -467,7 +467,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -479,7 +479,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
             ],
@@ -505,10 +505,10 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   height: 48,
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? const Color(0xFFEBF7F0)
+                        ? AppColors.tintMint
                         : context.isDarkMode
                             ? const Color(0xFF182E25)
-                            : const Color(0xFFF5F7F6),
+                            : AppColors.lightBackground,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isSelected
@@ -542,9 +542,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -555,7 +555,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFF3E8),
+              color: AppColors.tintSand,
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
@@ -577,7 +577,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -609,7 +609,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color(0xFFEBF7F0),
+                color: AppColors.tintMint,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Row(
@@ -648,9 +648,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 11,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             letterSpacing: 0.8,
-            color: Color(0xFF90A4AE),
+            color: AppColors.lightTextMuted,
           ),
         ),
 
@@ -664,9 +664,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 26,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -676,7 +676,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF3E8),
+                  color: AppColors.tintSand,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Center(
@@ -698,7 +698,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -734,7 +734,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                 width: 36,
                 height: 36,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(

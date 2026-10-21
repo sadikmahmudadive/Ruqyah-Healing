@@ -9,6 +9,7 @@ import '../widgets/ruqyah_dua_icon.dart';
 import 'audio_library_screen.dart';
 import 'ruqyah_progress_screen.dart';
 import 'video_consultation_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class RuqyahHubScreen extends StatefulWidget {
   const RuqyahHubScreen({super.key});
@@ -114,6 +115,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -214,7 +216,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -357,7 +359,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -425,7 +427,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                       style: TextStyle(
                         fontFamily: 'Cinzel',
                         fontSize: 18,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: Color(0xFFD49E35),
                       ),
                     ),
@@ -443,7 +445,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: context.textPrimary,
                         ),
                       ),
@@ -498,7 +500,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: context.textPrimary,
           ),
         ),
@@ -530,20 +532,20 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFEBEB),
+                      color: const Color(0xFFE9F3EC),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.circle, color: Color(0xFFE74C3C), size: 7),
+                        Icon(Icons.circle, color: Color(0xFF4E8F62), size: 7),
                         SizedBox(width: 4),
                         Text(
-                          'LIVE',
+                          'Live session',
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            fontSize: 10.5,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFFE74C3C),
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF3F7A55),
                           ),
                         ),
                       ],
@@ -574,7 +576,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 16.5,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: context.textPrimary,
                           ),
                         ),
@@ -657,7 +659,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -720,7 +722,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 11,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           letterSpacing: 0.8,
                           color: Color(0xFF90A4AE),
                         ),
@@ -731,7 +733,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 24,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: context.textPrimary,
                         ),
                       ),
@@ -784,7 +786,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -835,7 +837,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 child: const Center(
                   child: Icon(
                     Icons.menu_book_rounded,
-                    color: Color(0xFFE74C3C),
+                    color: Color(0xFFB8862B),
                     size: 24,
                   ),
                 ),
@@ -852,7 +854,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),

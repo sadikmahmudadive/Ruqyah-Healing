@@ -5,22 +5,29 @@ import '../../localization/app_localizations.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
+import '../../widgets/acupressure_icon.dart';
 import '../../widgets/animations/animations.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/modern_card.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
+import '../../widgets/unani_tibb_icon.dart';
+import '../../widgets/medicine_icon.dart';
 import '../acupuncture_hub_screen.dart';
+import '../acupressure_hub_screen.dart';
 import '../ai_symptom_guide_screen.dart';
 import '../ayurvedic_hub_screen.dart';
 import '../equipment_store_screen.dart';
 import '../hijama_hub_screen.dart';
+import '../medicine_hub_screen.dart';
 import '../pathology_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
+import '../unani_hub_screen.dart';
+import '../../widgets/islamic_pattern.dart';
 
 /// Modern Services tab.
 ///
 /// Design updates:
-///   - AI banner uses the emerald gradient + sweeping shine overlay.
+///   - AI banner uses the emerald gradient (no moving shine: calm UX).
 ///   - Each service card fades + slides in with a stagger.
 ///   - Cards use PressScale for a snappy tactile press.
 ///   - Trailing chevron glides to the right on press (via Transform).
@@ -42,7 +49,7 @@ class _ServicesTabState extends State<ServicesTab> {
           color: AppColors.primaryGreen,
           size: 28,
         ),
-        iconBg: const Color(0xFFEBF7F0),
+        iconBg: AppColors.tintMint,
         iconColor: AppColors.primaryGreen,
         target: const RuqyahHubScreen(),
       ),
@@ -53,7 +60,7 @@ class _ServicesTabState extends State<ServicesTab> {
           color: AppColors.warning,
           size: 28,
         ),
-        iconBg: const Color(0xFFFFF3E8),
+        iconBg: AppColors.tintSand,
         iconColor: AppColors.warning,
         target: const HijamaHubScreen(),
       ),
@@ -64,24 +71,57 @@ class _ServicesTabState extends State<ServicesTab> {
           color: AppColors.info,
           size: 28,
         ),
-        iconBg: const Color(0xFFE6F7FF),
+        iconBg: AppColors.tintMist,
         iconColor: AppColors.info,
         target: const AcupunctureHubScreen(),
+      ),
+      _ServiceEntry(
+        title: context.tr('acupressure_title'),
+        description: context.tr('acupressure_sub'),
+        customIcon: const AcupressureIcon(
+          color: Color(0xFFC86D51),
+          size: 28,
+        ),
+        iconBg: AppColors.tintRose,
+        iconColor: const Color(0xFFC86D51),
+        target: const AcupressureHubScreen(),
       ),
       _ServiceEntry(
         title: context.tr('ayurvedic_title'),
         description: context.tr('ayurvedic_sub'),
         icon: Icons.spa_outlined,
-        iconBg: const Color(0xFFE8F8F5),
-        iconColor: const Color(0xFF27AE60),
+        iconBg: AppColors.tintSage,
+        iconColor: AppColors.accentSage,
         target: const AyurvedicHubScreen(),
+      ),
+      _ServiceEntry(
+        title: context.tr('unani_title'),
+        description: context.tr('unani_sub'),
+        customIcon: const UnaniTibbIcon(
+          color: Color(0xFFC59236),
+          size: 28,
+        ),
+        iconBg: const Color(0xFFFBF4E6),
+        iconColor: const Color(0xFFC59236),
+        target: const UnaniHubScreen(),
+      ),
+      _ServiceEntry(
+        title: context.tr('medicine_title'),
+        description: context.tr('medicine_sub'),
+        customIcon: const MedicineIcon(
+          color: Color(0xFF16A085),
+          size: 28,
+        ),
+        iconBg: const Color(0xFFEAF5F2),
+        iconColor: const Color(0xFF16A085),
+        target: const MedicineHubScreen(),
       ),
       _ServiceEntry(
         title: context.tr('pathology_title'),
         description: context.tr('pathology_sub'),
         icon: Icons.biotech_outlined,
-        iconBg: const Color(0xFFF4ECF7),
-        iconColor: const Color(0xFF8E44AD),
+        iconBg: AppColors.tintLilac,
+        iconColor: AppColors.accentLilac,
         target: const PathologyHubScreen(),
       ),
     ];
@@ -143,7 +183,7 @@ class _ServicesTabState extends State<ServicesTab> {
                 delegate: SliverChildListDelegate([
                   // AI banner
                   FadeSlideIn(child: _buildAiBanner()),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 28),
 
                   // Main services (staggered)
                   for (int i = 0; i < services.length; i++) ...[
@@ -151,10 +191,10 @@ class _ServicesTabState extends State<ServicesTab> {
                       delay: Duration(milliseconds: 80 + i * 60),
                       child: _buildMainServiceCard(services[i]),
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 16),
                   ],
 
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
 
                   // Bottom bento: courses + store
                   FadeSlideIn(
@@ -166,7 +206,7 @@ class _ServicesTabState extends State<ServicesTab> {
                             title: context.tr('courses'),
                             description: context.tr('learn_protection'),
                             icon: Icons.menu_book_rounded,
-                            iconBgColor: const Color(0xFFFFF3E8),
+                            iconBgColor: AppColors.tintSand,
                             iconColor: AppColors.warning,
                             onTap: () =>
                                 HapticFeedback.selectionClick(),
@@ -178,7 +218,7 @@ class _ServicesTabState extends State<ServicesTab> {
                             title: context.tr('store'),
                             description: context.tr('natural_remedies'),
                             icon: Icons.shopping_bag_outlined,
-                            iconBgColor: const Color(0xFFEBF7F0),
+                            iconBgColor: AppColors.tintMint,
                             iconColor: AppColors.primaryGreen,
                             onTap: () => Navigator.of(context).push(
                               AppPageRoute.sharedAxis(
@@ -213,13 +253,10 @@ class _ServicesTabState extends State<ServicesTab> {
           children: [
             Container(
               padding: const EdgeInsets.all(16),
+              foregroundDecoration: IslamicPatternDecoration(),
               decoration: BoxDecoration(
                 gradient: AppGradients.emeraldGradient,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: AppElevation.glow(
-                  AppColors.primaryGreen,
-                  strength: 0.25,
-                ),
               ),
               child: Row(
                 children: [
@@ -238,7 +275,7 @@ class _ServicesTabState extends State<ServicesTab> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: Color(0xFFD49E35),
                         ),
                       ),
@@ -254,7 +291,7 @@ class _ServicesTabState extends State<ServicesTab> {
                           style: const TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 16,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
                         ),
@@ -276,12 +313,6 @@ class _ServicesTabState extends State<ServicesTab> {
                     size: 20,
                   ),
                 ],
-              ),
-            ),
-            const Positioned.fill(
-              child: ShineOverlay(
-                opacity: 0.1,
-                borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
             ),
           ],
@@ -306,15 +337,6 @@ class _ServicesTabState extends State<ServicesTab> {
                   ? const Color(0xFF182E25)
                   : s.iconBg,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: context.isDarkMode
-                  ? []
-                  : [
-                      BoxShadow(
-                        color: s.iconColor.withValues(alpha: 0.15),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
             ),
             alignment: Alignment.center,
             child: s.customIcon ??

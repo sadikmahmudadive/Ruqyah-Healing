@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../theme/app_theme.dart';
 
 class HijamaPoint {
   final String code;
@@ -134,7 +135,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 width: 38,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE2E8E5),
+                  color: AppColors.lightCardBorder,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -145,8 +146,8 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                fontWeight: FontWeight.w700,
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -161,7 +162,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     color: isSelected
                         ? const Color(0xFF0B4632)
-                        : const Color(0xFF15221D),
+                        : AppColors.lightTextPrimary,
                   ),
                 ),
                 trailing: isSelected
@@ -204,7 +205,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 width: 38,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE2E8E5),
+                  color: AppColors.lightCardBorder,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -215,8 +216,8 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                fontWeight: FontWeight.w700,
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -231,7 +232,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     color: isSelected
                         ? const Color(0xFF0B4632)
-                        : const Color(0xFF15221D),
+                        : AppColors.lightTextPrimary,
                   ),
                 ),
                 trailing: isSelected
@@ -256,7 +257,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
 
   // Full Screen 3D Rendered Body Viewer
   void _showFullScreen3DViewerModal() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
@@ -288,9 +289,9 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
@@ -298,19 +299,19 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    blurRadius: 26,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -324,7 +325,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 18,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Color(0xFF0B4632),
             ),
           ),
@@ -342,14 +343,14 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -497,7 +498,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 12.5,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-            color: isSelected ? Colors.white : const Color(0xFF52625B),
+            color: isSelected ? Colors.white : AppColors.lightTextSecondary,
           ),
         ),
       ),
@@ -515,8 +516,8 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -676,7 +677,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.92),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
@@ -746,7 +747,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
           color: Colors.white,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+          border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -754,7 +755,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             ),
           ],
         ),
-        child: Icon(icon, color: const Color(0xFF15221D), size: 18),
+        child: Icon(icon, color: AppColors.lightTextPrimary, size: 18),
       ),
     );
   }
@@ -797,8 +798,8 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, 3),
+              blurRadius: 26,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -813,7 +814,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11,
-                      color: Color(0xFF90A4AE),
+                      color: AppColors.lightTextMuted,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -823,7 +824,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF15221D),
+                      color: AppColors.lightTextPrimary,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -832,7 +833,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             ),
             const Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: Color(0xFF6E7E77),
+              color: AppColors.lightTextSecondary,
               size: 20,
             ),
           ],
@@ -851,7 +852,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 15.5,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: Color(0xFF0B4632),
           ),
         ),
@@ -874,7 +875,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEBF7F0),
+                    color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected
@@ -915,8 +916,8 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -940,7 +941,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Color(0xFF0B4632),
                 ),
               ),
@@ -954,7 +955,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8E1),
+                    color: AppColors.tintSand,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -977,9 +978,9 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 11,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               letterSpacing: 0.8,
-              color: Color(0xFF90A4AE),
+              color: AppColors.lightTextMuted,
             ),
           ),
           const SizedBox(height: 4),
@@ -988,7 +989,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 12.5,
-              color: Color(0xFF6E7E77),
+              color: AppColors.lightTextSecondary,
               height: 1.38,
             ),
           ),
@@ -1001,9 +1002,9 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 11,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               letterSpacing: 0.8,
-              color: Color(0xFF90A4AE),
+              color: AppColors.lightTextMuted,
             ),
           ),
           const SizedBox(height: 4),
@@ -1012,13 +1013,13 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 12.5,
-              color: Color(0xFF6E7E77),
+              color: AppColors.lightTextSecondary,
               height: 1.38,
             ),
           ),
 
           const SizedBox(height: 14),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 12),
 
           // EVIDENCE Section
@@ -1029,9 +1030,9 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const SizedBox(width: 8),
@@ -1059,7 +1060,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0).withValues(alpha: 0.80),
+        color: AppColors.tintMint.withValues(alpha: 0.80),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.15),
@@ -1072,7 +1073,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
             width: 24,
             height: 24,
             decoration: const BoxDecoration(
-              color: Color(0xFFE2E8E5),
+              color: AppColors.lightCardBorder,
               shape: BoxShape.circle,
             ),
             child: const Center(
@@ -1081,7 +1082,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
                 style: TextStyle(
                   fontFamily: 'Cinzel',
                   fontSize: 13,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Color(0xFF0B4632),
                 ),
               ),
@@ -1094,7 +1095,7 @@ class _HijamaBodyMapScreenState extends State<HijamaBodyMapScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 11.5,
-                color: Color(0xFF52625B),
+                color: AppColors.lightTextSecondary,
                 height: 1.35,
               ),
             ),
@@ -1128,7 +1129,7 @@ class _LegendItem extends StatelessWidget {
             fontFamily: 'Inter',
             fontSize: 10.5,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
       ],
@@ -1433,7 +1434,7 @@ class _FullScreen3DAnatomyViewerState
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: Colors.white,
           ),
         ),
@@ -1575,7 +1576,7 @@ class _FullScreen3DAnatomyViewerState
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
                       ),

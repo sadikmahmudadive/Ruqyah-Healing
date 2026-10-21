@@ -428,7 +428,10 @@ class _LiveSessionPainter extends CustomPainter {
 enum FlatIllustrationKind {
   hijama,
   acupuncture,
+  acupressure,
   ayurvedic,
+  unani,
+  medicine,
   pathology,
   emptyNotifications,
   emptyBookings,
@@ -484,8 +487,14 @@ class _FlatPainter extends CustomPainter {
         _drawHijama(canvas, p, dark);
       case FlatIllustrationKind.acupuncture:
         _drawAcupuncture(canvas, p, dark);
+      case FlatIllustrationKind.acupressure:
+        _drawAcupressure(canvas, p, dark);
       case FlatIllustrationKind.ayurvedic:
         _drawAyurvedic(canvas, p, dark);
+      case FlatIllustrationKind.unani:
+        _drawUnani(canvas, p, dark);
+      case FlatIllustrationKind.medicine:
+        _drawMedicine(canvas, p, dark);
       case FlatIllustrationKind.pathology:
         _drawPathology(canvas, p, dark);
       case FlatIllustrationKind.emptyNotifications:
@@ -657,6 +666,55 @@ void _drawAcupuncture(Canvas canvas, _Palette p, bool dark) {
   _sparkle(canvas, const Offset(18, 24), 3.6, _fill(p.goldSoft));
 }
 
+// Acupressure: human palm with targeted pressure-point stimulation and energy pulse waves.
+void _drawAcupressure(Canvas canvas, _Palette p, bool dark) {
+  const coral = Color(0xFFC86D51);
+  const coralDeep = Color(0xFFA04B32);
+  _tint(canvas, coral, dark);
+
+  // Stylized resting palm / hand
+  final handPath = Path()
+    ..moveTo(24, 76)
+    ..quadraticBezierTo(20, 60, 28, 48)
+    ..quadraticBezierTo(32, 42, 38, 46)
+    ..lineTo(42, 54)
+    ..lineTo(44, 38)
+    ..quadraticBezierTo(46, 30, 52, 32)
+    ..quadraticBezierTo(56, 34, 56, 42)
+    ..lineTo(56, 54)
+    ..lineTo(58, 36)
+    ..quadraticBezierTo(60, 28, 66, 30)
+    ..quadraticBezierTo(70, 32, 70, 42)
+    ..lineTo(70, 58)
+    ..lineTo(72, 44)
+    ..quadraticBezierTo(74, 38, 80, 40)
+    ..quadraticBezierTo(84, 42, 82, 52)
+    ..lineTo(80, 68)
+    ..quadraticBezierTo(78, 82, 60, 84)
+    ..lineTo(36, 84)
+    ..close();
+  canvas.drawPath(handPath, _fill(_skin(dark)));
+
+  // Center pressure focal point (e.g. PC 8 / Laogong point)
+  const acupoint = Offset(52, 62);
+  canvas.drawCircle(acupoint, 4.5, _fill(coralDeep));
+  canvas.drawCircle(acupoint, 2.2, _fill(p.goldSoft));
+
+  // Radiating tactile energy ripples
+  for (int r = 10; r <= 22; r += 6) {
+    canvas.drawArc(
+      Rect.fromCircle(center: acupoint, radius: r.toDouble()),
+      0,
+      6.28318,
+      false,
+      _stroke(coral.withValues(alpha: 0.65 - (r - 10) * 0.025), 1.6),
+    );
+  }
+
+  _crescent(canvas, const Offset(82, 22), 6.5, _fill(p.gold));
+  _sparkle(canvas, const Offset(18, 26), 3.6, _fill(p.goldSoft));
+}
+
 // Ayurvedic: mortar and pestle with herbs and a flower.
 void _drawAyurvedic(Canvas canvas, _Palette p, bool dark) {
   const leaf = Color(0xFF27AE60);
@@ -705,6 +763,100 @@ void _drawAyurvedic(Canvas canvas, _Palette p, bool dark) {
   canvas.drawCircle(fc, 3, _fill(p.gold));
 
   _sparkle(canvas, const Offset(82, 20), 3.6, _fill(p.goldSoft));
+}
+
+// Unani: classical apothecary flask with herbal tonic, kalonji bloom and leaf.
+void _drawUnani(Canvas canvas, _Palette p, bool dark) {
+  const amber = Color(0xFFC59236);
+  const amberDeep = Color(0xFF8D6E63);
+  _tint(canvas, amber, dark);
+
+  // Apothecary glass flask
+  final flask = Path()
+    ..moveTo(42, 34)
+    ..lineTo(58, 34)
+    ..lineTo(56, 44)
+    ..lineTo(76, 76)
+    ..cubicTo(78, 82, 72, 86, 64, 86)
+    ..lineTo(36, 86)
+    ..cubicTo(28, 86, 22, 82, 24, 76)
+    ..lineTo(44, 44)
+    ..close();
+  canvas.drawPath(flask, _fill(dark ? const Color(0xFF1B3026) : const Color(0xFFFAF6EE)));
+  canvas.drawPath(flask, _stroke(amberDeep, 2.0));
+
+  // Liquid tonic inside flask
+  final liquid = Path()
+    ..moveTo(27, 72)
+    ..quadraticBezierTo(40, 68, 50, 72)
+    ..quadraticBezierTo(60, 76, 73, 72)
+    ..lineTo(70, 78)
+    ..cubicTo(68, 84, 62, 85, 50, 85)
+    ..cubicTo(38, 85, 32, 84, 30, 78)
+    ..close();
+  canvas.drawPath(liquid, _fill(p.gold.withValues(alpha: 0.85)));
+
+  // Flask stopper/lip
+  canvas.drawRRect(
+    RRect.fromLTRBR(39, 30, 61, 35, const Radius.circular(2.5)),
+    _fill(amberDeep),
+  );
+
+  // Healing botanical sprig (olive / black seed leaf)
+  _leaf(canvas, const Offset(50, 36), const Offset(68, 18), 6, p.light, p.deep);
+  _leaf(canvas, const Offset(50, 36), const Offset(36, 20), 5, p.light, p.deep);
+
+  // Nigella flower star
+  _sparkle(canvas, const Offset(68, 18), 4.2, _fill(p.goldSoft));
+  _crescent(canvas, const Offset(18, 22), 6.5, _fill(p.gold));
+}
+
+// Medicine: clinical remedy bottle with a healing cross, capsule, and olive leaf.
+void _drawMedicine(Canvas canvas, _Palette p, bool dark) {
+  const teal = Color(0xFF16A085);
+  const tealDeep = Color(0xFF0E6655);
+  _tint(canvas, teal, dark);
+
+  // Medicine bottle body
+  final bottle = RRect.fromLTRBR(24, 44, 58, 86, const Radius.circular(8));
+  canvas.drawRRect(bottle, _fill(dark ? const Color(0xFF142E27) : const Color(0xFFEAF5F2)));
+  canvas.drawRRect(bottle, _stroke(tealDeep, 2.0));
+
+  // Bottle cap
+  canvas.drawRRect(
+    RRect.fromLTRBR(30, 36, 52, 44, const Radius.circular(3)),
+    _fill(teal),
+  );
+
+  // Medical cross on bottle
+  final crossPaint = _stroke(tealDeep, 3.2);
+  canvas.drawLine(const Offset(41, 57), const Offset(41, 73), crossPaint);
+  canvas.drawLine(const Offset(33, 65), const Offset(49, 65), crossPaint);
+
+  // Capsule leaning on the right
+  canvas.save();
+  canvas.translate(72, 65);
+  canvas.rotate(0.42);
+  final cap = RRect.fromLTRBR(-9, -20, 9, 20, const Radius.circular(9));
+  canvas.drawRRect(cap, _fill(p.deep));
+  canvas.drawRRect(cap, _stroke(tealDeep, 1.8));
+  canvas.drawLine(const Offset(-9, 0), const Offset(9, 0), _stroke(p.gold, 1.8));
+
+  // Fill top half with gold
+  final topCap = Path()
+    ..moveTo(-9, 0)
+    ..lineTo(-9, -11)
+    ..quadraticBezierTo(-9, -20, 0, -20)
+    ..quadraticBezierTo(9, -20, 9, -11)
+    ..lineTo(9, 0)
+    ..close();
+  canvas.drawPath(topCap, _fill(p.gold));
+  canvas.restore();
+
+  // Botanical leaf sprout above
+  _leaf(canvas, const Offset(41, 36), const Offset(26, 18), 6, p.light, tealDeep);
+  _crescent(canvas, const Offset(82, 22), 6.5, _fill(p.gold));
+  _sparkle(canvas, const Offset(18, 28), 3.6, _fill(p.goldSoft));
 }
 
 // Pathology: test tubes in a rack, a droplet and a crescent.

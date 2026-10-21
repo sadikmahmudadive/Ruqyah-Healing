@@ -31,7 +31,7 @@ class PressScale extends StatefulWidget {
     required this.child,
     this.onTap,
     this.onLongPress,
-    this.scale = 0.97,
+    this.scale = 0.985,
     this.duration = AppMotion.fast,
     this.hapticOnTap = true,
     this.hapticType = HapticFeedbackType.selection,
@@ -78,10 +78,10 @@ class _PressScaleState extends State<PressScale>
           HapticFeedback.lightImpact();
           break;
         case HapticFeedbackType.medium:
-          HapticFeedback.mediumImpact();
+          HapticFeedback.lightImpact();
           break;
         case HapticFeedbackType.heavy:
-          HapticFeedback.heavyImpact();
+          HapticFeedback.lightImpact();
           break;
       }
     }

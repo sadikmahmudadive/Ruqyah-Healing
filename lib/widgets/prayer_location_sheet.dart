@@ -116,7 +116,7 @@ class _PrayerLocationSheetState extends State<_PrayerLocationSheet> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 20,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: context.textPrimary,
                         ),
                       ),
@@ -245,7 +245,7 @@ class _PrayerLocationSheetState extends State<_PrayerLocationSheet> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -271,7 +271,7 @@ class _PrayerLocationSheetState extends State<_PrayerLocationSheet> {
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: AppColors.primaryGreen,
                         ),
                       ),

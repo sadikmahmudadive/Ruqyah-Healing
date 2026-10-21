@@ -22,9 +22,9 @@ class FadeSlideIn extends StatefulWidget {
   const FadeSlideIn({
     super.key,
     required this.child,
-    this.duration = const Duration(milliseconds: 500),
+    this.duration = const Duration(milliseconds: 650),
     this.delay = Duration.zero,
-    this.beginOffset = const Offset(0, 0.08),
+    this.beginOffset = const Offset(0, 0.04),
     this.curve = AppMotion.standard,
   });
 
@@ -88,8 +88,8 @@ class StaggeredColumn extends StatelessWidget {
     super.key,
     required this.children,
     this.stagger = AppMotion.staggerStep,
-    this.itemDuration = const Duration(milliseconds: 500),
-    this.beginOffset = const Offset(0, 0.08),
+    this.itemDuration = const Duration(milliseconds: 650),
+    this.beginOffset = const Offset(0, 0.04),
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.max,
@@ -128,8 +128,8 @@ class StaggeredRow extends StatelessWidget {
     super.key,
     required this.children,
     this.stagger = AppMotion.staggerStep,
-    this.itemDuration = const Duration(milliseconds: 500),
-    this.beginOffset = const Offset(0.1, 0),
+    this.itemDuration = const Duration(milliseconds: 650),
+    this.beginOffset = const Offset(0.05, 0),
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.max,
@@ -167,7 +167,7 @@ class ScaleFadeIn extends StatefulWidget {
   const ScaleFadeIn({
     super.key,
     required this.child,
-    this.duration = const Duration(milliseconds: 450),
+    this.duration = const Duration(milliseconds: 600),
     this.delay = Duration.zero,
     this.beginScale = 0.9,
     this.curve = AppMotion.standard,

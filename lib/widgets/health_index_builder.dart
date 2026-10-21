@@ -11,8 +11,9 @@ import '../theme/app_theme.dart';
 extension HealthToneColor on HealthTone {
   Color get color => switch (this) {
     HealthTone.good => AppColors.success,
-    HealthTone.moderate => AppColors.warning,
-    HealthTone.poor => AppColors.danger,
+    HealthTone.moderate => AppColors.accentGold,
+    // A warm clay rather than red: a low score is a place to start, not an alarm.
+    HealthTone.poor => const Color(0xFFC98A5E),
   };
 }
 

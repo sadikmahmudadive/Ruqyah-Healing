@@ -49,7 +49,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   ];
 
   void _handleAddToCart() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     AppToast.show(
       context,
       title: 'Cart Updated',
@@ -79,8 +79,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    blurRadius: 26,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
@@ -119,8 +119,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -151,8 +151,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -162,8 +162,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ? Icons.favorite_rounded
                         : Icons.favorite_border_rounded,
                     color: _isFavorite
-                        ? const Color(0xFFE74C3C)
-                        : const Color(0xFFE74C3C),
+                        ? const Color(0xFFC4604F)
+                        : const Color(0xFFC4604F),
                     size: 18,
                   ),
                   onPressed: () {
@@ -225,8 +225,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
+                blurRadius: 26,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -268,7 +268,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFCFD8DC),
+                      : AppColors.lightCardBorderStrong,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -290,8 +290,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -303,7 +303,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFEBEB),
+                color: const Color(0xFFF6EEE2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -311,9 +311,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFFE74C3C),
-                  letterSpacing: 0.5,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF8A6420),
+                  letterSpacing: 0.2,
                 ),
               ),
             ),
@@ -326,7 +326,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: context.textPrimary,
               height: 1.25,
             ),
@@ -344,7 +344,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 24,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -355,7 +355,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   fontFamily: 'Inter',
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                   decoration: TextDecoration.lineThrough,
                 ),
               ),
@@ -371,7 +371,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFF8E1),
+                color: AppColors.tintSand,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Row(
@@ -411,7 +411,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -537,7 +537,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -585,7 +585,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             decoration: BoxDecoration(
               color: context.isDarkMode
                   ? const Color(0xFF182E25)
-                  : const Color(0xFFF5F7F6),
+                  : AppColors.lightBackground,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(color: context.cardBorder, width: 1.0),
             ),
@@ -622,7 +622,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/islamic_pattern.dart';
 
 class SubscriptionPlansScreen extends StatefulWidget {
   const SubscriptionPlansScreen({super.key});
@@ -18,7 +19,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
   String _selectedPlanId = 'monthly'; // 'free', 'monthly', 'yearly'
 
   void _handleContinue() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     AppToast.show(
       context,
       title: 'Subscription Updated',
@@ -101,7 +102,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                       tagLabel: 'Most Popular',
                       tagColor: context.isDarkMode
                           ? const Color(0xFF182E25)
-                          : const Color(0xFFEBF7F0),
+                          : AppColors.tintMint,
                       tagTextColor: context.isDarkMode
                           ? const Color(0xFF81C784)
                           : const Color(0xFF0B4632),
@@ -127,7 +128,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                       tagLabel: 'Save 20%',
                       tagColor: context.isDarkMode
                           ? const Color(0xFF2E2412)
-                          : const Color(0xFFFFF8E1),
+                          : AppColors.tintSand,
                       tagTextColor: const Color(0xFFD49E35),
                       isPremium: true,
                       footerText: 'Cancel anytime • Billed yearly',
@@ -221,7 +222,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 11,
-                                color: Color(0xFF90A4AE),
+                                color: AppColors.lightTextMuted,
                               ),
                             ),
                             TextSpan(
@@ -229,7 +230,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                               style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 11,
-                                color: Color(0xFF90A4AE),
+                                color: AppColors.lightTextMuted,
                                 decoration: TextDecoration.underline,
                               ),
                             ),
@@ -238,7 +239,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 11,
-                                color: Color(0xFF90A4AE),
+                                color: AppColors.lightTextMuted,
                               ),
                             ),
                           ],
@@ -266,6 +267,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -301,7 +303,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
                     color: Color(0xFF81C784),
                   ),
@@ -312,7 +314,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 22,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -357,8 +359,8 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
+              blurRadius: 26,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -378,7 +380,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: isPremium
                               ? (context.isDarkMode
                                   ? const Color(0xFF81C784)
@@ -396,7 +398,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 24,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w700,
                               color: isPremium
                                   ? (context.isDarkMode
                                       ? const Color(0xFF81C784)
@@ -421,7 +423,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                           style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 11,
-                            color: Color(0xFF90A4AE),
+                            color: AppColors.lightTextMuted,
                           ),
                         ),
                       ],
@@ -447,7 +449,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 10.5,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: tagTextColor,
                           ),
                         ),
@@ -463,7 +465,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                         border: Border.all(
                           color: isSelected
                               ? const Color(0xFF0B4632)
-                              : const Color(0xFF90A4AE),
+                              : AppColors.lightTextMuted,
                           width: 2.0,
                         ),
                       ),
@@ -490,7 +492,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                           isPremium ? Icons.check_circle_rounded : Icons.circle,
                           color: isPremium
                               ? const Color(0xFF2ECC71)
-                              : const Color(0xFFB0BEC5),
+                              : AppColors.lightTextMuted,
                           size: isPremium ? 16 : 6,
                         ),
                         SizedBox(width: isPremium ? 8 : 12),
@@ -515,7 +517,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
             ],

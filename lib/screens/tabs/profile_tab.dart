@@ -178,7 +178,7 @@ class _ProfileTabState extends State<ProfileTab> {
           // 1. User Avatar & Identity Header
           _buildAvatarHeader(name, email),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 28),
 
           // 2. Statistics Bento Cards (3 Columns)
           _buildStatsBentoRow(
@@ -187,12 +187,12 @@ class _ProfileTabState extends State<ProfileTab> {
             daysActive: daysActive,
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
 
           // 3. Settings Options List Card
           _buildSettingsListCard(),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
 
           // 4. Logout or Sign-In Card
           isGuest ? _buildAuthCard() : _buildLogoutCard(),
@@ -264,7 +264,7 @@ class _ProfileTabState extends State<ProfileTab> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 21,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: context.textPrimary,
           ),
         ),
@@ -294,12 +294,12 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: sessionsCompleted,
-            label: 'SESSIONS',
+            label: 'Sessions',
             subtitle: 'Completed',
             subtitleColor: context.textSecondary,
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         Expanded(
           child: GestureDetector(
             onTap: () {
@@ -312,9 +312,9 @@ class _ProfileTabState extends State<ProfileTab> {
             },
             child: _buildBentoCard(
               number: healthIndex,
-              label: 'HEALTH INDEX',
-              subtitle: 'Good State',
-              subtitleColor: const Color(0xFF1E6B45),
+              label: 'Health index',
+              subtitle: 'Your wellbeing',
+              subtitleColor: AppColors.success,
             ),
           ),
         ),
@@ -322,8 +322,8 @@ class _ProfileTabState extends State<ProfileTab> {
         Expanded(
           child: _buildBentoCard(
             number: daysActive,
-            label: 'DAYS ACTIVE',
-            subtitle: 'Streak Tracker',
+            label: 'Days with us',
+            subtitle: 'Since you joined',
             subtitleColor: context.textSecondary,
           ),
         ),
@@ -341,7 +341,7 @@ class _ProfileTabState extends State<ProfileTab> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
       decoration: BoxDecoration(
         color: context.cardBg,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
       ),
       child: Column(
@@ -354,7 +354,7 @@ class _ProfileTabState extends State<ProfileTab> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: context.textPrimary,
             ),
           ),
@@ -366,9 +366,8 @@ class _ProfileTabState extends State<ProfileTab> {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
-              fontSize: 10,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0.4,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
               color: context.textPrimary,
             ),
           ),
@@ -380,8 +379,8 @@ class _ProfileTabState extends State<ProfileTab> {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
               color: subtitleColor,
             ),
           ),
@@ -399,9 +398,9 @@ class _ProfileTabState extends State<ProfileTab> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -515,7 +514,7 @@ class _ProfileTabState extends State<ProfileTab> {
                 decoration: BoxDecoration(
                   color: context.isDarkMode
                       ? const Color(0xFF182E25)
-                      : const Color(0xFFEBF7F0),
+                      : AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
@@ -605,7 +604,7 @@ class _ProfileTabState extends State<ProfileTab> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.lightImpact();
             Navigator.of(context).pushAndRemoveUntil(
               PageRouteBuilder(pageBuilder: (_, _, _) => const SignInScreen()),
               (route) => false,
@@ -645,9 +644,9 @@ class _ProfileTabState extends State<ProfileTab> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -655,7 +654,7 @@ class _ProfileTabState extends State<ProfileTab> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () async {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.lightImpact();
             await FirebaseService.signOut();
             if (mounted) {
               Navigator.of(context).pushAndRemoveUntil(
@@ -675,15 +674,13 @@ class _ProfileTabState extends State<ProfileTab> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: context.isDarkMode
-                        ? const Color(0xFF321E1E)
-                        : const Color(0xFFFFEBEB),
+                    color: context.containerBg,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Icon(
                       Icons.logout_rounded,
-                      color: Color(0xFFE74C3C),
+                      color: context.textSecondary,
                       size: 20,
                     ),
                   ),
@@ -691,11 +688,11 @@ class _ProfileTabState extends State<ProfileTab> {
                 const SizedBox(width: 14),
                 Text(
                   context.tr('logout'),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFFE74C3C),
+                    color: context.textPrimary,
                   ),
                 ),
               ],

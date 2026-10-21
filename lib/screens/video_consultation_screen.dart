@@ -58,7 +58,7 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
   }
 
   void _handleEndCall() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     Navigator.of(context).pop();
   }
 
@@ -177,12 +177,10 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFD32F2F)
-                                        .withValues(alpha: 0.35),
+                                    color: Colors.black.withValues(alpha: 0.40),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                      color: const Color(0xFFD32F2F)
-                                          .withValues(alpha: 0.50),
+                                      color: Colors.white.withValues(alpha: 0.20),
                                       width: 1.0,
                                     ),
                                   ),
@@ -192,7 +190,7 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                                       fontFamily: 'Inter',
                                       fontSize: 13,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xFFFF8A80),
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
@@ -300,7 +298,7 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                                 style: const TextStyle(
                                   fontFamily: 'PlusJakartaSans',
                                   fontSize: 21,
-                                  fontWeight: FontWeight.w800,
+                                  fontWeight: FontWeight.w700,
                                   color: Colors.white,
                                   shadows: [
                                     Shadow(
@@ -347,14 +345,14 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                               child: Row(
                                 children: [
                                   const Icon(
-                                    Icons.warning_amber_rounded,
+                                    Icons.lock_outline_rounded,
                                     color: Color(0xFFD49E35),
                                     size: 15,
                                   ),
                                   const SizedBox(width: 6),
                                   Expanded(
                                     child: Text(
-                                      'No screenshots or recordings. Please respect privacy.',
+                                      'This session is private. Please do not record or take screenshots.',
                                       style: TextStyle(
                                         fontFamily: 'Inter',
                                         fontSize: 11,
@@ -388,7 +386,7 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
               decoration: const BoxDecoration(
                 color: Color(0xFF101418),
                 borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(24)),
+                    BorderRadius.vertical(top: Radius.circular(32)),
               ),
               child: Column(
                 children: [
@@ -459,16 +457,16 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
 
                       // Emergency Button
                       _buildCallControlButton(
-                        icon: Icons.error_outline_rounded,
-                        label: 'Emergency',
+                        icon: Icons.favorite_border_rounded,
+                        label: 'Get help',
                         isEmergency: true,
                         onTap: () {
-                          HapticFeedback.heavyImpact();
+                          HapticFeedback.lightImpact();
                           AppToast.show(
                             context,
-                            title: 'Emergency Triggered',
-                            message: 'Emergency protocol triggered. Support alerted.',
-                            type: ToastType.error,
+                            title: 'Help is on the way',
+                            message: 'Our support team has been notified. You are not alone.',
+                            type: ToastType.info,
                           );
                         },
                       ),
@@ -483,7 +481,7 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                     height: 54,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFD32F2F),
+                        backgroundColor: const Color(0xFFB4503F),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18),
                         ),
@@ -519,19 +517,19 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
     required VoidCallback onTap,
   }) {
     final bgColor = isEmergency
-        ? const Color(0xFF2C1618)
+        ? const Color(0xFF2A2220)
         : isActive
             ? Colors.white
             : const Color(0xFF222A30);
 
     final iconColor = isEmergency
-        ? const Color(0xFFEF5350)
+        ? const Color(0xFFD9A08F)
         : isActive
             ? const Color(0xFF101418)
             : Colors.white;
 
     final borderColor = isEmergency
-        ? const Color(0xFFD32F2F).withValues(alpha: 0.50)
+        ? const Color(0xFFB4503F).withValues(alpha: 0.50)
         : Colors.transparent;
 
     return Column(

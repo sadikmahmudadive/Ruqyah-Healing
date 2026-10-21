@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import 'full_audio_player_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class EmergencyRuqyahScreen extends StatefulWidget {
   const EmergencyRuqyahScreen({super.key});
@@ -27,7 +28,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
     super.initState();
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2200),
+      duration: const Duration(seconds: 8),
     )..repeat();
   }
 
@@ -38,7 +39,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
   }
 
   void _handleStartPlaylist() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (_, _, _) => const FullAudioPlayerScreen(
@@ -60,6 +61,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
       ),
       child: Scaffold(
         body: Container(
+          foregroundDecoration: IslamicPatternDecoration(),
           decoration: const BoxDecoration(
             gradient: AppGradients.greenHeaderGradient,
           ),
@@ -80,7 +82,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
                     children: [
                       const SizedBox(height: 8),
 
-                      // 1. Pulsing Warning Emblem
+                      // 1. Breathing orb
                       _buildPulsingEmblem(),
 
                       const SizedBox(height: 18),
@@ -115,8 +117,8 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
                         'This is a spiritual support tool, not a medical service.',
                         style: TextStyle(
                           fontFamily: 'Inter',
-                          fontSize: 11.5,
-                          color: Color(0x8881C784),
+                          fontSize: 12,
+                          color: Color(0xB3FFFFFF),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -170,7 +172,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 22,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
@@ -214,88 +216,109 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
     );
   }
 
-  // 1. Pulsing Warning Emblem
+  // 1. Breathing orb: a slow 8 second cycle (4 in, 4 out) to match the pace
+  // of calm breathing. Tapping it starts the recitation.
   Widget _buildPulsingEmblem() {
+    final reduceMotion = MediaQuery.of(context).disableAnimations;
     return SizedBox(
-      width: 180,
-      height: 180,
+      width: 220,
+      height: 236,
       child: AnimatedBuilder(
         animation: _pulseController,
         builder: (context, child) {
-          final progress = _pulseController.value;
-          final wave1Val = progress;
-          final wave2Val = (progress + 0.5) % 1.0;
+          final t = reduceMotion ? 0.25 : _pulseController.value;
+          final breath = 0.5 - 0.5 * math.cos(t * 2 * math.pi); // 0 -> 1 -> 0
+          final inhaling = t < 0.5;
 
-          return Stack(
-            alignment: Alignment.center,
+          return Column(
             children: [
-              // Outer Expanding Wave 2
-              Transform.scale(
-                scale: 1.0 + (wave2Val * 0.50),
-                child: Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color(0xFFE74C3C)
-                          .withValues(alpha: (1.0 - wave2Val) * 0.45),
-                      width: 1.5,
-                    ),
-                  ),
-                ),
-              ),
-
-              // Inner Expanding Wave 1
-              Transform.scale(
-                scale: 1.0 + (wave1Val * 0.40),
-                child: Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color(0xFFE74C3C)
-                        .withValues(alpha: (1.0 - wave1Val) * 0.18),
-                    border: Border.all(
-                      color: const Color(0xFFE74C3C)
-                          .withValues(alpha: (1.0 - wave1Val) * 0.60),
-                      width: 1.8,
-                    ),
-                  ),
-                ),
-              ),
-
-              // Center Breathing Emblem Button
-              Transform.scale(
-                scale: 1.0 + (math.sin(progress * 2 * math.pi) * 0.03),
-                child: GestureDetector(
-                  onTap: _handleStartPlaylist,
-                  child: Container(
-                    width: 96,
-                    height: 96,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFD32F2F),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.25),
-                        width: 2.0,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFD32F2F)
-                              .withValues(alpha: 0.50),
-                          blurRadius: 24,
-                          spreadRadius: 4,
+              SizedBox(
+                width: 200,
+                height: 200,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Soft outer glow that swells with the breath.
+                    Container(
+                      width: 130 + 64 * breath,
+                      height: 130 + 64 * breath,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            const Color(0xFFE5B860)
+                                .withValues(alpha: 0.10 + 0.14 * breath),
+                            const Color(0xFFE5B860).withValues(alpha: 0.0),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.warning_amber_rounded,
-                        color: Colors.white,
-                        size: 44,
                       ),
                     ),
+                    // Thin ring.
+                    Container(
+                      width: 118 + 36 * breath,
+                      height: 118 + 36 * breath,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(0xFF81C784)
+                              .withValues(alpha: 0.25 + 0.2 * breath),
+                          width: 1.2,
+                        ),
+                      ),
+                    ),
+                    // The orb itself.
+                    Transform.scale(
+                      scale: 0.94 + 0.10 * breath,
+                      child: GestureDetector(
+                        onTap: _handleStartPlaylist,
+                        child: Container(
+                          width: 96,
+                          height: 96,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xFF1F5C44), Color(0xFF0F3D2C)],
+                            ),
+                            border: Border.all(
+                              color: const Color(0xFFE5B860)
+                                  .withValues(alpha: 0.55),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFFE5B860)
+                                    .withValues(alpha: 0.18 + 0.12 * breath),
+                                blurRadius: 28,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.self_improvement_rounded,
+                              color: Color(0xFFE5B860),
+                              size: 44,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 4),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 600),
+                child: Text(
+                  inhaling ? 'Breathe in...' : 'Breathe out...',
+                  key: ValueKey<bool>(inhaling),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13.5,
+                    letterSpacing: 0.4,
+                    color: Colors.white.withValues(alpha: 0.75),
                   ),
                 ),
               ),
@@ -315,7 +338,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: Colors.white,
           ),
         ),
@@ -335,13 +358,17 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
           width: double.infinity,
           height: 56,
           decoration: BoxDecoration(
-            color: const Color(0xFFE53935),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFFE9C26F), Color(0xFFD49E35)],
+            ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFE53935).withValues(alpha: 0.40),
-                blurRadius: 18,
-                offset: const Offset(0, 6),
+                color: const Color(0xFFD49E35).withValues(alpha: 0.28),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -357,23 +384,23 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.25),
+                      color: const Color(0xFF1A1405).withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
                       Icons.play_arrow_rounded,
-                      color: Colors.white,
+                      color: Color(0xFF1A1405),
                       size: 20,
                     ),
                   ),
                   const SizedBox(width: 10),
                   const Text(
-                    'Start Emergency Playlist',
+                    'Begin calming recitation',
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 16.5,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1A1405),
                       letterSpacing: 0.2,
                     ),
                   ),
@@ -464,7 +491,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -590,7 +617,7 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
             child: Switch(
               value: value,
               activeThumbColor: Colors.white,
-              activeTrackColor: const Color(0xFF2ECC71),
+              activeTrackColor: const Color(0xFF6FBF8F),
               inactiveThumbColor: Colors.white,
               inactiveTrackColor: const Color(0xFF133F2E),
               onChanged: (val) {
@@ -676,26 +703,26 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A1618),
-        borderRadius: BorderRadius.circular(16),
+        color: const Color(0xFF0E3827),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFFE74C3C).withValues(alpha: 0.30),
+          color: const Color(0xFFE5B860).withValues(alpha: 0.35),
           width: 1.0,
         ),
       ),
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.error_outline_rounded, color: Color(0xFFEF5350), size: 18),
+          Icon(Icons.favorite_border_rounded, color: Color(0xFFE5B860), size: 20),
           SizedBox(width: 10),
           Expanded(
             child: Text(
-              'If you may harm yourself or others, contact local emergency help immediately.',
+              'If you feel you might harm yourself or someone else, please contact your local emergency services or someone you trust right now.',
               style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 12,
-                color: Color(0xFFEF5350),
-                height: 1.35,
+                fontSize: 12.5,
+                color: Color(0xFFF1E4C4),
+                height: 1.5,
               ),
             ),
           ),

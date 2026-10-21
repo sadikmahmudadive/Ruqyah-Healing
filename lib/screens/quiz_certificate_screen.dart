@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import '../services/firebase_service.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
+import '../theme/app_theme.dart';
 
 class QuizCertificateScreen extends StatefulWidget {
   const QuizCertificateScreen({super.key});
@@ -24,17 +25,17 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
   ];
 
   void _handleSubmitAnswer() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     AppToast.show(
       context,
-      title: 'Answer Submitted',
-      message: 'Your answer has been recorded. 8 of 10 completed.',
+      title: 'Answer saved',
+      message: 'Nicely done. 8 of 10 completed, at your own pace.',
       type: ToastType.success,
     );
   }
 
   void _handleDownloadCertificate() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     AppToast.show(
       context,
       title: 'Downloading Certificate',
@@ -52,29 +53,29 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 26,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -88,8 +89,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
             ),
           ),
           actions: [
@@ -105,7 +106,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Center(
@@ -114,7 +115,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12.5,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       color: Color(0xFF0B4632),
                     ),
                   ),
@@ -133,7 +134,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                 borderRadius: BorderRadius.circular(3),
                 child: const LinearProgressIndicator(
                   value: 0.8, // 8 out of 10
-                  backgroundColor: Color(0xFFE2E8E5),
+                  backgroundColor: AppColors.lightCardBorder,
                   color: Color(0xFF0B4632),
                   minHeight: 6,
                 ),
@@ -177,7 +178,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 13,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: Color(0xFF0B4632),
                           ),
                         ),
@@ -210,13 +211,13 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -239,7 +240,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 10,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
                   color: Color(0xFFD49E35),
                 ),
@@ -255,8 +256,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
               height: 1.35,
             ),
           ),
@@ -282,13 +283,13 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                 ),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFFEBF7F0)
-                      : const Color(0xFFF5F7F6),
+                      ? AppColors.tintMint
+                      : AppColors.lightBackground,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: isSelected
                         ? const Color(0xFF0B4632)
-                        : const Color(0xFFE2E8E5),
+                        : AppColors.lightCardBorder,
                     width: isSelected ? 1.5 : 1.0,
                   ),
                 ),
@@ -300,7 +301,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                           : Icons.radio_button_off_rounded,
                       color: isSelected
                           ? const Color(0xFF0B4632)
-                          : const Color(0xFFCFD8DC),
+                          : AppColors.lightCardBorderStrong,
                       size: 20,
                     ),
                     const SizedBox(width: 14),
@@ -311,11 +312,11 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13.5,
                           fontWeight: isSelected
-                              ? FontWeight.w800
+                              ? FontWeight.w700
                               : FontWeight.w600,
                           color: isSelected
                               ? const Color(0xFF0B4632)
-                              : const Color(0xFF52625B),
+                              : AppColors.lightTextSecondary,
                         ),
                       ),
                     ),
@@ -336,9 +337,9 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF0B4632).withValues(alpha: 0.25),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+                  color: const Color(0xFF0B4632).withValues(alpha: 0.05),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -372,13 +373,13 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -401,8 +402,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
@@ -417,7 +418,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1).withValues(alpha: 0.6),
+                  color: AppColors.tintSand.withValues(alpha: 0.6),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -437,7 +438,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 22,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: FontWeight.w700,
                               color: Colors.white,
                               height: 1.0,
                             ),
@@ -469,7 +470,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F7F6),
+                        color: AppColors.lightBackground,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
@@ -480,7 +481,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 10.5,
-                              color: Color(0xFF90A4AE),
+                              color: AppColors.lightTextMuted,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -492,8 +493,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 22,
-                                    fontWeight: FontWeight.w900,
-                                    color: Color(0xFF15221D),
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.lightTextPrimary,
                                   ),
                                 ),
                                 TextSpan(
@@ -502,7 +503,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                                     fontFamily: 'Inter',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: const Color(0xFF6E7E77),
+                                    color: AppColors.lightTextSecondary,
                                   ),
                                 ),
                               ],
@@ -516,18 +517,18 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F7F6),
+                        color: AppColors.lightBackground,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'Time Taken',
+                            'Time spent',
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 10.5,
-                              color: Color(0xFF90A4AE),
+                              color: AppColors.lightTextMuted,
                             ),
                           ),
                           SizedBox(height: 4),
@@ -536,8 +537,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 20,
-                              fontWeight: FontWeight.w900,
-                              color: Color(0xFF15221D),
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.lightTextPrimary,
                             ),
                           ),
                         ],
@@ -559,7 +560,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFFD49E35).withValues(alpha: 0.60),
@@ -567,9 +568,9 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFD49E35).withValues(alpha: 0.15),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
+            color: const Color(0xFFD49E35).withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -602,7 +603,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
             style: TextStyle(
               fontFamily: 'Cinzel',
               fontSize: 15,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Color(0xFF0B4632),
               letterSpacing: 0.5,
             ),
@@ -623,7 +624,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 10,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
                 textAlign: TextAlign.center,
               );
@@ -631,7 +632,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
           ),
 
           const SizedBox(height: 12),
-          Container(height: 1, color: const Color(0xFFFFF3E8)),
+          Container(height: 1, color: AppColors.tintSand),
           const SizedBox(height: 12),
 
           const Text(
@@ -639,8 +640,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 14,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -660,8 +661,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                       ),
                     ),
                     SizedBox(height: 2),
@@ -670,7 +671,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 9,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                   ],
@@ -681,15 +682,15 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5F7F6),
+                  color: AppColors.lightBackground,
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: const Color(0xFFE2E8E5)),
+                  border: Border.all(color: AppColors.lightCardBorder),
                 ),
                 child: Row(
                   children: [
                     const Icon(
                       Icons.qr_code_rounded,
-                      color: Color(0xFF90A4AE),
+                      color: AppColors.lightTextMuted,
                       size: 18,
                     ),
                     const SizedBox(width: 6),
@@ -701,7 +702,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 9,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: Color(0xFF0B4632),
                           ),
                         ),
@@ -710,7 +711,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 8,
-                            color: Color(0xFF90A4AE),
+                            color: AppColors.lightTextMuted,
                           ),
                         ),
                       ],

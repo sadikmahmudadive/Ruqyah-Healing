@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../widgets/app_toast.dart';
 import 'secure_messages_screen.dart';
+import '../theme/app_theme.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
   final String orderId;
@@ -36,7 +37,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -75,9 +76,9 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 11,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             letterSpacing: 0.8,
-                            color: Color(0xFF90A4AE),
+                            color: AppColors.lightTextMuted,
                           ),
                         ),
                       ],
@@ -154,7 +155,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
           ),
@@ -173,8 +174,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -187,7 +188,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(
@@ -208,8 +209,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -218,7 +219,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF6E7E77),
+                        color: AppColors.lightTextSecondary,
                       ),
                     ),
                   ],
@@ -231,7 +232,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   vertical: 5,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -248,7 +249,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
           ),
 
           const SizedBox(height: 16),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 14),
 
           // Bottom Details Row: Courier, Location, Date
@@ -261,7 +262,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 children: [
                   const Icon(
                     Icons.local_shipping_outlined,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                     size: 15,
                   ),
                   const SizedBox(width: 4),
@@ -270,7 +271,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
-                      color: Color(0xFF6E7E77),
+                      color: AppColors.lightTextSecondary,
                     ),
                   ),
                 ],
@@ -280,7 +281,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 children: [
                   const Icon(
                     Icons.location_on_outlined,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                     size: 15,
                   ),
                   const SizedBox(width: 4),
@@ -289,7 +290,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
-                      color: Color(0xFF6E7E77),
+                      color: AppColors.lightTextSecondary,
                     ),
                   ),
                 ],
@@ -299,7 +300,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 children: [
                   const Icon(
                     Icons.calendar_today_outlined,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                     size: 14,
                   ),
                   const SizedBox(width: 4),
@@ -308,7 +309,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
-                      color: Color(0xFF6E7E77),
+                      color: AppColors.lightTextSecondary,
                     ),
                   ),
                 ],
@@ -330,8 +331,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -398,7 +399,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 Expanded(
                   child: Container(
                     width: 2,
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     margin: const EdgeInsets.symmetric(vertical: 4),
                   ),
                 ),
@@ -422,7 +423,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF15221D),
+                          color: AppColors.lightTextPrimary,
                         ),
                       ),
                       if (showDoneBadge) ...[
@@ -433,7 +434,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFEBF7F0),
+                            color: AppColors.tintMint,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: const Row(
@@ -465,7 +466,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12,
-                      color: Color(0xFF90A4AE),
+                      color: AppColors.lightTextMuted,
                     ),
                   ),
                 ],
@@ -483,7 +484,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       width: double.infinity,
       height: 48,
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0),
+        color: AppColors.tintMint,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.20),
@@ -537,9 +538,9 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -551,7 +552,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 13,
-                color: Color(0xFF6E7E77),
+                color: AppColors.lightTextSecondary,
               ),
               overflow: TextOverflow.ellipsis,
             ),
@@ -600,7 +601,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFEBF7F0),
+              color: AppColors.tintMint,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: const Color(0xFF0B4632).withValues(alpha: 0.20),
@@ -649,10 +650,10 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFEBEB),
+              color: const Color(0xFFF6EEE2),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: const Color(0xFFE74C3C).withValues(alpha: 0.20),
+                color: const Color(0xFFD49E35).withValues(alpha: 0.30),
                 width: 1.0,
               ),
             ),
@@ -663,10 +664,10 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   HapticFeedback.selectionClick();
                   AppToast.show(
                     context,
-                    title: 'Refund Initiated',
+                    title: 'Request received',
                     message:
-                        'Return & refund request for Order #RH1024 submitted.',
-                    type: ToastType.warning,
+                        'Your return & refund request for Order #RH1024 has been submitted.',
+                    type: ToastType.info,
                   );
                 },
                 borderRadius: BorderRadius.circular(16),
@@ -675,7 +676,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   children: [
                     Icon(
                       Icons.refresh_rounded,
-                      color: Color(0xFFE74C3C),
+                      color: Color(0xFF576760),
                       size: 18,
                     ),
                     SizedBox(width: 6),
@@ -685,7 +686,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFFE74C3C),
+                        color: Color(0xFF576760),
                       ),
                     ),
                   ],

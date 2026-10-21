@@ -6,9 +6,15 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import 'tabs/bookings_tab.dart';
 import 'therapist_profile_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class TherapistMarketplaceScreen extends StatefulWidget {
-  const TherapistMarketplaceScreen({super.key});
+  final String initialCategory;
+
+  const TherapistMarketplaceScreen({
+    super.key,
+    this.initialCategory = 'Ruqyah',
+  });
 
   @override
   State<TherapistMarketplaceScreen> createState() =>
@@ -17,7 +23,7 @@ class TherapistMarketplaceScreen extends StatefulWidget {
 
 class _TherapistMarketplaceScreenState
     extends State<TherapistMarketplaceScreen> {
-  String _selectedCategory = 'Ruqyah';
+  late String _selectedCategory;
   bool _verifiedOnly = true;
   String _viewMode = 'List';
   final TextEditingController _searchController = TextEditingController();
@@ -26,8 +32,19 @@ class _TherapistMarketplaceScreenState
     'Ruqyah',
     'Hijama',
     'Acupuncture',
+    'Acupressure',
+    'Ayurvedic',
+    'Unani',
+    'Medicine',
+    'Pathology',
     'Counseling',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategory = widget.initialCategory;
+  }
 
   final List<Therapist> _allTherapists = const [
     Therapist(
@@ -114,6 +131,91 @@ class _TherapistMarketplaceScreenState
       category: 'Acupuncture',
       latitude: 23.8053,
       longitude: 90.4025,
+    ),
+    Therapist(
+      id: 'ther_6',
+      name: 'Ustadh Farhan Ahmed',
+      title: 'Certified Acupressure Therapist',
+      rating: 4.85,
+      reviewsCount: 94,
+      experience: '6+ yrs exp',
+      distance: '1.5 km away',
+      languages: ['Bangla', 'English'],
+      nextSlot: 'Today, 4:30 PM',
+      price: 1100,
+      isVerified: true,
+      avatarUrl: 'assets/logo/logo_app.png',
+      category: 'Acupressure',
+      latitude: 23.8010,
+      longitude: 90.4150,
+    ),
+    Therapist(
+      id: 'ther_7',
+      name: 'Dr. Tanveer Kabir',
+      title: 'Ayurvedic Herbal Physician',
+      rating: 4.9,
+      reviewsCount: 118,
+      experience: '10+ yrs exp',
+      distance: '2.8 km away',
+      languages: ['Bangla', 'English'],
+      nextSlot: 'Tomorrow, 11:00 AM',
+      price: 1400,
+      isVerified: true,
+      avatarUrl: 'assets/logo/logo_app.png',
+      category: 'Ayurvedic',
+      latitude: 23.7850,
+      longitude: 90.3990,
+    ),
+    Therapist(
+      id: 'ther_8',
+      name: 'Hakim Maulana Zaid',
+      title: 'Unani Tibb & Botanical Specialist',
+      rating: 4.92,
+      reviewsCount: 156,
+      experience: '12+ yrs exp',
+      distance: '2.0 km away',
+      languages: ['Bangla', 'Urdu', 'English'],
+      nextSlot: 'Today, 5:00 PM',
+      price: 1350,
+      isVerified: true,
+      avatarUrl: 'assets/logo/logo_app.png',
+      category: 'Unani',
+      latitude: 23.7990,
+      longitude: 90.4110,
+    ),
+    Therapist(
+      id: 'ther_9',
+      name: 'Dr. Shafiul Alam',
+      title: 'Pathology Diagnostics Consultant',
+      rating: 4.88,
+      reviewsCount: 110,
+      experience: '11+ yrs exp',
+      distance: '1.9 km away',
+      languages: ['Bangla', 'English'],
+      nextSlot: 'Tomorrow, 8:30 AM',
+      price: 800,
+      isVerified: true,
+      avatarUrl: 'assets/logo/logo_app.png',
+      category: 'Pathology',
+      latitude: 23.8080,
+      longitude: 90.4180,
+    ),
+    Therapist(
+      id: 'ther_10',
+      name: 'Dr. Maryam Siddiqua',
+      title: 'Prophetic & Natural Medicine Consultant',
+      rating: 4.95,
+      reviewsCount: 168,
+      experience: '13+ yrs exp',
+      distance: '1.4 km away',
+      languages: ['Bangla', 'English', 'Arabic'],
+      nextSlot: 'Today, 2:30 PM',
+      price: 1250,
+      isVerified: true,
+      avatarUrl: 'assets/logo/logo_app.png',
+      category: 'Medicine',
+      latitude: 23.8040,
+      longitude: 90.4130,
     ),
   ];
 
@@ -208,9 +310,9 @@ class _TherapistMarketplaceScreenState
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -247,6 +349,7 @@ class _TherapistMarketplaceScreenState
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
@@ -284,7 +387,7 @@ class _TherapistMarketplaceScreenState
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 22,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
                     ),
@@ -332,7 +435,7 @@ class _TherapistMarketplaceScreenState
               children: [
                 const Icon(
                   Icons.search_rounded,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                   size: 22,
                 ),
                 const SizedBox(width: 10),
@@ -350,7 +453,7 @@ class _TherapistMarketplaceScreenState
                       hintStyle: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                       border: InputBorder.none,
                       isDense: true,
@@ -364,7 +467,7 @@ class _TherapistMarketplaceScreenState
                   decoration: BoxDecoration(
                     color: context.isDarkMode
                         ? const Color(0xFF182E25)
-                        : const Color(0xFFE8F5EE),
+                        : AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -467,7 +570,7 @@ class _TherapistMarketplaceScreenState
               inactiveThumbColor: Colors.white,
               inactiveTrackColor: context.isDarkMode
                   ? const Color(0xFF182E25)
-                  : const Color(0xFFE2E8E5),
+                  : AppColors.lightCardBorder,
               onChanged: (val) {
                 HapticFeedback.selectionClick();
                 setState(() {
@@ -487,7 +590,7 @@ class _TherapistMarketplaceScreenState
               border: Border.all(
                   color: context.isDarkMode
                       ? const Color(0xFF233F33)
-                      : const Color(0xFFE2E8E5),
+                      : AppColors.lightCardBorder,
                   width: 1.0),
             ),
             child: Row(
@@ -519,7 +622,7 @@ class _TherapistMarketplaceScreenState
           color: isSelected
               ? (context.isDarkMode
                   ? const Color(0xFF182E25)
-                  : const Color(0xFFE8F5EE))
+                  : AppColors.tintMint)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(9),
         ),
@@ -548,9 +651,9 @@ class _TherapistMarketplaceScreenState
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -612,7 +715,7 @@ class _TherapistMarketplaceScreenState
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w700,
                                     color: context.textPrimary,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -628,7 +731,7 @@ class _TherapistMarketplaceScreenState
                                   decoration: BoxDecoration(
                                     color: context.isDarkMode
                                         ? const Color(0xFF382B14)
-                                        : const Color(0xFFFFF8E1),
+                                        : AppColors.tintSand,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: const Row(
@@ -763,7 +866,7 @@ class _TherapistMarketplaceScreenState
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 18,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: context.textPrimary,
                           ),
                         ),

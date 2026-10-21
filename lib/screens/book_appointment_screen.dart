@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import 'booking_confirmation_screen.dart';
+import '../theme/app_theme.dart';
 
 class BookAppointmentScreen extends StatefulWidget {
   final String therapistName;
@@ -67,7 +68,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   width: 38,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -79,7 +80,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   fontFamily: 'Cinzel',
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const SizedBox(height: 14),
@@ -99,7 +100,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                           : FontWeight.w500,
                       color: isSelected
                           ? const Color(0xFF0B4632)
-                          : const Color(0xFF15221D),
+                          : AppColors.lightTextPrimary,
                     ),
                   ),
                   trailing: isSelected
@@ -126,7 +127,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   }
 
   void _handleContinue() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
@@ -162,29 +163,29 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: Colors.black.withValues(alpha: 0.03),
+                    blurRadius: 28,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -199,7 +200,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: AppColors.lightTextPrimary,
             ),
           ),
         ),
@@ -254,13 +255,13 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   Widget _buildSelectServiceCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -284,7 +285,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   child: const Center(
                     child: Icon(
                       Icons.nights_stay_rounded,
-                      color: Color(0xFFE0E0E0),
+                      color: AppColors.lightCardBorder,
                       size: 24,
                     ),
                   ),
@@ -303,7 +304,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                           fontFamily: 'Inter',
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF6E7E77),
+                          color: AppColors.lightTextSecondary,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -313,7 +314,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF15221D),
+                          color: AppColors.lightTextPrimary,
                         ),
                       ),
                     ],
@@ -323,7 +324,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 // Dropdown Arrow
                 const Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                   size: 22,
                 ),
               ],
@@ -339,9 +340,9 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+        border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
       ),
       child: Row(
         children: [
@@ -394,7 +395,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               Icon(
                 icon,
                 size: 18,
-                color: isSelected ? Colors.white : const Color(0xFF6E7E77),
+                color: isSelected ? Colors.white : AppColors.lightTextSecondary,
               ),
               const SizedBox(width: 8),
             ],
@@ -404,7 +405,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 14,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                color: isSelected ? Colors.white : const Color(0xFF6E7E77),
+                color: isSelected ? Colors.white : AppColors.lightTextSecondary,
               ),
             ),
           ],
@@ -418,13 +419,13 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -439,7 +440,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -474,7 +475,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -487,7 +488,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -500,7 +501,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -513,7 +514,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -526,7 +527,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -539,7 +540,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -552,7 +553,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -579,10 +580,10 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
         width: 32,
         height: 32,
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F7F6),
+          color: AppColors.lightBackground,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Icon(icon, color: const Color(0xFF15221D), size: 20),
+        child: Icon(icon, color: AppColors.lightTextPrimary, size: 20),
       ),
     );
   }
@@ -654,7 +655,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: Color(0xFFCFD8DC),
+                color: AppColors.lightCardBorderStrong,
               ),
             ),
           );
@@ -668,7 +669,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: Color(0xFFCFD8DC),
+                color: AppColors.lightCardBorderStrong,
               ),
             ),
           );
@@ -710,7 +711,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   fontWeight: isSelected || isToday
                       ? FontWeight.w700
                       : FontWeight.w500,
-                  color: isSelected ? Colors.white : const Color(0xFF15221D),
+                  color: isSelected ? Colors.white : AppColors.lightTextPrimary,
                 ),
               ),
             ),
@@ -731,7 +732,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 15.5,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
 
@@ -768,7 +769,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   border: Border.all(
                     color: isSelected
                         ? const Color(0xFF0B4632)
-                        : const Color(0xFFE2E8E5),
+                        : AppColors.lightCardBorder,
                     width: 1.0,
                   ),
                   boxShadow: isSelected
@@ -793,7 +794,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                           : FontWeight.w600,
                       color: isSelected
                           ? Colors.white
-                          : const Color(0xFF6E7E77),
+                          : AppColors.lightTextSecondary,
                     ),
                   ),
                 ),
@@ -810,13 +811,13 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -830,7 +831,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -839,8 +840,8 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
@@ -856,7 +857,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               Spacer(),
@@ -866,14 +867,14 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
           ),
 
           const SizedBox(height: 12),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 12),
 
           // Patient Profile Row
@@ -884,7 +885,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -930,7 +931,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 15.5,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
         const SizedBox(height: 8),
@@ -938,9 +939,9 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           height: 52,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.lightCardBg,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+            border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.02),
@@ -954,14 +955,14 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 14.5,
-              color: Color(0xFF15221D),
+              color: AppColors.lightTextPrimary,
             ),
             decoration: InputDecoration(
               hintText: 'e.g., Anxiety, Jinn, Evil Eye',
               hintStyle: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: const Color(0xFFB0BEC5),
+                color: AppColors.lightTextMuted,
               ),
               border: InputBorder.none,
               isDense: true,

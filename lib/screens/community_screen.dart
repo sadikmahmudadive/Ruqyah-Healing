@@ -137,7 +137,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -193,7 +193,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     onPressed: () {
                       final text = _questionController.text.trim();
                       if (text.isNotEmpty) {
-                        HapticFeedback.heavyImpact();
+                        HapticFeedback.lightImpact();
                         setState(() {
                           _posts.insert(
                             0,
@@ -325,7 +325,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 26,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -401,7 +401,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             title: 'Ask a Question',
             subtitle: 'Get community advice',
             icon: Icons.help_outline_rounded,
-            iconBgColor: const Color(0xFFEBF7F0),
+            iconBgColor: AppColors.tintMint,
             iconColor: const Color(0xFF0B4632),
             onTap: () => _showAskQuestionModal(isQuestion: true),
           ),
@@ -414,8 +414,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
             title: 'Share an Update',
             subtitle: 'Inspire others',
             icon: Icons.edit_outlined,
-            iconBgColor: const Color(0xFFFFF3E8),
-            iconColor: const Color(0xFFE67E22),
+            iconBgColor: AppColors.tintSand,
+            iconColor: AppColors.warning,
             onTap: () => _showAskQuestionModal(isQuestion: false),
           ),
         ),
@@ -439,9 +439,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 12,
-            offset: const Offset(0, 3),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -517,7 +517,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             decoration: BoxDecoration(
               color: context.isDarkMode
                   ? const Color(0xFF182E25)
-                  : const Color(0xFFEBF7F0),
+                  : AppColors.tintMint,
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -575,7 +575,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 15,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: context.textPrimary,
           ),
         ),
@@ -600,7 +600,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   color: isSelected
                       ? (context.isDarkMode
                           ? const Color(0xFF182E25)
-                          : const Color(0xFFEBF7F0))
+                          : AppColors.tintMint)
                       : context.cardBg,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
@@ -639,9 +639,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -664,7 +664,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 16,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       color: Color(0xFF0B4632),
                     ),
                   ),
@@ -720,12 +720,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 decoration: BoxDecoration(
                   color: context.isDarkMode
                       ? const Color(0xFF182E25)
-                      : const Color(0xFFF5F7F6),
+                      : AppColors.lightBackground,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.more_horiz_rounded,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                   size: 18,
                 ),
               ),
@@ -740,7 +740,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: context.textPrimary,
             ),
           ),
@@ -816,7 +816,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
               decoration: BoxDecoration(
                 color: context.isDarkMode
                     ? const Color(0xFF182E25)
-                    : const Color(0xFFF5F7F6),
+                    : AppColors.lightBackground,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Column(
@@ -869,7 +869,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       decoration: BoxDecoration(
         color: context.isDarkMode
             ? const Color(0xFF182E25)
-            : const Color(0xFFEBF7F0).withValues(alpha: 0.80),
+            : AppColors.tintMint.withValues(alpha: 0.80),
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.20),
@@ -888,7 +888,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.isDarkMode
                       ? const Color(0xFF81C784)
                       : const Color(0xFF0B4632),

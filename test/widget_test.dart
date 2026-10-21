@@ -12,7 +12,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
 
       // 2. Verify Splash Screen elements
-      expect(find.text('RUQYAH HEALING'), findsOneWidget);
+      expect(find.text('RUQYAH'), findsOneWidget);
+      expect(find.text('HEALING'), findsOneWidget);
       expect(find.text('Faith, Care & Wellbeing'), findsOneWidget);
 
       // 3. Advance clock by 5+ seconds for auto-transition
@@ -34,7 +35,7 @@ void main() {
 
       // 6. Verify OnboardingScreen1 elements
       expect(find.text('Skip'), findsOneWidget);
-      expect(find.text('AUTHENTIC HEALING'), findsOneWidget);
+      expect(find.text('AUTHENTIC\nHEALING'), findsOneWidget);
       expect(find.text('Next'), findsOneWidget);
 
       // 7. Tap Next to navigate to OnboardingScreen2
@@ -48,14 +49,17 @@ void main() {
 
       // 9. Tap Next to navigate to OnboardingScreen3
       await tester.tap(find.text('Next'));
-      await tester.pumpAndSettle();
+      // Screen 3's backdrop animates forever, so pumpAndSettle would time out.
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
 
       // 10. Verify OnboardingScreen3 elements
-      expect(find.text('TRUSTED COMMUNITY'), findsOneWidget);
+      expect(find.text('TRUSTED\nCOMMUNITY'), findsOneWidget);
       expect(find.text('Get Started'), findsOneWidget);
 
       // 11. Tap Get Started to navigate to SignInScreen
       await tester.tap(find.text('Get Started'));
+      await tester.pump(const Duration(seconds: 2));
       await tester.pumpAndSettle();
 
       // 12. Verify SignInScreen elements

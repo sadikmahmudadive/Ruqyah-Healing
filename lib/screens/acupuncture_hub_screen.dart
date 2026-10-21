@@ -7,6 +7,7 @@ import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'acupuncture_point_map_screen.dart';
 import 'pain_stress_monitor_screen.dart';
 import 'therapist_marketplace_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class AcupunctureHubScreen extends StatefulWidget {
   const AcupunctureHubScreen({super.key});
@@ -68,7 +69,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 0.8,
                         color: context.textSecondary,
                       ),
@@ -150,6 +151,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -196,7 +198,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 10.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     letterSpacing: 0.8,
                     color: const Color(0xFF81C784),
                   ),
@@ -237,7 +239,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   style: TextStyle(
                     fontFamily: 'Cinzel',
                     fontSize: 16.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.isDarkMode
                         ? const Color(0xFF81C784)
                         : const Color(0xFF0B4632),
@@ -276,7 +278,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 0.5,
                         color: context.isDarkMode
                             ? const Color(0xFF81C784)
@@ -397,7 +399,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -492,7 +494,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15.5,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: context.textPrimary,
                         ),
                       ),
@@ -546,8 +548,8 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 12.5,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFFE74C3C),
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFFC98A5E),
                   ),
                 ),
               ],
@@ -563,7 +565,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                 backgroundColor: context.isDarkMode
                     ? const Color(0xFF182E25)
                     : const Color(0xFFF5F7F6),
-                color: const Color(0xFFE74C3C),
+                color: const Color(0xFFC98A5E),
                 minHeight: 6,
               ),
             ),
@@ -587,7 +589,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 12.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFF0B4632),
                   ),
                 ),
@@ -655,7 +657,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.isDarkMode
                         ? Colors.white
                         : const Color(0xFF0B4632),
@@ -743,7 +745,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -807,7 +809,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -833,7 +835,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
               elevation: 0,
             ),
             onPressed: () {
-              HapticFeedback.heavyImpact();
+              HapticFeedback.lightImpact();
               Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
@@ -845,7 +847,7 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 14,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
             ),

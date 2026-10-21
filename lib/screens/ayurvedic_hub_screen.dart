@@ -5,6 +5,7 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'therapist_marketplace_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class AyurvedicHubScreen extends StatefulWidget {
   const AyurvedicHubScreen({super.key});
@@ -58,6 +59,7 @@ class _AyurvedicHubScreenState extends State<AyurvedicHubScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -133,7 +135,7 @@ class _AyurvedicHubScreenState extends State<AyurvedicHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -163,7 +165,7 @@ class _AyurvedicHubScreenState extends State<AyurvedicHubScreen> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: context.textPrimary,
           ),
         ),
@@ -234,10 +236,12 @@ class _AyurvedicHubScreenState extends State<AyurvedicHubScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
           ),
           onPressed: () {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.lightImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const TherapistMarketplaceScreen(),
+                pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(
+                  initialCategory: 'Ayurvedic',
+                ),
               ),
             );
           },

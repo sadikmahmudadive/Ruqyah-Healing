@@ -6,6 +6,7 @@ import '../services/recitation_playback.dart';
 import '../services/recitation_player_controller.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/islamic_pattern.dart';
 
 class FullAudioPlayerScreen extends StatefulWidget {
   final String title;
@@ -138,7 +139,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
   }
 
   void _togglePlayPause() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     _controller.togglePlayPause();
   }
 
@@ -152,6 +153,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
       ),
       child: Scaffold(
         body: Container(
+          foregroundDecoration: IslamicPatternDecoration(),
           decoration: const BoxDecoration(
             gradient: AppGradients.greenHeaderGradient,
           ),
@@ -229,7 +231,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                     style: const TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 13.5,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
@@ -376,7 +378,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 22,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
@@ -582,7 +584,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 12.5,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: _controller.speed == 1.0 ? Colors.white : _gold,
               ),
             ),
@@ -673,7 +675,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
           ),
@@ -777,7 +779,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 0.4,
                         color: isCurrent ? _gold : Colors.white70,
                       ),

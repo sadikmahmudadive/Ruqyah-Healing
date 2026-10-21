@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import 'main_navigation_shell.dart';
+import '../widgets/islamic_pattern.dart';
 
 class CartItem {
   final String id;
@@ -58,7 +59,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   final int _discount = 235; // PROMO: WELCOME10
 
   void _handlePlaceOrder() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
 
     showDialog(
       context: context,
@@ -81,7 +82,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 fontFamily: 'Cinzel',
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const SizedBox(height: 8),
@@ -91,7 +92,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 13.5,
-                color: Color(0xFF6E7E77),
+                color: AppColors.lightTextSecondary,
               ),
             ),
             const SizedBox(height: 20),
@@ -167,8 +168,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF15221D),
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.lightTextPrimary,
                           ),
                         ),
                         const Spacer(),
@@ -183,7 +184,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFEBF7F0),
+                              color: AppColors.tintMint,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Text(
@@ -250,7 +251,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         children: [
                           Icon(
                             Icons.shield_outlined,
-                            color: Color(0xFF90A4AE),
+                            color: AppColors.lightTextMuted,
                             size: 14,
                           ),
                           SizedBox(width: 4),
@@ -259,7 +260,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 12,
-                              color: Color(0xFF90A4AE),
+                              color: AppColors.lightTextMuted,
                             ),
                           ),
                         ],
@@ -286,6 +287,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: const BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -317,7 +319,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
           ),
@@ -337,8 +339,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -382,7 +384,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -397,7 +399,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   decoration: BoxDecoration(
                     color: context.isDarkMode
                         ? const Color(0xFF182E25)
-                        : const Color(0xFFF5F7F6),
+                        : AppColors.lightBackground,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: context.cardBorder, width: 1.0),
                   ),
@@ -415,7 +417,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 4.0),
                           child: Icon(
                             Icons.remove,
-                            color: Color(0xFF6E7E77),
+                            color: AppColors.lightTextSecondary,
                             size: 16,
                           ),
                         ),
@@ -457,7 +459,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           PopupMenuButton<String>(
             icon: const Icon(
               Icons.more_vert_rounded,
-              color: Color(0xFF90A4AE),
+              color: AppColors.lightTextMuted,
               size: 20,
             ),
             shape: RoundedRectangleBorder(
@@ -477,7 +479,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   children: [
                     Icon(
                       Icons.delete_outline_rounded,
-                      color: Color(0xFFE74C3C),
+                      color: Color(0xFF576760),
                       size: 18,
                     ),
                     SizedBox(width: 8),
@@ -503,8 +505,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -517,7 +519,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -542,7 +544,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -566,7 +568,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Text(
@@ -574,7 +576,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 10,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFF0B4632),
                   ),
                 ),
@@ -613,7 +615,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 17,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -623,7 +625,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 22,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -645,8 +647,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -660,9 +662,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -677,7 +679,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEBF7F0),
+                    color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Text(
@@ -703,7 +705,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -757,8 +759,8 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -772,9 +774,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -789,7 +791,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEBF7F0),
+                    color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Text(
@@ -814,7 +816,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -833,7 +835,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF15221D),
+                      color: AppColors.lightTextPrimary,
                     ),
                   ),
                   SizedBox(height: 2),
@@ -842,7 +844,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12.5,
-                      color: Color(0xFF6E7E77),
+                      color: AppColors.lightTextSecondary,
                     ),
                   ),
                 ],
@@ -859,7 +861,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0).withValues(alpha: 0.80),
+        color: AppColors.tintMint.withValues(alpha: 0.80),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.15),
@@ -880,7 +882,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 12,
-                color: Color(0xFF52625B),
+                color: AppColors.lightTextSecondary,
                 height: 1.3,
               ),
             ),

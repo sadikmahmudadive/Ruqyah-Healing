@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../widgets/app_toast.dart';
 import '../widgets/hijama_cupping_icon.dart';
+import '../theme/app_theme.dart';
 
 class HijamaSessionDetailScreen extends StatefulWidget {
   const HijamaSessionDetailScreen({super.key});
@@ -30,9 +31,9 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
@@ -40,19 +41,19 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    blurRadius: 26,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -68,8 +69,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               SizedBox(height: 2),
@@ -78,7 +79,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                 ),
               ),
             ],
@@ -92,19 +93,19 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
                 child: IconButton(
                   icon: const Icon(
                     Icons.more_horiz_rounded,
-                    color: Color(0xFF15221D),
+                    color: AppColors.lightTextPrimary,
                     size: 20,
                   ),
                   onPressed: () {
@@ -204,8 +205,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -237,8 +238,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -247,7 +248,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
-                    color: Color(0xFF6E7E77),
+                    color: AppColors.lightTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -264,8 +265,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                       ),
                     ),
                     Text(
@@ -273,7 +274,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 11.5,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                   ],
@@ -286,7 +287,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             width: 42,
             height: 42,
             decoration: const BoxDecoration(
-              color: Color(0xFFEBF7F0),
+              color: AppColors.tintMint,
               shape: BoxShape.circle,
             ),
             child: IconButton(
@@ -318,9 +319,9 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -332,8 +333,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 10.5,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF90A4AE),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
                 SizedBox(height: 4),
@@ -342,8 +343,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13.5,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
                   ),
                 ),
               ],
@@ -362,9 +363,9 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -376,8 +377,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 10.5,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF90A4AE),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
                 SizedBox(height: 4),
@@ -386,8 +387,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13.5,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
                   ),
                 ),
               ],
@@ -402,7 +403,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFEBF7F0),
+              color: AppColors.tintMint,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Column(
@@ -413,7 +414,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 10.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFF0B4632),
                   ),
                 ),
@@ -423,7 +424,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFF0B4632),
                   ),
                 ),
@@ -445,8 +446,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -456,7 +457,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFEBF7F0),
+              color: AppColors.tintMint,
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
@@ -478,9 +479,9 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     letterSpacing: 0.8,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
                 SizedBox(height: 2),
@@ -489,8 +490,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF15221D),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
                   ),
                 ),
                 SizedBox(height: 2),
@@ -499,7 +500,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF6E7E77),
+                    color: AppColors.lightTextSecondary,
                   ),
                 ),
               ],
@@ -520,8 +521,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -536,8 +537,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               Spacer(),
@@ -573,7 +574,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             height: 180,
             padding: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: AppColors.lightBackground,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -629,7 +630,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
           ),
 
           const SizedBox(height: 14),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 12),
 
           // Consent Signed Row
@@ -646,7 +647,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                 ),
               ),
               Spacer(),
@@ -655,8 +656,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
@@ -676,8 +677,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -689,8 +690,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
             ),
           ),
 
@@ -715,7 +716,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F7F6),
+          color: AppColors.lightBackground,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -726,8 +727,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               style: const TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 10.5,
-                fontWeight: FontWeight.w800,
-                color: Color(0xFF90A4AE),
+                fontWeight: FontWeight.w700,
+                color: AppColors.lightTextMuted,
               ),
             ),
             const SizedBox(height: 4),
@@ -736,8 +737,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               style: const TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                fontWeight: FontWeight.w700,
+                color: AppColors.lightTextPrimary,
               ),
             ),
           ],
@@ -756,8 +757,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -769,8 +770,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
             ),
           ),
 
@@ -792,7 +793,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
-                      color: Color(0xFF52625B),
+                      color: AppColors.lightTextSecondary,
                     ),
                   ),
                 ],
@@ -814,8 +815,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -827,8 +828,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
             ),
           ),
           SizedBox(height: 8),
@@ -837,7 +838,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 13,
-              color: Color(0xFF6E7E77),
+              color: AppColors.lightTextSecondary,
               height: 1.4,
             ),
           ),
@@ -856,8 +857,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -869,8 +870,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
             ),
           ),
 
@@ -884,13 +885,13 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                     Container(
                       height: 110,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F7F6),
+                        color: AppColors.lightBackground,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Center(
                         child: Icon(
                           Icons.camera_alt_outlined,
-                          color: Color(0xFFB0BEC5),
+                          color: AppColors.lightTextMuted,
                           size: 32,
                         ),
                       ),
@@ -901,7 +902,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF6E7E77),
+                        color: AppColors.lightTextSecondary,
                       ),
                     ),
                   ],
@@ -916,13 +917,13 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                     Container(
                       height: 110,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F7F6),
+                        color: AppColors.lightBackground,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Center(
                         child: Icon(
                           Icons.camera_alt_outlined,
-                          color: Color(0xFFB0BEC5),
+                          color: AppColors.lightTextMuted,
                           size: 32,
                         ),
                       ),
@@ -933,7 +934,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF6E7E77),
+                        color: AppColors.lightTextSecondary,
                       ),
                     ),
                   ],
@@ -948,7 +949,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             children: [
               Icon(
                 Icons.photo_library_outlined,
-                color: Color(0xFF90A4AE),
+                color: AppColors.lightTextMuted,
                 size: 16,
               ),
               SizedBox(width: 6),
@@ -957,7 +958,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                 ),
               ),
             ],
@@ -977,8 +978,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -991,8 +992,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -1011,7 +1012,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEBF7F0),
+                    color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Text(
@@ -1037,7 +1038,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.5,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                 ),
               ),
               Spacer(),
@@ -1047,7 +1048,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
@@ -1062,7 +1063,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.5,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                 ),
               ),
               Spacer(),
@@ -1072,14 +1073,14 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
           ),
 
           const SizedBox(height: 12),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 12),
 
           Row(
@@ -1089,8 +1090,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15.5,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               Spacer(),
@@ -1099,8 +1100,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
@@ -1120,8 +1121,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -1134,7 +1135,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 13.5,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: AppColors.lightTextPrimary,
             ),
           ),
           const SizedBox(height: 8),
@@ -1142,7 +1143,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             height: 48,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: AppColors.lightBackground,
               borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
@@ -1153,8 +1154,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF15221D),
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.lightTextPrimary,
                     ),
                   ),
                 ),
@@ -1164,7 +1165,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                     fontFamily: 'Inter',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ],
@@ -1213,8 +1214,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -1225,7 +1226,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: const Color(0xFFEBF7F0),
+              color: AppColors.tintMint,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: const Color(0xFF0B4632), size: 20),
@@ -1236,8 +1237,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             style: const TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 13.5,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF15221D),
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
             ),
           ),
           const SizedBox(height: 2),
@@ -1246,7 +1247,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 11,
-              color: Color(0xFF90A4AE),
+              color: AppColors.lightTextMuted,
             ),
           ),
         ],
@@ -1259,7 +1260,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0),
+        color: AppColors.tintMint,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.20),
@@ -1293,7 +1294,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 15,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFF0B4632),
                   ),
                 ),
@@ -1303,7 +1304,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: Color(0xFF52625B),
+                    color: AppColors.lightTextSecondary,
                   ),
                 ),
               ],
@@ -1319,29 +1320,29 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFEBEB),
-        borderRadius: BorderRadius.circular(16),
+        color: const Color(0xFFF6EEE2),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFFE74C3C).withValues(alpha: 0.20),
+          color: const Color(0xFFD49E35).withValues(alpha: 0.30),
           width: 1.0,
         ),
       ),
       child: const Row(
         children: [
           Icon(
-            Icons.error_outline_rounded,
-            color: Color(0xFFE74C3C),
+            Icons.spa_outlined,
+            color: Color(0xFFB8862B),
             size: 18,
           ),
           SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Professional-Only: App does not provide instructions for invasive procedures.',
+              'For your safety, this app does not give instructions for invasive procedures.',
               style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 11.5,
-                color: Color(0xFFC0392B),
-                height: 1.35,
+                fontSize: 12,
+                color: Color(0xFF576760),
+                height: 1.45,
               ),
             ),
           ),
@@ -1374,7 +1375,7 @@ class _DotLegend extends StatelessWidget {
             fontFamily: 'Inter',
             fontSize: 11.5,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF52625B),
+            color: AppColors.lightTextSecondary,
           ),
         ),
       ],
@@ -1415,12 +1416,12 @@ class _MiniAnatomyPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFB0BEC5).withValues(alpha: 0.30)
+      ..color = AppColors.lightTextMuted.withValues(alpha: 0.30)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
 
     final fillPaint = Paint()
-      ..color = const Color(0xFFE2E8E5).withValues(alpha: 0.40)
+      ..color = AppColors.lightCardBorder.withValues(alpha: 0.40)
       ..style = PaintingStyle.fill;
 
     final centerX = size.width / 2;

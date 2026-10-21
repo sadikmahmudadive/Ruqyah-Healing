@@ -7,6 +7,7 @@ import '../services/notification_service.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/islamic_pattern.dart';
 
 /// Which notifications the app sends, and whether the phone lets them through.
 class NotificationSettingsScreen extends StatefulWidget {
@@ -186,6 +187,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -215,7 +217,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
           ),
@@ -241,9 +243,9 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return _banner(
       icon: Icons.schedule_rounded,
       color: AppColors.warning,
-      title: 'Alerts may arrive a few minutes late',
+      title: 'Reminders could be a little late',
       body:
-          'Allow exact alarms so prayer reminders fire at the right minute.',
+          'To have prayer reminders arrive right on time, you can allow exact alarms.',
       action: 'Allow',
       onAction: () async {
         await NotificationService.requestExactAlarms();
@@ -281,7 +283,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -306,7 +308,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 13.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: color,
                       ),
                     ),
@@ -329,7 +331,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         fontSize: 11,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.8,
-        color: Color(0xFF90A4AE),
+        color: AppColors.lightTextMuted,
       ),
     ),
   );

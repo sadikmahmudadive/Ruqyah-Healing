@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import 'cart_checkout_screen.dart';
 import 'product_details_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class StoreProduct {
   final String id;
@@ -187,6 +188,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -222,7 +224,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -306,7 +308,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFE74C3C),
+                      color: Color(0xFF0B4632),
                       shape: BoxShape.circle,
                     ),
                     child: Text(
@@ -314,7 +316,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 10,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
                     ),
@@ -338,15 +340,15 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Row(
         children: [
-          const Icon(Icons.search_rounded, color: Color(0xFF90A4AE), size: 20),
+          const Icon(Icons.search_rounded, color: AppColors.lightTextMuted, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -361,7 +363,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                 hintStyle: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
                 border: InputBorder.none,
                 isDense: true,
@@ -373,7 +375,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
             decoration: BoxDecoration(
               color: context.isDarkMode
                   ? const Color(0xFF182E25)
-                  : const Color(0xFFF5F7F6),
+                  : AppColors.lightBackground,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -466,7 +468,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -530,8 +532,8 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -571,7 +573,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                                 vertical: 3,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFFEBEB),
+                                color: const Color(0xFFF6EEE2),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -580,7 +582,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                                   fontFamily: 'Inter',
                                   fontSize: 10.5,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xFFE74C3C),
+                                  color: Color(0xFF8A6420),
                                 ),
                               ),
                             ),
@@ -591,7 +593,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 19,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w700,
                               color: context.textPrimary,
                             ),
                           ),
@@ -631,7 +633,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8E1),
+                    color: AppColors.tintSand,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Row(
@@ -671,7 +673,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -723,7 +725,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -804,8 +806,8 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
+              blurRadius: 26,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -860,7 +862,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFF8E1),
+                        color: AppColors.tintSand,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Row(
@@ -893,7 +895,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 16,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: context.textPrimary,
                         ),
                       ),
@@ -947,9 +949,9 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F7F6),
+        color: AppColors.lightBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+        border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
       ),
       child: const Row(
         children: [
@@ -961,7 +963,7 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 11.5,
-                color: Color(0xFF90A4AE),
+                color: AppColors.lightTextMuted,
                 height: 1.3,
               ),
             ),

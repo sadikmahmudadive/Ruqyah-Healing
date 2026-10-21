@@ -3,7 +3,7 @@ class UserModel {
   final String email;
   final String phone;
   final String name;
-  final String role; // "patient", "therapist", "admin", "scholar", "raki"
+  final String role; // "patient", "raki", "therapist", "doctor", "hakim", "admin", "scholar"
   final String fcmToken;
   final DateTime createdAt;
   final DateTime updatedAt;
