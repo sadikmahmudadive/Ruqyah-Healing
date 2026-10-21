@@ -5,6 +5,7 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/islamic_pattern.dart';
 
 class PathologyHubScreen extends StatefulWidget {
   const PathologyHubScreen({super.key});
@@ -58,6 +59,7 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -133,7 +135,7 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -163,7 +165,7 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: context.textPrimary,
           ),
         ),
@@ -234,7 +236,7 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
           ),
           onPressed: () {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.lightImpact();
             AppToast.show(
               context,
               title: 'Test Booking Initiated',

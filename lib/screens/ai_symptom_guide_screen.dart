@@ -54,7 +54,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
   }
 
   void _handleGetGuidance() {
-    HapticFeedback.mediumImpact();
+    HapticFeedback.lightImpact();
 
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -223,7 +223,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 9.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 1.2,
                         color: Color(0xFFD4A43A),
                       ),
@@ -303,7 +303,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: context.textPrimary,
             ),
           ),
@@ -377,7 +377,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 14,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -638,7 +638,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   // Submit Arrow Button (Blue/Indigo accent)
                   GestureDetector(
                     onTap: () {
-                      HapticFeedback.mediumImpact();
+                      HapticFeedback.lightImpact();
                       setState(() => _isRecordingVoice = false);
                       _handleGetGuidance();
                     },
@@ -863,7 +863,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),

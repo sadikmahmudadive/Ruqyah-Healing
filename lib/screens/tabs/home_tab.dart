@@ -20,6 +20,7 @@ import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/ai_icon.dart';
 import '../../widgets/animations/animations.dart';
 import '../../widgets/health_index_builder.dart';
+import '../../widgets/hijri_date_card.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/modern_card.dart';
 import '../../widgets/prayer_location_sheet.dart';
@@ -29,6 +30,7 @@ import '../ai_symptom_guide_screen.dart';
 import '../ayurvedic_hub_screen.dart';
 import '../acupuncture_hub_screen.dart';
 import '../book_appointment_screen.dart';
+import '../daily_salah_screen.dart';
 import '../emergency_ruqyah_screen.dart';
 import '../full_audio_player_screen.dart';
 import '../health_profile_detail_screen.dart';
@@ -37,6 +39,7 @@ import '../notification_screen.dart';
 import '../pathology_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
 import '../therapist_marketplace_screen.dart';
+import '../../widgets/islamic_pattern.dart';
 
 /// Modern Home tab.
 ///
@@ -150,7 +153,15 @@ class _HomeTabState extends State<HomeTab> {
                       child: _buildHeader(userName),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 18),
+
+                    // Hijri date
+                    const FadeSlideIn(
+                      delay: Duration(milliseconds: 40),
+                      child: HijriDateCard(),
+                    ),
+
+                    const SizedBox(height: 24),
 
                     // 2. Bento row: Health + Next Appointment
                     FadeSlideIn(
@@ -167,7 +178,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
 
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 24),
 
                     // 3. Audio player
                     FadeSlideIn(
@@ -175,7 +186,7 @@ class _HomeTabState extends State<HomeTab> {
                       child: _buildAudioPlayerCard(),
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
 
                     // 4. Section header
                     FadeSlideIn(
@@ -194,7 +205,7 @@ class _HomeTabState extends State<HomeTab> {
                       child: _buildServicesRow(),
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 20),
 
                     // 6. Prayer times
                     FadeSlideIn(
@@ -202,7 +213,7 @@ class _HomeTabState extends State<HomeTab> {
                       child: _buildPrayerTimesCard(),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
 
                     // 7. Specialist card
                     FadeSlideIn(
@@ -260,7 +271,7 @@ class _HomeTabState extends State<HomeTab> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
                 maxLines: 1,
@@ -272,16 +283,16 @@ class _HomeTabState extends State<HomeTab> {
 
         _CircleIconButton(
           icon: Icons.notifications_none_rounded,
-          onTap: () => Navigator.of(context).push(
-            AppPageRoute.sharedAxis(const NotificationScreen()),
-          ),
+          onTap: () =>
+              Navigator.of(context)
+                  .push(AppPageRoute.sharedAxis(const NotificationScreen())),
         ),
         const SizedBox(width: 10),
         _CircleIconButton(
           customChild: AiIcon(color: context.textPrimary, size: 22),
-          onTap: () => Navigator.of(context).push(
-            AppPageRoute.sharedAxis(const AISymptomGuideScreen()),
-          ),
+          onTap: () =>
+              Navigator.of(context)
+                  .push(AppPageRoute.sharedAxis(const AISymptomGuideScreen())),
         ),
       ],
     );
@@ -304,7 +315,7 @@ class _HomeTabState extends State<HomeTab> {
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
             color: context.textPrimary,
           ),
         ),
@@ -323,9 +334,9 @@ class _HomeTabState extends State<HomeTab> {
     final score = health.score;
     final toneColor = health.tone.color;
     return ModernCard(
-      onTap: () => Navigator.of(context).push(
-        AppPageRoute.sharedAxis(const HealthProfileDetailScreen()),
-      ),
+      onTap: () =>
+          Navigator.of(context)
+              .push(AppPageRoute.sharedAxis(const HealthProfileDetailScreen())),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -359,7 +370,7 @@ class _HomeTabState extends State<HomeTab> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 32,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textSecondary,
                         height: 1.0,
                       ),
@@ -369,7 +380,7 @@ class _HomeTabState extends State<HomeTab> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 32,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                         height: 1.0,
                       ),
@@ -377,7 +388,7 @@ class _HomeTabState extends State<HomeTab> {
               const SizedBox(width: 8),
               Flexible(
                 child: Text(
-                  score == null ? 'No data' : health.label,
+                  score == null ? 'Not started yet' : health.label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -400,7 +411,7 @@ class _HomeTabState extends State<HomeTab> {
           const SizedBox(height: 10),
           Text(
             score == null
-                ? 'Complete a daily check-in to see your index'
+                ? 'A gentle daily check-in will show your index'
                 : 'Overall physical & spiritual wellness',
             style: TextStyle(
               fontFamily: 'Inter',
@@ -421,12 +432,11 @@ class _HomeTabState extends State<HomeTab> {
 
     if (currentUser == null) {
       return _buildAppointmentCardUI(
-        dateText: 'No Active Booking',
-        timeText: 'Sign in or explore sessions',
+        dateText: 'Nothing scheduled',
+        timeText: 'Explore sessions when you are ready',
         doctorText: 'Browse Therapists',
-        onTap: () => Navigator.of(context).push(
-          AppPageRoute.sharedAxis(const TherapistMarketplaceScreen()),
-        ),
+        onTap: () => Navigator.of(context)
+            .push(AppPageRoute.sharedAxis(const TherapistMarketplaceScreen())),
       );
     }
 
@@ -436,12 +446,12 @@ class _HomeTabState extends State<HomeTab> {
         final appointments = snapshot.data ?? [];
         if (appointments.isEmpty) {
           return _buildAppointmentCardUI(
-            dateText: 'No Active Booking',
-            timeText: 'Schedule a new session',
+            dateText: 'Nothing scheduled',
+            timeText: 'Book a session when you are ready',
             doctorText: 'Book a Therapist',
-            onTap: () => Navigator.of(context).push(
-              AppPageRoute.sharedAxis(const TherapistMarketplaceScreen()),
-            ),
+            onTap: () => Navigator.of(
+              context,
+            ).push(AppPageRoute.sharedAxis(const TherapistMarketplaceScreen())),
           );
         }
 
@@ -476,6 +486,7 @@ class _HomeTabState extends State<HomeTab> {
             // Gradient background
             Container(
               padding: const EdgeInsets.all(16),
+              foregroundDecoration: IslamicPatternDecoration(),
               decoration: BoxDecoration(
                 gradient: AppGradients.emeraldGradient,
                 borderRadius: BorderRadius.circular(20),
@@ -619,7 +630,7 @@ class _HomeTabState extends State<HomeTab> {
                       style: const TextStyle(
                         fontFamily: 'Cinzel',
                         fontSize: 18,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: AppColors.primaryGreen,
                       ),
                     ),
@@ -645,7 +656,9 @@ class _HomeTabState extends State<HomeTab> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: failed ? AppColors.danger : context.textSecondary,
+                        color: failed
+                            ? AppColors.danger
+                            : context.textSecondary,
                       ),
                     ),
                   ],
@@ -718,7 +731,8 @@ class _HomeTabState extends State<HomeTab> {
           else
             ValueListenableBuilder<Duration>(
               valueListenable: controller.position,
-              builder: (context, _, _) => _buildMiniProgress(content, controller),
+              builder: (context, _, _) =>
+                  _buildMiniProgress(content, controller),
             ),
         ],
       ),
@@ -764,7 +778,10 @@ class _HomeTabState extends State<HomeTab> {
         ),
         Row(
           children: [
-            Text(_clock(controller?.elapsed ?? Duration.zero), style: timeStyle),
+            Text(
+              _clock(controller?.elapsed ?? Duration.zero),
+              style: timeStyle,
+            ),
             const Spacer(),
             Text(
               total == Duration.zero ? '--:--' : _clock(total),
@@ -785,42 +802,42 @@ class _HomeTabState extends State<HomeTab> {
       _ServiceSpec(
         label: context.tr('ruqyah'),
         customIcon: RuqyahDuaIcon(color: g(AppColors.primaryGreen), size: 30),
-        bgColor: const Color(0xFFEBF7F0),
+        bgColor: AppColors.tintMint,
         iconColor: g(AppColors.primaryGreen),
         target: const RuqyahHubScreen(),
       ),
       _ServiceSpec(
         label: context.tr('hijama'),
         customIcon: HijamaCuppingIcon(color: g(AppColors.warning), size: 30),
-        bgColor: const Color(0xFFFFF3E8),
+        bgColor: AppColors.tintSand,
         iconColor: g(AppColors.warning),
         target: const HijamaHubScreen(),
       ),
       _ServiceSpec(
         label: context.tr('acupuncture'),
         customIcon: AcupunctureIcon(color: g(AppColors.info), size: 30),
-        bgColor: const Color(0xFFE6F7FF),
+        bgColor: AppColors.tintMist,
         iconColor: g(AppColors.info),
         target: const AcupunctureHubScreen(),
       ),
       _ServiceSpec(
         label: context.tr('ayurvedic'),
         icon: Icons.spa_outlined,
-        bgColor: const Color(0xFFE8F8F5),
-        iconColor: g(const Color(0xFF27AE60)),
+        bgColor: AppColors.tintSage,
+        iconColor: g(AppColors.accentSage),
         target: const AyurvedicHubScreen(),
       ),
       _ServiceSpec(
         label: context.tr('pathology'),
         icon: Icons.biotech_outlined,
-        bgColor: const Color(0xFFF4ECF7),
-        iconColor: g(const Color(0xFF8E44AD)),
+        bgColor: AppColors.tintLilac,
+        iconColor: g(AppColors.accentLilac),
         target: const PathologyHubScreen(),
       ),
       _ServiceSpec(
         label: context.tr('emergency'),
-        icon: Icons.error_outline_rounded,
-        bgColor: const Color(0xFFFFEBEB),
+        icon: Icons.favorite_border_rounded,
+        bgColor: AppColors.tintRose,
         iconColor: g(AppColors.danger),
         target: const EmergencyRuqyahScreen(),
       ),
@@ -881,8 +898,7 @@ class _HomeTabState extends State<HomeTab> {
                     ],
             ),
             child: Center(
-              child: s.customIcon ??
-                  Icon(s.icon, color: s.iconColor, size: 30),
+              child: s.customIcon ?? Icon(s.icon, color: s.iconColor, size: 30),
             ),
           ),
           const SizedBox(height: 8),
@@ -903,6 +919,10 @@ class _HomeTabState extends State<HomeTab> {
   // ───────────────────── Prayer Times Card ──────────────────────────
   Widget _buildPrayerTimesCard() {
     return ModernCard(
+      // Opens the full daily salah screen.
+      onTap: () =>
+          Navigator.of(context)
+              .push(AppPageRoute.sharedAxis(const DailySalahScreen())),
       // No horizontal padding here: the slot list spans the full card width so
       // the active slot's glow isn't clipped; the header re-applies the inset.
       padding: const EdgeInsets.only(top: 18, bottom: 6),
@@ -919,7 +939,7 @@ class _HomeTabState extends State<HomeTab> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -997,8 +1017,9 @@ class _HomeTabState extends State<HomeTab> {
             future: _prayerTimesFuture,
             builder: (context, snapshot) {
               final times = snapshot.data ?? PrayerTimesModel.fallback();
-              final activePrayer =
-                  PrayerTimesService.getActivePrayerName(times);
+              final activePrayer = PrayerTimesService.getActivePrayerName(
+                times,
+              );
 
               final prayers = <(String, String)>[
                 ('Fajr', times.fajr),
@@ -1075,7 +1096,7 @@ class _HomeTabState extends State<HomeTab> {
               style: const TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 15,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: Color(0xFFD49E35),
               ),
             ),
@@ -1114,7 +1135,7 @@ class _HomeTabState extends State<HomeTab> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 15,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: context.textPrimary,
             ),
           ),
@@ -1235,8 +1256,7 @@ class _CircleIconButton extends StatelessWidget {
           boxShadow: AppElevation.subtle,
         ),
         alignment: Alignment.center,
-        child: customChild ??
-            Icon(icon, color: context.textPrimary, size: 22),
+        child: customChild ?? Icon(icon, color: context.textPrimary, size: 22),
       ),
     );
   }

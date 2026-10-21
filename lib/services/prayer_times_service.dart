@@ -20,6 +20,15 @@ class PrayerTimesModel {
   final String maghrib24;
   final String isha24;
 
+  /// Extra timings from the same API response, used by the daily salah screen
+  /// to work out the voluntary prayers (24-hour "HH:mm").
+  final String sunrise24;
+  final String sunset24;
+  final String midnight24;
+
+  /// Start of the last third of the night: the Tahajjud window opens here.
+  final String lastThird24;
+
   /// IANA zone of the place these times are for (e.g. "Asia/Dhaka"). The
   /// times are local clock times in that zone.
   final String timezone;
@@ -36,6 +45,10 @@ class PrayerTimesModel {
     required this.asr24,
     required this.maghrib24,
     required this.isha24,
+    this.sunrise24 = '05:25',
+    this.sunset24 = '18:20',
+    this.midnight24 = '23:12',
+    this.lastThird24 = '02:54',
     this.timezone = 'Asia/Dhaka',
   });
 
@@ -62,8 +75,13 @@ class PrayerTimesService {
   static const _karachiMethodCountries = {'BD', 'PK', 'IN', 'AF'};
 
   @visibleForTesting
-  static Uri buildUri(PrayerLocation location) {
-    return Uri.https('api.aladhan.com', '/v1/timings', {
+  static Uri buildUri(PrayerLocation location, {DateTime? date}) {
+    // Without a date the API answers for today at that place.
+    final day = date == null
+        ? ''
+        : '/${date.day.toString().padLeft(2, '0')}-'
+              '${date.month.toString().padLeft(2, '0')}-${date.year}';
+    return Uri.https('api.aladhan.com', '/v1/timings$day', {
       'latitude': '${location.latitude}',
       'longitude': '${location.longitude}',
       if (_karachiMethodCountries.contains(location.countryCode)) 'method': '1',
@@ -73,13 +91,14 @@ class PrayerTimesService {
   /// Prayer times for [location], or for the user's chosen place when omitted.
   static Future<PrayerTimesModel> fetchPrayerTimes({
     PrayerLocation? location,
+    DateTime? date,
     http.Client? client,
   }) async {
     final place = location ?? PrayerLocationService.instance.current;
     final http_ = client ?? http.Client();
     try {
       final response = await http_
-          .get(buildUri(place))
+          .get(buildUri(place, date: date))
           .timeout(const Duration(seconds: 6));
 
       if (response.statusCode == 200) {
@@ -109,6 +128,10 @@ class PrayerTimesService {
     final rawAsr = t('Asr', '16:45');
     final rawMaghrib = t('Maghrib', '18:45');
     final rawIsha = t('Isha', '20:15');
+    final rawSunrise = t('Sunrise', '05:25');
+    final rawSunset = t('Sunset', '18:20');
+    final rawMidnight = t('Midnight', '23:12');
+    final rawLastThird = t('Lastthird', '02:54');
 
     final meta = data['meta'];
     final zone = meta is Map && meta['timezone'] is String
@@ -127,6 +150,10 @@ class PrayerTimesService {
       asr24: rawAsr,
       maghrib24: rawMaghrib,
       isha24: rawIsha,
+      sunrise24: rawSunrise,
+      sunset24: rawSunset,
+      midnight24: rawMidnight,
+      lastThird24: rawLastThird,
       timezone: zone,
     );
   }
@@ -170,6 +197,9 @@ class PrayerTimesService {
       return 'Isha';
     }
   }
+
+  /// The current time at the place a [PrayerTimesModel] is for.
+  static DateTime nowAt(String zoneName) => _nowAt(zoneName);
 
   static bool _zonesReady = false;
 

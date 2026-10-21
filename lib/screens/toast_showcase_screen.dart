@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
+import '../theme/app_theme.dart';
+import '../widgets/islamic_pattern.dart';
 
 class ToastShowcaseScreen extends StatelessWidget {
   const ToastShowcaseScreen({super.key});
@@ -16,7 +18,7 @@ class ToastShowcaseScreen extends StatelessWidget {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         body: Column(
           children: [
             // Top Dark Green Header Area
@@ -38,9 +40,9 @@ class ToastShowcaseScreen extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 0.8,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
 
@@ -90,7 +92,7 @@ class ToastShowcaseScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEBF7F0),
+                        color: AppColors.tintMint,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: const Color(0xFF0B4632)
@@ -112,7 +114,7 @@ class ToastShowcaseScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 12.5,
-                                color: Color(0xFF52625B),
+                                color: AppColors.lightTextSecondary,
                                 height: 1.35,
                               ),
                             ),
@@ -140,6 +142,7 @@ class ToastShowcaseScreen extends StatelessWidget {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: const BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -171,7 +174,7 @@ class ToastShowcaseScreen extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
           ),

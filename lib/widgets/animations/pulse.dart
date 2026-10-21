@@ -16,7 +16,7 @@ class BreathingPulse extends StatefulWidget {
     super.key,
     required this.child,
     this.maxScale = 1.08,
-    this.duration = const Duration(milliseconds: 1800),
+    this.duration = const Duration(milliseconds: 4000),
   });
 
   @override
@@ -63,7 +63,7 @@ class PulseRing extends StatefulWidget {
     required this.child,
     required this.color,
     this.maxRadius = 36,
-    this.duration = const Duration(milliseconds: 1600),
+    this.duration = const Duration(milliseconds: 3600),
     this.ringCount = 2,
   });
 

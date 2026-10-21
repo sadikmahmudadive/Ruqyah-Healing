@@ -9,6 +9,7 @@ import 'notification_settings_screen.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/islamic_pattern.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -105,6 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -136,7 +138,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 22,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
           ),
@@ -151,9 +153,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       style: const TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: 11,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
         letterSpacing: 0.8,
-        color: Color(0xFF90A4AE),
+        color: AppColors.lightTextMuted,
       ),
     );
   }
@@ -168,8 +170,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -251,8 +253,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -272,7 +274,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingItem(
             title: context.tr('connected_devices'),
             badgeText: '2 devices',
-            badgeBg: const Color(0xFFEBF7F0),
+            badgeBg: AppColors.tintMint,
             badgeColor: const Color(0xFF0B4632),
             onTap: () {
               HapticFeedback.selectionClick();
@@ -282,7 +284,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingItem(
             title: context.tr('health_connect'),
             badgeText: 'Connected',
-            badgeBg: const Color(0xFFEBF7F0),
+            badgeBg: AppColors.tintMint,
             badgeColor: const Color(0xFF0B4632),
             onTap: () {
               HapticFeedback.selectionClick();
@@ -313,7 +315,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: context.tr('delete_account'),
             isDestructive: true,
             onTap: () {
-              HapticFeedback.heavyImpact();
+              HapticFeedback.lightImpact();
               _showDeleteAccountDialog();
             },
           ),
@@ -332,8 +334,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -404,7 +406,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     fontSize: 14.5,
                     fontWeight: FontWeight.w600,
                     color: isDestructive
-                        ? const Color(0xFFE74C3C)
+                        ? const Color(0xFFC4604F)
                         : context.textPrimary,
                   ),
                 ),
@@ -414,7 +416,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: badgeBg ?? const Color(0xFFEBF7F0),
+                    color: badgeBg ?? AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
@@ -435,11 +437,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 13,
                     fontWeight: isTrailingActive
-                        ? FontWeight.w800
+                        ? FontWeight.w700
                         : FontWeight.w500,
                     color: isTrailingActive
                         ? const Color(0xFF0B4632)
-                        : const Color(0xFF90A4AE),
+                        : AppColors.lightTextMuted,
                   ),
                 ),
                 const SizedBox(width: 6),
@@ -447,8 +449,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Icon(
                 Icons.chevron_right_rounded,
                 color: isDestructive
-                    ? const Color(0xFFE74C3C)
-                    : const Color(0xFF90A4AE),
+                    ? const Color(0xFFC4604F)
+                    : AppColors.lightTextMuted,
                 size: 16,
               ),
             ],
@@ -489,7 +491,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 width: 38,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE2E8E5),
+                  color: AppColors.lightCardBorder,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -500,8 +502,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: Color(0xFF15221D),
+                fontWeight: FontWeight.w700,
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -525,7 +527,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           fontFamily: 'PlusJakartaSans',
           fontSize: 15,
           fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-          color: isSelected ? const Color(0xFF0B4632) : const Color(0xFF15221D),
+          color: isSelected ? const Color(0xFF0B4632) : AppColors.lightTextPrimary,
         ),
       ),
       trailing: isSelected
@@ -567,9 +569,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.18),
-                      blurRadius: 20,
-                      offset: const Offset(0, 6),
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -701,29 +703,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         title: const Text(
-          'Delete Account',
+          'Delete your account?',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
-            fontWeight: FontWeight.w800,
-            color: Color(0xFFE74C3C),
+            fontWeight: FontWeight.w700,
+            color: AppColors.lightTextPrimary,
           ),
         ),
         content: const Text(
-          'Are you sure you want to permanently delete your account and all associated health data? This action cannot be undone.',
+          'This will permanently remove your account and all your health data. It cannot be undone, so please take a moment to be sure.',
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 14,
-            color: Color(0xFF6E7E77),
+            color: AppColors.lightTextSecondary,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: const Text('Keep my account'),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFE74C3C),
+              backgroundColor: const Color(0xFFC4604F),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

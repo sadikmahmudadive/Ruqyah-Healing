@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
 import 'main_navigation_shell.dart';
+import '../theme/app_theme.dart';
 
 class BookingConfirmationScreen extends StatefulWidget {
   final String doctorName;
@@ -48,7 +49,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
     final code = _couponController.text.trim().toUpperCase();
     if (code.isEmpty) return;
 
-    HapticFeedback.mediumImpact();
+    HapticFeedback.lightImpact();
     setState(() {
       if (code == 'RUQYAH10' || code == 'HEALING') {
         _discount = 120;
@@ -62,9 +63,9 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
       } else {
         AppToast.show(
           context,
-          title: 'Invalid Coupon',
-          message: 'Please check your code and try again.',
-          type: ToastType.error,
+          title: 'Code not recognised',
+          message: 'Please check the code and try again whenever you like.',
+          type: ToastType.info,
         );
       }
     });
@@ -74,14 +75,14 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
     if (!_agreedToTerms) {
       AppToast.show(
         context,
-        title: 'Terms Required',
-        message: 'Please agree to the Terms & Privacy Policy.',
-        type: ToastType.warning,
+        title: 'One more step',
+        message: 'Please agree to the Terms & Privacy Policy to continue.',
+        type: ToastType.info,
       );
       return;
     }
 
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
 
     // Show Success Dialog
     showDialog(
@@ -100,22 +101,22 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Booking Confirmed!',
+              'Your session is booked',
               style: TextStyle(
                 fontFamily: 'Cinzel',
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Your appointment with ${widget.doctorName} has been successfully booked.',
+              'Your appointment with ${widget.doctorName} is all set.',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 13.5,
-                color: Color(0xFF6E7E77),
+                color: AppColors.lightTextSecondary,
               ),
             ),
             const SizedBox(height: 20),
@@ -166,29 +167,29 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: Colors.black.withValues(alpha: 0.03),
+                    blurRadius: 28,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -203,7 +204,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: AppColors.lightTextPrimary,
             ),
           ),
           actions: [
@@ -217,17 +218,17 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.lightCardBg,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 28,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -264,7 +265,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
 
@@ -306,7 +307,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                   children: [
                     Icon(
                       Icons.lock_outline_rounded,
-                      color: Color(0xFF90A4AE),
+                      color: AppColors.lightTextMuted,
                       size: 13,
                     ),
                     SizedBox(width: 4),
@@ -315,7 +316,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                   ],
@@ -335,13 +336,13 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -358,7 +359,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -379,7 +380,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                     vertical: 5,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEBF7F0),
+                    color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Row(
@@ -435,8 +436,8 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -446,7 +447,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEBF7F0),
+                        color: AppColors.tintMint,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -466,7 +467,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
           ),
 
           const SizedBox(height: 14),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 14),
 
           // Details List
@@ -500,7 +501,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
           width: 28,
           height: 28,
           decoration: BoxDecoration(
-            color: const Color(0xFFEBF7F0),
+            color: AppColors.tintMint,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: const Color(0xFF0B4632), size: 16),
@@ -515,7 +516,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 13.5,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
                 height: 1.3,
               ),
             ),
@@ -538,12 +539,12 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.lightCardBg,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: isSelected
                 ? const Color(0xFF0B4632)
-                : const Color(0xFFE2E8E5),
+                : AppColors.lightCardBorder,
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
@@ -565,7 +566,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFCFD8DC),
+                      : AppColors.lightCardBorderStrong,
                   width: 2.0,
                 ),
               ),
@@ -589,7 +590,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 15.5,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const Spacer(),
@@ -607,7 +608,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 12,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Colors.white,
                   fontStyle: FontStyle.italic,
                 ),
@@ -631,12 +632,12 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.lightCardBg,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: isSelected
                 ? const Color(0xFF0B4632)
-                : const Color(0xFFE2E8E5),
+                : AppColors.lightCardBorder,
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
@@ -657,7 +658,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFCFD8DC),
+                      : AppColors.lightCardBorderStrong,
                   width: 2.0,
                 ),
               ),
@@ -681,7 +682,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 15.5,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const Spacer(),
@@ -699,7 +700,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 12,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
@@ -722,12 +723,12 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.lightCardBg,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: isSelected
                 ? const Color(0xFF0B4632)
-                : const Color(0xFFE2E8E5),
+                : AppColors.lightCardBorder,
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
@@ -748,7 +749,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF0B4632)
-                      : const Color(0xFFCFD8DC),
+                      : AppColors.lightCardBorderStrong,
                   width: 2.0,
                 ),
               ),
@@ -772,7 +773,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 15.5,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
               ),
             ),
             const Spacer(),
@@ -793,7 +794,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 10,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
                       color: Colors.white,
                       fontStyle: FontStyle.italic,
                     ),
@@ -806,7 +807,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFD32F2F),
+                    color: const Color(0xFFB4503F),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Text(
@@ -814,7 +815,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 10,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
@@ -838,7 +839,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 14.5,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
         const SizedBox(height: 8),
@@ -849,10 +850,10 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.lightCardBg,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
                 ),
@@ -861,14 +862,14 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                   style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 14.5,
-                    color: Color(0xFF15221D),
+                    color: AppColors.lightTextPrimary,
                   ),
                   decoration: InputDecoration(
                     hintText: 'Enter coupon code',
                     hintStyle: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13.5,
-                      color: const Color(0xFFB0BEC5),
+                      color: AppColors.lightTextMuted,
                     ),
                     border: InputBorder.none,
                     isDense: true,
@@ -914,13 +915,13 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -933,7 +934,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -943,7 +944,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
@@ -958,7 +959,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -968,7 +969,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],
@@ -1001,7 +1002,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
           ],
 
           const SizedBox(height: 12),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 12),
 
           Row(
@@ -1011,8 +1012,8 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -1021,7 +1022,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 20,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Color(0xFF0B4632),
                 ),
               ),
@@ -1056,7 +1057,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
               border: Border.all(
                 color: _agreedToTerms
                     ? const Color(0xFF0B4632)
-                    : const Color(0xFFB0BEC5),
+                    : AppColors.lightTextMuted,
                 width: 1.5,
               ),
             ),
@@ -1073,7 +1074,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.5,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                   height: 1.35,
                 ),
                 children: const [
@@ -1082,7 +1083,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                     text: 'Terms of Service',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF15221D),
+                      color: AppColors.lightTextPrimary,
                     ),
                   ),
                   TextSpan(text: ' and '),
@@ -1090,7 +1091,7 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                     text: 'Privacy Policy',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF15221D),
+                      color: AppColors.lightTextPrimary,
                     ),
                   ),
                   TextSpan(text: '.'),

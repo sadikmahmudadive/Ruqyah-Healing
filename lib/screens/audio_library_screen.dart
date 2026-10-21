@@ -5,6 +5,7 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import 'full_audio_player_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class RecitationTrack {
   final String id;
@@ -153,6 +154,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -213,7 +215,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       ),
       child: Row(
         children: [
-          const Icon(Icons.search_rounded, color: Color(0xFF90A4AE), size: 20),
+          const Icon(Icons.search_rounded, color: AppColors.lightTextMuted, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -228,7 +230,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 hintStyle: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
                 border: InputBorder.none,
                 isDense: true,
@@ -313,7 +315,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -329,7 +331,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
@@ -375,9 +377,9 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -419,7 +421,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   decoration: BoxDecoration(
                     color: isDark
                         ? const Color(0xFF182E25)
-                        : const Color(0xFFEBF7F0),
+                        : AppColors.tintMint,
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Icon(
@@ -441,7 +443,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15.5,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: context.textPrimary,
                         ),
                       ),
@@ -463,7 +465,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEBF7F0),
+                    color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
@@ -497,7 +499,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -513,7 +515,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
@@ -540,9 +542,9 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             border: Border.all(color: context.cardBorder, width: 1.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 26,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -553,7 +555,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1),
+                  color: AppColors.tintSand,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Icon(
@@ -574,7 +576,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -595,7 +597,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(

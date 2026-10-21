@@ -13,21 +13,32 @@ class AppColors {
   static const Color lightMint = Color(0xFF81C784);
 
   // Semantic (status) colors
-  static const Color success = Color(0xFF1E6B45);
-  static const Color warning = Color(0xFFE67E22);
-  static const Color danger = Color(0xFFE74C3C);
-  static const Color info = Color(0xFF2980B9);
+  static const Color success = Color(0xFF2F7D5B);
+  static const Color warning = Color(0xFFD9923F);
+  static const Color danger = Color(0xFFC4604F);
+  static const Color info = Color(0xFF4A8DB0);
+
+  // Calm category tints + matching accents. Low saturation on purpose, so a
+  // row of different services reads as one quiet family, not a rainbow.
+  static const Color tintMint = Color(0xFFE9F3EC);
+  static const Color tintSand = Color(0xFFF6EEE2);
+  static const Color tintMist = Color(0xFFE6EFF1);
+  static const Color tintSage = Color(0xFFE8F1E4);
+  static const Color tintLilac = Color(0xFFF0EBF2);
+  static const Color tintRose = Color(0xFFF6E9E5);
+  static const Color accentSage = Color(0xFF4E8F62);
+  static const Color accentLilac = Color(0xFF7D5C93);
 
   // Light Mode Colors
-  static const Color lightBackground = Color(0xFFF5F7F6);
-  static const Color lightSurface = Color(0xFFFAFBFA);
-  static const Color lightCardBg = Colors.white;
-  static const Color lightCardBorder = Color(0xFFE2E8E5);
-  static const Color lightCardBorderStrong = Color(0xFFCBD5CF);
-  static const Color lightTextPrimary = Color(0xFF15221D);
-  static const Color lightTextSecondary = Color(0xFF6E7E77);
-  static const Color lightTextMuted = Color(0xFF90A4AE);
-  static const Color lightContainerBg = Color(0xFFEBF7F0);
+  static const Color lightBackground = Color(0xFFF4F6F1);
+  static const Color lightSurface = Color(0xFFF9FAF6);
+  static const Color lightCardBg = Color(0xFFFCFDFA);
+  static const Color lightCardBorder = Color(0xFFE5EAE3);
+  static const Color lightCardBorderStrong = Color(0xFFCFD8D0);
+  static const Color lightTextPrimary = Color(0xFF1F2D27);
+  static const Color lightTextSecondary = Color(0xFF576760);
+  static const Color lightTextMuted = Color(0xFF74847D);
+  static const Color lightContainerBg = Color(0xFFE9F3EC);
 
   // Dark Mode Colors (Onyx Emerald)
   static const Color darkBackground = Color(0xFF08120E);
@@ -35,9 +46,9 @@ class AppColors {
   static const Color darkCardBg = Color(0xFF0F1F1A);
   static const Color darkCardBorder = Color(0xFF1C362C);
   static const Color darkCardBorderStrong = Color(0xFF27493B);
-  static const Color darkTextPrimary = Colors.white;
-  static const Color darkTextSecondary = Color(0xFF92A89F);
-  static const Color darkTextMuted = Color(0xFF627870);
+  static const Color darkTextPrimary = Color(0xFFE9F0EC);
+  static const Color darkTextSecondary = Color(0xFF9DB3AA);
+  static const Color darkTextMuted = Color(0xFF7E948B);
   static const Color darkContainerBg = Color(0xFF162E25);
   static const Color darkIconCircleBg = Color(0xFF132620);
 }
@@ -110,7 +121,7 @@ class AppTheme {
         primary: AppColors.primaryGreen,
         secondary: AppColors.accentGold,
       ),
-      splashFactory: InkSparkle.splashFactory,
+      splashFactory: InkRipple.splashFactory,
       splashColor: AppColors.primaryGreen.withValues(alpha: 0.08),
       highlightColor: AppColors.primaryGreen.withValues(alpha: 0.04),
       appBarTheme: const AppBarTheme(
@@ -121,7 +132,7 @@ class AppTheme {
         titleTextStyle: TextStyle(
           fontFamily: 'PlusJakartaSans',
           fontSize: 18,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           color: AppColors.lightTextPrimary,
         ),
       ),
@@ -129,7 +140,7 @@ class AppTheme {
         color: AppColors.lightCardBg,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           side: const BorderSide(color: AppColors.lightCardBorder, width: 1),
         ),
       ),
@@ -163,7 +174,7 @@ class AppTheme {
         primary: AppColors.primaryGreen,
         secondary: AppColors.accentGold,
       ),
-      splashFactory: InkSparkle.splashFactory,
+      splashFactory: InkRipple.splashFactory,
       splashColor: AppColors.accentGold.withValues(alpha: 0.08),
       highlightColor: AppColors.accentGold.withValues(alpha: 0.04),
       appBarTheme: const AppBarTheme(
@@ -174,7 +185,7 @@ class AppTheme {
         titleTextStyle: TextStyle(
           fontFamily: 'PlusJakartaSans',
           fontSize: 18,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           color: AppColors.darkTextPrimary,
         ),
       ),
@@ -182,7 +193,7 @@ class AppTheme {
         color: AppColors.darkCardBg,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           side: const BorderSide(color: AppColors.darkCardBorder, width: 1),
         ),
       ),

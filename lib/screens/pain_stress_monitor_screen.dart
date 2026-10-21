@@ -6,6 +6,7 @@ import '../services/firebase_service.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
 import 'secure_messages_screen.dart';
+import '../theme/app_theme.dart';
 
 class PainStressMonitorScreen extends StatefulWidget {
   const PainStressMonitorScreen({super.key});
@@ -74,7 +75,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
 
   Future<void> _handleSaveCheckIn() async {
     if (_saving) return;
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
 
     final user = FirebaseService.currentUser;
     if (user == null) {
@@ -143,9 +144,9 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
@@ -153,19 +154,19 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    blurRadius: 26,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -181,8 +182,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               SizedBox(height: 2),
@@ -191,7 +192,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
-                  color: Color(0xFF6E7E77),
+                  color: AppColors.lightTextSecondary,
                 ),
               ),
             ],
@@ -210,21 +211,21 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
                 child: IconButton(
                   icon: const Icon(
                     Icons.settings_outlined,
-                    color: Color(0xFF15221D),
+                    color: AppColors.lightTextPrimary,
                     size: 20,
                   ),
                   onPressed: () {
@@ -289,8 +290,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -308,8 +309,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                       ),
                     ),
                     SizedBox(height: 2),
@@ -318,7 +319,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                   ],
@@ -330,7 +331,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
@@ -356,10 +357,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 child: Container(
                   height: 220,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F7F6),
+                    color: AppColors.lightBackground,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(
-                      color: const Color(0xFFE2E8E5),
+                      color: AppColors.lightCardBorder,
                       width: 1.0,
                     ),
                   ),
@@ -379,11 +380,11 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                           width: 22,
                           height: 22,
                           decoration: const BoxDecoration(
-                            color: Color(0xFFD32F2F),
+                            color: Color(0xFFC98A5E),
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0x66D32F2F),
+                                color: Color(0x66C98A5E),
                                 blurRadius: 8,
                               ),
                             ],
@@ -394,7 +395,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 13,
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
                             ),
@@ -437,10 +438,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 child: Container(
                   height: 220,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F7F6),
+                    color: AppColors.lightBackground,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(
-                      color: const Color(0xFFE2E8E5),
+                      color: AppColors.lightCardBorder,
                       width: 1.0,
                     ),
                   ),
@@ -490,8 +491,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
             children: const [
               _SeverityLegendDot(color: Color(0xFF2ECC71), label: 'None'),
               _SeverityLegendDot(color: Color(0xFFF1C40F), label: 'Mild'),
-              _SeverityLegendDot(color: Color(0xFFE67E22), label: 'Moderate'),
-              _SeverityLegendDot(color: Color(0xFFE74C3C), label: 'Severe'),
+              _SeverityLegendDot(color: AppColors.warning, label: 'Moderate'),
+              _SeverityLegendDot(color: Color(0xFFC98A5E), label: 'Strong'),
             ],
           ),
         ],
@@ -509,8 +510,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -523,8 +524,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               Spacer(),
@@ -533,7 +534,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
             ],
@@ -548,7 +549,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 width: 10,
                 height: 10,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFE74C3C),
+                  color: Color(0xFFC98A5E),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -559,7 +560,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -571,8 +572,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFFE74C3C),
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFC98A5E),
                       ),
                     ),
                     const TextSpan(
@@ -580,7 +581,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                   ],
@@ -591,10 +592,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
 
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: const Color(0xFFE74C3C),
-              inactiveTrackColor: const Color(0xFFF5F7F6),
-              thumbColor: const Color(0xFFE74C3C),
-              overlayColor: const Color(0xFFE74C3C).withValues(alpha: 0.15),
+              activeTrackColor: const Color(0xFFC98A5E),
+              inactiveTrackColor: AppColors.lightBackground,
+              thumbColor: const Color(0xFFC98A5E),
+              overlayColor: const Color(0xFFC98A5E).withValues(alpha: 0.15),
               trackHeight: 6,
             ),
             child: Slider(
@@ -629,7 +630,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -641,7 +642,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 18,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: Color(0xFF0B4632),
                       ),
                     ),
@@ -650,7 +651,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                   ],
@@ -662,7 +663,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: const Color(0xFF0B4632),
-              inactiveTrackColor: const Color(0xFFF5F7F6),
+              inactiveTrackColor: AppColors.lightBackground,
               thumbColor: const Color(0xFF0B4632),
               overlayColor: const Color(0xFF0B4632).withValues(alpha: 0.15),
               trackHeight: 6,
@@ -688,7 +689,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 width: 10,
                 height: 10,
                 decoration: const BoxDecoration(
-                  color: Color(0xFF2980B9),
+                  color: AppColors.info,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -699,7 +700,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -711,8 +712,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF2980B9),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.info,
                       ),
                     ),
                     const TextSpan(
@@ -720,7 +721,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12.5,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                   ],
@@ -731,10 +732,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
 
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: const Color(0xFF2980B9),
-              inactiveTrackColor: const Color(0xFFF5F7F6),
-              thumbColor: const Color(0xFF2980B9),
-              overlayColor: const Color(0xFF2980B9).withValues(alpha: 0.15),
+              activeTrackColor: AppColors.info,
+              inactiveTrackColor: AppColors.lightBackground,
+              thumbColor: AppColors.info,
+              overlayColor: AppColors.info.withValues(alpha: 0.15),
               trackHeight: 6,
             ),
             child: Slider(
@@ -763,8 +764,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -778,8 +779,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -789,7 +790,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -855,7 +856,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
   static const TextStyle _axisTextStyle = TextStyle(
     fontFamily: 'Inter',
     fontSize: 11,
-    color: Color(0xFF90A4AE),
+    color: AppColors.lightTextMuted,
   );
 
   // 4. Symptoms & Notes Input Card
@@ -868,8 +869,8 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -883,15 +884,15 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5F7F6),
+                  color: AppColors.lightBackground,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
@@ -899,7 +900,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11,
-                    color: Color(0xFF90A4AE),
+                    color: AppColors.lightTextMuted,
                   ),
                 ),
               ),
@@ -911,7 +912,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: AppColors.lightBackground,
               borderRadius: BorderRadius.circular(16),
             ),
             child: TextField(
@@ -920,7 +921,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
               style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 13.5,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
               ),
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -939,7 +940,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF8E1),
+        color: AppColors.tintSand,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFFD49E35).withValues(alpha: 0.30),
@@ -952,17 +953,17 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
           const Row(
             children: [
               Icon(
-                Icons.warning_amber_rounded,
+                Icons.health_and_safety_outlined,
                 color: Color(0xFFD49E35),
                 size: 18,
               ),
               SizedBox(width: 8),
               Text(
-                'Red Flag Check',
+                'Safety check',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14.5,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Color(0xFFB78103),
                 ),
               ),
@@ -1019,7 +1020,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
               style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 12.5,
-                color: Color(0xFF6E7E77),
+                color: AppColors.lightTextSecondary,
               ),
             ),
           ),
@@ -1059,7 +1060,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 15,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       color: Color(0xFF0B4632),
                     ),
                   ),
@@ -1107,7 +1108,7 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 15,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
                         ),
@@ -1144,7 +1145,7 @@ class _SeverityLegendDot extends StatelessWidget {
             fontFamily: 'Inter',
             fontSize: 11.5,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF52625B),
+            color: AppColors.lightTextSecondary,
           ),
         ),
       ],
@@ -1164,12 +1165,12 @@ class _BodyLocatorPainter extends CustomPainter {
     final h = size.height;
 
     final paint = Paint()
-      ..color = const Color(0xFFB0BEC5).withValues(alpha: 0.35)
+      ..color = AppColors.lightTextMuted.withValues(alpha: 0.35)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
 
     final fillPaint = Paint()
-      ..color = const Color(0xFFE2E8E5).withValues(alpha: 0.40)
+      ..color = AppColors.lightCardBorder.withValues(alpha: 0.40)
       ..style = PaintingStyle.fill;
 
     final Path bodyPath = Path()
@@ -1221,7 +1222,7 @@ class _TrendLineChartPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final gridLinePaint = Paint()
-      ..color = const Color(0xFFE2E8E5)
+      ..color = AppColors.lightCardBorder
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
 

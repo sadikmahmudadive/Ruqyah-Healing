@@ -66,7 +66,7 @@ class AppToast {
         HapticFeedback.lightImpact();
       case ToastType.error:
       case ToastType.warning:
-        HapticFeedback.mediumImpact();
+        HapticFeedback.lightImpact();
       case ToastType.info:
         HapticFeedback.selectionClick();
     }
@@ -463,7 +463,7 @@ class AppToastWidget extends StatelessWidget {
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 13,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w700,
                                     color: accent,
                                   ),
                                 ),

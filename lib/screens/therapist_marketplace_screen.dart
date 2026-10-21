@@ -6,6 +6,7 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import 'tabs/bookings_tab.dart';
 import 'therapist_profile_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class TherapistMarketplaceScreen extends StatefulWidget {
   const TherapistMarketplaceScreen({super.key});
@@ -208,9 +209,9 @@ class _TherapistMarketplaceScreenState
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -247,6 +248,7 @@ class _TherapistMarketplaceScreenState
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
@@ -284,7 +286,7 @@ class _TherapistMarketplaceScreenState
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 22,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
                     ),
@@ -332,7 +334,7 @@ class _TherapistMarketplaceScreenState
               children: [
                 const Icon(
                   Icons.search_rounded,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                   size: 22,
                 ),
                 const SizedBox(width: 10),
@@ -350,7 +352,7 @@ class _TherapistMarketplaceScreenState
                       hintStyle: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                       border: InputBorder.none,
                       isDense: true,
@@ -364,7 +366,7 @@ class _TherapistMarketplaceScreenState
                   decoration: BoxDecoration(
                     color: context.isDarkMode
                         ? const Color(0xFF182E25)
-                        : const Color(0xFFE8F5EE),
+                        : AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -467,7 +469,7 @@ class _TherapistMarketplaceScreenState
               inactiveThumbColor: Colors.white,
               inactiveTrackColor: context.isDarkMode
                   ? const Color(0xFF182E25)
-                  : const Color(0xFFE2E8E5),
+                  : AppColors.lightCardBorder,
               onChanged: (val) {
                 HapticFeedback.selectionClick();
                 setState(() {
@@ -487,7 +489,7 @@ class _TherapistMarketplaceScreenState
               border: Border.all(
                   color: context.isDarkMode
                       ? const Color(0xFF233F33)
-                      : const Color(0xFFE2E8E5),
+                      : AppColors.lightCardBorder,
                   width: 1.0),
             ),
             child: Row(
@@ -519,7 +521,7 @@ class _TherapistMarketplaceScreenState
           color: isSelected
               ? (context.isDarkMode
                   ? const Color(0xFF182E25)
-                  : const Color(0xFFE8F5EE))
+                  : AppColors.tintMint)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(9),
         ),
@@ -548,9 +550,9 @@ class _TherapistMarketplaceScreenState
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -612,7 +614,7 @@ class _TherapistMarketplaceScreenState
                                   style: TextStyle(
                                     fontFamily: 'PlusJakartaSans',
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w700,
                                     color: context.textPrimary,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -628,7 +630,7 @@ class _TherapistMarketplaceScreenState
                                   decoration: BoxDecoration(
                                     color: context.isDarkMode
                                         ? const Color(0xFF382B14)
-                                        : const Color(0xFFFFF8E1),
+                                        : AppColors.tintSand,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: const Row(
@@ -763,7 +765,7 @@ class _TherapistMarketplaceScreenState
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 18,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: context.textPrimary,
                           ),
                         ),

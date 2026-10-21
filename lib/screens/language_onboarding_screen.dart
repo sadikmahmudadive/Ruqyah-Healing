@@ -84,7 +84,7 @@ class _LanguageOnboardingScreenState extends State<LanguageOnboardingScreen>
   }
 
   void _handleContinue() {
-    HapticFeedback.mediumImpact();
+    HapticFeedback.lightImpact();
     if (widget.onContinue != null) {
       widget.onContinue!();
     } else {

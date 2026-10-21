@@ -8,6 +8,7 @@ import '../widgets/hijama_cupping_icon.dart';
 import 'hijama_body_map_screen.dart';
 import 'hijama_session_detail_screen.dart';
 import 'therapist_marketplace_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class HijamaHubScreen extends StatefulWidget {
   const HijamaHubScreen({super.key});
@@ -91,6 +92,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -198,7 +200,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16.5,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                     height: 1.25,
                   ),
@@ -239,7 +241,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -345,7 +347,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -390,11 +392,11 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: context.isDarkMode
-            ? const Color(0xFF321E1E)
-            : const Color(0xFFFFEBEB),
-        borderRadius: BorderRadius.circular(20),
+            ? const Color(0xFF2A2520)
+            : AppColors.tintSand,
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: const Color(0xFFE74C3C).withValues(alpha: 0.20),
+          color: AppColors.accentGold.withValues(alpha: 0.30),
           width: 1.0,
         ),
       ),
@@ -402,8 +404,8 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(
-            Icons.error_outline_rounded,
-            color: Color(0xFFE74C3C),
+            Icons.spa_outlined,
+            color: Color(0xFFB8862B),
             size: 20,
           ),
 
@@ -414,38 +416,32 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Contraindications & Safety',
+                  'Safety first',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14.5,
-                    fontWeight: FontWeight.w800,
-                    color: context.isDarkMode
-                        ? const Color(0xFFE74C3C)
-                        : const Color(0xFFC0392B),
+                    fontWeight: FontWeight.w700,
+                    color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Hijama may not be suitable for everyone. Screening by a qualified therapist is essential.',
+                  'Hijama may not suit everyone, so a qualified therapist should always check with you first.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12.5,
-                    color: context.isDarkMode
-                        ? const Color(0xFFE74C3C).withValues(alpha: 0.90)
-                        : const Color(0xFFC0392B),
+                    color: context.textSecondary,
                     height: 1.35,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Professional-Only: App does not provide instructions for invasive procedures.',
+                  'For your safety, this app does not give instructions for invasive procedures.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: context.isDarkMode
-                        ? const Color(0xFFE74C3C)
-                        : const Color(0xFFC0392B),
+                    color: context.textPrimary,
                   ),
                 ),
               ],
@@ -509,7 +505,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 14,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: context.textPrimary,
                   ),
                 ),
@@ -550,7 +546,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.lightImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(),
@@ -565,7 +561,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16.5,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
@@ -687,7 +683,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 12.5,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),

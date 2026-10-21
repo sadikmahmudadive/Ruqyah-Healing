@@ -5,6 +5,7 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/ruqyah_dua_icon.dart';
+import '../widgets/islamic_pattern.dart';
 
 class GuidanceResultsScreen extends StatefulWidget {
   const GuidanceResultsScreen({super.key});
@@ -17,7 +18,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
   bool _isPlanSaved = false;
 
   void _handleSavePlan() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     setState(() {
       _isPlanSaved = !_isPlanSaved;
     });
@@ -111,6 +112,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -146,7 +148,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
                     color: Color(0xFF81C784),
                   ),
@@ -175,7 +177,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0),
+        color: AppColors.tintMint,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.15),
@@ -207,7 +209,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 13,
-                color: Color(0xFF52625B),
+                color: AppColors.lightTextSecondary,
                 height: 1.38,
               ),
             ),
@@ -228,8 +230,8 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -252,9 +254,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -262,7 +264,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
@@ -288,7 +290,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 decoration: BoxDecoration(
                   color: context.isDarkMode
                       ? const Color(0xFF182E25)
-                      : const Color(0xFFEBF7F0),
+                      : AppColors.tintMint,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(
@@ -309,7 +311,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -332,7 +334,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 decoration: BoxDecoration(
                   color: context.isDarkMode
                       ? const Color(0xFF182E25)
-                      : const Color(0xFFEBF7F0),
+                      : AppColors.tintMint,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -359,8 +361,8 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -373,7 +375,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 width: 3.5,
                 height: 14,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE67E22),
+                  color: AppColors.warning,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -383,9 +385,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -393,7 +395,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1),
+                  color: AppColors.tintSand,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
@@ -417,12 +419,12 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF3E8),
+                  color: AppColors.tintSand,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Center(
                   child: RuqyahDuaIcon(
-                    color: Color(0xFFE67E22),
+                    color: AppColors.warning,
                     size: 22,
                   ),
                 ),
@@ -439,7 +441,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 15.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -460,12 +462,12 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF3E8),
+                  color: AppColors.tintSand,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.chevron_right_rounded,
-                  color: Color(0xFFE67E22),
+                  color: AppColors.warning,
                   size: 20,
                 ),
               ),
@@ -487,8 +489,8 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -501,7 +503,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 width: 3.5,
                 height: 14,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2980B9),
+                  color: AppColors.info,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -511,9 +513,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -530,7 +532,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                     fontFamily: 'Inter',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF2980B9),
+                    color: AppColors.info,
                   ),
                 ),
               ),
@@ -550,7 +552,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 ),
                 child: const Icon(
                   Icons.headphones_rounded,
-                  color: Color(0xFF2980B9),
+                  color: AppColors.info,
                   size: 22,
                 ),
               ),
@@ -566,7 +568,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -592,7 +594,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 ),
                 child: const Icon(
                   Icons.chevron_right_rounded,
-                  color: Color(0xFF2980B9),
+                  color: AppColors.info,
                   size: 20,
                 ),
               ),
@@ -608,10 +610,10 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFEBEB),
-        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFFF6EEE2),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: const Color(0xFFE74C3C).withValues(alpha: 0.20),
+          color: const Color(0xFFD49E35).withValues(alpha: 0.30),
           width: 1.0,
         ),
       ),
@@ -624,19 +626,18 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 width: 3.5,
                 height: 14,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE74C3C),
+                  color: const Color(0xFFD49E35),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
               const SizedBox(width: 8),
               const Text(
-                'WHEN TO SEEK HELP',
+                'When to reach out for support',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.8,
-                  color: Color(0xFFE74C3C),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF8A6420),
                 ),
               ),
             ],
@@ -645,12 +646,12 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
           const SizedBox(height: 10),
 
           const Text(
-            'If feelings of fear, distress, or intrusive thoughts continue to disrupt your daily functioning, consider consulting a qualified healthcare professional.',
+            'If feelings of fear, distress, or intrusive thoughts keep getting in the way of your day, it can really help to talk with a qualified healthcare professional.',
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 12.5,
-              color: Color(0xFFC0392B),
-              height: 1.4,
+              fontSize: 13,
+              color: Color(0xFF576760),
+              height: 1.5,
             ),
           ),
         ],
@@ -664,7 +665,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
       children: [
         const Icon(
           Icons.circle,
-          color: Color(0xFFE8F5EE),
+          color: AppColors.tintMint,
           size: 10,
         ),
         const SizedBox(width: 6),
@@ -673,14 +674,14 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 12,
-            color: Color(0xFF6E7E77),
+            color: AppColors.lightTextSecondary,
           ),
         ),
         const Spacer(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
           decoration: BoxDecoration(
-            color: const Color(0xFFEBF7F0),
+            color: AppColors.tintMint,
             borderRadius: BorderRadius.circular(8),
           ),
           child: const Row(

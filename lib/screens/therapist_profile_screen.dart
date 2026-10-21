@@ -6,6 +6,7 @@ import '../widgets/hijama_cupping_icon.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 import 'book_appointment_screen.dart';
 import 'tabs/bookings_tab.dart';
+import '../theme/app_theme.dart';
 
 class TherapistProfileScreen extends StatefulWidget {
   final Therapist therapist;
@@ -56,29 +57,29 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: Colors.black.withValues(alpha: 0.03),
+                    blurRadius: 28,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -93,7 +94,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF15221D),
+              color: AppColors.lightTextPrimary,
             ),
           ),
           actions: [
@@ -103,21 +104,21 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.lightCardBg,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                  border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 28,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
                 child: IconButton(
                   icon: const Icon(
                     Icons.more_vert_rounded,
-                    color: Color(0xFF15221D),
+                    color: AppColors.lightTextPrimary,
                     size: 20,
                   ),
                   onPressed: () {
@@ -187,13 +188,13 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -235,8 +236,8 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               if (t.isVerified) ...[
@@ -245,7 +246,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8E1),
+                    color: AppColors.tintSand,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Row(
@@ -281,7 +282,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 13.5,
-              color: Color(0xFF6E7E77),
+              color: AppColors.lightTextSecondary,
             ),
           ),
 
@@ -291,7 +292,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             decoration: BoxDecoration(
-              color: const Color(0xFFE8F5EE),
+              color: AppColors.tintMint,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Text(
@@ -311,7 +312,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
             decoration: BoxDecoration(
-              color: const Color(0xFFF5F7F6),
+              color: AppColors.lightBackground,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -328,8 +329,8 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                             style: const TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xFF15221D),
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.lightTextPrimary,
                             ),
                           ),
                           const SizedBox(width: 4),
@@ -346,7 +347,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12,
-                          color: Color(0xFF6E7E77),
+                          color: AppColors.lightTextSecondary,
                         ),
                       ),
                     ],
@@ -357,7 +358,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                 Container(
                   width: 1,
                   height: 32,
-                  color: const Color(0xFFE2E8E5),
+                  color: AppColors.lightCardBorder,
                 ),
 
                 // Experience
@@ -369,8 +370,8 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF15221D),
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.lightTextPrimary,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -379,7 +380,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12,
-                          color: Color(0xFF6E7E77),
+                          color: AppColors.lightTextSecondary,
                         ),
                       ),
                     ],
@@ -404,7 +405,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
         const SizedBox(height: 10),
@@ -422,16 +423,16 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             _buildServiceChip(
               label: 'Hijama',
               customIcon: const HijamaCuppingIcon(
-                color: Color(0xFFE67E22),
+                color: AppColors.warning,
                 size: 18,
               ),
-              iconColor: const Color(0xFFE67E22),
+              iconColor: AppColors.warning,
             ),
             const SizedBox(width: 10),
             _buildServiceChip(
               label: 'Counseling',
               icon: Icons.show_chart_rounded,
-              iconColor: const Color(0xFF2980B9),
+              iconColor: AppColors.info,
             ),
           ],
         ),
@@ -448,7 +449,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -469,7 +470,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               fontFamily: 'PlusJakartaSans',
               fontSize: 13.5,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF15221D),
+              color: AppColors.lightTextPrimary,
             ),
           ),
         ],
@@ -487,7 +488,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
         const SizedBox(width: 10),
@@ -496,7 +497,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             margin: const EdgeInsets.only(right: 8),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFE2E8E5).withValues(alpha: 0.50),
+              color: AppColors.lightCardBorder.withValues(alpha: 0.50),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
@@ -505,7 +506,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                 fontFamily: 'Inter',
                 fontSize: 12.5,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF15221D),
+                color: AppColors.lightTextPrimary,
               ),
             ),
           );
@@ -525,7 +526,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
         const SizedBox(height: 8),
@@ -534,7 +535,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 13.5,
-              color: Color(0xFF6E7E77),
+              color: AppColors.lightTextSecondary,
               height: 1.45,
             ),
             children: [
@@ -614,19 +615,19 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: isSelected
               ? const Color(0xFF0B4632)
-              : const Color(0xFFE2E8E5),
+              : AppColors.lightCardBorder,
           width: isSelected ? 1.8 : 1.0,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 3),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -643,7 +644,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                   width: 42,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8F5EE),
+                    color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
@@ -665,7 +666,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF15221D),
+                          color: AppColors.lightTextPrimary,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -674,7 +675,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 11.5,
-                          color: Color(0xFF6E7E77),
+                          color: AppColors.lightTextSecondary,
                         ),
                       ),
                     ],
@@ -699,7 +700,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
         const SizedBox(height: 2),
@@ -708,7 +709,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 12.5,
-            color: Color(0xFF6E7E77),
+            color: AppColors.lightTextSecondary,
           ),
         ),
         const SizedBox(height: 12),
@@ -736,7 +737,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                       border: Border.all(
                         color: isSelected
                             ? const Color(0xFF0B4632)
-                            : const Color(0xFFE2E8E5),
+                            : AppColors.lightCardBorder,
                         width: 1.0,
                       ),
                       boxShadow: isSelected
@@ -760,7 +761,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                               isSelected ? FontWeight.w700 : FontWeight.w600,
                           color: isSelected
                               ? Colors.white
-                              : const Color(0xFF15221D),
+                              : AppColors.lightTextPrimary,
                         ),
                       ),
                     ),
@@ -784,7 +785,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF15221D),
+            color: AppColors.lightTextPrimary,
           ),
         ),
         const Spacer(),
@@ -836,7 +837,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.lightImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>

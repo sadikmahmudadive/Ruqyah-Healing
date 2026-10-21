@@ -5,6 +5,8 @@ import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
 import 'book_appointment_screen.dart';
 import 'video_consultation_screen.dart';
+import '../theme/app_theme.dart';
+import '../widgets/islamic_pattern.dart';
 
 class SecureMessagesScreen extends StatefulWidget {
   final String practitionerName;
@@ -101,7 +103,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         body: Column(
           children: [
             // 1. Top Dark Green Header Area
@@ -175,6 +177,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: const BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -210,7 +213,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
                     color: Color(0xFF81C784),
                   ),
@@ -221,7 +224,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -258,7 +261,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      color: const Color(0xFFEBF7F0),
+      color: AppColors.tintMint,
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -272,8 +275,9 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF0B4632),
+                height: 1.35,
               ),
-              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -294,9 +298,9 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 26,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
@@ -304,7 +308,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               children: [
                 const Icon(
                   Icons.search_rounded,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                   size: 20,
                 ),
                 const SizedBox(width: 10),
@@ -313,14 +317,14 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
-                      color: Color(0xFF15221D),
+                      color: AppColors.lightTextPrimary,
                     ),
                     decoration: InputDecoration(
                       hintText: 'Search messages...',
                       hintStyle: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13.5,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                       border: InputBorder.none,
                       isDense: true,
@@ -336,7 +340,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
           width: 46,
           height: 46,
           decoration: BoxDecoration(
-            color: const Color(0xFFE8F5EE),
+            color: AppColors.tintMint,
             borderRadius: BorderRadius.circular(14),
           ),
           child: IconButton(
@@ -364,8 +368,8 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -376,7 +380,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             width: 48,
             height: 48,
             decoration: const BoxDecoration(
-              color: Color(0xFFE8F5EE),
+              color: AppColors.tintMint,
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -385,7 +389,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Color(0xFF0B4632),
                 ),
               ),
@@ -406,8 +410,8 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                       ),
                     ),
                     const SizedBox(width: 6),
@@ -450,7 +454,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFFE8F5EE),
+              color: AppColors.tintMint,
               borderRadius: BorderRadius.circular(14),
             ),
             child: IconButton(
@@ -506,9 +510,9 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 26,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -522,7 +526,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
-                color: isUser ? Colors.white : const Color(0xFF15221D),
+                color: isUser ? Colors.white : AppColors.lightTextPrimary,
                 height: 1.35,
               ),
             ),
@@ -537,7 +541,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                     fontSize: 11,
                     color: isUser
                         ? Colors.white.withValues(alpha: 0.70)
-                        : const Color(0xFF90A4AE),
+                        : AppColors.lightTextMuted,
                   ),
                 ),
                 if (isUser) ...[
@@ -573,9 +577,9 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 26,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -638,7 +642,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                         decoration: BoxDecoration(
                           color: index < 6
                               ? const Color(0xFF0B4632)
-                              : const Color(0xFFCFD8DC),
+                              : AppColors.lightCardBorderStrong,
                           borderRadius: BorderRadius.circular(2),
                         ),
                       );
@@ -650,7 +654,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11,
-                      color: Color(0xFF90A4AE),
+                      color: AppColors.lightTextMuted,
                     ),
                   ),
                 ],
@@ -679,9 +683,9 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 26,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -691,12 +695,12 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFEBEB),
+                color: AppColors.tintSand,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Icon(
                 Icons.picture_as_pdf_rounded,
-                color: Color(0xFFE74C3C),
+                color: Color(0xFFB8862B),
                 size: 22,
               ),
             ),
@@ -711,7 +715,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF15221D),
+                      color: AppColors.lightTextPrimary,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -721,7 +725,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11.5,
-                      color: Color(0xFF90A4AE),
+                      color: AppColors.lightTextMuted,
                     ),
                   ),
                 ],
@@ -731,7 +735,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               width: 38,
               height: 38,
               decoration: BoxDecoration(
-                color: const Color(0xFFE8F5EE),
+                color: AppColors.tintMint,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: IconButton(
@@ -778,7 +782,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            HapticFeedback.mediumImpact();
+            HapticFeedback.lightImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (_, _, _) => BookAppointmentScreen(
@@ -836,7 +840,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFFE8F5EE),
+              color: AppColors.tintMint,
               borderRadius: BorderRadius.circular(14),
             ),
             child: IconButton(
@@ -859,9 +863,9 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               height: 44,
               padding: const EdgeInsets.symmetric(horizontal: 14),
               decoration: BoxDecoration(
-                color: const Color(0xFFF5F7F6),
+                color: AppColors.lightBackground,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
               ),
               child: Row(
                 children: [
@@ -871,14 +875,14 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14,
-                        color: Color(0xFF15221D),
+                        color: AppColors.lightTextPrimary,
                       ),
                       decoration: const InputDecoration(
                         hintText: 'Type a message...',
                         hintStyle: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 13.5,
-                          color: Color(0xFFB0BEC5),
+                          color: AppColors.lightTextMuted,
                         ),
                         border: InputBorder.none,
                         isDense: true,
@@ -890,7 +894,7 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
                   IconButton(
                     icon: const Icon(
                       Icons.camera_alt_outlined,
-                      color: Color(0xFF90A4AE),
+                      color: AppColors.lightTextMuted,
                       size: 20,
                     ),
                     onPressed: () {

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
 import 'quiz_certificate_screen.dart';
+import '../theme/app_theme.dart';
 
 class CourseDetailScreen extends StatefulWidget {
   final String courseTitle;
@@ -29,7 +30,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   bool _isPlayingVideo = false;
 
   void _handleEnroll() {
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
     AppToast.show(
       context,
       title: 'Enrolled Successfully',
@@ -47,29 +48,29 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F7F6),
+        backgroundColor: AppColors.lightBackground,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFF5F7F6),
+          backgroundColor: AppColors.lightBackground,
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE2E8E5), width: 1.0),
+                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 26,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Color(0xFF15221D),
+                  color: AppColors.lightTextPrimary,
                   size: 20,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
@@ -85,17 +86,17 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.lightCardBg,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -104,7 +105,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     _isBookmarked
                         ? Icons.bookmark_rounded
                         : Icons.bookmark_outline_rounded,
-                    color: const Color(0xFF15221D),
+                    color: AppColors.lightTextPrimary,
                     size: 18,
                   ),
                   onPressed: () {
@@ -127,24 +128,24 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.lightCardBg,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color(0xFFE2E8E5),
+                    color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
                 child: IconButton(
                   icon: const Icon(
                     Icons.share_outlined,
-                    color: Color(0xFF15221D),
+                    color: AppColors.lightTextPrimary,
                     size: 18,
                   ),
                   onPressed: () {
@@ -175,7 +176,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFF3E8),
+                        color: AppColors.tintSand,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -184,7 +185,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                           fontFamily: 'Inter',
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFFE67E22),
+                          color: AppColors.warning,
                         ),
                       ),
                     ),
@@ -197,8 +198,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                         height: 1.25,
                       ),
                     ),
@@ -237,8 +238,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                                       style: const TextStyle(
                                         fontFamily: 'PlusJakartaSans',
                                         fontSize: 15,
-                                        fontWeight: FontWeight.w800,
-                                        color: Color(0xFF15221D),
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.lightTextPrimary,
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -257,7 +258,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                                 style: TextStyle(
                                   fontFamily: 'Inter',
                                   fontSize: 12,
-                                  color: Color(0xFF90A4AE),
+                                  color: AppColors.lightTextMuted,
                                 ),
                               ),
                             ],
@@ -275,8 +276,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 13,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF15221D),
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.lightTextPrimary,
                           ),
                         ),
                         const Text(
@@ -284,7 +285,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 12,
-                            color: Color(0xFF90A4AE),
+                            color: AppColors.lightTextMuted,
                           ),
                         ),
                       ],
@@ -340,9 +341,9 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -392,7 +393,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             // Center Big Play Button
             GestureDetector(
               onTap: () {
-                HapticFeedback.heavyImpact();
+                HapticFeedback.lightImpact();
                 setState(() => _isPlayingVideo = !_isPlayingVideo);
               },
               child: Container(
@@ -536,13 +537,13 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.lightCardBg,
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 12,
-                offset: const Offset(0, 3),
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 26,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -552,7 +553,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 width: 36,
                 height: 36,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: const Color(0xFF0B4632), size: 18),
@@ -564,8 +565,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 12.5,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -576,7 +577,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 10,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -601,7 +602,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           ],
         ),
         const SizedBox(height: 6),
-        Container(height: 1, color: const Color(0xFFE2E8E5)),
+        Container(height: 1, color: AppColors.lightCardBorder),
       ],
     );
   }
@@ -621,10 +622,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 15,
-              fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
               color: isSelected
                   ? const Color(0xFF0B4632)
-                  : const Color(0xFF90A4AE),
+                  : AppColors.lightTextMuted,
             ),
           ),
           const SizedBox(height: 6),
@@ -649,7 +650,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: const Color(0xFFEBF7F0),
+            color: AppColors.tintMint,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
@@ -668,8 +669,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14.5,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
               const Spacer(),
@@ -699,13 +700,13 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.lightCardBg,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 26,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -718,7 +719,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     width: 7,
                     height: 7,
                     decoration: const BoxDecoration(
-                      color: Color(0xFFE67E22),
+                      color: AppColors.warning,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -729,8 +730,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 14.5,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF15221D),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.lightTextPrimary,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -742,7 +743,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFF3E8),
+                      color: AppColors.tintSand,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
@@ -751,7 +752,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                         fontFamily: 'Inter',
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFFE67E22),
+                        color: AppColors.warning,
                       ),
                     ),
                   ),
@@ -759,7 +760,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               ),
 
               const SizedBox(height: 14),
-              Container(height: 1, color: const Color(0xFFE2E8E5)),
+              Container(height: 1, color: AppColors.lightCardBorder),
               const SizedBox(height: 10),
 
               // Lesson 1: Introduction to Hijama
@@ -780,7 +781,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -797,7 +798,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13.5,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: Color(0xFF0B4632),
                         ),
                       ),
@@ -820,7 +821,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               // Lesson 3: Safety & Contraindications
               _buildLessonItem(
                 icon: Icons.play_circle_outline_rounded,
-                iconColor: const Color(0xFF90A4AE),
+                iconColor: AppColors.lightTextMuted,
                 title: 'Safety & Contraindications',
                 duration: '10 min',
               ),
@@ -851,7 +852,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 fontFamily: 'Inter',
                 fontSize: 13,
                 fontWeight: isCompleted ? FontWeight.w600 : FontWeight.w400,
-                color: const Color(0xFF52625B),
+                color: AppColors.lightTextSecondary,
               ),
             ),
           ),
@@ -860,7 +861,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 12,
-              color: Color(0xFF90A4AE),
+              color: AppColors.lightTextMuted,
             ),
           ),
         ],
@@ -872,7 +873,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
       ),
       child: const Text(
@@ -880,7 +881,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         style: TextStyle(
           fontFamily: 'Inter',
           fontSize: 13,
-          color: Color(0xFF6E7E77),
+          color: AppColors.lightTextSecondary,
           height: 1.45,
         ),
       ),
@@ -891,7 +892,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
       ),
       child: const Text(
@@ -899,7 +900,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         style: TextStyle(
           fontFamily: 'Inter',
           fontSize: 13,
-          color: Color(0xFF6E7E77),
+          color: AppColors.lightTextSecondary,
           height: 1.45,
         ),
       ),
@@ -916,7 +917,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         right: 20,
       ),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightCardBg,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
@@ -937,7 +938,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11.5,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const SizedBox(height: 2),
@@ -946,8 +947,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF15221D),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.lightTextPrimary,
                 ),
               ),
             ],

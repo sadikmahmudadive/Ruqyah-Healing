@@ -14,18 +14,19 @@ class AppMotion {
   AppMotion._();
 
   // ─── Durations ─────────────────────────────────────────────
-  static const Duration fast = Duration(milliseconds: 150);
-  static const Duration base = Duration(milliseconds: 250);
-  static const Duration slow = Duration(milliseconds: 400);
-  static const Duration extra = Duration(milliseconds: 650);
-  static const Duration page = Duration(milliseconds: 420);
+  static const Duration fast = Duration(milliseconds: 200);
+  static const Duration base = Duration(milliseconds: 320);
+  static const Duration slow = Duration(milliseconds: 500);
+  static const Duration extra = Duration(milliseconds: 800);
+  static const Duration page = Duration(milliseconds: 520);
 
   // ─── Curves ────────────────────────────────────────────────
   /// Default curve for most movement. Firm start, gentle settle.
   static const Curve standard = Curves.easeOutCubic;
 
-  /// For bouncy, playful motion (success states, "pop in" moments).
-  static const Curve expressive = Cubic(0.2, 0.9, 0.3, 1.4);
+  /// Gentle ease-out for "arriving" moments. Deliberately has no
+  /// overshoot or bounce: calm interfaces settle, they don't spring.
+  static const Curve expressive = Cubic(0.25, 0.8, 0.25, 1.0);
 
   /// Smooth S-curve for symmetric motion (fades, dissolves).
   static const Curve smooth = Curves.easeInOutCubicEmphasized;
@@ -35,7 +36,7 @@ class AppMotion {
 
   // ─── Stagger ───────────────────────────────────────────────
   /// Delay between staggered children in a list entrance.
-  static const Duration staggerStep = Duration(milliseconds: 55);
+  static const Duration staggerStep = Duration(milliseconds: 70);
 }
 
 /// Shared elevation + shadow tokens.
@@ -56,12 +57,12 @@ class AppElevation {
   /// Standard raised card.
   static List<BoxShadow> get card => [
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.05),
-      blurRadius: 18,
-      offset: const Offset(0, 6),
+      color: Colors.black.withValues(alpha: 0.035),
+      blurRadius: 28,
+      offset: const Offset(0, 8),
     ),
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.02),
+      color: Colors.black.withValues(alpha: 0.015),
       blurRadius: 4,
       offset: const Offset(0, 1),
     ),
@@ -70,9 +71,9 @@ class AppElevation {
   /// Hovering / floating element (bottom nav, FAB).
   static List<BoxShadow> get floating => [
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.08),
-      blurRadius: 28,
-      offset: const Offset(0, 10),
+      color: Colors.black.withValues(alpha: 0.05),
+      blurRadius: 36,
+      offset: const Offset(0, 12),
     ),
     BoxShadow(
       color: Colors.black.withValues(alpha: 0.03),
@@ -85,7 +86,7 @@ class AppElevation {
   static List<BoxShadow> glow(Color color, {double strength = 0.3}) => [
     BoxShadow(
       color: color.withValues(alpha: strength),
-      blurRadius: 20,
+      blurRadius: 24,
       offset: const Offset(0, 8),
     ),
   ];
@@ -93,8 +94,8 @@ class AppElevation {
   /// Dark-mode safe shadow (visible on dark surfaces).
   static List<BoxShadow> get darkCard => [
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.45),
-      blurRadius: 24,
+      color: Colors.black.withValues(alpha: 0.32),
+      blurRadius: 30,
       offset: const Offset(0, 8),
     ),
   ];

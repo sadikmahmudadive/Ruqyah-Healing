@@ -9,6 +9,7 @@ import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'order_tracking_screen.dart';
 import 'secure_messages_screen.dart';
 import 'settings_screen.dart';
+import '../widgets/islamic_pattern.dart';
 
 class NotificationItem {
   final String id;
@@ -186,12 +187,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           Text(
                             _selectedCategory == 'All'
                                 ? "You're all caught up.\nNew notifications will appear here."
-                                : 'No notifications in $_selectedCategory',
+                                : 'All quiet in $_selectedCategory.\nNothing needs you right now.',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 14,
-                              color: Color(0xFF6E7E77),
+                              color: AppColors.lightTextSecondary,
                               height: 1.4,
                             ),
                           ),
@@ -226,6 +227,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: const BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
@@ -261,7 +263,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     letterSpacing: 1.0,
                     color: Color(0xFF81C784),
                   ),
@@ -272,7 +274,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -331,8 +333,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),

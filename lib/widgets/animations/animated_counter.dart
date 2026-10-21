@@ -10,7 +10,7 @@ import 'motion.dart';
 /// Example:
 ///   AnimatedCounter(
 ///     value: healthScore,
-///     style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800),
+///     style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
 ///   )
 class AnimatedCounter extends StatelessWidget {
   final num value;

@@ -10,6 +10,7 @@ import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../community_screen.dart';
 import '../course_detail_screen.dart';
+import '../../widgets/islamic_pattern.dart';
 
 class CourseModel {
   final String id;
@@ -99,17 +100,17 @@ class _LearnTabState extends State<LearnTab> {
                     // 1. Continue Learning Hero Progress Card
                     _buildContinueLearningHeroCard(),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
 
                     // Community & Support Banner Card
                     _buildCommunityBanner(),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 32),
 
                     // 2. Browse by Category Section
                     _buildBrowseByCategorySection(),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 32),
 
                     // 3. Featured Courses Section
                     _buildFeaturedCoursesSection(),
@@ -130,13 +131,14 @@ class _LearnTabState extends State<LearnTab> {
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 12,
-        bottom: 20,
+        bottom: 28,
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
       ),
       child: Row(
         children: [
@@ -149,7 +151,7 @@ class _LearnTabState extends State<LearnTab> {
                   style: const TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 24,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -177,9 +179,9 @@ class _LearnTabState extends State<LearnTab> {
             ),
             child: IconButton(
               icon: const Icon(
-                Icons.cancel_outlined,
-                color: Color(0xFFD49E35),
-                size: 20,
+                Icons.more_horiz_rounded,
+                color: Colors.white,
+                size: 22,
               ),
               onPressed: () {
                 HapticFeedback.selectionClick();
@@ -202,9 +204,9 @@ class _LearnTabState extends State<LearnTab> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -221,7 +223,7 @@ class _LearnTabState extends State<LearnTab> {
                 style: const TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 11,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
                   color: Color(0xFF1E6B45),
                 ),
@@ -233,15 +235,15 @@ class _LearnTabState extends State<LearnTab> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1),
+                  color: AppColors.tintSand,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
-                  '30% DONE',
+                  '30% complete',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFFD49E35),
                   ),
                 ),
@@ -262,7 +264,7 @@ class _LearnTabState extends State<LearnTab> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 17,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -294,9 +296,9 @@ class _LearnTabState extends State<LearnTab> {
               Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(4),
-                  child: const LinearProgressIndicator(
+                  child: LinearProgressIndicator(
                     value: 0.30,
-                    backgroundColor: Color(0xFFF5F7F6),
+                    backgroundColor: context.pageBg,
                     color: Color(0xFF0B4632),
                     minHeight: 6,
                   ),
@@ -362,7 +364,7 @@ class _LearnTabState extends State<LearnTab> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -378,7 +380,7 @@ class _LearnTabState extends State<LearnTab> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
@@ -408,7 +410,7 @@ class _LearnTabState extends State<LearnTab> {
                   color: Color(0xFF0B4632),
                   size: 22,
                 ),
-                iconBg: const Color(0xFFEBF7F0),
+                iconBg: AppColors.tintMint,
               ),
             ),
             const SizedBox(width: 10),
@@ -419,10 +421,10 @@ class _LearnTabState extends State<LearnTab> {
                 title: 'Hijama',
                 subtitle: '14 Courses',
                 customIcon: const HijamaCuppingIcon(
-                  color: Color(0xFFE67E22),
+                  color: AppColors.warning,
                   size: 22,
                 ),
-                iconBg: const Color(0xFFFFF3E8),
+                iconBg: AppColors.tintSand,
               ),
             ),
             const SizedBox(width: 10),
@@ -433,10 +435,10 @@ class _LearnTabState extends State<LearnTab> {
                 title: 'Acupuncture',
                 subtitle: '12 Courses',
                 customIcon: const AcupunctureIcon(
-                  color: Color(0xFF2980B9),
+                  color: AppColors.info,
                   size: 22,
                 ),
-                iconBg: const Color(0xFFE6F7FF),
+                iconBg: AppColors.tintMist,
               ),
             ),
           ],
@@ -459,9 +461,9 @@ class _LearnTabState extends State<LearnTab> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -490,7 +492,7 @@ class _LearnTabState extends State<LearnTab> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 14,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -522,7 +524,7 @@ class _LearnTabState extends State<LearnTab> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 18,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
             ),
@@ -538,7 +540,7 @@ class _LearnTabState extends State<LearnTab> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
@@ -559,7 +561,7 @@ class _LearnTabState extends State<LearnTab> {
 
         ..._courses.map((course) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 14.0),
+            padding: const EdgeInsets.only(bottom: 18.0),
             child: _buildCourseCard(course),
           );
         }),
@@ -592,9 +594,9 @@ class _LearnTabState extends State<LearnTab> {
           border: Border.all(color: context.cardBorder, width: 1.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 28,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -634,8 +636,8 @@ class _LearnTabState extends State<LearnTab> {
                             ),
                             decoration: BoxDecoration(
                               color: isBeginner
-                                  ? const Color(0xFFEBF7F0)
-                                  : const Color(0xFFFFF3E8),
+                                  ? AppColors.tintMint
+                                  : AppColors.tintSand,
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -646,7 +648,7 @@ class _LearnTabState extends State<LearnTab> {
                                 fontWeight: FontWeight.w700,
                                 color: isBeginner
                                     ? const Color(0xFF0B4632)
-                                    : const Color(0xFFE67E22),
+                                    : AppColors.warning,
                               ),
                             ),
                           ),
@@ -656,7 +658,7 @@ class _LearnTabState extends State<LearnTab> {
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
                               fontSize: 16,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w700,
                               color: context.textPrimary,
                             ),
                           ),
@@ -670,7 +672,7 @@ class _LearnTabState extends State<LearnTab> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: context.textPrimary,
                         ),
                       ),
@@ -727,7 +729,7 @@ class _LearnTabState extends State<LearnTab> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -779,14 +781,15 @@ class _LearnTabState extends State<LearnTab> {
   Widget _buildCommunityBanner() {
     return Container(
       padding: const EdgeInsets.all(18),
+      foregroundDecoration: IslamicPatternDecoration(radius: BorderRadius.circular(24)),
       decoration: BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF082F21).withValues(alpha: 0.25),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: const Color(0xFF082F21).withValues(alpha: 0.16),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -807,7 +810,7 @@ class _LearnTabState extends State<LearnTab> {
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ),
@@ -845,7 +848,7 @@ class _LearnTabState extends State<LearnTab> {
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 13.5,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
             ),

@@ -11,6 +11,7 @@ import '../../widgets/illustrations/ruqyah_illustrations.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../therapist_marketplace_screen.dart';
 import '../video_consultation_screen.dart';
+import '../../widgets/islamic_pattern.dart';
 
 class Therapist {
   final String id;
@@ -113,7 +114,7 @@ class _BookingsTabState extends State<BookingsTab> {
                       builder: (context) {
                         final currentUser = FirebaseService.currentUser;
                         if (currentUser == null) {
-                          return _buildEmptyStateCard('Sign in to view your booked appointments.');
+                          return _buildEmptyStateCard('Sign in to see your appointments here.');
                         }
 
                         return StreamBuilder<List<AppointmentModel>>(
@@ -129,8 +130,8 @@ class _BookingsTabState extends State<BookingsTab> {
                             if (filtered.isEmpty) {
                               return _buildEmptyStateCard(
                                 _selectedTab == 'Upcoming'
-                                    ? 'No upcoming sessions. Book a therapist to get started!'
-                                    : 'No ${_selectedTab.toLowerCase()} sessions found.',
+                                    ? 'Nothing scheduled yet. Whenever you feel ready, you can book a session.'
+                                    : 'No ${_selectedTab.toLowerCase()} sessions yet.',
                               );
                             }
 
@@ -140,13 +141,12 @@ class _BookingsTabState extends State<BookingsTab> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 6.0, bottom: 8.0),
                                   child: Text(
-                                    '${filtered.length} ${_selectedTab.toUpperCase()} SESSIONS',
-                                    style: const TextStyle(
+                                    '${filtered.length} ${_selectedTab.toLowerCase()} ${filtered.length == 1 ? 'session' : 'sessions'}',
+                                    style: TextStyle(
                                       fontFamily: 'PlusJakartaSans',
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 0.8,
-                                      color: Color(0xFF90A4AE),
+                                      fontSize: 12.5,
+                                      fontWeight: FontWeight.w600,
+                                      color: context.textSecondary,
                                     ),
                                   ),
                                 ),
@@ -183,17 +183,17 @@ class _BookingsTabState extends State<BookingsTab> {
                       },
                     ),
 
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 24),
 
                     // Info Disclaimer Box
                     _buildInfoDisclaimerBox(),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
 
                     // Add all upcoming to calendar row
                     _buildAddToCalendarRow(),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
 
                     // Primary Action Button: Book a New Appointment
                     _buildBookNewAppointmentButton(),
@@ -214,13 +214,14 @@ class _BookingsTabState extends State<BookingsTab> {
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 12,
-        bottom: 10,
+        bottom: 18,
         left: 20,
         right: 20,
       ),
+      foregroundDecoration: IslamicPatternDecoration(),
       decoration: const BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +238,7 @@ class _BookingsTabState extends State<BookingsTab> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 11,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 1.0,
                         color: Color(0xFF81C784),
                       ),
@@ -248,7 +249,7 @@ class _BookingsTabState extends State<BookingsTab> {
                       style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 24,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
                     ),
@@ -342,9 +343,9 @@ class _BookingsTabState extends State<BookingsTab> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 28,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -369,11 +370,13 @@ class _BookingsTabState extends State<BookingsTab> {
                     width: 52,
                     height: 52,
                     decoration: BoxDecoration(
-                      color: session.title.contains('Ruqyah')
-                          ? const Color(0xFFEBF7F0)
-                          : session.title.contains('Hijama')
-                              ? const Color(0xFFFFF3E8)
-                              : const Color(0xFFE6F7FF),
+                      color: context.isDarkMode
+                          ? AppColors.darkIconCircleBg
+                          : session.title.contains('Ruqyah')
+                              ? AppColors.tintMint
+                              : session.title.contains('Hijama')
+                                  ? AppColors.tintSand
+                                  : AppColors.tintMist,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Center(child: session.icon),
@@ -388,30 +391,30 @@ class _BookingsTabState extends State<BookingsTab> {
                       children: [
                         Text(
                           session.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF15221D),
+                            fontWeight: FontWeight.w700,
+                            color: context.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           session.doctorName,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 13.5,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF6E7E77),
+                            color: context.textSecondary,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           session.dateTime,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 12.5,
-                            color: Color(0xFF90A4AE),
+                            color: context.textMuted,
                           ),
                         ),
 
@@ -425,11 +428,11 @@ class _BookingsTabState extends State<BookingsTab> {
                           children: [
                             Text(
                               '• ${session.mode}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFF15221D),
+                                color: context.textPrimary,
                               ),
                             ),
                             _buildStatusBadge(session.status),
@@ -441,9 +444,9 @@ class _BookingsTabState extends State<BookingsTab> {
 
                   // Action Popup Menu (Three Dots)
                   PopupMenuButton<String>(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.more_vert_rounded,
-                      color: Color(0xFF90A4AE),
+                      color: context.textMuted,
                       size: 20,
                     ),
                     shape: RoundedRectangleBorder(
@@ -493,12 +496,12 @@ class _BookingsTabState extends State<BookingsTab> {
                           ],
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'cancel',
                         child: Row(
                           children: [
                             Icon(Icons.cancel_outlined,
-                                color: Color(0xFFE74C3C), size: 18),
+                                color: context.textSecondary, size: 18),
                             SizedBox(width: 8),
                             Text('Cancel Appointment'),
                           ],
@@ -521,7 +524,7 @@ class _BookingsTabState extends State<BookingsTab> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: isConfirmed ? const Color(0xFFEBF7F0) : const Color(0xFFFFF8E1),
+        color: isConfirmed ? AppColors.tintMint : AppColors.tintSand,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -556,7 +559,7 @@ class _BookingsTabState extends State<BookingsTab> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFEBF7F0).withValues(alpha: 0.80),
+        color: context.containerBg.withValues(alpha: 0.80),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFF0B4632).withValues(alpha: 0.15),
@@ -574,11 +577,11 @@ class _BookingsTabState extends State<BookingsTab> {
           Expanded(
             child: Text(
               context.tr('rescheduling_info'),
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 12,
-                color: Color(0xFF52625B),
-                height: 1.35,
+                fontSize: 12.5,
+                color: context.textSecondary,
+                height: 1.45,
               ),
             ),
           ),
@@ -623,9 +626,9 @@ class _BookingsTabState extends State<BookingsTab> {
                   ),
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
-                color: Color(0xFFB0BEC5),
+                color: context.textMuted,
                 size: 20,
               ),
             ],
@@ -654,11 +657,11 @@ class _BookingsTabState extends State<BookingsTab> {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 13.5,
-              color: Color(0xFF6E7E77),
-              height: 1.4,
+              fontSize: 14,
+              color: context.textSecondary,
+              height: 1.5,
             ),
           ),
         ],
@@ -676,9 +679,9 @@ class _BookingsTabState extends State<BookingsTab> {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF082F21).withValues(alpha: 0.30),
-            offset: const Offset(0, 6),
-            blurRadius: 18,
+            color: const Color(0xFF082F21).withValues(alpha: 0.18),
+            offset: const Offset(0, 8),
+            blurRadius: 24,
           ),
         ],
       ),
@@ -686,7 +689,7 @@ class _BookingsTabState extends State<BookingsTab> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            HapticFeedback.heavyImpact();
+            HapticFeedback.lightImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) =>

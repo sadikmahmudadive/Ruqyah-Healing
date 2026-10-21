@@ -544,7 +544,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
 
   void _switchLayer(AnatomyLayer newLayer) {
     if (_currentLayer == newLayer) return;
-    HapticFeedback.mediumImpact();
+    HapticFeedback.lightImpact();
     setState(() {
       _currentLayer = newLayer;
       _selectedPoint = null;
@@ -555,7 +555,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
 
   void _performDeepDive(AnatomyPoint currentPoint) {
     if (currentPoint.deepDiveTargetLayer == null) return;
-    HapticFeedback.heavyImpact();
+    HapticFeedback.lightImpact();
 
     final targetLayer = currentPoint.deepDiveTargetLayer == 'organs'
         ? AnatomyLayer.organs
@@ -825,7 +825,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                                     style: TextStyle(
                                       fontFamily: 'PlusJakartaSans',
                                       fontSize: 18,
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.w700,
                                       color: context.textPrimary,
                                     ),
                                   ),
@@ -877,9 +877,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.14),
-                          blurRadius: 16,
-                          offset: const Offset(0, 4),
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 26,
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
@@ -958,9 +958,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -1003,9 +1003,9 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.07),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -1210,7 +1210,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                       style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 16.5,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         color: context.textPrimary,
                       ),
                     ),
@@ -1365,7 +1365,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
   // PAIN ASSESSMENT & RUQYAH CONSULTATION SHEET
   // ---------------------------------------------------------------------------
   void _showPainAssessmentSheet(AnatomyPoint pt) {
-    HapticFeedback.mediumImpact();
+    HapticFeedback.lightImpact();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1411,7 +1411,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                               style: TextStyle(
                                 fontFamily: 'PlusJakartaSans',
                                 fontSize: 18,
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w700,
                                 color: context.textPrimary,
                               ),
                             ),
@@ -1442,7 +1442,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: _painSeverity >= 7
-                              ? const Color(0xFFC0392B)
+                              ? const Color(0xFFB4503F)
                               : _painSeverity >= 4
                               ? const Color(0xFFD49E35)
                               : const Color(0xFF0B4632),
@@ -1465,7 +1465,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       activeTrackColor: _painSeverity >= 7
-                          ? const Color(0xFFC0392B)
+                          ? const Color(0xFFB4503F)
                           : _painSeverity >= 4
                           ? const Color(0xFFD49E35)
                           : const Color(0xFF0B4632),

@@ -38,8 +38,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    blurRadius: 26,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
@@ -74,7 +74,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 20,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: context.textPrimary,
                 ),
               ),
@@ -97,8 +97,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      blurRadius: 26,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -162,7 +162,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
-                  color: Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
 
@@ -216,7 +216,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 15,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: context.textPrimary,
             ),
           ),
@@ -280,8 +280,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -302,7 +302,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.6,
-                        color: Color(0xFF90A4AE),
+                        color: AppColors.lightTextMuted,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -314,7 +314,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                           style: TextStyle(
                             fontFamily: 'PlusJakartaSans',
                             fontSize: 34,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w700,
                             color: score == null
                                 ? context.textSecondary
                                 : context.textPrimary,
@@ -381,7 +381,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           ),
 
           const SizedBox(height: 16),
-          Container(height: 1, color: const Color(0xFFE2E8E5)),
+          Container(height: 1, color: AppColors.lightCardBorder),
           const SizedBox(height: 12),
 
           // Footer Row
@@ -392,7 +392,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
-                  color: const Color(0xFF90A4AE),
+                  color: AppColors.lightTextMuted,
                 ),
               ),
               const Spacer(),
@@ -430,7 +430,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
   Widget _buildMetricRow(String label, HealthComponent? component) {
     final value = component?.label ?? 'No data';
     final progress = component?.fraction ?? 0.0;
-    final color = component?.tone.color ?? const Color(0xFF90A4AE);
+    final color = component?.tone.color ?? AppColors.lightTextMuted;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -442,7 +442,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 11.5,
-                color: Color(0xFF6E7E77),
+                color: AppColors.lightTextSecondary,
               ),
             ),
             Text(
@@ -461,7 +461,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           borderRadius: BorderRadius.circular(3),
           child: LinearProgressIndicator(
             value: progress,
-            backgroundColor: const Color(0xFFE2E8E5),
+            backgroundColor: AppColors.lightCardBorder,
             color: color,
             minHeight: 4,
           ),
@@ -487,8 +487,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -496,7 +496,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         children: [
           _buildLogTile(
             icon: Icons.show_chart_rounded,
-            iconBg: const Color(0xFFEBF7F0),
+            iconBg: AppColors.tintMint,
             iconColor: const Color(0xFF0B4632),
             title: 'Medical History',
             badgeText: countOrNone(
@@ -504,35 +504,35 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               'record',
               'records',
             ),
-            badgeBg: const Color(0xFFEBF7F0),
+            badgeBg: AppColors.tintMint,
             badgeColor: const Color(0xFF0B4632),
           ),
           _buildDivider(),
           _buildLogTile(
-            icon: Icons.error_outline_rounded,
-            iconBg: const Color(0xFFFFEBEB),
-            iconColor: const Color(0xFFE74C3C),
+            icon: Icons.local_florist_outlined,
+            iconBg: const Color(0xFFF6EEE2),
+            iconColor: const Color(0xFFB8862B),
             title: 'Allergies',
             badgeText: countOrNone(health.allergyCount, 'allergy', 'allergies'),
-            badgeBg: const Color(0xFFFFEBEB),
-            badgeColor: const Color(0xFFE74C3C),
+            badgeBg: const Color(0xFFF6EEE2),
+            badgeColor: const Color(0xFFB8862B),
           ),
           _buildDivider(),
           _buildLogTile(
             icon: Icons.notifications_none_rounded,
-            iconBg: const Color(0xFFFFF3E8),
-            iconColor: const Color(0xFFE67E22),
+            iconBg: AppColors.tintSand,
+            iconColor: AppColors.warning,
             title: 'Medications',
             badgeText: health.medicationCount == 0
                 ? 'None'
                 : '${health.medicationCount} active',
-            badgeBg: const Color(0xFFFFF3E8),
-            badgeColor: const Color(0xFFE67E22),
+            badgeBg: AppColors.tintSand,
+            badgeColor: AppColors.warning,
           ),
           _buildDivider(),
           _buildLogTile(
             icon: Icons.person_outline_rounded,
-            iconBg: const Color(0xFFEBF7F0),
+            iconBg: AppColors.tintMint,
             iconColor: const Color(0xFF0B4632),
             title: 'Current Concerns',
             badgeText: concerns,
@@ -542,34 +542,34 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           _buildDivider(),
           _buildLogTile(
             customIcon: const RuqyahDuaIcon(color: Color(0xFF0B4632), size: 20),
-            iconBg: const Color(0xFFEBF7F0),
+            iconBg: AppColors.tintMint,
             iconColor: const Color(0xFF0B4632),
             title: 'Ruqyah Listening Log',
             badgeText: countOrNone(health.ruqyahSessions, 'session', 'sessions'),
-            badgeBg: const Color(0xFFEBF7F0),
+            badgeBg: AppColors.tintMint,
             badgeColor: const Color(0xFF0B4632),
           ),
           _buildDivider(),
           _buildLogTile(
             customIcon: const HijamaCuppingIcon(
-              color: Color(0xFFE67E22),
+              color: AppColors.warning,
               size: 20,
             ),
-            iconBg: const Color(0xFFFFF3E8),
-            iconColor: const Color(0xFFE67E22),
+            iconBg: AppColors.tintSand,
+            iconColor: AppColors.warning,
             title: 'Hijama Session History',
             badgeText: countOrNone(health.hijamaSessions, 'session', 'sessions'),
-            badgeBg: const Color(0xFFFFF3E8),
-            badgeColor: const Color(0xFFE67E22),
+            badgeBg: AppColors.tintSand,
+            badgeColor: AppColors.warning,
           ),
           _buildDivider(),
           _buildLogTile(
             customIcon: const AcupunctureIcon(
-              color: Color(0xFF2980B9),
+              color: AppColors.info,
               size: 20,
             ),
             iconBg: const Color(0xFFE6F7FF),
-            iconColor: const Color(0xFF2980B9),
+            iconColor: AppColors.info,
             title: 'Acupuncture Point Log',
             badgeText: countOrNone(
               health.acupunctureSessions,
@@ -577,7 +577,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               'sessions',
             ),
             badgeBg: const Color(0xFFE6F7FF),
-            badgeColor: const Color(0xFF2980B9),
+            badgeColor: AppColors.info,
           ),
         ],
       ),
@@ -652,7 +652,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               const SizedBox(width: 6),
               const Icon(
                 Icons.chevron_right_rounded,
-                color: Color(0xFFB0BEC5),
+                color: AppColors.lightTextMuted,
                 size: 20,
               ),
             ],
@@ -672,8 +672,8 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 26,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -715,7 +715,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBF7F0),
+                  color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Center(
@@ -749,7 +749,7 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
               const SizedBox(width: 6),
               const Icon(
                 Icons.chevron_right_rounded,
-                color: Color(0xFFB0BEC5),
+                color: AppColors.lightTextMuted,
                 size: 20,
               ),
             ],
