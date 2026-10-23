@@ -21,7 +21,10 @@ import '../hijama_hub_screen.dart';
 import '../medicine_hub_screen.dart';
 import '../pathology_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
+<<<<<<< HEAD
 import '../unani_hub_screen.dart';
+=======
+>>>>>>> 548641d4881a69c6685ef5a2316fc8936c6bdf3f
 import '../../widgets/islamic_pattern.dart';
 
 /// Modern Services tab.
