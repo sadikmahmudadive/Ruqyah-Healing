@@ -7,10 +7,7 @@ import '../widgets/app_toast.dart';
 import '../widgets/medicine_icon.dart';
 import '../widgets/ruqyah_dua_icon.dart';
 import '../widgets/islamic_pattern.dart';
-<<<<<<< HEAD
 import 'medicine_hub_screen.dart';
-=======
->>>>>>> 548641d4881a69c6685ef5a2316fc8936c6bdf3f
 
 class GuidanceResultsScreen extends StatefulWidget {
   const GuidanceResultsScreen({super.key});

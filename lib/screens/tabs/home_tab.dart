@@ -299,7 +299,6 @@ class _HomeTabState extends State<HomeTab> {
           onTap: () =>
               Navigator.of(context)
                   .push(AppPageRoute.sharedAxis(const AISymptomGuideScreen())),
-<<<<<<< HEAD
         ),
         const SizedBox(width: 8),
         _buildHeaderEmergencyButton(),
@@ -345,8 +344,6 @@ class _HomeTabState extends State<HomeTab> {
               size: 21,
             ),
           ),
-=======
->>>>>>> 548641d4881a69c6685ef5a2316fc8936c6bdf3f
         ),
       ),
     );
@@ -918,16 +915,6 @@ class _HomeTabState extends State<HomeTab> {
         iconColor: g(AppColors.accentLilac),
         target: const PathologyHubScreen(),
       ),
-<<<<<<< HEAD
-=======
-      _ServiceSpec(
-        label: context.tr('emergency'),
-        icon: Icons.favorite_border_rounded,
-        bgColor: AppColors.tintRose,
-        iconColor: g(AppColors.danger),
-        target: const EmergencyRuqyahScreen(),
-      ),
->>>>>>> 548641d4881a69c6685ef5a2316fc8936c6bdf3f
     ];
 
     // Full-bleed row: cancels the page's 20px horizontal inset so the list
@@ -1130,97 +1117,6 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-<<<<<<< HEAD
-=======
-  Widget _buildPrayerSlot({
-    required String name,
-    required String time,
-    required bool isActive,
-  }) {
-    if (isActive) {
-      final card = Container(
-        constraints: const BoxConstraints(minWidth: 64),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          gradient: AppGradients.greenButtonGradient,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryGreen.withValues(alpha: 0.30),
-              blurRadius: 14,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            PrayerTimeIcon(prayerName: name, color: Colors.white, size: 20),
-            const SizedBox(height: 6),
-            Text(
-              name,
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.white.withValues(alpha: 0.90),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              time,
-              style: const TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFFD49E35),
-              ),
-            ),
-          ],
-        ),
-      );
-      return BreathingPulse(maxScale: 1.03, child: card);
-    }
-
-    return Container(
-      constraints: const BoxConstraints(minWidth: 64),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          PrayerTimeIcon(
-            prayerName: name,
-            color: context.isDarkMode
-                ? AppColors.darkTextMuted
-                : const Color(0xFF52625B),
-            size: 20,
-          ),
-          const SizedBox(height: 6),
-          Text(
-            name,
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: context.textSecondary,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            time,
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: context.textPrimary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
->>>>>>> 548641d4881a69c6685ef5a2316fc8936c6bdf3f
   // ───────────────────── Specialist Card ────────────────────────────
   Widget _buildSpecialistCard() {
     return ModernCard(
