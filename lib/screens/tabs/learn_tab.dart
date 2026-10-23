@@ -5,12 +5,27 @@ import 'package:flutter/services.dart';
 import '../../localization/app_localizations.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/acupressure_icon.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
 import '../community_screen.dart';
 import '../course_detail_screen.dart';
 import '../../widgets/islamic_pattern.dart';
+
+class CourseModuleInfo {
+  final String title;
+  final String subtitle;
+  final Widget customIcon;
+  final Color iconBg;
+
+  const CourseModuleInfo({
+    required this.title,
+    required this.subtitle,
+    required this.customIcon,
+    required this.iconBg,
+  });
+}
 
 class CourseModel {
   final String id;
@@ -23,6 +38,7 @@ class CourseModel {
   final int reviewsCount;
   final int freeLessons;
   final String imagePath;
+  final String module;
 
   const CourseModel({
     required this.id,
@@ -35,6 +51,7 @@ class CourseModel {
     required this.reviewsCount,
     required this.freeLessons,
     required this.imagePath,
+    this.module = 'General',
   });
 }
 
@@ -46,11 +63,113 @@ class LearnTab extends StatefulWidget {
 }
 
 class _LearnTabState extends State<LearnTab> {
+  String _selectedCategory = 'All';
+
+  final List<CourseModuleInfo> _courseModules = const [
+    CourseModuleInfo(
+      title: 'Quran Sikkha',
+      subtitle: '16 Courses',
+      customIcon: Icon(Icons.menu_book_rounded, color: Color(0xFF0B4632), size: 22),
+      iconBg: AppColors.tintMint,
+    ),
+    CourseModuleInfo(
+      title: 'Hadis Sikkha',
+      subtitle: '14 Courses',
+      customIcon: Icon(Icons.auto_stories_rounded, color: AppColors.warning, size: 22),
+      iconBg: AppColors.tintSand,
+    ),
+    CourseModuleInfo(
+      title: 'Sirat Sikkha',
+      subtitle: '12 Courses',
+      customIcon: Icon(Icons.history_edu_rounded, color: AppColors.info, size: 22),
+      iconBg: AppColors.tintMist,
+    ),
+    CourseModuleInfo(
+      title: 'Ruqyah',
+      subtitle: '18 Courses',
+      customIcon: RuqyahDuaIcon(color: Color(0xFF0B4632), size: 22),
+      iconBg: AppColors.tintMint,
+    ),
+    CourseModuleInfo(
+      title: 'Hijama',
+      subtitle: '14 Courses',
+      customIcon: HijamaCuppingIcon(color: AppColors.warning, size: 22),
+      iconBg: AppColors.tintSand,
+    ),
+    CourseModuleInfo(
+      title: 'Acupuncture',
+      subtitle: '12 Courses',
+      customIcon: AcupunctureIcon(color: AppColors.info, size: 22),
+      iconBg: AppColors.tintMist,
+    ),
+    CourseModuleInfo(
+      title: 'Acupressure',
+      subtitle: '10 Courses',
+      customIcon: AcupressureIcon(color: Color(0xFF4E8F62), size: 22),
+      iconBg: AppColors.tintSage,
+    ),
+    CourseModuleInfo(
+      title: 'Homeopathy',
+      subtitle: '11 Courses',
+      customIcon: Icon(Icons.medication_liquid_rounded, color: AppColors.accentLilac, size: 22),
+      iconBg: AppColors.tintLilac,
+    ),
+    CourseModuleInfo(
+      title: 'Naturopathy',
+      subtitle: '13 Courses',
+      customIcon: Icon(Icons.spa_rounded, color: AppColors.success, size: 22),
+      iconBg: AppColors.tintMint,
+    ),
+    CourseModuleInfo(
+      title: 'Pathology',
+      subtitle: '9 Courses',
+      customIcon: Icon(Icons.biotech_rounded, color: AppColors.danger, size: 22),
+      iconBg: AppColors.tintRose,
+    ),
+  ];
+
   final List<CourseModel> _courses = const [
     CourseModel(
       id: 'course_1',
-      title: 'Ruqyah Healing Essentials',
+      title: 'Quran Recitation & Tajweed Mastery',
+      instructor: 'Qari Abdul Rahman',
+      module: 'Quran Sikkha',
+      level: 'Beginner',
+      price: 19.99,
+      rating: 4.9,
+      reviewsCount: 342,
+      freeLessons: 8,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
+    CourseModel(
+      id: 'course_2',
+      title: 'Hadis Sikkha: Prophetic Traditions of Healing',
+      instructor: 'Sh. Ismail Al-Madani',
+      module: 'Hadis Sikkha',
+      level: 'All Levels',
+      price: 24.99,
+      rating: 4.8,
+      reviewsCount: 189,
+      freeLessons: 6,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
+    CourseModel(
+      id: 'course_3',
+      title: 'Sirat Sikkha: The Prophetic Medical Ethics',
+      instructor: 'Dr. Mustafa Azami',
+      module: 'Sirat Sikkha',
+      level: 'Beginner',
+      price: 29.99,
+      rating: 4.9,
+      reviewsCount: 275,
+      freeLessons: 10,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
+    CourseModel(
+      id: 'course_4',
+      title: 'Ruqyah Healing Essentials & Self-Treatment',
       instructor: 'Sh. Ahmad Al-Husayn',
+      module: 'Ruqyah',
       level: 'Beginner',
       price: 29.99,
       rating: 4.8,
@@ -59,9 +178,10 @@ class _LearnTabState extends State<LearnTab> {
       imagePath: 'assets/logo/logo_app.png',
     ),
     CourseModel(
-      id: 'course_2',
-      title: 'Hijama Practitioner Foundation',
+      id: 'course_5',
+      title: 'Hijama Practitioner Foundation & Cupping',
       instructor: 'Dr. Salma Rahman',
+      module: 'Hijama',
       level: 'Intermediate',
       price: 49.99,
       rating: 4.9,
@@ -69,7 +189,74 @@ class _LearnTabState extends State<LearnTab> {
       freeLessons: 8,
       imagePath: 'assets/logo/logo_app.png',
     ),
+    CourseModel(
+      id: 'course_6',
+      title: 'Clinical Acupuncture: Meridian Pathways',
+      instructor: 'Dr. Chen Wei & Dr. Farhan',
+      module: 'Acupuncture',
+      level: 'Advanced',
+      price: 59.99,
+      rating: 4.7,
+      reviewsCount: 94,
+      freeLessons: 5,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
+    CourseModel(
+      id: 'course_7',
+      title: 'Acupressure for Pain Relief & Nervous Calm',
+      instructor: 'Ust. Bilal Qasim',
+      module: 'Acupressure',
+      level: 'Beginner',
+      price: 24.99,
+      rating: 4.8,
+      reviewsCount: 152,
+      freeLessons: 7,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
+    CourseModel(
+      id: 'course_8',
+      title: 'Classical Homeopathy & Natural Remedies',
+      instructor: 'Dr. Zahirul Islam',
+      module: 'Homeopathy',
+      level: 'Intermediate',
+      price: 34.99,
+      rating: 4.7,
+      reviewsCount: 110,
+      freeLessons: 6,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
+    CourseModel(
+      id: 'course_9',
+      title: 'Holistic Naturopathy & Prophetic Nutrition',
+      instructor: 'Dr. Aamina Malik',
+      module: 'Naturopathy',
+      level: 'All Levels',
+      price: 29.99,
+      rating: 4.9,
+      reviewsCount: 184,
+      freeLessons: 8,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
+    CourseModel(
+      id: 'course_10',
+      title: 'Clinical Pathology: Diagnostic Interpretation',
+      instructor: 'Dr. Rayhan Chowdhury',
+      module: 'Pathology',
+      level: 'Intermediate',
+      price: 44.99,
+      rating: 4.8,
+      reviewsCount: 167,
+      freeLessons: 6,
+      imagePath: 'assets/logo/logo_app.png',
+    ),
   ];
+
+  List<CourseModel> get _filteredCourses {
+    if (_selectedCategory == 'All') {
+      return _courses;
+    }
+    return _courses.where((c) => c.module == _selectedCategory).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +329,28 @@ class _LearnTabState extends State<LearnTab> {
       ),
       child: Row(
         children: [
+          if (Navigator.of(context).canPop()) ...[
+            GestureDetector(
+              onTap: () {
+                HapticFeedback.selectionClick();
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                margin: const EdgeInsets.only(right: 14),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 18,
+                ),
+              ),
+            ),
+          ],
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,17 +427,21 @@ class _LearnTabState extends State<LearnTab> {
             children: [
               const Icon(Icons.circle, color: Color(0xFF1E6B45), size: 8),
               const SizedBox(width: 6),
-              Text(
-                context.tr('continue_learning'),
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-                  color: Color(0xFF1E6B45),
+              Expanded(
+                child: Text(
+                  context.tr('continue_learning'),
+                  style: const TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                    color: Color(0xFF1E6B45),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const Spacer(),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -353,95 +566,136 @@ class _LearnTabState extends State<LearnTab> {
     );
   }
 
-  // 2. Browse by Category Section
+  // 2. Browse by Category Section (10 Course Modules)
   Widget _buildBrowseByCategorySection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Text(
-              context.tr('browse_category'),
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: context.textPrimary,
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Text(
+                      context.tr('browse_category'),
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: context.textPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: context.isDarkMode
+                          ? const Color(0xFF182E25)
+                          : AppColors.tintMint,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '${_courseModules.length}',
+                      style: const TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF0B4632),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Spacer(),
-            InkWell(
-              onTap: () {
-                HapticFeedback.selectionClick();
-              },
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.tintMint,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            const SizedBox(width: 8),
+            if (_selectedCategory != 'All')
+              GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => _selectedCategory = 'All');
+                },
                 child: const Text(
-                  'View all',
+                  'Reset',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF0B4632),
+                    color: AppColors.danger,
+                  ),
+                ),
+              )
+            else
+              InkWell(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => _selectedCategory = 'All');
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: context.isDarkMode
+                        ? const Color(0xFF182E25)
+                        : AppColors.tintMint,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: const Color(0xFF0B4632),
+                    ),
+                  ),
+                  child: const Text(
+                    'All',
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF0B4632),
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
 
         const SizedBox(height: 12),
 
-        Row(
-          children: [
-            // Category 1: Ruqyah
-            Expanded(
-              child: _buildCategoryCard(
-                title: 'Ruqyah',
-                subtitle: '18 Courses',
-                customIcon: const RuqyahDuaIcon(
-                  color: Color(0xFF0B4632),
-                  size: 22,
-                ),
-                iconBg: AppColors.tintMint,
-              ),
-            ),
-            const SizedBox(width: 10),
+        SizedBox(
+          height: 126,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemCount: _courseModules.length,
+            separatorBuilder: (context, index) => const SizedBox(width: 10),
+            itemBuilder: (context, index) {
+              final module = _courseModules[index];
+              final isSelected = module.title == _selectedCategory;
 
-            // Category 2: Hijama
-            Expanded(
-              child: _buildCategoryCard(
-                title: 'Hijama',
-                subtitle: '14 Courses',
-                customIcon: const HijamaCuppingIcon(
-                  color: AppColors.warning,
-                  size: 22,
-                ),
-                iconBg: AppColors.tintSand,
-              ),
-            ),
-            const SizedBox(width: 10),
-
-            // Category 3: Acupuncture
-            Expanded(
-              child: _buildCategoryCard(
-                title: 'Acupuncture',
-                subtitle: '12 Courses',
-                customIcon: const AcupunctureIcon(
-                  color: AppColors.info,
-                  size: 22,
-                ),
-                iconBg: AppColors.tintMist,
-              ),
-            ),
-          ],
+              return _buildCategoryCard(
+                title: module.title,
+                subtitle: module.subtitle,
+                customIcon: module.customIcon,
+                iconBg: module.iconBg,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    if (_selectedCategory == module.title) {
+                      _selectedCategory = 'All';
+                    } else {
+                      _selectedCategory = module.title;
+                    }
+                  });
+                },
+              );
+            },
+          ),
         ),
       ],
     );
@@ -452,54 +706,65 @@ class _LearnTabState extends State<LearnTab> {
     required String subtitle,
     required Widget customIcon,
     required Color iconBg,
+    bool isSelected = false,
+    VoidCallback? onTap,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+      width: 114,
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
       decoration: BoxDecoration(
-        color: context.cardBg,
+        color: isSelected
+            ? (context.isDarkMode ? const Color(0xFF182E25) : AppColors.tintMint)
+            : context.cardBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: context.cardBorder, width: 1.0),
+        border: Border.all(
+          color: isSelected ? const Color(0xFF0B4632) : context.cardBorder,
+          width: isSelected ? 1.8 : 1.0,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
+            color: Colors.black.withValues(alpha: context.isDarkMode ? 0.2 : 0.03),
+            blurRadius: 24,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            HapticFeedback.selectionClick();
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 42,
+                height: 42,
                 decoration: BoxDecoration(
                   color: context.isDarkMode ? const Color(0xFF162E25) : iconBg,
                   shape: BoxShape.circle,
                 ),
                 child: Center(child: customIcon),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               Text(
                 title,
                 textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: context.textPrimary,
+                  fontSize: 12.5,
+                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w700,
+                  color: isSelected ? const Color(0xFF0B4632) : context.textPrimary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 subtitle,
                 textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11,
@@ -515,51 +780,76 @@ class _LearnTabState extends State<LearnTab> {
 
   // 3. Featured Courses Section
   Widget _buildFeaturedCoursesSection() {
+    final displayedCourses = _filteredCourses;
+
     return Column(
       children: [
         Row(
           children: [
-            Text(
-              context.tr('featured_courses'),
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: context.textPrimary,
+            Expanded(
+              child: Text(
+                _selectedCategory == 'All'
+                    ? context.tr('featured_courses')
+                    : 'Courses: $_selectedCategory',
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: context.textPrimary,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Spacer(),
-            InkWell(
-              onTap: () {
-                HapticFeedback.selectionClick();
-              },
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.tintMint,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            const SizedBox(width: 8),
+            if (_selectedCategory != 'All')
+              GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => _selectedCategory = 'All');
+                },
                 child: const Text(
-                  'View all',
+                  'Reset Filter',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF0B4632),
+                    color: AppColors.danger,
+                  ),
+                ),
+              )
+            else
+              InkWell(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.tintMint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    'View all',
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF0B4632),
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
 
         const SizedBox(height: 12),
 
-        ..._courses.map((course) {
+        ...displayedCourses.map((course) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 18.0),
             child: _buildCourseCard(course),
@@ -577,11 +867,12 @@ class _LearnTabState extends State<LearnTab> {
         HapticFeedback.selectionClick();
         Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (_, _, _) => CourseDetailScreen(
+            pageBuilder: (context, anim, secAnim) => CourseDetailScreen(
               courseTitle: course.title,
               instructorName: course.instructor,
               level: course.level,
               price: course.price,
+              module: course.module,
             ),
           ),
         );
@@ -628,36 +919,67 @@ class _LearnTabState extends State<LearnTab> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 3,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isBeginner
-                                  ? AppColors.tintMint
-                                  : AppColors.tintSand,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              course.level,
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w700,
-                                color: isBeginner
-                                    ? const Color(0xFF0B4632)
-                                    : AppColors.warning,
-                              ),
+                          Expanded(
+                            child: Wrap(
+                              spacing: 6,
+                              runSpacing: 4,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isBeginner
+                                        ? AppColors.tintMint
+                                        : AppColors.tintSand,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    course.level,
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 10.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: isBeginner
+                                          ? const Color(0xFF0B4632)
+                                          : AppColors.warning,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 7,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: context.isDarkMode
+                                        ? const Color(0xFF182E25)
+                                        : AppColors.tintMint,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    course.module,
+                                    style: const TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF0B4632),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const Spacer(),
+                          const SizedBox(width: 8),
                           Text(
                             'Tk ${course.price}',
                             style: TextStyle(
                               fontFamily: 'PlusJakartaSans',
-                              fontSize: 16,
+                              fontSize: 15.5,
                               fontWeight: FontWeight.w700,
                               color: context.textPrimary,
                             ),
@@ -669,6 +991,8 @@ class _LearnTabState extends State<LearnTab> {
 
                       Text(
                         course.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15,
@@ -681,12 +1005,15 @@ class _LearnTabState extends State<LearnTab> {
 
                       Row(
                         children: [
-                          Text(
-                            course.instructor,
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 12,
-                              color: context.textSecondary,
+                          Flexible(
+                            child: Text(
+                              course.instructor,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 12,
+                                color: context.textSecondary,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           if (course.isVerified) ...[
@@ -839,7 +1166,7 @@ class _LearnTabState extends State<LearnTab> {
               HapticFeedback.selectionClick();
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const CommunityScreen(),
+                  pageBuilder: (_, _, _) => const CommunityScreen(),
                 ),
               );
             },

@@ -109,30 +109,35 @@ class PostComposerBar extends StatelessWidget {
 
           // Quick Action Buttons Row (Facebook style)
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildQuickAction(
-                context,
-                icon: Icons.volunteer_activism_outlined,
-                iconColor: AppColors.accentGold,
-                label: 'Du\'a Request',
-                onTap: () => _openComposer(context, 'Du\'a Request'),
+              Expanded(
+                child: _buildQuickAction(
+                  context,
+                  icon: Icons.volunteer_activism_outlined,
+                  iconColor: AppColors.accentGold,
+                  label: 'Du\'a Request',
+                  onTap: () => _openComposer(context, 'Du\'a Request'),
+                ),
               ),
               Container(width: 1, height: 18, color: context.cardBorder),
-              _buildQuickAction(
-                context,
-                icon: Icons.auto_awesome_rounded,
-                iconColor: const Color(0xFF0B4632),
-                label: 'Milestone',
-                onTap: () => _openComposer(context, 'Healing Story'),
+              Expanded(
+                child: _buildQuickAction(
+                  context,
+                  icon: Icons.auto_awesome_rounded,
+                  iconColor: const Color(0xFF0B4632),
+                  label: 'Milestone',
+                  onTap: () => _openComposer(context, 'Healing Story'),
+                ),
               ),
               Container(width: 1, height: 18, color: context.cardBorder),
-              _buildQuickAction(
-                context,
-                icon: Icons.shield_outlined,
-                iconColor: const Color(0xFF2F7D5B),
-                label: 'Ask Raaqi',
-                onTap: () => _openComposer(context, 'Ruqyah Advice'),
+              Expanded(
+                child: _buildQuickAction(
+                  context,
+                  icon: Icons.shield_outlined,
+                  iconColor: const Color(0xFF2F7D5B),
+                  label: 'Ask Raaqi',
+                  onTap: () => _openComposer(context, 'Ruqyah Advice'),
+                ),
               ),
             ],
           ),
@@ -152,18 +157,23 @@ class PostComposerBar extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: iconColor, size: 18),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: context.textPrimary,
+            Icon(icon, color: iconColor, size: 16),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                  color: context.textPrimary,
+                ),
               ),
             ),
           ],

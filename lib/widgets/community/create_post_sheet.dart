@@ -512,7 +512,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
 
                   // Facebook-style post background style picker
                   Text(
-                    'Card Style (Facebook Theme)',
+                    'Card Style',
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 13,

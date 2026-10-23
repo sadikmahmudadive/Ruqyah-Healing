@@ -22,6 +22,7 @@ import '../medicine_hub_screen.dart';
 import '../pathology_hub_screen.dart';
 import '../ruqyah_hub_screen.dart';
 import '../unani_hub_screen.dart';
+import 'learn_tab.dart';
 import '../../widgets/islamic_pattern.dart';
 
 /// Modern Services tab.
@@ -124,6 +125,22 @@ class _ServicesTabState extends State<ServicesTab> {
         iconColor: AppColors.accentLilac,
         target: const PathologyHubScreen(),
       ),
+      _ServiceEntry(
+        title: context.tr('courses_title'),
+        description: context.tr('courses_sub'),
+        icon: Icons.menu_book_rounded,
+        iconBg: AppColors.tintSand,
+        iconColor: AppColors.warning,
+        target: const LearnTab(),
+      ),
+      _ServiceEntry(
+        title: context.tr('store_title'),
+        description: context.tr('store_sub'),
+        icon: Icons.shopping_bag_outlined,
+        iconBg: AppColors.tintMint,
+        iconColor: AppColors.primaryGreen,
+        target: const EquipmentStoreScreen(),
+      ),
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -193,43 +210,6 @@ class _ServicesTabState extends State<ServicesTab> {
                     ),
                     const SizedBox(height: 16),
                   ],
-
-                  const SizedBox(height: 8),
-
-                  // Bottom bento: courses + store
-                  FadeSlideIn(
-                    delay: Duration(milliseconds: 80 + services.length * 60),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: _buildSubServiceCard(
-                            title: context.tr('courses'),
-                            description: context.tr('learn_protection'),
-                            icon: Icons.menu_book_rounded,
-                            iconBgColor: AppColors.tintSand,
-                            iconColor: AppColors.warning,
-                            onTap: () =>
-                                HapticFeedback.selectionClick(),
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: _buildSubServiceCard(
-                            title: context.tr('store'),
-                            description: context.tr('natural_remedies'),
-                            icon: Icons.shopping_bag_outlined,
-                            iconBgColor: AppColors.tintMint,
-                            iconColor: AppColors.primaryGreen,
-                            onTap: () => Navigator.of(context).push(
-                              AppPageRoute.sharedAxis(
-                                const EquipmentStoreScreen(),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
 
                   const SizedBox(height: 120),
                 ]),
@@ -376,69 +356,6 @@ class _ServicesTabState extends State<ServicesTab> {
             Icons.chevron_right_rounded,
             color: context.textMuted,
             size: 22,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSubServiceCard({
-    required String title,
-    required String description,
-    required IconData icon,
-    required Color iconBgColor,
-    required Color iconColor,
-    required VoidCallback onTap,
-  }) {
-    return ModernCard(
-      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: context.isDarkMode
-                  ? const Color(0xFF182E25)
-                  : iconBgColor,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            alignment: Alignment.center,
-            child: Icon(icon, color: iconColor, size: 20),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 14.5,
-                    fontWeight: FontWeight.w700,
-                    color: context.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 11.5,
-                    color: context.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Icon(
-            Icons.chevron_right_rounded,
-            color: context.textMuted,
-            size: 18,
           ),
         ],
       ),

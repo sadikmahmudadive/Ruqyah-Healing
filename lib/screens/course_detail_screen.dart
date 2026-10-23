@@ -11,6 +11,7 @@ class CourseDetailScreen extends StatefulWidget {
   final String instructorName;
   final String level;
   final double price;
+  final String module;
 
   const CourseDetailScreen({
     super.key,
@@ -18,6 +19,7 @@ class CourseDetailScreen extends StatefulWidget {
     this.instructorName = 'Dr. Salma Rahman',
     this.level = 'Intermediate',
     this.price = 49.99,
+    this.module = 'Hijama',
   });
 
   @override
@@ -434,18 +436,21 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
-                      children: const [
-                        Text(
-                          'Principles of Cupping',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            _getCurriculumData().activeLessonTitle,
+                            style: const TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Spacer(),
-                        Text(
+                        const SizedBox(width: 8),
+                        const Text(
                           '04:15 / 12:35',
                           style: TextStyle(
                             fontFamily: 'Inter',
@@ -644,9 +649,11 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 
   // 7. Curriculum Modules Section
   Widget _buildCurriculumSection() {
+    final curriculum = _getCurriculumData();
+
     return Column(
       children: [
-        // Module 1: Foundations
+        // Module 1 Header
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -664,25 +671,28 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
-                'Module 1: Foundations',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.lightTextPrimary,
+              Expanded(
+                child: Text(
+                  curriculum.module1Title,
+                  style: const TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const Spacer(),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0B4632),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
-                  '3/3 Complete',
-                  style: TextStyle(
+                child: Text(
+                  curriculum.module1Status,
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
@@ -696,7 +706,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 
         const SizedBox(height: 12),
 
-        // Module 2: Cupping Principles
+        // Module 2: Active Lessons Container
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -724,10 +734,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Module 2: Cupping Principles',
-                      style: TextStyle(
+                      curriculum.module2Title,
+                      style: const TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 14.5,
                         fontWeight: FontWeight.w700,
@@ -746,9 +756,9 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                       color: AppColors.tintSand,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text(
-                      '1/3 In Progress',
-                      style: TextStyle(
+                    child: Text(
+                      curriculum.module2Status,
+                      style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
@@ -763,68 +773,63 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               Container(height: 1, color: AppColors.lightCardBorder),
               const SizedBox(height: 10),
 
-              // Lesson 1: Introduction to Hijama
-              _buildLessonItem(
-                icon: Icons.check_circle_outline_rounded,
-                iconColor: const Color(0xFF0B4632),
-                title: 'Introduction to Hijama',
-                duration: '8 min',
-                isCompleted: true,
-              ),
-
-              const SizedBox(height: 8),
-
-              // Lesson 2: Principles of Cupping (Active Playing)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.tintMint,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.volume_up_rounded,
-                      color: Color(0xFF0B4632),
-                      size: 18,
+              // Render Lessons
+              for (int i = 0; i < curriculum.module2Lessons.length; i++) ...[
+                if (i > 0) const SizedBox(height: 8),
+                if (curriculum.module2Lessons[i].isActive)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
                     ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        'Principles of Cupping',
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w700,
+                    decoration: BoxDecoration(
+                      color: AppColors.tintMint,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.volume_up_rounded,
                           color: Color(0xFF0B4632),
+                          size: 18,
                         ),
-                      ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            curriculum.module2Lessons[i].title,
+                            style: const TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF0B4632),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          curriculum.module2Lessons[i].duration,
+                          style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF0B4632),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '12 min',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF0B4632),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              // Lesson 3: Safety & Contraindications
-              _buildLessonItem(
-                icon: Icons.play_circle_outline_rounded,
-                iconColor: AppColors.lightTextMuted,
-                title: 'Safety & Contraindications',
-                duration: '10 min',
-              ),
+                  )
+                else
+                  _buildLessonItem(
+                    icon: curriculum.module2Lessons[i].isCompleted
+                        ? Icons.check_circle_outline_rounded
+                        : Icons.play_circle_outline_rounded,
+                    iconColor: curriculum.module2Lessons[i].isCompleted
+                        ? const Color(0xFF0B4632)
+                        : AppColors.lightTextMuted,
+                    title: curriculum.module2Lessons[i].title,
+                    duration: curriculum.module2Lessons[i].duration,
+                    isCompleted: curriculum.module2Lessons[i].isCompleted,
+                  ),
+              ],
             ],
           ),
         ),
@@ -870,15 +875,16 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   }
 
   Widget _buildOverviewSection() {
+    final curriculum = _getCurriculumData();
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Text(
-        'Comprehensive foundation course covering essential principles, hygienic sterilization techniques, and clinical application of Hijama cupping therapy.',
-        style: TextStyle(
+      child: Text(
+        curriculum.overview,
+        style: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 13,
           color: AppColors.lightTextSecondary,
@@ -889,15 +895,16 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   }
 
   Widget _buildInstructorSection() {
+    final curriculum = _getCurriculumData();
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Text(
-        'Dr. Salma Rahman is a licensed Hijama specialist & Ruqyah consultant with over 12 years of clinical instruction experience.',
-        style: TextStyle(
+      child: Text(
+        curriculum.instructorBio,
+        style: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 13,
           color: AppColors.lightTextSecondary,
@@ -905,6 +912,301 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         ),
       ),
     );
+  }
+
+  _CurriculumData _getCurriculumData() {
+    switch (widget.module) {
+      case 'Quran Sikkha':
+        return _CurriculumData(
+          activeLessonTitle: 'Rules of Noon Sakin & Tanween',
+          module1Title: 'Module 1: Makharij & Letter Articulation',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Tilawat & Fluency',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Surah Al-Fatihah with Precise Tajweed',
+              duration: '12 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Rules of Noon Sakin & Tanween',
+              duration: '15 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Stopping (Waqf) Signs & Rhythmic Recitation',
+              duration: '14 min',
+            ),
+          ],
+          overview:
+              'Comprehensive Quran learning curriculum focusing on accurate letter articulation (Makharij), core Tajweed recitation rules, and fluent practice from beginner to advanced.',
+          instructorBio:
+              '${widget.instructorName} is an experienced Qari with authentic Ijazah in Hafs an Asim and extensive teaching experience in Quranic phonetics.',
+        );
+
+      case 'Hadis Sikkha':
+        return _CurriculumData(
+          activeLessonTitle: 'Selected Hadiths on Tibb al-Nabawi',
+          module1Title: 'Module 1: Hadith Sciences (Mustalah)',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Prophetic Medicine & Guidance',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Introduction to Sahih al-Bukhari & Muslim',
+              duration: '11 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Selected Hadiths on Tibb al-Nabawi',
+              duration: '18 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Daily Adhkar & Sunnah Etiquette',
+              duration: '15 min',
+            ),
+          ],
+          overview:
+              'In-depth study of prophetic traditions, principles of Hadith classification (Mustalah al-Hadith), authentic narration chains, and their medical and ethical wisdom.',
+          instructorBio:
+              '${widget.instructorName} holds advanced credentials in Hadith sciences and Islamic jurisprudence with scholarly contributions in prophetic wellness.',
+        );
+
+      case 'Sirat Sikkha':
+        return _CurriculumData(
+          activeLessonTitle: "The Prophet's Way of Healing & Empathy",
+          module1Title: 'Module 1: The Makkan Era & Character',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: The Madinan Era & Sunnah Living',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'The Hijrah & Founding the Community',
+              duration: '12 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: "The Prophet's Way of Healing & Empathy",
+              duration: '20 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'The Farewell Pilgrimage & Enduring Legacy',
+              duration: '15 min',
+            ),
+          ],
+          overview:
+              'Explore the noble life, sublime character (Akhlaq), and profound wisdom of the Prophet Muhammad (PBUH) from early Makkan struggles to the radiant Madinan society.',
+          instructorBio:
+              '${widget.instructorName} is a researcher and educator specializing in Islamic history, Seerah Nabawiyyah, and classical Prophetic biography.',
+        );
+
+      case 'Ruqyah':
+        return _CurriculumData(
+          activeLessonTitle: 'Comprehensive Ruqyah Recitation Protocols',
+          module1Title: 'Module 1: Foundations of Shariah Ruqyah',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Diagnosis & Treatment Protocols',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Identifying Evil Eye (Ayn) & Afflictions',
+              duration: '13 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Comprehensive Ruqyah Recitation Protocols',
+              duration: '22 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Water & Olive Oil Preparation & Patient Care',
+              duration: '16 min',
+            ),
+          ],
+          overview:
+              'Authentic, Shariah-compliant course on Ruqyah Ash-Shar\'iyyah for spiritual affliction, evil eye, black magic, and holistic spiritual well-being.',
+          instructorBio:
+              '${widget.instructorName} is a veteran Ruqyah practitioner and counselor specializing in Sunnah healing and spiritual psychotherapy.',
+        );
+
+      case 'Acupuncture':
+        return _CurriculumData(
+          activeLessonTitle: 'Pain Relief Protocols for Migraine & Sciatica',
+          module1Title: 'Module 1: Meridians & Energy Flow',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Clinical Point Selection',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Top 20 Common Clinical Acupoints',
+              duration: '12 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Pain Relief Protocols for Migraine & Sciatica',
+              duration: '20 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Needle Retention, Stimulation & Removal',
+              duration: '15 min',
+            ),
+          ],
+          overview:
+              'Evidence-based acupuncture certification exploring meridian mapping, vital energy balance, painless needling techniques, and pain management protocols.',
+          instructorBio:
+              '${widget.instructorName} is a licensed acupuncturist and pain specialist registered with international integrative medicine boards.',
+        );
+
+      case 'Acupressure':
+        return _CurriculumData(
+          activeLessonTitle: 'Acupressure for Sleep & Stress Release',
+          module1Title: 'Module 1: Pressure Points & Reflexology',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Therapeutic Protocols',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Hegu (LI4) & Nei Guan (PC6) for Relief',
+              duration: '10 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Acupressure for Sleep & Stress Release',
+              duration: '16 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Self-Care Routine for Chronic Tension',
+              duration: '14 min',
+            ),
+          ],
+          overview:
+              'Non-invasive pressure point therapy to stimulate vital bodily reflexes, relieve tension headaches, manage chronic stress, and restore bodily homeostasis.',
+          instructorBio:
+              '${widget.instructorName} is an acupressure master trainer and holistic therapist focusing on non-invasive somatic restoration.',
+        );
+
+      case 'Homeopathy':
+        return _CurriculumData(
+          activeLessonTitle: 'Homeopathic Case Taking & Symptom Repertory',
+          module1Title: 'Module 1: Core Principles of Homeopathy',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Materia Medica & Case Taking',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Key Remedies in Materia Medica',
+              duration: '14 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Homeopathic Case Taking & Symptom Repertory',
+              duration: '22 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'First Aid Protocols & Follow-up Assessment',
+              duration: '16 min',
+            ),
+          ],
+          overview:
+              'Comprehensive study of classical homeopathy, constitutional remedies, Materia Medica therapeutics, and gentle non-toxic healing for chronic conditions.',
+          instructorBio:
+              '${widget.instructorName} is a seasoned Classical Homeopath (BHMS) with decades of clinical diagnosis and repertorization expertise.',
+        );
+
+      case 'Naturopathy':
+        return _CurriculumData(
+          activeLessonTitle: 'Lifestyle Regimen: Circadian Rhythm & Sleep',
+          module1Title: 'Module 1: Natural Healing & Five Elements',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Herbal Medicine & Lifestyle',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Therapeutic Medicinal Herbs & Infusions',
+              duration: '12 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Lifestyle Regimen: Circadian Rhythm & Sleep',
+              duration: '18 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Designing a Preventive Wellness Routine',
+              duration: '15 min',
+            ),
+          ],
+          overview:
+              'Harness the restorative power of nature through nutritional biochemistry, herbal remedies, botanical infusions, fasting therapies, and circadian rhythm alignment.',
+          instructorBio:
+              '${widget.instructorName} is a licensed Naturopathic Doctor (ND) passionate about lifestyle medicine, clinical herbs, and whole-body vitality.',
+        );
+
+      case 'Pathology':
+        return _CurriculumData(
+          activeLessonTitle: 'Correlating Lab Values with Holistic Therapies',
+          module1Title: 'Module 1: Diagnostic Fundamentals & Panels',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Clinical Pathology & Lab Reports',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Lipid Profiles & Cardiovascular Risk Markers',
+              duration: '12 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Correlating Lab Values with Holistic Therapies',
+              duration: '20 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Red Flags & Urgent Clinical Referral Protocols',
+              duration: '15 min',
+            ),
+          ],
+          overview:
+              'Master clinical lab report interpretation, biochemical biomarkers, pathology panels, and how to safely correlate medical diagnostic reports with complementary therapies.',
+          instructorBio:
+              '${widget.instructorName} is a consultant clinical pathologist and medical educator bridging conventional laboratory diagnostics and integrative medicine.',
+        );
+
+      case 'Hijama':
+      default:
+        return _CurriculumData(
+          activeLessonTitle: 'Principles of Cupping',
+          module1Title: 'Module 1: Foundations & Anatomy',
+          module1Status: '3/3 Complete',
+          module2Title: 'Module 2: Cupping Principles',
+          module2Status: '1/3 In Progress',
+          module2Lessons: const [
+            _LessonItemData(
+              title: 'Introduction to Hijama',
+              duration: '8 min',
+              isCompleted: true,
+            ),
+            _LessonItemData(
+              title: 'Principles of Cupping',
+              duration: '12 min',
+              isActive: true,
+            ),
+            _LessonItemData(
+              title: 'Safety & Contraindications',
+              duration: '10 min',
+            ),
+          ],
+          overview:
+              'Comprehensive foundation course covering essential principles, hygienic sterilization techniques, and clinical application of Hijama cupping therapy.',
+          instructorBio:
+              '${widget.instructorName} is a licensed Hijama specialist & Ruqyah consultant with over 12 years of clinical instruction experience.',
+        );
+    }
   }
 
   // 8. Sticky Bottom Enrollment Card
@@ -1005,4 +1307,40 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       ),
     );
   }
+}
+
+class _CurriculumData {
+  final String activeLessonTitle;
+  final String module1Title;
+  final String module1Status;
+  final String module2Title;
+  final String module2Status;
+  final List<_LessonItemData> module2Lessons;
+  final String overview;
+  final String instructorBio;
+
+  const _CurriculumData({
+    required this.activeLessonTitle,
+    required this.module1Title,
+    required this.module1Status,
+    required this.module2Title,
+    required this.module2Status,
+    required this.module2Lessons,
+    required this.overview,
+    required this.instructorBio,
+  });
+}
+
+class _LessonItemData {
+  final String title;
+  final String duration;
+  final bool isCompleted;
+  final bool isActive;
+
+  const _LessonItemData({
+    required this.title,
+    required this.duration,
+    this.isCompleted = false,
+    this.isActive = false,
+  });
 }

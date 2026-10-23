@@ -641,17 +641,21 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ],
 
-                const Spacer(),
+                const SizedBox(width: 8),
 
                 // Comments & Shares count
-                GestureDetector(
-                  onTap: _openCommentsSheet,
-                  child: Text(
-                    '${widget.post.commentsCount} comments • ${widget.post.sharesCount} shares',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      color: context.textSecondary,
+                Flexible(
+                  child: GestureDetector(
+                    onTap: _openCommentsSheet,
+                    child: Text(
+                      '${widget.post.commentsCount} comments • ${widget.post.sharesCount} shares',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        color: context.textSecondary,
+                      ),
                     ),
                   ),
                 ),
@@ -684,14 +688,18 @@ class _PostCardState extends State<PostCard> {
                               widget.post.userReaction!.emoji,
                               style: const TextStyle(fontSize: 17),
                             ),
-                            const SizedBox(width: 6),
-                            Text(
-                              widget.post.userReaction!.label,
-                              style: TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 12.5,
-                                fontWeight: FontWeight.w700,
-                                color: widget.post.userReaction!.color,
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                widget.post.userReaction!.label,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontFamily: 'PlusJakartaSans',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: widget.post.userReaction!.color,
+                                ),
                               ),
                             ),
                           ] else ...[
@@ -700,14 +708,18 @@ class _PostCardState extends State<PostCard> {
                               size: 18,
                               color: context.textSecondary,
                             ),
-                            const SizedBox(width: 6),
-                            Text(
-                              'Helpful',
-                              style: TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 12.5,
-                                fontWeight: FontWeight.w600,
-                                color: context.textSecondary,
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                'Helpful',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontFamily: 'PlusJakartaSans',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.textSecondary,
+                                ),
                               ),
                             ),
                           ],
@@ -732,14 +744,18 @@ class _PostCardState extends State<PostCard> {
                             size: 18,
                             color: context.textSecondary,
                           ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Comment',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w600,
-                              color: context.textSecondary,
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              'Comment',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: context.textSecondary,
+                              ),
                             ),
                           ),
                         ],
@@ -763,14 +779,18 @@ class _PostCardState extends State<PostCard> {
                             size: 18,
                             color: context.textSecondary,
                           ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Share',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w600,
-                              color: context.textSecondary,
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              'Share',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: context.textSecondary,
+                              ),
                             ),
                           ),
                         ],
