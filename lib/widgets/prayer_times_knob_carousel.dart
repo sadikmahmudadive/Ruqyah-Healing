@@ -138,7 +138,6 @@ class _PrayerTimesKnobCarouselState extends State<PrayerTimesKnobCarousel> {
       return const SizedBox(height: 124);
     }
 
-    final cardBg = context.cardBg;
     final isDark = context.isDarkMode;
     final isCustomTuned =
         (_currentPage % widget.prayers.length) != _activeIndex;
@@ -149,82 +148,39 @@ class _PrayerTimesKnobCarouselState extends State<PrayerTimesKnobCarousel> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Carousel rotary viewport
-        SizedBox(
-          height: 104,
-          child: Stack(
-            children: [
-              PageView.builder(
-                controller: _controller,
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                itemCount: widget.prayers.length * _loops,
-                onPageChanged: _onPageChanged,
-                itemBuilder: (context, i) {
-                  final rawPrayer =
-                      widget.prayers[i % widget.prayers.length];
-                  final name = rawPrayer.$1;
-                  final time = rawPrayer.$2;
+        // Carousel rotary viewport with bottom radius clipping
+        ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+            bottom: Radius.circular(24),
+          ),
+          child: SizedBox(
+            height: 104,
+            child: PageView.builder(
+              controller: _controller,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemCount: widget.prayers.length * _loops,
+              onPageChanged: _onPageChanged,
+              itemBuilder: (context, i) {
+                final rawPrayer =
+                    widget.prayers[i % widget.prayers.length];
+                final name = rawPrayer.$1;
+                final time = rawPrayer.$2;
 
-                  final distance = (_page() - i).abs();
-                  final proximity = (1.0 - distance).clamp(0.0, 1.0);
-                  final isCentered = distance < 0.5;
+                final distance = (_page() - i).abs();
+                final proximity = (1.0 - distance).clamp(0.0, 1.0);
+                final isCentered = distance < 0.5;
 
-                  return _buildKnobSlot(
-                    index: i,
-                    name: name,
-                    time: time,
-                    distance: distance,
-                    proximity: proximity,
-                    isCentered: isCentered,
-                  );
-                },
-              ),
-
-              // Left edge cylinder vignette fade
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: 28,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          cardBg,
-                          cardBg.withValues(alpha: 0.0),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              // Right edge cylinder vignette fade
-              Positioned(
-                right: 0,
-                top: 0,
-                bottom: 0,
-                width: 28,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerRight,
-                        end: Alignment.centerLeft,
-                        colors: [
-                          cardBg,
-                          cardBg.withValues(alpha: 0.0),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+                return _buildKnobSlot(
+                  index: i,
+                  name: name,
+                  time: time,
+                  distance: distance,
+                  proximity: proximity,
+                  isCentered: isCentered,
+                );
+              },
+            ),
           ),
         ),
 

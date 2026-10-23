@@ -37,6 +37,7 @@ import '../medicine_hub_screen.dart';
 import '../unani_hub_screen.dart';
 import '../book_appointment_screen.dart';
 import '../daily_salah_screen.dart';
+import '../emergency_ruqyah_screen.dart';
 import '../full_audio_player_screen.dart';
 import '../health_profile_detail_screen.dart';
 import '../hijama_hub_screen.dart';
@@ -292,14 +293,59 @@ class _HomeTabState extends State<HomeTab> {
               Navigator.of(context)
                   .push(AppPageRoute.sharedAxis(const NotificationScreen())),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 8),
         _CircleIconButton(
           customChild: AiIcon(color: context.textPrimary, size: 22),
           onTap: () =>
               Navigator.of(context)
                   .push(AppPageRoute.sharedAxis(const AISymptomGuideScreen())),
         ),
+        const SizedBox(width: 8),
+        _buildHeaderEmergencyButton(),
       ],
+    );
+  }
+
+  Widget _buildHeaderEmergencyButton() {
+    final isDark = context.isDarkMode;
+    return PressScale(
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        Navigator.of(context).push(
+          AppPageRoute.sharedAxis(const EmergencyRuqyahScreen()),
+        );
+      },
+      child: Tooltip(
+        message: context.tr('emergency_support'),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF331515) : const Color(0xFFFDE8E8),
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: const Color(0xFFE53935).withValues(alpha: 0.45),
+              width: 1.2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFE53935).withValues(alpha: 0.20),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          alignment: Alignment.center,
+          child: const BreathingPulse(
+            maxScale: 1.08,
+            child: Icon(
+              Icons.health_and_safety_rounded,
+              color: Color(0xFFE53935),
+              size: 21,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -953,7 +999,7 @@ class _HomeTabState extends State<HomeTab> {
               .push(AppPageRoute.sharedAxis(const DailySalahScreen())),
       // No horizontal padding here: the slot list spans the full card width so
       // the active slot's glow isn't clipped; the header re-applies the inset.
-      padding: const EdgeInsets.only(top: 18, bottom: 6),
+      padding: const EdgeInsets.only(top: 18, bottom: 12),
       radius: 24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
