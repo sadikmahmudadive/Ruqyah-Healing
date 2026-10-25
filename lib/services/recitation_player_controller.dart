@@ -105,13 +105,17 @@ class RecitationPlayerController extends ChangeNotifier {
       await _player.setAudioSources([
         for (final a in content.ayahs)
           AudioSource.uri(
-            Uri.parse(a.audioUrl),
+            Uri.parse(
+              a.audioUrl.isNotEmpty
+                  ? a.audioUrl
+                  : 'https://everyayah.com/data/Alafasy_128kbps/001001.mp3',
+            ),
             // Shown in the playback notification and on the lock screen.
             tag: MediaItem(
-              id: a.audioUrl,
-              title: '${a.surahName} ${a.ref}',
+              id: a.audioUrl.isNotEmpty ? a.audioUrl : '${content.id}_${a.ref}',
+              title: a.isDua ? a.surahName : '${a.surahName} ${a.ref}',
               album: content.title,
-              artist: 'Sheikh Mishary Al-Afasy',
+              artist: a.isDua ? 'Prophetic Dua' : content.reciter,
             ),
           ),
       ]);

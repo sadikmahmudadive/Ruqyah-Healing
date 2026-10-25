@@ -5,8 +5,8 @@ import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/illustrations/ruqyah_illustrations.dart';
-import '../widgets/ruqyah_dua_icon.dart';
 import 'audio_library_screen.dart';
+import 'full_audio_player_screen.dart';
 import 'ruqyah_progress_screen.dart';
 import 'video_consultation_screen.dart';
 import '../widgets/islamic_pattern.dart';
@@ -479,6 +479,22 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                     ),
                     onPressed: () {
                       HapticFeedback.selectionClick();
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (_, _, _) => const FullAudioPlayerScreen(
+                            title: 'FULL RUQYAH',
+                            verses: 'Complete Quran Ayats & Prophetic Duas',
+                            trackId: 'ruqyah_full',
+                          ),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 350),
+                        ),
+                      );
                     },
                   ),
                 ),

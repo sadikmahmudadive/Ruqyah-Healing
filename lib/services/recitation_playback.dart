@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../data/recitation_data.dart';
+import '../models/recitation.dart';
 import '../models/user_model.dart';
 import 'firebase_service.dart';
 import 'recitation_player_controller.dart';
+import 'ruqyah_api_service.dart';
 
 /// The one recitation that is currently loaded, shared by every screen that
 /// shows it: the Home mini player and the full player look at the same
@@ -42,9 +44,15 @@ class RecitationPlayback extends ChangeNotifier {
   /// Returns the controller for [trackId], creating (and loading) it if a
   /// different track, or none, is loaded. Asking for the track that is
   /// already loaded reuses it; with [autoplay] it is resumed if paused.
-  RecitationPlayerController open(String trackId, {bool autoplay = true}) {
-    final content =
-        kRecitationTracks[trackId] ?? kRecitationTracks[defaultTrackId]!;
+  RecitationPlayerController open(
+    String trackId, {
+    bool autoplay = true,
+    RecitationContent? customContent,
+  }) {
+    final content = customContent ??
+        RuqyahApiService.getTrack(trackId) ??
+        kRecitationTracks[trackId] ??
+        kRecitationTracks[defaultTrackId]!;
 
     final existing = _controller;
     if (existing != null && existing.content.id == content.id) {

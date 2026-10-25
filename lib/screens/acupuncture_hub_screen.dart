@@ -18,8 +18,6 @@ class AcupunctureHubScreen extends StatefulWidget {
 
 class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final int _painLevel = 6;
-  final int _stressLevel = 4;
 
   @override
   void dispose() {

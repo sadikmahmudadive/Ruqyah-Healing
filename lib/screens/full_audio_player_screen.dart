@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,8 +15,11 @@ class FullAudioPlayerScreen extends StatefulWidget {
   final String verses;
   final String reciter;
 
-  /// Key into [kRecitationTracks]; unknown ids fall back to Al-Baqarah.
+  /// Key into [kRecitationTracks] or [RuqyahApiService]; unknown ids fall back to Al-Baqarah.
   final String trackId;
+
+  /// Custom recitation content (e.g. dynamically fetched or individual Ayah/Dua)
+  final RecitationContent? customContent;
 
   /// Start playing on open. If this track is already loaded (e.g. from the
   /// Home mini player) it is reused: true resumes it, false leaves it as is.
@@ -31,6 +36,7 @@ class FullAudioPlayerScreen extends StatefulWidget {
     this.verses = 'Ayet 1–5, 163–164, 255',
     this.reciter = 'Sheikh Al-Afasy',
     this.trackId = RecitationPlayback.defaultTrackId,
+    this.customContent,
     this.autoplay = true,
     this.continueInBackground = false,
   });
@@ -49,11 +55,25 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
   // Shared with the Home mini player, so it is not created or disposed here.
   late final RecitationPlayerController _controller = RecitationPlayback
       .instance
-      .open(widget.trackId, autoplay: widget.autoplay);
+      .open(
+        widget.trackId,
+        autoplay: widget.autoplay,
+        customContent: widget.customContent,
+      );
   RecitationContent get _content => _controller.content;
 
   bool _showTransliteration = true;
   bool _showMeaning = true;
+
+  /// 2-second button action feedback state
+  String? _activeActionMessage;
+  IconData? _activeActionIcon;
+  String? _activeButtonId;
+  Timer? _activeActionTimer;
+
+  // Sleep timer state
+  int _sleepTimerMinutes = 0;
+  Timer? _sleepTimer;
 
   /// While the seek handle is being dragged, the value under the finger.
   double? _dragValue;
@@ -125,11 +145,85 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
 
   @override
   void dispose() {
+    _activeActionTimer?.cancel();
+    _sleepTimer?.cancel();
     _controller.removeListener(_onControllerChanged);
     // The service saves the listening log when playback stops or pauses.
     if (!widget.continueInBackground) RecitationPlayback.instance.stop();
     _transcriptScroll.dispose();
     super.dispose();
+  }
+
+  /// Triggers a 2-second visual HUD feedback and button highlight on screen.
+  void _showButtonAction({
+    required String buttonId,
+    required String message,
+    required IconData icon,
+  }) {
+    _activeActionTimer?.cancel();
+    setState(() {
+      _activeButtonId = buttonId;
+      _activeActionMessage = message;
+      _activeActionIcon = icon;
+    });
+
+    _activeActionTimer = Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _activeActionMessage = null;
+          _activeActionIcon = null;
+          _activeButtonId = null;
+        });
+      }
+    });
+  }
+
+  void _cycleSleepTimer() {
+    _sleepTimer?.cancel();
+    const durations = [15, 30, 45, 60, 0];
+    final currentIndex = durations.indexOf(_sleepTimerMinutes);
+    final nextMinutes = durations[(currentIndex + 1) % durations.length];
+    _sleepTimerMinutes = nextMinutes;
+
+    if (nextMinutes > 0) {
+      _sleepTimer = Timer(Duration(minutes: nextMinutes), () {
+        if (mounted && _controller.playing) {
+          _controller.togglePlayPause();
+          AppToast.show(
+            context,
+            title: 'Sleep Timer Complete',
+            message: 'Recitation stopped automatically.',
+            type: ToastType.info,
+            duration: const Duration(seconds: 2),
+          );
+        }
+      });
+      _showButtonAction(
+        buttonId: 'sleep',
+        message: 'Sleep Timer: $nextMinutes Min Set',
+        icon: Icons.bedtime_rounded,
+      );
+      AppToast.show(
+        context,
+        title: 'Sleep Timer Active',
+        message: 'Audio will pause automatically in $nextMinutes minutes.',
+        type: ToastType.info,
+        duration: const Duration(seconds: 2),
+      );
+    } else {
+      _showButtonAction(
+        buttonId: 'sleep',
+        message: 'Sleep Timer: Cancelled (Off)',
+        icon: Icons.bedtime_outlined,
+      );
+      AppToast.show(
+        context,
+        title: 'Sleep Timer Off',
+        message: 'Audio will continue playing normally.',
+        type: ToastType.info,
+        duration: const Duration(seconds: 2),
+      );
+    }
   }
 
   String _formatDuration(Duration d) {
@@ -140,7 +234,15 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
 
   void _togglePlayPause() {
     HapticFeedback.lightImpact();
+    final isCurrentlyPlaying = _controller.playing;
     _controller.togglePlayPause();
+    _showButtonAction(
+      buttonId: 'play',
+      message: isCurrentlyPlaying ? 'Playback Paused' : 'Playing Recitation',
+      icon: isCurrentlyPlaying
+          ? Icons.pause_circle_filled_rounded
+          : Icons.play_circle_fill_rounded,
+    );
   }
 
   @override
@@ -174,6 +276,8 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                         const SizedBox(height: 8),
                         _buildSeekBar(),
                         const SizedBox(height: 4),
+                        _buildActionIndicatorHud(),
+                        const SizedBox(height: 4),
                         _buildTransportRow(),
                         const SizedBox(height: 18),
                         _buildUtilityRow(),
@@ -186,6 +290,98 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  /// Floating HUD badge showing the working action of tapped buttons for exactly 2 seconds.
+  Widget _buildActionIndicatorHud() {
+    return SizedBox(
+      height: 38,
+      child: Center(
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: ScaleTransition(
+                scale: Tween<double>(begin: 0.90, end: 1.0).animate(
+                  CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+                ),
+                child: child,
+              ),
+            );
+          },
+          child: _activeActionMessage != null
+              ? Container(
+                  key: ValueKey(_activeActionMessage),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF041E15).withValues(alpha: 0.95),
+                    borderRadius: BorderRadius.circular(22),
+                    border: Border.all(
+                      color: _gold.withValues(alpha: 0.85),
+                      width: 1.2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: _gold.withValues(alpha: 0.35),
+                        blurRadius: 18,
+                        offset: const Offset(0, 3),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.4),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_activeActionIcon != null) ...[
+                        Icon(_activeActionIcon, color: _gold, size: 17),
+                        const SizedBox(width: 8),
+                      ],
+                      Flexible(
+                        child: Text(
+                          _activeActionMessage!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.3,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 1.5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _gold.withValues(alpha: 0.22),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          '2s',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w700,
+                            color: _goldSoft,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
         ),
       ),
     );
@@ -240,8 +436,29 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             ),
             IconButton(
               tooltip: 'More',
-              icon: const Icon(Icons.more_horiz_rounded, color: Colors.white),
-              onPressed: HapticFeedback.selectionClick,
+              icon: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: _activeButtonId == 'more'
+                      ? _gold.withValues(alpha: 0.25)
+                      : Colors.transparent,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: _activeButtonId == 'more' ? _gold : Colors.transparent,
+                    width: 1.2,
+                  ),
+                ),
+                child: const Icon(Icons.more_horiz_rounded, color: Colors.white),
+              ),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                _showButtonAction(
+                  buttonId: 'more',
+                  message: 'Player Options Menu',
+                  icon: Icons.more_horiz_rounded,
+                );
+              },
             ),
           ],
         ),
@@ -365,6 +582,11 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
 
   Widget _buildTitleRow() {
     final ayah = _controller.currentAyah;
+    final titleText = ayah.isDua ? ayah.surahName : '${ayah.surahName} ${ayah.ref}';
+    final subtitleText = ayah.isDua
+        ? '${ayah.reference ?? "Prophetic Dua"} · Dua ${_controller.index + 1} of ${_content.ayahs.length}'
+        : '${widget.reciter} · Ayah ${_controller.index + 1} of ${_content.ayahs.length}';
+
     return Row(
       children: [
         Expanded(
@@ -372,7 +594,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${ayah.surahName} ${ayah.ref}',
+                titleText,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -384,8 +606,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
               ),
               const SizedBox(height: 3),
               Text(
-                '${widget.reciter} · Ayah ${_controller.index + 1} of '
-                '${_content.ayahs.length}',
+                subtitleText,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -400,18 +621,40 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
         const SizedBox(width: 12),
         IconButton(
           tooltip: 'Download for offline',
-          icon: Icon(
-            Icons.download_for_offline_outlined,
-            color: Colors.white.withValues(alpha: 0.9),
-            size: 28,
+          icon: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: _activeButtonId == 'download'
+                  ? _gold.withValues(alpha: 0.25)
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: _activeButtonId == 'download' ? _gold : Colors.transparent,
+                width: 1.2,
+              ),
+            ),
+            child: Icon(
+              Icons.download_for_offline_outlined,
+              color: _activeButtonId == 'download'
+                  ? _gold
+                  : Colors.white.withValues(alpha: 0.9),
+              size: 28,
+            ),
           ),
           onPressed: () {
             HapticFeedback.selectionClick();
+            _showButtonAction(
+              buttonId: 'download',
+              message: 'Downloading for Offline Listening...',
+              icon: Icons.download_rounded,
+            );
             AppToast.show(
               context,
               title: 'Downloading Recitation',
               message: 'Downloading recitation for offline playback...',
               type: ToastType.success,
+              duration: const Duration(seconds: 2),
             );
           },
         ),
@@ -455,6 +698,14 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                   HapticFeedback.selectionClick();
                   setState(() => _dragValue = null);
                   _controller.seekToOverall(v);
+                  final target = Duration(
+                    milliseconds: (total.inMilliseconds * v).round(),
+                  );
+                  _showButtonAction(
+                    buttonId: 'seek',
+                    message: 'Seeked to ${_formatDuration(target)}',
+                    icon: Icons.timelapse_rounded,
+                  );
                 },
               ),
             ),
@@ -487,6 +738,12 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
   // ───────────────────────────── controls ────────────────────────────
 
   Widget _buildTransportRow() {
+    final isLoopActive = _activeButtonId == 'loop';
+    final isPrevActive = _activeButtonId == 'prev';
+    final isPlayActive = _activeButtonId == 'play';
+    final isNextActive = _activeButtonId == 'next';
+    final isSpeedActive = _activeButtonId == 'speed';
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -494,38 +751,95 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
         IconButton(
           tooltip: 'Loop recitation',
           iconSize: 26,
-          icon: Icon(
-            Icons.repeat_rounded,
-            color: _controller.looping
-                ? _gold
-                : Colors.white.withValues(alpha: 0.85),
+          icon: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: isLoopActive
+                  ? _gold.withValues(alpha: 0.25)
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isLoopActive ? _gold : Colors.transparent,
+                width: 1.2,
+              ),
+            ),
+            child: Icon(
+              _controller.looping
+                  ? Icons.repeat_one_rounded
+                  : Icons.repeat_rounded,
+              color: (_controller.looping || isLoopActive)
+                  ? _gold
+                  : Colors.white.withValues(alpha: 0.85),
+            ),
           ),
           onPressed: () {
             HapticFeedback.selectionClick();
             _controller.toggleLooping();
+            _showButtonAction(
+              buttonId: 'loop',
+              message: _controller.looping
+                  ? 'Repeat Recitation: ON'
+                  : 'Repeat Recitation: OFF',
+              icon: _controller.looping
+                  ? Icons.repeat_one_rounded
+                  : Icons.repeat_rounded,
+            );
           },
         ),
         IconButton(
           tooltip: 'Previous ayah',
           iconSize: 40,
-          icon: const Icon(Icons.skip_previous_rounded, color: Colors.white),
+          icon: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: isPrevActive
+                  ? _gold.withValues(alpha: 0.25)
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isPrevActive ? _gold : Colors.transparent,
+                width: 1.2,
+              ),
+            ),
+            child: Icon(
+              Icons.skip_previous_rounded,
+              color: isPrevActive ? _gold : Colors.white,
+            ),
+          ),
           onPressed: () {
             HapticFeedback.selectionClick();
             _controller.previousAyah();
+            final a = _controller.currentAyah;
+            _showButtonAction(
+              buttonId: 'prev',
+              message: a.isDua
+                  ? 'Previous: ${a.surahName}'
+                  : 'Previous: ${a.surahName} ${a.ref}',
+              icon: Icons.skip_previous_rounded,
+            );
           },
         ),
         GestureDetector(
           onTap: _togglePlayPause,
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             width: 74,
             height: 74,
             decoration: BoxDecoration(
               color: _gold,
               shape: BoxShape.circle,
+              border: Border.all(
+                color: isPlayActive ? Colors.white : Colors.transparent,
+                width: 2.5,
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: _gold.withValues(alpha: 0.4),
-                  blurRadius: 22,
+                  color: isPlayActive
+                      ? _gold.withValues(alpha: 0.7)
+                      : _gold.withValues(alpha: 0.4),
+                  blurRadius: isPlayActive ? 30 : 22,
                   offset: const Offset(0, 6),
                 ),
               ],
@@ -553,10 +867,35 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
         IconButton(
           tooltip: 'Next ayah',
           iconSize: 40,
-          icon: const Icon(Icons.skip_next_rounded, color: Colors.white),
+          icon: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: isNextActive
+                  ? _gold.withValues(alpha: 0.25)
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isNextActive ? _gold : Colors.transparent,
+                width: 1.2,
+              ),
+            ),
+            child: Icon(
+              Icons.skip_next_rounded,
+              color: isNextActive ? _gold : Colors.white,
+            ),
+          ),
           onPressed: () {
             HapticFeedback.selectionClick();
             _controller.nextAyah();
+            final a = _controller.currentAyah;
+            _showButtonAction(
+              buttonId: 'next',
+              message: a.isDua
+                  ? 'Next: ${a.surahName}'
+                  : 'Next: ${a.surahName} ${a.ref}',
+              icon: Icons.skip_next_rounded,
+            );
           },
         ),
         // Speed (cycles through the options)
@@ -567,16 +906,26 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                 _speeds[(_speeds.indexOf(_controller.speed) + 1) %
                     _speeds.length];
             _controller.setSpeed(next);
+            _showButtonAction(
+              buttonId: 'speed',
+              message: 'Speed: ${next}x',
+              icon: Icons.speed_rounded,
+            );
           },
           borderRadius: BorderRadius.circular(16),
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
             decoration: BoxDecoration(
+              color: isSpeedActive
+                  ? _gold.withValues(alpha: 0.25)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: _controller.speed == 1.0
-                    ? Colors.white.withValues(alpha: 0.35)
-                    : _gold,
+                color: (_controller.speed != 1.0 || isSpeedActive)
+                    ? _gold
+                    : Colors.white.withValues(alpha: 0.35),
+                width: isSpeedActive ? 1.5 : 1.0,
               ),
             ),
             child: Text(
@@ -585,7 +934,9 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 12.5,
                 fontWeight: FontWeight.w700,
-                color: _controller.speed == 1.0 ? Colors.white : _gold,
+                color: (_controller.speed == 1.0 && !isSpeedActive)
+                    ? Colors.white
+                    : _gold,
               ),
             ),
           ),
@@ -599,53 +950,85 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _utility(
+          id: 'back10',
           icon: Icons.replay_10_rounded,
           label: 'Back 10s',
-          onTap: () => _controller.skip(const Duration(seconds: -10)),
+          onTap: () {
+            _controller.skip(const Duration(seconds: -10));
+            _showButtonAction(
+              buttonId: 'back10',
+              message: 'Rewound 10 Seconds (-10s)',
+              icon: Icons.replay_10_rounded,
+            );
+          },
         ),
         _utility(
+          id: 'forward10',
           icon: Icons.forward_10_rounded,
           label: 'Forward 10s',
-          onTap: () => _controller.skip(const Duration(seconds: 10)),
+          onTap: () {
+            _controller.skip(const Duration(seconds: 10));
+            _showButtonAction(
+              buttonId: 'forward10',
+              message: 'Forwarded 10 Seconds (+10s)',
+              icon: Icons.forward_10_rounded,
+            );
+          },
         ),
         _utility(
-          icon: Icons.bedtime_outlined,
-          label: 'Sleep timer',
-          onTap: () => AppToast.show(
-            context,
-            title: 'Sleep Timer',
-            message: '30-minute sleep timer successfully set.',
-            type: ToastType.info,
-          ),
+          id: 'sleep',
+          icon: _sleepTimerMinutes > 0
+              ? Icons.bedtime_rounded
+              : Icons.bedtime_outlined,
+          label: _sleepTimerMinutes > 0
+              ? '${_sleepTimerMinutes}m timer'
+              : 'Sleep timer',
+          onTap: _cycleSleepTimer,
         ),
       ],
     );
   }
 
   Widget _utility({
+    required String id,
     required IconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
+    final isActive = _activeButtonId == id;
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
         onTap();
       },
       borderRadius: BorderRadius.circular(14),
-      child: Padding(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        decoration: BoxDecoration(
+          color: isActive ? _gold.withValues(alpha: 0.22) : Colors.transparent,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isActive ? _gold : Colors.transparent,
+            width: 1.2,
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.white.withValues(alpha: 0.9), size: 26),
+            Icon(
+              icon,
+              color: isActive ? _gold : Colors.white.withValues(alpha: 0.9),
+              size: 26,
+            ),
             const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 11,
-                color: Colors.white.withValues(alpha: 0.7),
+                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                color: isActive ? _gold : Colors.white.withValues(alpha: 0.7),
               ),
             ),
           ],
@@ -687,16 +1070,36 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             runSpacing: 6,
             children: [
               _togglePill(
+                id: 'translit',
                 label: 'Transliteration',
                 active: _showTransliteration,
-                onTap: () => setState(
-                  () => _showTransliteration = !_showTransliteration,
-                ),
+                onTap: () {
+                  setState(
+                    () => _showTransliteration = !_showTransliteration,
+                  );
+                  _showButtonAction(
+                    buttonId: 'translit',
+                    message: _showTransliteration
+                        ? 'Transliteration: Shown'
+                        : 'Transliteration: Hidden',
+                    icon: Icons.subtitles_rounded,
+                  );
+                },
               ),
               _togglePill(
+                id: 'meaning',
                 label: 'Meaning',
                 active: _showMeaning,
-                onTap: () => setState(() => _showMeaning = !_showMeaning),
+                onTap: () {
+                  setState(() => _showMeaning = !_showMeaning);
+                  _showButtonAction(
+                    buttonId: 'meaning',
+                    message: _showMeaning
+                        ? 'Meaning: Shown'
+                        : 'Meaning: Hidden',
+                    icon: Icons.translate_rounded,
+                  );
+                },
               ),
             ],
           ),
@@ -721,10 +1124,12 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
   }
 
   Widget _togglePill({
+    required String id,
     required String label,
     required bool active,
     required VoidCallback onTap,
   }) {
+    final isActivePill = _activeButtonId == id;
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -737,6 +1142,10 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
         decoration: BoxDecoration(
           color: active ? _gold : Colors.white.withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isActivePill ? Colors.white : Colors.transparent,
+            width: 1.2,
+          ),
         ),
         child: Text(
           label,
@@ -762,6 +1171,13 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
         onTap: () {
           HapticFeedback.selectionClick();
           _controller.playAyah(i);
+          _showButtonAction(
+            buttonId: 'verse_$i',
+            message: ayah.isDua
+                ? 'Playing: ${ayah.surahName}'
+                : 'Playing: ${ayah.surahName} ${ayah.ref}',
+            icon: Icons.play_circle_outline_rounded,
+          );
         },
         borderRadius: BorderRadius.circular(14),
         child: AnimatedOpacity(
@@ -774,18 +1190,35 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      ayah.ref,
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.4,
-                        color: isCurrent ? _gold : Colors.white70,
+                    Container(
+                      padding: ayah.isDua
+                          ? const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5)
+                          : EdgeInsets.zero,
+                      decoration: ayah.isDua
+                          ? BoxDecoration(
+                              color: _gold.withValues(alpha: 0.16),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: _gold.withValues(alpha: 0.45),
+                                width: 0.8,
+                              ),
+                            )
+                          : null,
+                      child: Text(
+                        ayah.isDua
+                            ? (ayah.reference ?? ayah.ref)
+                            : '${ayah.surahName} ${ayah.ref}',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.4,
+                          color: isCurrent ? _gold : Colors.white70,
+                        ),
                       ),
                     ),
                     if (isCurrent && _controller.playing) ...[
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 8),
                       const Icon(Icons.graphic_eq_rounded, size: 16, color: _gold),
                     ],
                   ],
