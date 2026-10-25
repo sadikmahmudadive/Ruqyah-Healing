@@ -85,9 +85,8 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: const Color(0xFF1E2832),
-                    ),
+                    errorBuilder: (context, error, stackTrace) =>
+                        Container(color: const Color(0xFF1E2832)),
                   ),
 
                   // Atmospheric Dark Vignette Overlay
@@ -119,45 +118,58 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                         child: Row(
                           children: [
                             // End-to-end Encrypted Glassmorphic Badge
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
+                            Flexible(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 12,
+                                    sigmaY: 12,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withValues(alpha: 0.40),
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.20),
-                                      width: 1.0,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
                                     ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 7,
-                                        height: 7,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xFF2ECC71),
-                                          shape: BoxShape.circle,
-                                        ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.40,
                                       ),
-                                      const SizedBox(width: 6),
-                                      const Text(
-                                        'End-to-end Encrypted',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.20,
                                         ),
+                                        width: 1.0,
                                       ),
-                                    ],
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          width: 7,
+                                          height: 7,
+                                          decoration: const BoxDecoration(
+                                            color: Color(0xFF2ECC71),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        const Flexible(
+                                          child: Text(
+                                            'End-to-end Encrypted',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -169,8 +181,10 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                                filter: ImageFilter.blur(
+                                  sigmaX: 12,
+                                  sigmaY: 12,
+                                ),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
@@ -180,7 +194,9 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                                     color: Colors.black.withValues(alpha: 0.40),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.20),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.20,
+                                      ),
                                       width: 1.0,
                                     ),
                                   ),
@@ -357,8 +373,9 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
                                         fontFamily: 'Inter',
                                         fontSize: 11,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.white
-                                            .withValues(alpha: 0.85),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.85,
+                                        ),
                                         height: 1.25,
                                       ),
                                     ),
@@ -385,8 +402,7 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
               ),
               decoration: const BoxDecoration(
                 color: Color(0xFF101418),
-                borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               ),
               child: Column(
                 children: [
@@ -519,55 +535,54 @@ class _VideoConsultationScreenState extends State<VideoConsultationScreen> {
     final bgColor = isEmergency
         ? const Color(0xFF2A2220)
         : isActive
-            ? Colors.white
-            : const Color(0xFF222A30);
+        ? Colors.white
+        : const Color(0xFF222A30);
 
     final iconColor = isEmergency
         ? const Color(0xFFD9A08F)
         : isActive
-            ? const Color(0xFF101418)
-            : Colors.white;
+        ? const Color(0xFF101418)
+        : Colors.white;
 
     final borderColor = isEmergency
         ? const Color(0xFFB4503F).withValues(alpha: 0.50)
         : Colors.transparent;
 
-    return Column(
-      children: [
-        InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(26),
-          child: Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: bgColor,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: borderColor,
-                width: isEmergency ? 1.5 : 0.0,
+    return Expanded(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(26),
+            child: Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: bgColor,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: borderColor,
+                  width: isEmergency ? 1.5 : 0.0,
+                ),
               ),
-            ),
-            child: Center(
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: 22,
-              ),
+              child: Center(child: Icon(icon, color: iconColor, size: 22)),
             ),
           ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          label,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 11.5,
-            fontWeight: FontWeight.w500,
-            color: Colors.white.withValues(alpha: 0.75),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 11.5,
+              fontWeight: FontWeight.w500,
+              color: Colors.white.withValues(alpha: 0.75),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

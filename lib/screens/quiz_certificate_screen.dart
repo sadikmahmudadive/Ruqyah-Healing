@@ -748,12 +748,12 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
           onTap: _handleDownloadCertificate,
           borderRadius: BorderRadius.circular(16),
           splashColor: Colors.white.withValues(alpha: 0.15),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.download_rounded, color: Colors.white, size: 20),
               SizedBox(width: 8),
-              Text(
+              Flexible(child: Text(
                 'Download Certificate',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
@@ -761,8 +761,7 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
-              ),
-            ],
+              )),],
           ),
         ),
       ),

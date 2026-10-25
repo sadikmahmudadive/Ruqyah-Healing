@@ -22,6 +22,7 @@ import '../../widgets/ai_icon.dart';
 import '../../widgets/animations/animations.dart';
 import '../../widgets/health_index_builder.dart';
 import '../../widgets/hijri_date_card.dart';
+import '../../widgets/next_prayer_tile.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/modern_card.dart';
 import '../../widgets/prayer_location_sheet.dart';
@@ -167,7 +168,20 @@ class _HomeTabState extends State<HomeTab> {
                       child: HijriDateCard(),
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 14),
+
+                    // Next prayer: bento hero tile
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 60),
+                      child: NextPrayerTile(
+                        future: _prayerTimesFuture,
+                        onTap: () => Navigator.of(context).push(
+                          AppPageRoute.sharedAxis(const DailySalahScreen()),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 14),
 
                     // 2. Bento row: Health + Next Appointment
                     FadeSlideIn(
@@ -311,9 +325,8 @@ class _HomeTabState extends State<HomeTab> {
     return PressScale(
       onTap: () {
         HapticFeedback.mediumImpact();
-        Navigator.of(context).push(
-          AppPageRoute.sharedAxis(const EmergencyRuqyahScreen()),
-        );
+        Navigator.of(context)
+            .push(AppPageRoute.sharedAxis(const EmergencyRuqyahScreen()));
       },
       child: Tooltip(
         message: context.tr('emergency_support'),
@@ -393,13 +406,15 @@ class _HomeTabState extends State<HomeTab> {
         children: [
           Row(
             children: [
-              Text(
-                context.tr('health_index'),
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: context.textSecondary,
+              Flexible(
+                child: Text(
+                  context.tr('health_index'),
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: context.textSecondary,
+                  ),
                 ),
               ),
               const Spacer(),
@@ -890,20 +905,14 @@ class _HomeTabState extends State<HomeTab> {
       ),
       _ServiceSpec(
         label: context.tr('unani'),
-        customIcon: UnaniTibbIcon(
-          color: g(const Color(0xFFC59236)),
-          size: 30,
-        ),
+        customIcon: UnaniTibbIcon(color: g(const Color(0xFFC59236)), size: 30),
         bgColor: const Color(0xFFFBF4E6),
         iconColor: g(const Color(0xFFC59236)),
         target: const UnaniHubScreen(),
       ),
       _ServiceSpec(
         label: context.tr('medicine'),
-        customIcon: MedicineIcon(
-          color: g(const Color(0xFF16A085)),
-          size: 30,
-        ),
+        customIcon: MedicineIcon(color: g(const Color(0xFF16A085)), size: 30),
         bgColor: const Color(0xFFEAF5F2),
         iconColor: g(const Color(0xFF16A085)),
         target: const MedicineHubScreen(),

@@ -13,18 +13,15 @@ class PostCard extends StatefulWidget {
   final CommunityPost post;
   final VoidCallback onPostUpdated;
 
-  const PostCard({
-    super.key,
-    required this.post,
-    required this.onPostUpdated,
-  });
+  const PostCard({super.key, required this.post, required this.onPostUpdated});
 
   @override
   State<PostCard> createState() => _PostCardState();
 }
 
 class _PostCardState extends State<PostCard> {
-  final TextEditingController _inlineCommentController = TextEditingController();
+  final TextEditingController _inlineCommentController =
+      TextEditingController();
   final GlobalKey _reactButtonKey = GlobalKey();
   OverlayEntry? _reactionOverlayEntry;
 
@@ -44,7 +41,8 @@ class _PostCardState extends State<PostCard> {
     HapticFeedback.selectionClick();
     _removeReactionOverlay();
 
-    final renderBox = _reactButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox =
+        _reactButtonKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
 
     final offset = renderBox.localToGlobal(Offset.zero);
@@ -64,7 +62,10 @@ class _PostCardState extends State<PostCard> {
             ),
             // Floating reaction bar
             Positioned(
-              left: offset.dx.clamp(16.0, MediaQuery.of(context).size.width - 270),
+              left: offset.dx.clamp(
+                16.0,
+                MediaQuery.of(context).size.width - 270,
+              ),
               top: offset.dy - 60,
               child: ReactionPickerOverlay(
                 onDismiss: _removeReactionOverlay,
@@ -251,8 +252,11 @@ class _PostCardState extends State<PostCard> {
               ),
               onTap: () {
                 Navigator.of(context).pop();
-                Clipboard.setData(ClipboardData(
-                    text: '${widget.post.title}\n\n${widget.post.content}'));
+                Clipboard.setData(
+                  ClipboardData(
+                    text: '${widget.post.title}\n\n${widget.post.content}',
+                  ),
+                );
                 AppToast.show(
                   context,
                   title: 'Text Copied',
@@ -307,7 +311,9 @@ class _PostCardState extends State<PostCard> {
         border: Border.all(color: context.cardBorder, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: context.isDarkMode ? 0.25 : 0.04),
+            color: Colors.black.withValues(
+              alpha: context.isDarkMode ? 0.25 : 0.04,
+            ),
             blurRadius: 24,
             offset: const Offset(0, 8),
           ),
@@ -409,26 +415,33 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
 
-                // Category Tag Pill
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: context.isDarkMode
-                        ? const Color(0xFF182E25)
-                        : AppColors.tintMint,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color(0xFF0B4632).withValues(alpha: 0.2),
+                // Category Tag Pill (shrinks with ellipsis before it can push
+                // the options button off screen)
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
                     ),
-                  ),
-                  child: Text(
-                    widget.post.category,
-                    style: const TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF0B4632),
+                    decoration: BoxDecoration(
+                      color: context.isDarkMode
+                          ? const Color(0xFF182E25)
+                          : AppColors.tintMint,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color(0xFF0B4632).withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Text(
+                      widget.post.category,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF0B4632),
+                      ),
                     ),
                   ),
                 ),
@@ -472,7 +485,10 @@ class _PostCardState extends State<PostCard> {
           if (widget.post.bgGradient != null) ...[
             Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+              margin: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 4.0,
+              ),
               padding: const EdgeInsets.all(22.0),
               decoration: BoxDecoration(
                 gradient: widget.post.bgGradient,
@@ -615,7 +631,10 @@ class _PostCardState extends State<PostCard> {
                             color: context.cardBg,
                             shape: BoxShape.circle,
                           ),
-                          child: Text(r.emoji, style: const TextStyle(fontSize: 13)),
+                          child: Text(
+                            r.emoji,
+                            style: const TextStyle(fontSize: 13),
+                          ),
                         ),
                       );
                     }).toList(),
@@ -816,7 +835,10 @@ class _PostCardState extends State<PostCard> {
                   },
                   borderRadius: BorderRadius.circular(12),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 8.0,
+                    ),
                     child: Icon(
                       widget.post.isSaved
                           ? Icons.bookmark_rounded
@@ -854,22 +876,26 @@ class _PostCardState extends State<PostCard> {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              widget.post.comments.first.authorName,
-                              style: TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: context.textPrimary,
+                            Flexible(
+                              child: Text(
+                                widget.post.comments.first.authorName,
+                                style: TextStyle(
+                                  fontFamily: 'PlusJakartaSans',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: context.textPrimary,
+                                ),
                               ),
                             ),
                             const Spacer(),
-                            Text(
-                              widget.post.comments.first.timeAgo,
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 10.5,
-                                color: context.textSecondary,
+                            Flexible(
+                              child: Text(
+                                widget.post.comments.first.timeAgo,
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 10.5,
+                                  color: context.textSecondary,
+                                ),
                               ),
                             ),
                           ],
@@ -938,7 +964,9 @@ class _PostCardState extends State<PostCard> {
                           color: context.textSecondary.withValues(alpha: 0.6),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 8),
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
                         border: InputBorder.none,
                       ),
                       onSubmitted: (_) => _submitInlineComment(),
@@ -951,8 +979,10 @@ class _PostCardState extends State<PostCard> {
                   onTap: () => _submitInlineComment('🤲 Ameen'),
                   borderRadius: BorderRadius.circular(16),
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 7,
+                    ),
                     decoration: BoxDecoration(
                       color: context.isDarkMode
                           ? const Color(0xFF182E25)

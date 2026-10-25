@@ -222,7 +222,13 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
     final reduceMotion = MediaQuery.of(context).disableAnimations;
     return SizedBox(
       width: 220,
-      height: 236,
+      height:
+          236 +
+          (MediaQuery.textScalerOf(context).scale(10) / 10 - 1).clamp(
+                0.0,
+                1.0,
+              ) *
+              40,
       child: AnimatedBuilder(
         animation: _pulseController,
         builder: (context, child) {
@@ -394,14 +400,16 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Text(
-                    'Begin calming recitation',
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF1A1405),
-                      letterSpacing: 0.2,
+                  Flexible(
+                    child: Text(
+                      'Begin calming recitation',
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF1A1405),
+                        letterSpacing: 0.2,
+                      ),
                     ),
                   ),
                 ],
@@ -426,31 +434,34 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
   }
 
   Widget _buildUtilityItem({required IconData icon, required String label}) {
-    return Column(
-      children: [
-        Container(
-          width: 52,
-          height: 52,
-          decoration: BoxDecoration(
-            color: const Color(0xFF133F2E),
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.12),
-              width: 1.0,
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: const Color(0xFF133F2E),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.12),
+                width: 1.0,
+              ),
+            ),
+            child: Icon(icon, color: const Color(0xFF81C784), size: 22),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12,
+              color: Colors.white.withValues(alpha: 0.85),
             ),
           ),
-          child: Icon(icon, color: const Color(0xFF81C784), size: 22),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          label,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 12,
-            color: Colors.white.withValues(alpha: 0.85),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -713,7 +724,11 @@ class _EmergencyRuqyahScreenState extends State<EmergencyRuqyahScreen>
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.favorite_border_rounded, color: Color(0xFFE5B860), size: 20),
+          Icon(
+            Icons.favorite_border_rounded,
+            color: Color(0xFFE5B860),
+            size: 20,
+          ),
           SizedBox(width: 10),
           Expanded(
             child: Text(

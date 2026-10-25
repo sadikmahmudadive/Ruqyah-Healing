@@ -212,7 +212,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               padding: EdgeInsets.zero,
             ),
           ),
-          const Text(
+          Flexible(child: Text(
             'Notifications',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
@@ -220,8 +220,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
-          ),
-        ],
+          )),],
       ),
     );
   }

@@ -169,13 +169,15 @@ class ToastShowcaseScreen extends StatelessWidget {
             ),
           ),
 
-          const Text(
-            'Toast Messages',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+          Flexible(
+            child: Text(
+              'Toast Messages',
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
             ),
           ),
         ],

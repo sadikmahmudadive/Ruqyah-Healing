@@ -130,10 +130,7 @@ class _UnaniHubScreenState extends State<UnaniHubScreen> {
       ),
       child: Row(
         children: [
-          const FlatIllustration(
-            kind: FlatIllustrationKind.unani,
-            size: 80,
-          ),
+          const FlatIllustration(kind: FlatIllustrationKind.unani, size: 80),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -221,13 +218,15 @@ class _UnaniHubScreenState extends State<UnaniHubScreen> {
                 size: 20,
               ),
               const SizedBox(width: 8),
-              Text(
-                'Asbab-e-Sittah Zarooriyyah',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: context.textPrimary,
+              Flexible(
+                child: Text(
+                  'Asbab-e-Sittah Zarooriyyah',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: context.textPrimary,
+                  ),
                 ),
               ),
             ],
@@ -313,9 +312,8 @@ class _UnaniHubScreenState extends State<UnaniHubScreen> {
             HapticFeedback.lightImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(
-                  initialCategory: 'Unani',
-                ),
+                pageBuilder: (_, _, _) =>
+                    const TherapistMarketplaceScreen(initialCategory: 'Unani'),
               ),
             );
           },

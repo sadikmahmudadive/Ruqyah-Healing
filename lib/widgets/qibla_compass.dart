@@ -154,19 +154,23 @@ class _QiblaCompassSectionState extends State<QiblaCompassSection> {
               ),
             ),
             const SizedBox(width: 10),
-            Text(
-              'Qibla direction',
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: context.textPrimary,
+            Flexible(
+              child: Text(
+                'Qibla direction',
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: context.textPrimary,
+                ),
               ),
             ),
             const SizedBox(width: 10),
-            Text(
-              'القبلة',
-              style: TextStyle(fontSize: 14, color: context.textSecondary),
+            Flexible(
+              child: Text(
+                'القبلة',
+                style: TextStyle(fontSize: 14, color: context.textSecondary),
+              ),
             ),
           ],
         ),
@@ -244,13 +248,17 @@ class _QiblaCompassSectionState extends State<QiblaCompassSection> {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Heading ${h.round() % 360}° ${Qibla.cardinal(h)}',
-                    style: style,
+                  Flexible(
+                    child: Text(
+                      'Heading ${h.round() % 360}° ${Qibla.cardinal(h)}',
+                      style: style,
+                    ),
                   ),
-                  Text(
-                    'Qibla ${qibla.round()}° ${Qibla.cardinal(qibla)}',
-                    style: style,
+                  Flexible(
+                    child: Text(
+                      'Qibla ${qibla.round()}° ${Qibla.cardinal(qibla)}',
+                      style: style,
+                    ),
                   ),
                 ],
               );
@@ -326,6 +334,11 @@ class _QiblaCompassSectionState extends State<QiblaCompassSection> {
           value:
               '${h.round() % 360} degrees, ${Qibla.cardinal(h)}. '
               '${aligned ? 'Facing Qibla' : '${diff.abs().round()} degrees ${diff > 0 ? 'right' : 'left'} of Qibla'}',
+          // Screen readers need the value each nudge would produce.
+          increasedValue: _sensor ? null : '${((h + 5) % 360).round()} degrees',
+          decreasedValue: _sensor
+              ? null
+              : '${((h - 5 + 360) % 360).round()} degrees',
           onIncrease: _sensor ? null : () => _nudge(5),
           onDecrease: _sensor ? null : () => _nudge(-5),
           child: GestureDetector(

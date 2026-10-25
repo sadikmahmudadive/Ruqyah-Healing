@@ -123,7 +123,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
         StorySlide(
           id: 'slide_4_1',
           caption: 'Please make du\'a for my mother who is undergoing surgery tomorrow morning. JazakAllahu khair.',
-          arabicVerse: 'أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ',
+          arabicVerse:
+              'أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ',
           verseReference: 'Al-Anbiya 21:83',
           bgGradient: const LinearGradient(
             colors: [Color(0xFF5C2C16), Color(0xFF9E4B27), Color(0xFFC97A3E)],
@@ -147,8 +148,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       isVerified: true,
       category: 'Ruqyah Advice',
       title: 'Daily spiritual shield: The 3 essential foundations',
-      content:
-          'Spiritual wellness requires constancy over intensity. Always recite Ayat al-Kursi right after each obligatory prayer and maintain your morning and evening Adhkar. Keep your tongue moist with Istighfar, and renew your intentions for Allah’s protection.',
+      content: 'Spiritual wellness requires constancy over intensity. Always recite Ayat al-Kursi right after each obligatory prayer and maintain your morning and evening Adhkar. Keep your tongue moist with Istighfar, and renew your intentions for Allah’s protection.',
       arabicVerse: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ',
       verseTranslation: 'Allah! There is no deity except Him, the Ever-Living, the Sustainer of all existence.',
       commentsCount: 14,
@@ -189,8 +189,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       isVerified: false,
       category: 'Healing Story',
       title: 'Alhamdulillah: 21 Days of Ruqyah & Complete Peace',
-      content:
-          'After weeks of severe insomnia and panic attacks, I committed to the daily protection playlist and listening to Surah Al-Baqarah. Today I slept 7 continuous hours with zero nightmares. Never lose hope in Allah\'s Shifa!',
+      content: 'After weeks of severe insomnia and panic attacks, I committed to the daily protection playlist and listening to Surah Al-Baqarah. Today I slept 7 continuous hours with zero nightmares. Never lose hope in Allah\'s Shifa!',
       bgGradient: const LinearGradient(
         colors: [Color(0xFF082F21), Color(0xFF0F593D)],
         begin: Alignment.topLeft,
@@ -226,9 +225,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
       timeAgo: '6h ago',
       isVerified: false,
       category: 'Du\'a Request',
-      title: 'Urgent Du\'a Request for our infant son who has unexplained fever',
-      content:
-          'Our 8-month-old baby has been crying continuously with high fever for the last 48 hours. Doctors have checked him, but we ask the believers to recite the Sunnah du\'a for children: "U\'eedhuka bikalimatillahit-tammah..." Please remember him in your Tahajjud.',
+      title:
+          'Urgent Du\'a Request for our infant son who has unexplained fever',
+      content: 'Our 8-month-old baby has been crying continuously with high fever for the last 48 hours. Doctors have checked him, but we ask the believers to recite the Sunnah du\'a for children: "U\'eedhuka bikalimatillahit-tammah..." Please remember him in your Tahajjud.',
       arabicVerse: 'أُعِيذُكَ بِكَلِمَاتِ اللَّهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ',
       verseTranslation: 'I seek protection for you in the perfect words of Allah from every devil and poisonous creature.',
       commentsCount: 31,
@@ -306,7 +305,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
         final matchesContent = post.content.toLowerCase().contains(q);
         final matchesAuthor = post.authorName.toLowerCase().contains(q);
         final matchesTags = post.tags.any((t) => t.toLowerCase().contains(q));
-        if (!matchesTitle && !matchesContent && !matchesAuthor && !matchesTags) {
+        if (!matchesTitle &&
+            !matchesContent &&
+            !matchesAuthor &&
+            !matchesTags) {
           return false;
         }
       }
@@ -366,13 +368,15 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Row(
                             children: [
-                              Text(
-                                'Community Stories',
-                                style: TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: context.textPrimary,
+                              Flexible(
+                                child: Text(
+                                  'Community Stories',
+                                  style: TextStyle(
+                                    fontFamily: 'PlusJakartaSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: context.textPrimary,
+                                  ),
                                 ),
                               ),
                               const Spacer(),
@@ -390,8 +394,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                 },
                                 child: const Row(
                                   children: [
-                                    Icon(Icons.add_circle_outline_rounded,
-                                        size: 16, color: Color(0xFF0B4632)),
+                                    Icon(
+                                      Icons.add_circle_outline_rounded,
+                                      size: 16,
+                                      color: Color(0xFF0B4632),
+                                    ),
                                     SizedBox(width: 4),
                                     Text(
                                       'Add Story',
@@ -430,7 +437,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           _buildEmptyState(),
                         ] else ...[
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                            ),
                             child: Column(
                               children: filtered.map((post) {
                                 return Padding(
@@ -480,7 +489,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
           Row(
             children: [
               IconButton(
-                icon: Icon(Icons.arrow_back_rounded, color: context.textPrimary),
+                icon: Icon(
+                  Icons.arrow_back_rounded,
+                  color: context.textPrimary,
+                ),
                 onPressed: () => Navigator.of(context).pop(),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
@@ -636,8 +648,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? (context.isDarkMode
-                        ? const Color(0xFF182E25)
-                        : AppColors.tintMint)
+                          ? const Color(0xFF182E25)
+                          : AppColors.tintMint)
                     : context.cardBg,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
@@ -748,23 +760,29 @@ class _CommunityScreenState extends State<CommunityScreen> {
             children: [
               const Icon(Icons.circle, color: Color(0xFF0B4632), size: 8),
               const SizedBox(width: 8),
-              Text(
-                'Community Guidelines & Etiquette',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w700,
-                  color: context.isDarkMode
-                      ? const Color(0xFF81C784)
-                      : const Color(0xFF0B4632),
+              Flexible(
+                child: Text(
+                  'Community Guidelines & Etiquette',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w700,
+                    color: context.isDarkMode
+                        ? const Color(0xFF81C784)
+                        : const Color(0xFF0B4632),
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          _buildGuidelineItem('Maintain sincere Islamic brotherhood & supportive tone'),
+          _buildGuidelineItem(
+            'Maintain sincere Islamic brotherhood & supportive tone',
+          ),
           _buildGuidelineItem('No unverified claims or non-Shar\'i practices'),
-          _buildGuidelineItem('Therapist consultation is advised for severe symptoms'),
+          _buildGuidelineItem(
+            'Therapist consultation is advised for severe symptoms',
+          ),
           _buildGuidelineItem('Moderators review flagged reports regularly'),
         ],
       ),

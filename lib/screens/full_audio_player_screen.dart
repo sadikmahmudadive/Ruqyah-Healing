@@ -62,6 +62,9 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
       );
   RecitationContent get _content => _controller.content;
 
+  /// Heart on the title row (a personal favourite marker, kept per screen).
+  bool _favourite = false;
+
   bool _showTransliteration = true;
   bool _showMeaning = true;
 
@@ -316,7 +319,10 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
           child: _activeActionMessage != null
               ? Container(
                   key: ValueKey(_activeActionMessage),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 7,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF041E15).withValues(alpha: 0.95),
                     borderRadius: BorderRadius.circular(22),
@@ -396,27 +402,35 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
         child: Row(
           children: [
-            IconButton(
-              tooltip: 'Close',
-              icon: const Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: Colors.white,
-                size: 32,
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              child: IconButton(
+                tooltip: 'Close',
+                padding: EdgeInsets.zero,
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'PLAYING FROM',
+                  const Text(
+                    'Now playing',
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
-                      fontSize: 10.5,
+                      fontSize: 17,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 1.2,
-                      color: Colors.white.withValues(alpha: 0.65),
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -424,11 +438,10 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                     _content.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      color: _goldSoft.withValues(alpha: 0.9),
                     ),
                   ),
                 ],
@@ -445,11 +458,16 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                       : Colors.transparent,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: _activeButtonId == 'more' ? _gold : Colors.transparent,
+                    color: _activeButtonId == 'more'
+                        ? _gold
+                        : Colors.transparent,
                     width: 1.2,
                   ),
                 ),
-                child: const Icon(Icons.more_horiz_rounded, color: Colors.white),
+                child: const Icon(
+                  Icons.more_horiz_rounded,
+                  color: Colors.white,
+                ),
               ),
               onPressed: () {
                 HapticFeedback.selectionClick();
@@ -485,7 +503,10 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
               colors: [Color(0xFF14513A), Color(0xFF082F21)],
             ),
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: _gold.withValues(alpha: 0.65), width: 1.4),
+            border: Border.all(
+              color: _gold.withValues(alpha: 0.65),
+              width: 1.4,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.35),
@@ -499,6 +520,14 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             child: Stack(
               alignment: Alignment.center,
               children: [
+                const Positioned.fill(
+                  child: IslamicPattern(
+                    color: Colors.white,
+                    opacity: 0.07,
+                    cell: 52,
+                    fadeDown: false,
+                  ),
+                ),
                 // Large faint crescent as a watermark.
                 Positioned(
                   right: -30,
@@ -582,7 +611,9 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
 
   Widget _buildTitleRow() {
     final ayah = _controller.currentAyah;
-    final titleText = ayah.isDua ? ayah.surahName : '${ayah.surahName} ${ayah.ref}';
+    final titleText = ayah.isDua
+        ? ayah.surahName
+        : '${ayah.surahName} ${ayah.ref}';
     final subtitleText = ayah.isDua
         ? '${ayah.reference ?? "Prophetic Dua"} · Dua ${_controller.index + 1} of ${_content.ayahs.length}'
         : '${widget.reciter} · Ayah ${_controller.index + 1} of ${_content.ayahs.length}';
@@ -620,42 +651,15 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
         ),
         const SizedBox(width: 12),
         IconButton(
-          tooltip: 'Download for offline',
-          icon: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: _activeButtonId == 'download'
-                  ? _gold.withValues(alpha: 0.25)
-                  : Colors.transparent,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: _activeButtonId == 'download' ? _gold : Colors.transparent,
-                width: 1.2,
-              ),
-            ),
-            child: Icon(
-              Icons.download_for_offline_outlined,
-              color: _activeButtonId == 'download'
-                  ? _gold
-                  : Colors.white.withValues(alpha: 0.9),
-              size: 28,
-            ),
+          tooltip: _favourite ? 'Remove from favourites' : 'Add to favourites',
+          icon: Icon(
+            _favourite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+            color: _favourite ? _gold : Colors.white.withValues(alpha: 0.9),
+            size: 28,
           ),
           onPressed: () {
             HapticFeedback.selectionClick();
-            _showButtonAction(
-              buttonId: 'download',
-              message: 'Downloading for Offline Listening...',
-              icon: Icons.download_rounded,
-            );
-            AppToast.show(
-              context,
-              title: 'Downloading Recitation',
-              message: 'Downloading recitation for offline playback...',
-              type: ToastType.success,
-              duration: const Duration(seconds: 2),
-            );
+            setState(() => _favourite = !_favourite);
           },
         ),
       ],
@@ -976,6 +980,25 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
           },
         ),
         _utility(
+          id: 'download',
+          icon: Icons.download_for_offline_outlined,
+          label: 'Download',
+          onTap: () {
+            _showButtonAction(
+              buttonId: 'download',
+              message: 'Downloading for Offline Listening...',
+              icon: Icons.download_rounded,
+            );
+            AppToast.show(
+              context,
+              title: 'Downloading Recitation',
+              message: 'Downloading recitation for offline playback...',
+              type: ToastType.success,
+              duration: const Duration(seconds: 2),
+            );
+          },
+        ),
+        _utility(
           id: 'sleep',
           icon: _sleepTimerMinutes > 0
               ? Icons.bedtime_rounded
@@ -996,6 +1019,18 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
     required VoidCallback onTap,
   }) {
     final isActive = _activeButtonId == id;
+    // Equal-width slots, so four actions fit the row on any phone.
+    return Expanded(
+      child: Center(child: _utilityButton(isActive, icon, label, onTap)),
+    );
+  }
+
+  Widget _utilityButton(
+    bool isActive,
+    IconData icon,
+    String label,
+    VoidCallback onTap,
+  ) {
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -1004,7 +1039,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
       borderRadius: BorderRadius.circular(14),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
           color: isActive ? _gold.withValues(alpha: 0.22) : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
@@ -1022,13 +1057,16 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
               size: 26,
             ),
             const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 11,
-                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                color: isActive ? _gold : Colors.white.withValues(alpha: 0.7),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11,
+                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                  color: isActive ? _gold : Colors.white.withValues(alpha: 0.7),
+                ),
               ),
             ),
           ],
@@ -1074,9 +1112,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                 label: 'Transliteration',
                 active: _showTransliteration,
                 onTap: () {
-                  setState(
-                    () => _showTransliteration = !_showTransliteration,
-                  );
+                  setState(() => _showTransliteration = !_showTransliteration);
                   _showButtonAction(
                     buttonId: 'translit',
                     message: _showTransliteration
@@ -1192,7 +1228,10 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                   children: [
                     Container(
                       padding: ayah.isDua
-                          ? const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5)
+                          ? const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 2.5,
+                            )
                           : EdgeInsets.zero,
                       decoration: ayah.isDua
                           ? BoxDecoration(
@@ -1219,7 +1258,11 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                     ),
                     if (isCurrent && _controller.playing) ...[
                       const SizedBox(width: 8),
-                      const Icon(Icons.graphic_eq_rounded, size: 16, color: _gold),
+                      const Icon(
+                        Icons.graphic_eq_rounded,
+                        size: 16,
+                        color: _gold,
+                      ),
                     ],
                   ],
                 ),

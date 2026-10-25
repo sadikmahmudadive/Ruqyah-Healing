@@ -137,55 +137,55 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
 
   Widget _buildHeaderRow() {
     return Row(
-        children: [
-          // Back Button
-          Container(
-            width: 44,
-            height: 44,
-            margin: const EdgeInsets.only(right: 14),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
-              onPressed: () => Navigator.of(context).pop(),
-              padding: EdgeInsets.zero,
-            ),
+      children: [
+        // Back Button
+        Container(
+          width: 44,
+          height: 44,
+          margin: const EdgeInsets.only(right: 14),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.15),
+            shape: BoxShape.circle,
           ),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+            padding: EdgeInsets.zero,
+          ),
+        ),
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'RUQYAH HUB',
-                  style: TextStyle(
-                    fontFamily: 'Cinzel',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
-                    color: Color(0xFFD49E35),
-                  ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'RUQYAH HUB',
+                style: TextStyle(
+                  fontFamily: 'Cinzel',
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                  color: Color(0xFFD49E35),
                 ),
-                const SizedBox(height: 2),
-                const Text(
-                  'May Allah grant you shifa and peace',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF81C784),
-                  ),
+              ),
+              const SizedBox(height: 2),
+              const Text(
+                'May Allah grant you shifa and peace',
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF81C784),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
+      ],
     );
   }
 
@@ -354,7 +354,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       children: [
         Row(
           children: [
-            Text(
+            Flexible(child: Text(
               'Featured Playlist',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
@@ -362,7 +362,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
-            ),
+            )),
             const Spacer(),
             InkWell(
               onTap: () {
@@ -382,8 +382,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                   color: Color(0xFF0B4632),
                 ),
               ),
-            ),
-          ],
+            ),],
         ),
 
         const SizedBox(height: 12),
@@ -486,12 +485,16 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                             verses: 'Complete Quran Ayats & Prophetic Duas',
                             trackId: 'ruqyah_full',
                           ),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            return FadeTransition(
-                              opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                              child: child,
-                            );
-                          },
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.easeInOut,
+                                  ),
+                                  child: child,
+                                );
+                              },
                           transitionDuration: const Duration(milliseconds: 350),
                         ),
                       );
@@ -568,12 +571,14 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                     ),
                   ),
                   const Spacer(),
-                  const Text(
-                    'Starts in 2h 15m',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      color: Color(0xFF90A4AE),
+                  Flexible(
+                    child: Text(
+                      'Starts in 2h 15m',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        color: Color(0xFF90A4AE),
+                      ),
                     ),
                   ),
                 ],
@@ -670,7 +675,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
       children: [
         Row(
           children: [
-            Text(
+            Flexible(child: Text(
               'Your Progress',
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
@@ -678,7 +683,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                 fontWeight: FontWeight.w700,
                 color: context.textPrimary,
               ),
-            ),
+            )),
             const Spacer(),
             InkWell(
               onTap: () {
@@ -698,8 +703,7 @@ class _RuqyahHubScreenState extends State<RuqyahHubScreen> {
                   color: Color(0xFF0B4632),
                 ),
               ),
-            ),
-          ],
+            ),],
         ),
 
         const SizedBox(height: 12),

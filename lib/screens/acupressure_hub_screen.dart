@@ -215,19 +215,17 @@ class _AcupressureHubScreenState extends State<AcupressureHubScreen> {
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.spa_rounded,
-                color: Color(0xFFC86D51),
-                size: 20,
-              ),
+              const Icon(Icons.spa_rounded, color: Color(0xFFC86D51), size: 20),
               const SizedBox(width: 8),
-              Text(
-                'Clinical Application Guidelines',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: context.textPrimary,
+              Flexible(
+                child: Text(
+                  'Clinical Application Guidelines',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: context.textPrimary,
+                  ),
                 ),
               ),
             ],

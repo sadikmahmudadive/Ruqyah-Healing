@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,7 +7,9 @@ import '../models/recitation.dart';
 import '../services/ruqyah_api_service.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/motion.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/flowing_gradient.dart';
 import '../widgets/islamic_pattern.dart';
 import 'full_audio_player_screen.dart';
 
@@ -21,6 +25,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   String _selectedCondition = 'All';
   final TextEditingController _searchController = TextEditingController();
   final Set<String> _downloadedTracks = {};
+  final Set<String> _liked = {};
   bool _isSyncing = false;
 
   final List<String> _filters = const [
@@ -85,6 +90,13 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     }
   }
 
+  void _toggleLike(String id) {
+    HapticFeedback.selectionClick();
+    setState(() {
+      if (!_liked.remove(id)) _liked.add(id);
+    });
+  }
+
   void _toggleDownload(String trackId, String trackTitle) {
     HapticFeedback.selectionClick();
     setState(() {
@@ -118,7 +130,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
-            opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
             child: child,
           );
         },
@@ -129,10 +144,16 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
 
   void _playSingleAyahOrDua(Ayah item) {
     final singleContent = RecitationContent(
-      id: item.isDua ? 'single_dua_${item.number}' : 'single_ayah_${item.surah}_${item.number}',
+      id: item.isDua
+          ? 'single_dua_${item.number}'
+          : 'single_ayah_${item.surah}_${item.number}',
       title: item.isDua ? item.surahName : '${item.surahName} (${item.ref})',
-      arabicTitle: item.arabic.length > 25 ? '${item.arabic.substring(0, 25)}...' : item.arabic,
-      subtitle: item.isDua ? (item.reference ?? 'Prophetic Dua') : 'Quran Ayah ${item.ref}',
+      arabicTitle: item.arabic.length > 25
+          ? '${item.arabic.substring(0, 25)}...'
+          : item.arabic,
+      subtitle: item.isDua
+          ? (item.reference ?? 'Prophetic Dua')
+          : 'Quran Ayah ${item.ref}',
       category: item.isDua ? 'Prophetic Duas' : 'Quran Ruqyah',
       ayahs: [item],
     );
@@ -148,12 +169,29 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
 
     // Filtered lists
     final filteredPlaylists = allPlaylists.where((p) {
-      if (_selectedFilter == 'Quran Ayats' || _selectedFilter == 'Prophetic Duas') return false;
-      if (_selectedFilter == 'Downloads') return _downloadedTracks.contains(p.id);
+      if (_selectedFilter == 'Quran Ayats' ||
+          _selectedFilter == 'Prophetic Duas')
+        return false;
+      if (_selectedFilter == 'Downloads') {
+        return _downloadedTracks.contains(p.id);
+      }
 
       if (_selectedCondition != 'All') {
-        final matchesCond = p.title.toLowerCase().contains(_selectedCondition.toLowerCase().replaceAll(' & ', ' ').split(' ').first) ||
-            p.category.toLowerCase().contains(_selectedCondition.toLowerCase().replaceAll(' & ', ' ').split(' ').first);
+        final matchesCond =
+            p.title.toLowerCase().contains(
+              _selectedCondition
+                  .toLowerCase()
+                  .replaceAll(' & ', ' ')
+                  .split(' ')
+                  .first,
+            ) ||
+            p.category.toLowerCase().contains(
+              _selectedCondition
+                  .toLowerCase()
+                  .replaceAll(' & ', ' ')
+                  .split(' ')
+                  .first,
+            );
         if (!matchesCond) return false;
       }
 
@@ -164,8 +202,13 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     }).toList();
 
     final filteredAyats = allQuranAyats.where((a) {
-      if (_selectedFilter == 'Playlists' || _selectedFilter == 'Prophetic Duas') return false;
-      if (_selectedFilter == 'Downloads') return _downloadedTracks.contains('${a.surah}:${a.number}');
+      if (_selectedFilter == 'Playlists' ||
+          _selectedFilter == 'Prophetic Duas') {
+        return false;
+      }
+      if (_selectedFilter == 'Downloads') {
+        return _downloadedTracks.contains('${a.surah}:${a.number}');
+      }
 
       if (searchQuery.isEmpty) return true;
       return a.surahName.toLowerCase().contains(searchQuery) ||
@@ -176,16 +219,26 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     }).toList();
 
     final filteredDuas = allDuas.where((d) {
-      if (_selectedFilter == 'Playlists' || _selectedFilter == 'Quran Ayats') return false;
-      if (_selectedFilter == 'Downloads') return _downloadedTracks.contains(d.ref);
+      if (_selectedFilter == 'Playlists' || _selectedFilter == 'Quran Ayats') {
+        return false;
+      }
+      if (_selectedFilter == 'Downloads') {
+        return _downloadedTracks.contains(d.ref);
+      }
 
       if (searchQuery.isEmpty) return true;
       return d.surahName.toLowerCase().contains(searchQuery) ||
           d.meaning.toLowerCase().contains(searchQuery) ||
-          (d.reference != null && d.reference!.toLowerCase().contains(searchQuery)) ||
+          (d.reference != null &&
+              d.reference!.toLowerCase().contains(searchQuery)) ||
           d.transliteration.toLowerCase().contains(searchQuery) ||
           d.arabic.contains(searchQuery);
     }).toList();
+
+    final showFeatured =
+        allPlaylists.isNotEmpty &&
+        searchQuery.isEmpty &&
+        (_selectedFilter == 'All' || _selectedFilter == 'Playlists');
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -201,80 +254,82 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildApiBanner(),
-                    const SizedBox(height: 14),
                     _buildSearchBar(),
-                    const SizedBox(height: 14),
-                    _buildFilterRow(),
-                    if (_selectedFilter == 'All' || _selectedFilter == 'Playlists') ...[
+                    if (showFeatured) ...[
+                      const SizedBox(height: 18),
+                      _buildFeaturedBanner(allPlaylists.first),
+                    ],
+                    const SizedBox(height: 18),
+                    _buildTabs(),
+                    if (_selectedFilter == 'All' ||
+                        _selectedFilter == 'Playlists') ...[
                       const SizedBox(height: 12),
                       _buildConditionChipsRow(),
                     ],
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
 
-                    // 1. Playlists Section
+                    // 1. Playlists: a shelf of cover cards
                     if (filteredPlaylists.isNotEmpty) ...[
                       _buildSectionHeader(
                         title: 'Ruqyah Audio Sessions',
                         count: '${filteredPlaylists.length} playlists',
-                        icon: Icons.album_rounded,
                       ),
-                      const SizedBox(height: 12),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemCount: filteredPlaylists.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 12),
-                        itemBuilder: (_, index) => _buildPlaylistCard(filteredPlaylists[index]),
-                      ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 14),
+                      _buildPlaylistShelf(filteredPlaylists),
+                      const SizedBox(height: 26),
                     ],
 
-                    // 2. Quran Ayats Section
-                    if (filteredAyats.isNotEmpty && _selectedFilter != 'Playlists') ...[
+                    // 2. Quran Ayats: a track list
+                    if (filteredAyats.isNotEmpty &&
+                        _selectedFilter != 'Playlists') ...[
                       _buildSectionHeader(
                         title: 'Quran Ayats for Ruqyah',
                         count: '${filteredAyats.length} verses',
-                        icon: Icons.menu_book_rounded,
                       ),
-                      const SizedBox(height: 12),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemCount: filteredAyats.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 10),
-                        itemBuilder: (_, index) => _buildAyahCard(filteredAyats[index]),
-                      ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 10),
+                      _buildTrackList([
+                        for (final a in filteredAyats)
+                          _trackRow(
+                            id: '${a.surah}:${a.number}',
+                            title: '${a.surahName} ${a.ref}',
+                            subtitle: a.meaning,
+                            arabic: a.arabic,
+                            onPlay: () => _playSingleAyahOrDua(a),
+                          ),
+                      ]),
+                      const SizedBox(height: 26),
                     ],
 
-                    // 3. Prophetic Duas Section
-                    if (filteredDuas.isNotEmpty && _selectedFilter != 'Playlists') ...[
+                    // 3. Prophetic Duas: a track list
+                    if (filteredDuas.isNotEmpty &&
+                        _selectedFilter != 'Playlists') ...[
                       _buildSectionHeader(
                         title: 'Prophetic Duas (Sunnah)',
                         count: '${filteredDuas.length} healing duas',
-                        icon: Icons.favorite_border_rounded,
                       ),
-                      const SizedBox(height: 12),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemCount: filteredDuas.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 10),
-                        itemBuilder: (_, index) => _buildDuaCard(filteredDuas[index]),
-                      ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 10),
+                      _buildTrackList([
+                        for (final d in filteredDuas)
+                          _trackRow(
+                            id: d.ref,
+                            title: d.surahName,
+                            subtitle: d.reference ?? d.meaning,
+                            arabic: d.arabic,
+                            gold: true,
+                            onPlay: () => _playSingleAyahOrDua(d),
+                          ),
+                      ]),
+                      const SizedBox(height: 26),
                     ],
 
                     // Empty state if nothing found
-                    if (filteredPlaylists.isEmpty && filteredAyats.isEmpty && filteredDuas.isEmpty)
+                    if (filteredPlaylists.isEmpty &&
+                        filteredAyats.isEmpty &&
+                        filteredDuas.isEmpty)
                       _buildEmptyState(),
                   ],
                 ),
@@ -286,7 +341,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     );
   }
 
-  // ──────────────────────────── Header & Banner ────────────────────────────
+  // ──────────────────────────── Header & status ────────────────────────────
 
   Widget _buildTopHeader() {
     return Container(
@@ -296,10 +351,12 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         left: 20,
         right: 20,
       ),
-      foregroundDecoration: IslamicPatternDecoration(),
+      foregroundDecoration: const IslamicPatternDecoration(
+        radius: BorderRadius.vertical(bottom: Radius.circular(32)),
+      ),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
       ),
       child: Row(
         children: [
@@ -312,7 +369,12 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded, color: Colors.white, size: 20),
+              tooltip: 'Back',
+              icon: const Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.white,
+                size: 20,
+              ),
               onPressed: () => Navigator.of(context).pop(),
               padding: EdgeInsets.zero,
             ),
@@ -331,11 +393,12 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.2,
-                    color: Color(0xFFD49E35),
+                    color: Color(0xFFE9C26F),
                   ),
                 ),
+                SizedBox(height: 2),
                 Text(
-                  'Online API Audio • Ayats & Authentic Duas',
+                  'Recitations, Ayats & authentic Duas',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -347,14 +410,16 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               ],
             ),
           ),
-          // Sync button
           Container(
             width: 44,
             height: 44,
             decoration: BoxDecoration(
               color: const Color(0xFFD49E35).withValues(alpha: 0.25),
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFD49E35).withValues(alpha: 0.6), width: 1.2),
+              border: Border.all(
+                color: const Color(0xFFD49E35).withValues(alpha: 0.6),
+                width: 1.2,
+              ),
             ),
             child: IconButton(
               icon: _isSyncing
@@ -366,7 +431,11 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                         valueColor: AlwaysStoppedAnimation(Color(0xFFD49E35)),
                       ),
                     )
-                  : const Icon(Icons.sync_rounded, color: Color(0xFFD49E35), size: 22),
+                  : const Icon(
+                      Icons.sync_rounded,
+                      color: Color(0xFFD49E35),
+                      size: 22,
+                    ),
               tooltip: 'Sync live API data',
               onPressed: _handleSyncApi,
               padding: EdgeInsets.zero,
@@ -377,113 +446,140 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     );
   }
 
-  Widget _buildApiBanner() {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0B4632).withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF0B4632).withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0B4632),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(Icons.cloud_done_rounded, color: Color(0xFFD49E35), size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      margin: const EdgeInsets.only(right: 6),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF4CAF50),
-                        shape: BoxShape.circle,
-                      ),
+  // ──────────────────────────── Featured banner ────────────────────────────
+
+  /// The big coloured card at the top, like a "new album" banner: a call to
+  /// begin the full session, with an eight-point star where the cover goes.
+  Widget _buildFeaturedBanner(RecitationContent session) {
+    return Semantics(
+      button: true,
+      label: 'Play the full Ruqyah session',
+      child: GestureDetector(
+        onTap: () => _playContent(session),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(28),
+          child: FlowingGradient(
+            colors: const [
+              Color(0xFF0B4632),
+              Color(0xFF14704B),
+              Color(0xFF1B8A5E),
+            ],
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(22, 20, 14, 20),
+              constraints: const BoxConstraints(minHeight: 150),
+              foregroundDecoration: const IslamicPatternDecoration(
+                opacity: 0.08,
+                cell: 56,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'FEATURED SESSION',
+                          style: AppType.eyebrow.copyWith(
+                            color: AppColors.accentGoldSoft,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Begin with a full Ruqyah',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppType.display.copyWith(
+                            fontSize: 24,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'A complete, gently paced recitation.',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppType.caption.copyWith(
+                            fontSize: 12.5,
+                            color: Colors.white.withValues(alpha: 0.8),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 9,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE9C26F),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.play_arrow_rounded,
+                                size: 20,
+                                color: Color(0xFF1A1405),
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                'Listen',
+                                style: TextStyle(
+                                  fontFamily: 'PlusJakartaSans',
+                                  fontSize: 13.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF1A1405),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: Text(
-                        'Live Audio API Streaming',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: context.textPrimary,
+                  ),
+                  const SizedBox(width: 6),
+                  SizedBox(
+                    width: 104,
+                    height: 104,
+                    child: CustomPaint(
+                      painter: const _StarEmblemPainter(),
+                      child: const Center(
+                        child: Text(
+                          'رقية',
+                          style: TextStyle(
+                            fontSize: 26,
+                            height: 1.2,
+                            color: Color(0xFFE9C26F),
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Al-Quran Cloud CDN & Sunnah Duas',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 11.5,
-                    color: context.textSecondary,
                   ),
-                ),
-              ],
-            ),
-          ),
-          TextButton(
-            onPressed: _handleSyncApi,
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: const Text(
-              'Sync API',
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF0B4632),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  // ──────────────────────────── Search & Filters ────────────────────────────
+  // ──────────────────────────── Search & tabs ────────────────────────────
 
   Widget _buildSearchBar() {
     return Container(
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 14),
+      height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: context.cardBg,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: AppElevation.subtle,
       ),
       child: Row(
         children: [
-          const Icon(Icons.search_rounded, color: AppColors.lightTextMuted, size: 20),
+          Icon(Icons.search_rounded, color: context.textMuted, size: 22),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -495,16 +591,17 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 color: context.textPrimary,
               ),
               decoration: InputDecoration(
-                hintText: 'Search Ayats, Duas, Surahs (e.g. 2:255, Sihr, Jibril)...',
-                hintStyle: const TextStyle(
+                hintText: 'Search Ayats, Duas, Surahs (e.g. 2:255, Sihr)',
+                hintStyle: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13,
-                  color: AppColors.lightTextMuted,
+                  color: context.textMuted,
                 ),
                 border: InputBorder.none,
                 isDense: true,
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
+                        tooltip: 'Clear search',
                         icon: const Icon(Icons.clear_rounded, size: 18),
                         onPressed: () {
                           _searchController.clear();
@@ -520,46 +617,55 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     );
   }
 
-  Widget _buildFilterRow() {
+  /// Text tabs with a gold underline under the chosen one.
+  Widget _buildTabs() {
     return SizedBox(
-      height: 38,
+      height:
+          42 +
+          (MediaQuery.textScalerOf(context).scale(10) / 10 - 1).clamp(
+                0.0,
+                1.0,
+              ) *
+              20,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         itemCount: _filters.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 22),
         itemBuilder: (context, index) {
           final filter = _filters[index];
           final isSelected = filter == _selectedFilter;
-
           return InkWell(
             onTap: () {
               HapticFeedback.selectionClick();
               setState(() => _selectedFilter = filter);
             },
-            borderRadius: BorderRadius.circular(20),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF0B4632) : context.cardBg,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: isSelected ? const Color(0xFF0B4632) : context.cardBorder,
-                  width: 1.0,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  filter,
+            borderRadius: BorderRadius.circular(8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 200),
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                    color: isSelected ? Colors.white : context.textPrimary,
+                    color: isSelected ? context.textPrimary : context.textMuted,
+                  ),
+                  child: Text(filter),
+                ),
+                const SizedBox(height: 6),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  width: isSelected ? 22 : 0,
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: AppColors.accentGold,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-              ),
+              ],
             ),
           );
         },
@@ -569,12 +675,12 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
 
   Widget _buildConditionChipsRow() {
     return SizedBox(
-      height: 32,
+      height: 34,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         itemCount: _conditionFilters.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 6),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final cond = _conditionFilters[index];
           final isSelected = cond == _selectedCondition;
@@ -584,15 +690,19 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
               HapticFeedback.selectionClick();
               setState(() => _selectedCondition = cond);
             },
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            borderRadius: BorderRadius.circular(17),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFFD49E35) : context.cardBg.withValues(alpha: 0.6),
-                borderRadius: BorderRadius.circular(16),
+                color: isSelected
+                    ? (context.isDarkMode
+                          ? AppColors.accentGold
+                          : AppColors.primaryGreen)
+                    : context.cardBg,
+                borderRadius: BorderRadius.circular(17),
                 border: Border.all(
-                  color: isSelected ? const Color(0xFFD49E35) : context.cardBorder,
-                  width: 0.8,
+                  color: isSelected ? Colors.transparent : context.cardBorder,
                 ),
               ),
               child: Center(
@@ -600,9 +710,13 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   cond,
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 11.5,
+                    fontSize: 12,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                    color: isSelected ? Colors.white : context.textSecondary,
+                    color: isSelected
+                        ? (context.isDarkMode
+                              ? const Color(0xFF1A1405)
+                              : Colors.white)
+                        : context.textSecondary,
                   ),
                 ),
               ),
@@ -613,424 +727,362 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     );
   }
 
-  Widget _buildSectionHeader({
-    required String title,
-    required String count,
-    required IconData icon,
-  }) {
+  Widget _buildSectionHeader({required String title, required String count}) {
     return Row(
       children: [
-        Icon(icon, size: 18, color: const Color(0xFF0B4632)),
-        const SizedBox(width: 8),
+        Container(
+          width: 4,
+          height: 20,
+          decoration: BoxDecoration(
+            color: AppColors.accentGold,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 10),
         Expanded(
           child: Text(
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 17,
-              fontWeight: FontWeight.w700,
-              color: context.textPrimary,
-            ),
+            style: AppType.title.copyWith(color: context.textPrimary),
           ),
         ),
         const SizedBox(width: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-          decoration: BoxDecoration(
-            color: AppColors.tintMint,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            count,
-            style: const TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 11.5,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF0B4632),
-            ),
+        Text(
+          count,
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: context.textMuted,
           ),
         ),
       ],
     );
   }
 
-  // ──────────────────────────── Cards ────────────────────────────
+  // ──────────────────────────── Playlist shelf ────────────────────────────
 
-  Widget _buildPlaylistCard(RecitationContent playlist) {
+  static const List<List<Color>> _coverPalettes = [
+    [Color(0xFF0B4632), Color(0xFF1B6A4C)],
+    [Color(0xFF0F3D3E), Color(0xFF1F7A74)],
+    [Color(0xFF3B2F12), Color(0xFF8A6420)],
+    [Color(0xFF1C2E4A), Color(0xFF2F5D7C)],
+    [Color(0xFF2C3E2D), Color(0xFF5B7F4F)],
+  ];
+
+  Widget _buildPlaylistShelf(List<RecitationContent> playlists) {
+    return LayoutBuilder(
+      builder: (context, c) => SizedBox(
+        // Grows with the user's text size so titles are never clipped.
+        height:
+            232 +
+            (MediaQuery.textScalerOf(context).scale(10) / 10 - 1).clamp(
+                  0.0,
+                  1.0,
+                ) *
+                80,
+        // Cancels the page padding so the shelf scrolls edge to edge.
+        child: OverflowBox(
+          minWidth: c.maxWidth + 40,
+          maxWidth: c.maxWidth + 40,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: playlists.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 14),
+            itemBuilder: (_, i) => _buildPlaylistCard(playlists[i], i),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlaylistCard(RecitationContent playlist, int index) {
+    final palette = _coverPalettes[index % _coverPalettes.length];
     final isDownloaded = _downloadedTracks.contains(playlist.id);
+    const width = 156.0;
 
+    return SizedBox(
+      width: width,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _playContent(playlist),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Cover art: the playlist's colours, the star lattice and its
+            // Arabic title.
+            Container(
+              width: width,
+              height: width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: palette,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: palette.first.withValues(alpha: 0.28),
+                    blurRadius: 22,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Stack(
+                  children: [
+                    const Positioned.fill(
+                      child: IslamicPattern(
+                        color: Colors.white,
+                        opacity: 0.1,
+                        cell: 44,
+                        fadeDown: false,
+                      ),
+                    ),
+                    Positioned(
+                      right: -26,
+                      top: -26,
+                      child: SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: CustomPaint(
+                          painter: const _StarEmblemPainter(soft: true),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 14,
+                      right: 14,
+                      bottom: 14,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          playlist.arabicTitle.isNotEmpty
+                              ? playlist.arabicTitle
+                              : 'رقية',
+                          maxLines: 1,
+                          textDirection: TextDirection.rtl,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            height: 1.3,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFFE9C26F),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Play badge, bottom right of the cover.
+                    Positioned(
+                      right: 10,
+                      top: 10,
+                      child: Container(
+                        width: 34,
+                        height: 34,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFE9C26F),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.play_arrow_rounded,
+                          size: 22,
+                          color: Color(0xFF1A1405),
+                        ),
+                      ),
+                    ),
+                    if (isDownloaded)
+                      const Positioned(
+                        left: 12,
+                        top: 12,
+                        child: Icon(
+                          Icons.download_done_rounded,
+                          size: 18,
+                          color: Colors.white70,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              playlist.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 14.5,
+                fontWeight: FontWeight.w700,
+                color: context.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '${playlist.ayahs.length} tracks · ${playlist.subtitle}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      color: context.textSecondary,
+                    ),
+                  ),
+                ),
+                InkResponse(
+                  onTap: () => _toggleDownload(playlist.id, playlist.title),
+                  radius: 18,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Icon(
+                      isDownloaded
+                          ? Icons.check_circle_rounded
+                          : Icons.download_rounded,
+                      size: 18,
+                      color: context.textMuted,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ──────────────────────────── Track lists ────────────────────────────
+
+  Widget _buildTrackList(List<Widget> rows) {
     return Container(
       decoration: BoxDecoration(
         color: context.cardBg,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: context.cardBorder),
+        boxShadow: AppElevation.card,
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Column(
+        children: [
+          for (var i = 0; i < rows.length; i++) ...[
+            rows[i],
+            if (i != rows.length - 1)
+              Padding(
+                padding: const EdgeInsets.only(left: 74, right: 16),
+                child: Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: context.cardBorder,
+                ),
+              ),
+          ],
         ],
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _playContent(playlist),
-          borderRadius: BorderRadius.circular(20),
-          child: Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Row(
-              children: [
-                // Arabic Badge
-                Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF0B4632), Color(0xFF1B6A4C)],
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Center(
-                    child: Text(
-                      playlist.arabicTitle.isNotEmpty ? playlist.arabicTitle.split(' ').last : 'رقية',
-                      style: const TextStyle(
-                        fontFamily: 'Cinzel',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFFD49E35),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 14),
-                // Details
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              playlist.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 15.5,
-                                fontWeight: FontWeight.w700,
-                                color: context.textPrimary,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            margin: const EdgeInsets.only(left: 6),
-                            decoration: BoxDecoration(
-                              color: AppColors.tintSand,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              '${playlist.ayahs.length} tracks',
-                              style: const TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFFD49E35),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        playlist.subtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 12.5,
-                          color: context.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // Download action
-                IconButton(
-                  icon: Icon(
-                    isDownloaded ? Icons.check_circle_rounded : Icons.download_rounded,
-                    color: const Color(0xFF0B4632),
-                    size: 20,
-                  ),
-                  onPressed: () => _toggleDownload(playlist.id, playlist.title),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                ),
-                // Play Icon Button
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF0B4632),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.play_arrow_rounded,
-                    color: Color(0xFFD49E35),
-                    size: 22,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 
-  Widget _buildAyahCard(Ayah ayah) {
-    final trackId = '${ayah.surah}:${ayah.number}';
-    final isDownloaded = _downloadedTracks.contains(trackId);
+  /// One track, Spotify "playlist" style: a round play button, the title and
+  /// a short line under it, then like and download on the right.
+  Widget _trackRow({
+    required String id,
+    required String title,
+    required String subtitle,
+    required String arabic,
+    required VoidCallback onPlay,
+    bool gold = false,
+  }) {
+    final liked = _liked.contains(id);
+    final downloaded = _downloadedTracks.contains(id);
+    final accent = gold ? const Color(0xFFB8862B) : AppColors.primaryGreen;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: context.cardBg,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: context.cardBorder, width: 0.8),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _playSingleAyahOrDua(ayah),
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Wrap(
-                        spacing: 6,
-                        runSpacing: 4,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0B4632).withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              '${ayah.surahName} ${ayah.ref}',
-                              style: const TextStyle(
-                                fontFamily: 'PlusJakartaSans',
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFF0B4632),
-                              ),
-                            ),
-                          ),
-                          if (ayah.reference != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: AppColors.tintSand,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                ayah.reference!,
-                                style: const TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFFD49E35),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    // Download
-                    InkWell(
-                      onTap: () => _toggleDownload(trackId, '${ayah.surahName} ${ayah.ref}'),
-                      child: Icon(
-                        isDownloaded ? Icons.check_circle_rounded : Icons.download_rounded,
-                        size: 18,
-                        color: const Color(0xFF0B4632),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    // Play icon
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF0B4632),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.play_arrow_rounded,
-                        color: Color(0xFFD49E35),
-                        size: 18,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // Arabic text snippet
-                SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    ayah.arabic,
-                    textDirection: TextDirection.rtl,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Amiri',
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w700,
-                      height: 1.8,
-                      color: Color(0xFF0B4632),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                // Meaning
-                Text(
-                  ayah.meaning,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 12,
-                    color: context.textSecondary,
-                  ),
-                ),
-              ],
+    return InkWell(
+      onTap: onPlay,
+      borderRadius: BorderRadius.circular(22),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 12, 6, 12),
+        child: Row(
+          children: [
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: gold ? AppColors.tintSand : AppColors.tintMint,
+              ),
+              child: Icon(Icons.play_arrow_rounded, size: 26, color: accent),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDuaCard(Ayah dua) {
-    final trackId = dua.ref;
-    final isDownloaded = _downloadedTracks.contains(trackId);
-
-    return Container(
-      decoration: BoxDecoration(
-        color: context.cardBg,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFD49E35).withValues(alpha: 0.3), width: 0.8),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _playSingleAyahOrDua(dua),
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD49E35).withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        dua.reference ?? 'Hadith Dua',
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFFD49E35),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        dua.surahName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: context.textPrimary,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () => _toggleDownload(trackId, dua.surahName),
-                      child: Icon(
-                        isDownloaded ? Icons.check_circle_rounded : Icons.download_rounded,
-                        size: 18,
-                        color: const Color(0xFF0B4632),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF0B4632),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.play_arrow_rounded,
-                        color: Color(0xFFD49E35),
-                        size: 18,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    dua.arabic,
-                    textDirection: TextDirection.rtl,
-                    maxLines: 2,
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Amiri',
-                      fontSize: 16.5,
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 14.5,
                       fontWeight: FontWeight.w700,
-                      height: 1.8,
-                      color: Color(0xFF0B4632),
+                      color: context.textPrimary,
                     ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  dua.meaning,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 12,
-                    color: context.textSecondary,
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      color: context.textSecondary,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    arabic,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.rtl,
+                    style: TextStyle(
+                      fontSize: 15,
+                      height: 1.5,
+                      color: context.textMuted,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+            IconButton(
+              tooltip: liked ? 'Remove from favourites' : 'Add to favourites',
+              onPressed: () => _toggleLike(id),
+              visualDensity: VisualDensity.compact,
+              icon: Icon(
+                liked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                size: 22,
+                color: liked ? const Color(0xFFC4604F) : context.textMuted,
+              ),
+            ),
+            IconButton(
+              tooltip: downloaded ? 'Remove download' : 'Download',
+              onPressed: () => _toggleDownload(id, title),
+              visualDensity: VisualDensity.compact,
+              icon: Icon(
+                downloaded
+                    ? Icons.check_circle_rounded
+                    : Icons.download_rounded,
+                size: 22,
+                color: downloaded ? accent : context.textMuted,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -1042,7 +1094,11 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         padding: const EdgeInsets.symmetric(vertical: 40),
         child: Column(
           children: [
-            Icon(Icons.search_off_rounded, size: 48, color: context.textSecondary),
+            Icon(
+              Icons.search_off_rounded,
+              size: 48,
+              color: context.textSecondary,
+            ),
             const SizedBox(height: 12),
             Text(
               'No recitations or duas found',
@@ -1067,4 +1123,43 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       ),
     );
   }
+}
+
+/// Eight-point star in a ring: the library's emblem (banner and covers).
+class _StarEmblemPainter extends CustomPainter {
+  final bool soft;
+  const _StarEmblemPainter({this.soft = false});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final c = size.center(Offset.zero);
+    final r = size.shortestSide / 2 - 4;
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = soft ? 1.2 : 1.6
+      ..color = const Color(0xFFE9C26F).withValues(alpha: soft ? 0.35 : 0.85);
+
+    canvas.drawCircle(c, r, paint);
+    canvas.drawCircle(
+      c,
+      r * 0.8,
+      paint..color = paint.color.withValues(alpha: paint.color.a * 0.6),
+    );
+    paint.color = const Color(0xFFE9C26F).withValues(alpha: soft ? 0.35 : 0.85);
+    for (final base in const [0.0, math.pi / 4]) {
+      final p = Path();
+      for (var i = 0; i < 4; i++) {
+        final a = base + i * math.pi / 2;
+        final o = Offset(
+          c.dx + r * 0.9 * math.cos(a),
+          c.dy + r * 0.9 * math.sin(a),
+        );
+        i == 0 ? p.moveTo(o.dx, o.dy) : p.lineTo(o.dx, o.dy);
+      }
+      canvas.drawPath(p..close(), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_StarEmblemPainter old) => old.soft != soft;
 }

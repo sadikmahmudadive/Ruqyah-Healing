@@ -405,13 +405,15 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      widget.practitionerName,
-                      style: const TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.lightTextPrimary,
+                    Flexible(
+                      child: Text(
+                        widget.practitionerName,
+                        style: const TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.lightTextPrimary,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 6),
@@ -865,7 +867,10 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
               decoration: BoxDecoration(
                 color: AppColors.lightBackground,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
               ),
               child: Row(
                 children: [

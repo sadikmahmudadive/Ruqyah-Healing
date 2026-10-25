@@ -256,20 +256,24 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
-                'SUGGESTED RECITATION',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-                  color: AppColors.lightTextMuted,
+              Flexible(
+                child: Text(
+                  'SUGGESTED RECITATION',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                    color: AppColors.lightTextMuted,
+                  ),
                 ),
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(8),
@@ -399,8 +403,10 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.tintSand,
                   borderRadius: BorderRadius.circular(8),
@@ -430,10 +436,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Center(
-                  child: RuqyahDuaIcon(
-                    color: AppColors.warning,
-                    size: 22,
-                  ),
+                  child: RuqyahDuaIcon(color: AppColors.warning, size: 22),
                 ),
               ),
 
@@ -527,8 +530,10 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFE6F7FF),
                   borderRadius: BorderRadius.circular(8),
@@ -645,22 +650,28 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
-                'RECOMMENDED MEDICINE',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-                  color: AppColors.lightTextMuted,
+              Flexible(
+                child: Text(
+                  'RECOMMENDED MEDICINE',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                    color: AppColors.lightTextMuted,
+                  ),
                 ),
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF152F28) : const Color(0xFFEAF5F2),
+                  color: isDark
+                      ? const Color(0xFF152F28)
+                      : const Color(0xFFEAF5F2),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
@@ -682,9 +693,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
             onTap: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const MedicineHubScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const MedicineHubScreen()),
               );
             },
             borderRadius: BorderRadius.circular(16),
@@ -694,14 +703,13 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF152F28) : const Color(0xFFEAF5F2),
+                    color: isDark
+                        ? const Color(0xFF152F28)
+                        : const Color(0xFFEAF5F2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Center(
-                    child: MedicineIcon(
-                      color: tealColor,
-                      size: 24,
-                    ),
+                    child: MedicineIcon(color: tealColor, size: 24),
                   ),
                 ),
 
@@ -737,7 +745,9 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF152F28) : const Color(0xFFEAF5F2),
+                    color: isDark
+                        ? const Color(0xFF152F28)
+                        : const Color(0xFFEAF5F2),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -757,10 +767,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
             decoration: BoxDecoration(
               color: isDark ? const Color(0xFF0F1E1A) : const Color(0xFFF7FAF8),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: context.cardBorder,
-                width: 1.0,
-              ),
+              border: Border.all(color: context.cardBorder, width: 1.0),
             ),
             child: Column(
               children: [
@@ -855,13 +862,15 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
-                'When to reach out for support',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF8A6420),
+              Flexible(
+                child: Text(
+                  'When to reach out for support',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF8A6420),
+                  ),
                 ),
               ),
             ],
@@ -887,18 +896,16 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
   Widget _buildAdvisorReviewTag() {
     return Row(
       children: [
-        const Icon(
-          Icons.circle,
-          color: AppColors.tintMint,
-          size: 10,
-        ),
+        const Icon(Icons.circle, color: AppColors.tintMint, size: 10),
         const SizedBox(width: 6),
-        const Text(
-          'Reviewed by Islamic Studies Advisor',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 12,
-            color: AppColors.lightTextSecondary,
+        Flexible(
+          child: Text(
+            'Reviewed by Islamic Studies Advisor',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12,
+              color: AppColors.lightTextSecondary,
+            ),
           ),
         ),
         const Spacer(),
@@ -910,11 +917,7 @@ class _GuidanceResultsScreenState extends State<GuidanceResultsScreen> {
           ),
           child: const Row(
             children: [
-              Icon(
-                Icons.check_rounded,
-                color: Color(0xFF0B4632),
-                size: 12,
-              ),
+              Icon(Icons.check_rounded, color: Color(0xFF0B4632), size: 12),
               SizedBox(width: 3),
               Text(
                 'Verified',

@@ -136,61 +136,76 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         body: HealthIndexBuilder(
           withAppointments: true,
           builder: (context, health) => SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 1. Top Health Index Overview Card
-              _buildHealthIndexOverviewCard(health),
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 12.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 1. Top Health Index Overview Card
+                _buildHealthIndexOverviewCard(health),
 
-              const SizedBox(height: 20),
-              _buildInsightsCard(health),
+                const SizedBox(height: 20),
+                _buildInsightsCard(health),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // 2. Medical & Spiritual Wellness Logs Card
-              _buildWellnessLogsCard(health),
+                // 2. Medical & Spiritual Wellness Logs Card
+                _buildWellnessLogsCard(health),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              // 3. Privacy & Controls Section Header
-              const Text(
-                'PRIVACY & CONTROLS',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-                  color: AppColors.lightTextMuted,
+                // 3. Privacy & Controls Section Header
+                const Text(
+                  'PRIVACY & CONTROLS',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                    color: AppColors.lightTextMuted,
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-              // 4. Privacy & Controls Options Card
-              _buildPrivacyControlsCard(),
+                // 4. Privacy & Controls Options Card
+                _buildPrivacyControlsCard(),
 
-              const SizedBox(height: 24),
-            ],
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );
   }
 
   static const _months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   String _lastUpdatedText(DateTime? t) {
     if (t == null) return 'Not updated yet';
     final now = DateTime.now();
-    final days = DateTime(now.year, now.month, now.day)
-        .difference(DateTime(t.year, t.month, t.day))
-        .inDays;
+    final days = DateTime(
+      now.year,
+      now.month,
+      now.day,
+    ).difference(DateTime(t.year, t.month, t.day)).inDays;
     if (days <= 0) return 'Last updated: Today';
     if (days == 1) return 'Last updated: Yesterday';
     return 'Last updated: ${t.day} ${_months[t.month - 1]}';
@@ -221,9 +236,12 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          for (final tip in health.insights.isEmpty
-              ? const ['You are on track. Keep up your daily check-ins and sessions.']
-              : health.insights)
+          for (final tip
+              in health.insights.isEmpty
+                  ? const [
+                      'You are on track. Keep up your daily check-ins and sessions.',
+                    ]
+                  : health.insights)
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
@@ -387,12 +405,14 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
           // Footer Row
           Row(
             children: [
-              Text(
-                _lastUpdatedText(health.lastUpdated),
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12,
-                  color: AppColors.lightTextMuted,
+              Flexible(
+                child: Text(
+                  _lastUpdatedText(health.lastUpdated),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    color: AppColors.lightTextMuted,
+                  ),
                 ),
               ),
               const Spacer(),
@@ -437,21 +457,25 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 11.5,
-                color: AppColors.lightTextSecondary,
+            Flexible(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11.5,
+                  color: AppColors.lightTextSecondary,
+                ),
               ),
             ),
-            Text(
-              value,
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 11.5,
-                fontWeight: FontWeight.w700,
-                color: color,
+            Flexible(
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w700,
+                  color: color,
+                ),
               ),
             ),
           ],
@@ -545,7 +569,11 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: AppColors.tintMint,
             iconColor: const Color(0xFF0B4632),
             title: 'Ruqyah Listening Log',
-            badgeText: countOrNone(health.ruqyahSessions, 'session', 'sessions'),
+            badgeText: countOrNone(
+              health.ruqyahSessions,
+              'session',
+              'sessions',
+            ),
             badgeBg: AppColors.tintMint,
             badgeColor: const Color(0xFF0B4632),
           ),
@@ -558,16 +586,17 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
             iconBg: AppColors.tintSand,
             iconColor: AppColors.warning,
             title: 'Hijama Session History',
-            badgeText: countOrNone(health.hijamaSessions, 'session', 'sessions'),
+            badgeText: countOrNone(
+              health.hijamaSessions,
+              'session',
+              'sessions',
+            ),
             badgeBg: AppColors.tintSand,
             badgeColor: AppColors.warning,
           ),
           _buildDivider(),
           _buildLogTile(
-            customIcon: const AcupunctureIcon(
-              color: AppColors.info,
-              size: 20,
-            ),
+            customIcon: const AcupunctureIcon(color: AppColors.info, size: 20),
             iconBg: const Color(0xFFE6F7FF),
             iconColor: AppColors.info,
             title: 'Acupuncture Point Log',
@@ -738,21 +767,20 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   ),
                 ),
               ),
-              Text(
+              Flexible(child: Text(
                 subtitle,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12,
                   color: context.textSecondary,
                 ),
-              ),
+              )),
               const SizedBox(width: 6),
               const Icon(
                 Icons.chevron_right_rounded,
                 color: AppColors.lightTextMuted,
                 size: 20,
-              ),
-            ],
+              ),],
           ),
         ),
       ),

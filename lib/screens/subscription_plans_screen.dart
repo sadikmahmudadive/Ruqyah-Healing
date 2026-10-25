@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/illustrations/ruqyah_illustrations.dart';
+
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
@@ -137,8 +139,10 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                     const SizedBox(height: 32),
 
                     // Trust Signals
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Wrap(
+                      alignment: WrapAlignment.spaceEvenly,
+                      spacing: 16,
+                      runSpacing: 8,
                       children: [
                         _buildTrustSignal('Transparent renewal'),
                         _buildTrustSignal('No hidden charges'),
@@ -183,7 +187,8 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                         borderRadius: BorderRadius.circular(18),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF0B4632).withValues(alpha: 0.30),
+                            color: const Color(0xFF0B4632)
+                                .withValues(alpha: 0.30),
                             offset: const Offset(0, 6),
                             blurRadius: 18,
                           ),
@@ -383,8 +388,8 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                           fontWeight: FontWeight.w700,
                           color: isPremium
                               ? (context.isDarkMode
-                                  ? const Color(0xFF81C784)
-                                  : const Color(0xFF0B4632))
+                                    ? const Color(0xFF81C784)
+                                    : const Color(0xFF0B4632))
                               : context.textPrimary,
                         ),
                       ),
@@ -393,25 +398,29 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         textBaseline: TextBaseline.alphabetic,
                         children: [
-                          Text(
-                            price,
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              color: isPremium
-                                  ? (context.isDarkMode
-                                      ? const Color(0xFF81C784)
-                                      : const Color(0xFF0B4632))
-                                  : context.textPrimary,
+                          Flexible(
+                            child: Text(
+                              price,
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: isPremium
+                                    ? (context.isDarkMode
+                                          ? const Color(0xFF81C784)
+                                          : const Color(0xFF0B4632))
+                                    : context.textPrimary,
+                              ),
                             ),
                           ),
-                          Text(
-                            period,
-                            style: const TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 13,
-                              color: Color(0xFF2ECC71),
+                          Flexible(
+                            child: Text(
+                              period,
+                              style: const TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 13,
+                                color: Color(0xFF2ECC71),
+                              ),
                             ),
                           ),
                         ],
@@ -435,10 +444,14 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (tagLabel != null && tagColor != null && tagTextColor != null)
+                    if (tagLabel != null &&
+                        tagColor != null &&
+                        tagTextColor != null)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         margin: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
                           color: tagColor,
@@ -484,30 +497,33 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
 
             if (features != null) ...[
               const SizedBox(height: 16),
-              ...features.map((f) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          isPremium ? Icons.check_circle_rounded : Icons.circle,
-                          color: isPremium
-                              ? const Color(0xFF2ECC71)
-                              : AppColors.lightTextMuted,
-                          size: isPremium ? 16 : 6,
+              ...features.map(
+                (f) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        isPremium ? Icons.check_circle_rounded : Icons.circle,
+                        color: isPremium
+                            ? const Color(0xFF2ECC71)
+                            : AppColors.lightTextMuted,
+                        size: isPremium ? 16 : 6,
+                      ),
+                      SizedBox(width: isPremium ? 8 : 12),
+                      Flexible(child: Text(
+                        f,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12.5,
+                          fontWeight: isPremium
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                          color: context.textPrimary,
                         ),
-                        SizedBox(width: isPremium ? 8 : 12),
-                        Text(
-                          f,
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12.5,
-                            fontWeight: isPremium ? FontWeight.w600 : FontWeight.w400,
-                            color: context.textPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
+                      )),],
+                  ),
+                ),
+              ),
             ],
 
             if (footerText != null) ...[
@@ -530,11 +546,7 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
   Widget _buildTrustSignal(String text) {
     return Row(
       children: [
-        const Icon(
-          Icons.check_rounded,
-          color: Color(0xFF2ECC71),
-          size: 14,
-        ),
+        const Icon(Icons.check_rounded, color: Color(0xFF2ECC71), size: 14),
         const SizedBox(width: 4),
         Text(
           text,

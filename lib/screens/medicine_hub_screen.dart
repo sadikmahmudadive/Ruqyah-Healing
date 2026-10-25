@@ -133,10 +133,7 @@ class _MedicineHubScreenState extends State<MedicineHubScreen> {
       ),
       child: Row(
         children: [
-          const FlatIllustration(
-            kind: FlatIllustrationKind.medicine,
-            size: 80,
-          ),
+          const FlatIllustration(kind: FlatIllustrationKind.medicine, size: 80),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -303,13 +300,15 @@ class _MedicineHubScreenState extends State<MedicineHubScreen> {
                 size: 20,
               ),
               const SizedBox(width: 8),
-              Text(
-                'Prophetic Prescription Philosophy',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: context.textPrimary,
+              Flexible(
+                child: Text(
+                  'Prophetic Prescription Philosophy',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: context.textPrimary,
+                  ),
                 ),
               ),
             ],
@@ -354,7 +353,11 @@ class _MedicineHubScreenState extends State<MedicineHubScreen> {
               ),
             );
           },
-          icon: const Icon(Icons.storefront_rounded, color: Colors.white, size: 20),
+          icon: const Icon(
+            Icons.storefront_rounded,
+            color: Colors.white,
+            size: 20,
+          ),
           label: const Text(
             'Order Natural Remedies in Store',
             style: TextStyle(
@@ -384,9 +387,8 @@ class _MedicineHubScreenState extends State<MedicineHubScreen> {
           HapticFeedback.lightImpact();
           Navigator.of(context).push(
             PageRouteBuilder(
-              pageBuilder: (_, _, _) => const TherapistMarketplaceScreen(
-                initialCategory: 'Medicine',
-              ),
+              pageBuilder: (_, _, _) =>
+                  const TherapistMarketplaceScreen(initialCategory: 'Medicine'),
             ),
           );
         },

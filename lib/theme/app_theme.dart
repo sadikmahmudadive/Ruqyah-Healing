@@ -53,6 +53,53 @@ class AppColors {
   static const Color darkIconCircleBg = Color(0xFF132620);
 }
 
+/// Type scale. One place for the sizes, weights, tracking and line heights so
+/// new screens read as one family: a small tracked eyebrow, a tight display
+/// size for the one big thing on a screen, and a roomy 1.5 body.
+/// Colour is left off on purpose; add it with `copyWith(color: ...)`.
+class AppType {
+  AppType._();
+
+  static const TextStyle eyebrow = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 11.5,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 1.4,
+    height: 1.2,
+  );
+
+  static const TextStyle display = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 32,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.5,
+    height: 1.08,
+  );
+
+  static const TextStyle title = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.1,
+    height: 1.25,
+    fontFeatures: [FontFeature.tabularFigures()],
+  );
+
+  static const TextStyle body = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+  );
+
+  static const TextStyle caption = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+  );
+}
+
 /// Convenience accessors on BuildContext that resolve to the right
 /// token for the current theme.
 extension AppThemeContext on BuildContext {
@@ -62,8 +109,7 @@ extension AppThemeContext on BuildContext {
       isDarkMode ? AppColors.darkBackground : AppColors.lightBackground;
   Color get surfaceBg =>
       isDarkMode ? AppColors.darkSurface : AppColors.lightSurface;
-  Color get cardBg =>
-      isDarkMode ? AppColors.darkCardBg : AppColors.lightCardBg;
+  Color get cardBg => isDarkMode ? AppColors.darkCardBg : AppColors.lightCardBg;
   Color get cardBorder =>
       isDarkMode ? AppColors.darkCardBorder : AppColors.lightCardBorder;
   Color get cardBorderStrong => isDarkMode
@@ -86,8 +132,9 @@ extension AppThemeContext on BuildContext {
       statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
       statusBarBrightness: isDarkMode ? Brightness.dark : Brightness.light,
       systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness:
-          isDarkMode ? Brightness.light : Brightness.dark,
+      systemNavigationBarIconBrightness: isDarkMode
+          ? Brightness.light
+          : Brightness.dark,
     );
   }
 
@@ -103,6 +150,20 @@ extension AppThemeContext on BuildContext {
 }
 
 class AppTheme {
+  /// Roomier body text and slightly tighter large headings across the app.
+  static TextTheme _refine(TextTheme t) => t.copyWith(
+    displayLarge: t.displayLarge?.copyWith(letterSpacing: -0.5, height: 1.1),
+    displayMedium: t.displayMedium?.copyWith(letterSpacing: -0.4, height: 1.1),
+    headlineMedium: t.headlineMedium?.copyWith(
+      letterSpacing: -0.3,
+      height: 1.2,
+    ),
+    titleLarge: t.titleLarge?.copyWith(letterSpacing: -0.1, height: 1.25),
+    bodyLarge: t.bodyLarge?.copyWith(height: 1.5),
+    bodyMedium: t.bodyMedium?.copyWith(height: 1.5),
+    bodySmall: t.bodySmall?.copyWith(height: 1.4),
+  );
+
   static final ValueNotifier<ThemeMode> themeModeNotifier =
       ValueNotifier<ThemeMode>(ThemeMode.system);
 
@@ -152,9 +213,11 @@ class AppTheme {
       ),
     );
     return base.copyWith(
-      textTheme: base.textTheme.apply(
-        bodyColor: AppColors.lightTextPrimary,
-        displayColor: AppColors.lightTextPrimary,
+      textTheme: _refine(
+        base.textTheme.apply(
+          bodyColor: AppColors.lightTextPrimary,
+          displayColor: AppColors.lightTextPrimary,
+        ),
       ),
     );
   }
@@ -205,9 +268,11 @@ class AppTheme {
       ),
     );
     return base.copyWith(
-      textTheme: base.textTheme.apply(
-        bodyColor: AppColors.darkTextPrimary,
-        displayColor: AppColors.darkTextPrimary,
+      textTheme: _refine(
+        base.textTheme.apply(
+          bodyColor: AppColors.darkTextPrimary,
+          displayColor: AppColors.darkTextPrimary,
+        ),
       ),
     );
   }

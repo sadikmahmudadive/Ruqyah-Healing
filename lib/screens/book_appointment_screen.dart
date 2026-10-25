@@ -173,7 +173,10 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               decoration: BoxDecoration(
                 color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.03),
@@ -399,7 +402,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               ),
               const SizedBox(width: 8),
             ],
-            Text(
+            Flexible(child: Text(
               label,
               style: TextStyle(
                 fontFamily: 'PlusJakartaSans',
@@ -407,8 +410,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                 color: isSelected ? Colors.white : AppColors.lightTextSecondary,
               ),
-            ),
-          ],
+            )),],
         ),
       ),
     );
@@ -880,12 +882,14 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           // Patient Profile Row
           Row(
             children: [
-              const Text(
-                'Patient Profile',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 13.5,
-                  color: AppColors.lightTextMuted,
+              Flexible(
+                child: Text(
+                  'Patient Profile',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13.5,
+                    color: AppColors.lightTextMuted,
+                  ),
                 ),
               ),
               const Spacer(),

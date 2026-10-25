@@ -41,7 +41,10 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
@@ -86,14 +89,21 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
+                  border: Border.all(
+                    color: AppColors.lightCardBorder,
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.04),
@@ -253,28 +263,32 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 ),
                 const SizedBox(height: 4),
                 Row(
-                  children: const [
+                  children: [
                     Icon(
                       Icons.star_rounded,
                       color: Color(0xFFD49E35),
                       size: 15,
                     ),
                     SizedBox(width: 3),
-                    Text(
-                      '4.9 ',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.lightTextPrimary,
+                    Flexible(
+                      child: Text(
+                        '4.9 ',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.lightTextPrimary,
+                        ),
                       ),
                     ),
-                    Text(
-                      '(126 sessions)',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 11.5,
-                        color: AppColors.lightTextMuted,
+                    Flexible(
+                      child: Text(
+                        '(126 sessions)',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 11.5,
+                          color: AppColors.lightTextMuted,
+                        ),
                       ),
                     ),
                   ],
@@ -461,10 +475,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
-              child: HijamaCuppingIcon(
-                color: Color(0xFF0B4632),
-                size: 24,
-              ),
+              child: HijamaCuppingIcon(color: Color(0xFF0B4632), size: 24),
             ),
           ),
 
@@ -531,8 +542,8 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         children: [
           // Header Row
           Row(
-            children: const [
-              Text(
+            children: [
+              Flexible(child: Text(
                 'Treated Points',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
@@ -540,9 +551,9 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   fontWeight: FontWeight.w700,
                   color: AppColors.lightTextPrimary,
                 ),
-              ),
+              )),
               Spacer(),
-              Text(
+              Flexible(child: Text(
                 '6 Points',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
@@ -550,19 +561,18 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   fontWeight: FontWeight.w700,
                   color: Color(0xFFD49E35),
                 ),
-              ),
-            ],
+              )),],
           ),
 
           const SizedBox(height: 10),
 
           // Legend
-          Row(
-            children: const [
+          const Wrap(
+            spacing: 14,
+            runSpacing: 6,
+            children: [
               _DotLegend(color: Color(0xFF0B4632), label: 'Primary'),
-              SizedBox(width: 14),
               _DotLegend(color: Color(0xFF2ECC71), label: 'Secondary'),
-              SizedBox(width: 14),
               _DotLegend(color: Color(0xFFD49E35), label: 'Previous'),
             ],
           ),
@@ -589,17 +599,20 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                       painter: _MiniAnatomyPainter(isBack: false),
                     ),
                     Positioned(
-                        top: 30,
-                        left: 20,
-                        child: _PointDot(color: Color(0xFF0B4632))),
+                      top: 30,
+                      left: 20,
+                      child: _PointDot(color: Color(0xFF0B4632)),
+                    ),
                     Positioned(
-                        top: 55,
-                        right: 18,
-                        child: _PointDot(color: Color(0xFF2ECC71))),
+                      top: 55,
+                      right: 18,
+                      child: _PointDot(color: Color(0xFF2ECC71)),
+                    ),
                     Positioned(
-                        bottom: 40,
-                        left: 15,
-                        child: _PointDot(color: Color(0xFFD49E35))),
+                      bottom: 40,
+                      left: 15,
+                      child: _PointDot(color: Color(0xFFD49E35)),
+                    ),
                   ],
                 ),
 
@@ -612,17 +625,20 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                       painter: _MiniAnatomyPainter(isBack: true),
                     ),
                     Positioned(
-                        top: 25,
-                        right: 22,
-                        child: _PointDot(color: Color(0xFF0B4632))),
+                      top: 25,
+                      right: 22,
+                      child: _PointDot(color: Color(0xFF0B4632)),
+                    ),
                     Positioned(
-                        top: 45,
-                        left: 20,
-                        child: _PointDot(color: Color(0xFF0B4632))),
+                      top: 45,
+                      left: 20,
+                      child: _PointDot(color: Color(0xFF0B4632)),
+                    ),
                     Positioned(
-                        bottom: 50,
-                        right: 18,
-                        child: _PointDot(color: Color(0xFFD49E35))),
+                      bottom: 50,
+                      right: 18,
+                      child: _PointDot(color: Color(0xFFD49E35)),
+                    ),
                   ],
                 ),
               ],
@@ -788,15 +804,14 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                     size: 18,
                   ),
                   const SizedBox(width: 10),
-                  Text(
+                  Flexible(child: Text(
                     item,
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
                       color: AppColors.lightTextSecondary,
                     ),
-                  ),
-                ],
+                  )),],
               ),
             );
           }),
@@ -945,7 +960,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
 
           const SizedBox(height: 10),
 
-          const Row(
+          Row(
             children: [
               Icon(
                 Icons.photo_library_outlined,
@@ -953,12 +968,14 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 size: 16,
               ),
               SizedBox(width: 6),
-              Text(
-                '2 photos attached to this session',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12,
-                  color: AppColors.lightTextSecondary,
+              Flexible(
+                child: Text(
+                  '2 photos attached to this session',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    color: AppColors.lightTextSecondary,
+                  ),
                 ),
               ),
             ],
@@ -987,13 +1004,15 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                'Clinical Report',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.lightTextPrimary,
+              Flexible(
+                child: Text(
+                  'Clinical Report',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
+                  ),
                 ),
               ),
               const Spacer(),
@@ -1009,8 +1028,10 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                 },
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
@@ -1032,23 +1053,27 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
           const SizedBox(height: 12),
 
           Row(
-            children: const [
-              Text(
-                'Aftercare Provided',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12.5,
-                  color: AppColors.lightTextSecondary,
+            children: [
+              Flexible(
+                child: Text(
+                  'Aftercare Provided',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12.5,
+                    color: AppColors.lightTextSecondary,
+                  ),
                 ),
               ),
               Spacer(),
-              Text(
-                'Yes – Guidance shared',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.lightTextPrimary,
+              Flexible(
+                child: Text(
+                  'Yes – Guidance shared',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
+                  ),
                 ),
               ),
             ],
@@ -1057,17 +1082,17 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
           const SizedBox(height: 8),
 
           Row(
-            children: const [
-              Text(
+            children: [
+              Flexible(child: Text(
                 'Plan Type',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.5,
                   color: AppColors.lightTextSecondary,
                 ),
-              ),
+              )),
               Spacer(),
-              Text(
+              Flexible(child: Text(
                 'Detox & Relief',
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
@@ -1075,8 +1100,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   fontWeight: FontWeight.w700,
                   color: AppColors.lightTextPrimary,
                 ),
-              ),
-            ],
+              )),],
           ),
 
           const SizedBox(height: 12),
@@ -1329,11 +1353,7 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       ),
       child: const Row(
         children: [
-          Icon(
-            Icons.spa_outlined,
-            color: Color(0xFFB8862B),
-            size: 18,
-          ),
+          Icon(Icons.spa_outlined, color: Color(0xFFB8862B), size: 18),
           SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -1398,10 +1418,7 @@ class _PointDot extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white, width: 1.5),
         boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.40),
-            blurRadius: 6,
-          ),
+          BoxShadow(color: color.withValues(alpha: 0.40), blurRadius: 6),
         ],
       ),
     );
@@ -1427,8 +1444,12 @@ class _MiniAnatomyPainter extends CustomPainter {
     final centerX = size.width / 2;
 
     final Path bodyPath = Path()
-      ..addOval(Rect.fromCircle(
-          center: Offset(centerX, size.height * 0.12), radius: 10))
+      ..addOval(
+        Rect.fromCircle(
+          center: Offset(centerX, size.height * 0.12),
+          radius: 10,
+        ),
+      )
       ..moveTo(centerX - 4, size.height * 0.18)
       ..lineTo(centerX - 18, size.height * 0.24)
       ..lineTo(centerX - 22, size.height * 0.48)

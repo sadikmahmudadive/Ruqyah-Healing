@@ -33,8 +33,18 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
   List<HealthCheckIn> _history = const [];
 
   static const _months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   @override
@@ -154,7 +164,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.04),
@@ -486,8 +499,10 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
           const SizedBox(height: 16),
 
           // Severity Scale Legend Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Wrap(
+            alignment: WrapAlignment.spaceAround,
+            runSpacing: 8,
+            spacing: 12,
             children: const [
               _SeverityLegendDot(color: Color(0xFF2ECC71), label: 'None'),
               _SeverityLegendDot(color: Color(0xFFF1C40F), label: 'Mild'),
@@ -518,23 +533,27 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
       child: Column(
         children: [
           Row(
-            children: const [
-              Text(
-                'Current Levels',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.lightTextPrimary,
+            children: [
+              Flexible(
+                child: Text(
+                  'Current Levels',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
+                  ),
                 ),
               ),
               Spacer(),
-              Text(
-                'Drag to adjust',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12,
-                  color: AppColors.lightTextMuted,
+              Flexible(
+                child: Text(
+                  'Drag to adjust',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    color: AppColors.lightTextMuted,
+                  ),
                 ),
               ),
             ],
@@ -774,13 +793,15 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                'Trend – Last 7 Days',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.lightTextPrimary,
+              Flexible(
+                child: Text(
+                  'Trend – Last 7 Days',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
+                  ),
                 ),
               ),
               const Spacer(),
@@ -879,13 +900,15 @@ class _PainStressMonitorScreenState extends State<PainStressMonitorScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                'Symptoms & Notes',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.lightTextPrimary,
+              Flexible(
+                child: Text(
+                  'Symptoms & Notes',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
+                  ),
                 ),
               ),
               const Spacer(),

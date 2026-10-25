@@ -235,9 +235,11 @@ class _DailySalahScreenState extends State<DailySalahScreen> {
   ) {
     final fajr = schedule.fard.first.start;
     final isha = schedule.fard.last.start;
-    final progress = !isToday
+    // Guard the division: odd data (equal Fajr and Isha) must not give NaN.
+    final span = isha - fajr;
+    final progress = (!isToday || span <= 0)
         ? 0.0
-        : ((nowMin - fajr) / (isha - fajr)).clamp(0.0, 1.0);
+        : ((nowMin - fajr) / span).clamp(0.0, 1.0);
 
     final title = isToday
         ? upcoming!.name

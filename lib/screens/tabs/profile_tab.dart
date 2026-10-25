@@ -615,10 +615,10 @@ class _ProfileTabState extends State<ProfileTab> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(Icons.login_rounded, color: Colors.white, size: 20),
                 SizedBox(width: 10),
-                Text(
+                Flexible(child: Text(
                   'Sign In / Register',
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
@@ -626,8 +626,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
-                ),
-              ],
+                )),],
             ),
           ),
         ),

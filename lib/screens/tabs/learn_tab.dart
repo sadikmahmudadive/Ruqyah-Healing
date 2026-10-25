@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../widgets/illustrations/ruqyah_illustrations.dart';
+
 import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
@@ -69,19 +71,31 @@ class _LearnTabState extends State<LearnTab> {
     CourseModuleInfo(
       title: 'Quran Sikkha',
       subtitle: '16 Courses',
-      customIcon: Icon(Icons.menu_book_rounded, color: Color(0xFF0B4632), size: 22),
+      customIcon: Icon(
+        Icons.menu_book_rounded,
+        color: Color(0xFF0B4632),
+        size: 22,
+      ),
       iconBg: AppColors.tintMint,
     ),
     CourseModuleInfo(
       title: 'Hadis Sikkha',
       subtitle: '14 Courses',
-      customIcon: Icon(Icons.auto_stories_rounded, color: AppColors.warning, size: 22),
+      customIcon: Icon(
+        Icons.auto_stories_rounded,
+        color: AppColors.warning,
+        size: 22,
+      ),
       iconBg: AppColors.tintSand,
     ),
     CourseModuleInfo(
       title: 'Sirat Sikkha',
       subtitle: '12 Courses',
-      customIcon: Icon(Icons.history_edu_rounded, color: AppColors.info, size: 22),
+      customIcon: Icon(
+        Icons.history_edu_rounded,
+        color: AppColors.info,
+        size: 22,
+      ),
       iconBg: AppColors.tintMist,
     ),
     CourseModuleInfo(
@@ -111,7 +125,11 @@ class _LearnTabState extends State<LearnTab> {
     CourseModuleInfo(
       title: 'Homeopathy',
       subtitle: '11 Courses',
-      customIcon: Icon(Icons.medication_liquid_rounded, color: AppColors.accentLilac, size: 22),
+      customIcon: Icon(
+        Icons.medication_liquid_rounded,
+        color: AppColors.accentLilac,
+        size: 22,
+      ),
       iconBg: AppColors.tintLilac,
     ),
     CourseModuleInfo(
@@ -123,7 +141,11 @@ class _LearnTabState extends State<LearnTab> {
     CourseModuleInfo(
       title: 'Pathology',
       subtitle: '9 Courses',
-      customIcon: Icon(Icons.biotech_rounded, color: AppColors.danger, size: 22),
+      customIcon: Icon(
+        Icons.biotech_rounded,
+        color: AppColors.danger,
+        size: 22,
+      ),
       iconBg: AppColors.tintRose,
     ),
   ];
@@ -592,7 +614,10 @@ class _LearnTabState extends State<LearnTab> {
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: context.isDarkMode
                           ? const Color(0xFF182E25)
@@ -646,9 +671,7 @@ class _LearnTabState extends State<LearnTab> {
                         ? const Color(0xFF182E25)
                         : AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: const Color(0xFF0B4632),
-                    ),
+                    border: Border.all(color: const Color(0xFF0B4632)),
                   ),
                   child: const Text(
                     'All',
@@ -667,7 +690,14 @@ class _LearnTabState extends State<LearnTab> {
         const SizedBox(height: 12),
 
         SizedBox(
-          height: 126,
+          // Taller when the user has enlarged their text, so labels never clip.
+          height:
+              126 +
+              (MediaQuery.textScalerOf(context).scale(10) / 10 - 1).clamp(
+                    0.0,
+                    1.0,
+                  ) *
+                  70,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
@@ -714,7 +744,9 @@ class _LearnTabState extends State<LearnTab> {
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
       decoration: BoxDecoration(
         color: isSelected
-            ? (context.isDarkMode ? const Color(0xFF182E25) : AppColors.tintMint)
+            ? (context.isDarkMode
+                  ? const Color(0xFF182E25)
+                  : AppColors.tintMint)
             : context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
@@ -723,7 +755,9 @@ class _LearnTabState extends State<LearnTab> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: context.isDarkMode ? 0.2 : 0.03),
+            color: Colors.black.withValues(
+              alpha: context.isDarkMode ? 0.2 : 0.03,
+            ),
             blurRadius: 24,
             offset: const Offset(0, 6),
           ),
@@ -756,7 +790,9 @@ class _LearnTabState extends State<LearnTab> {
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 12.5,
                   fontWeight: isSelected ? FontWeight.w800 : FontWeight.w700,
-                  color: isSelected ? const Color(0xFF0B4632) : context.textPrimary,
+                  color: isSelected
+                      ? const Color(0xFF0B4632)
+                      : context.textPrimary,
                 ),
               ),
               const SizedBox(height: 2),
@@ -1108,7 +1144,9 @@ class _LearnTabState extends State<LearnTab> {
   Widget _buildCommunityBanner() {
     return Container(
       padding: const EdgeInsets.all(18),
-      foregroundDecoration: IslamicPatternDecoration(radius: BorderRadius.circular(24)),
+      foregroundDecoration: IslamicPatternDecoration(
+        radius: BorderRadius.circular(24),
+      ),
       decoration: BoxDecoration(
         gradient: AppGradients.greenHeaderGradient,
         borderRadius: BorderRadius.circular(24),

@@ -16,13 +16,7 @@ class RuqyahProgressScreen extends StatefulWidget {
 class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
   int _selectedMoodIndex = 4; // 😇 Blessed
 
-  final List<String> _moodEmojis = const [
-    '😔',
-    '😐',
-    '🙂',
-    '😀',
-    '😇',
-  ];
+  final List<String> _moodEmojis = const ['😔', '😐', '🙂', '😀', '😇'];
 
   final List<Map<String, dynamic>> _weeklyActivity = const [
     {'day': 'M', 'minutes': 14, 'isHighlighted': false},
@@ -135,14 +129,16 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             ),
           ),
 
-          const Text(
-            'RUQYAH PROGRESS',
-            style: TextStyle(
-              fontFamily: 'Cinzel',
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-              color: Color(0xFFD49E35),
+          Flexible(
+            child: Text(
+              'RUQYAH PROGRESS',
+              style: TextStyle(
+                fontFamily: 'Cinzel',
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+                color: Color(0xFFD49E35),
+              ),
             ),
           ),
         ],
@@ -154,13 +150,15 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
   Widget _buildThisWeekHeader() {
     return Row(
       children: [
-        Text(
-          'This Week',
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: context.textPrimary,
+        Flexible(
+          child: Text(
+            'This Week',
+            style: TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: context.textPrimary,
+            ),
           ),
         ),
         const Spacer(),
@@ -314,12 +312,14 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(
-                      'Practice',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 11.5,
-                        color: Colors.white70,
+                    Flexible(
+                      child: Text(
+                        'Practice',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 11.5,
+                          color: Colors.white70,
+                        ),
                       ),
                     ),
                   ],
@@ -371,24 +371,28 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                'LISTENING ACTIVITY',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-                  color: AppColors.lightTextMuted,
+              Flexible(
+                child: Text(
+                  'LISTENING ACTIVITY',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                    color: AppColors.lightTextMuted,
+                  ),
                 ),
               ),
               const Spacer(),
-              const Text(
-                '112 min total',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF0B4632),
+              Flexible(
+                child: Text(
+                  '112 min total',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF0B4632),
+                  ),
                 ),
               ),
             ],
@@ -424,8 +428,9 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     style: TextStyle(
                       fontFamily: 'PlusJakartaSans',
                       fontSize: 12,
-                      fontWeight:
-                          isHighlighted ? FontWeight.w700 : FontWeight.w600,
+                      fontWeight: isHighlighted
+                          ? FontWeight.w700
+                          : FontWeight.w600,
                       color: isHighlighted
                           ? const Color(0xFFD49E35)
                           : AppColors.lightTextMuted,
@@ -507,8 +512,8 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     color: isSelected
                         ? AppColors.tintMint
                         : context.isDarkMode
-                            ? const Color(0xFF182E25)
-                            : AppColors.lightBackground,
+                        ? const Color(0xFF182E25)
+                        : AppColors.lightBackground,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isSelected
@@ -518,10 +523,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                     ),
                   ),
                   child: Center(
-                    child: Text(
-                      emoji,
-                      style: const TextStyle(fontSize: 22),
-                    ),
+                    child: Text(emoji, style: const TextStyle(fontSize: 22)),
                   ),
                 ),
               );
@@ -559,10 +561,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
-              child: Text(
-                '📝',
-                style: TextStyle(fontSize: 22),
-              ),
+              child: Text('📝', style: TextStyle(fontSize: 22)),
             ),
           ),
 
@@ -680,10 +679,7 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Center(
-                  child: Text(
-                    '⏰',
-                    style: TextStyle(fontSize: 22),
-                  ),
+                  child: Text('⏰', style: TextStyle(fontSize: 22)),
                 ),
               ),
 
@@ -716,12 +712,14 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
                           ),
                         ),
                         const SizedBox(width: 6),
-                        Text(
-                          'Today, 8:00 PM',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12.5,
-                            color: context.textSecondary,
+                        Flexible(
+                          child: Text(
+                            'Today, 8:00 PM',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12.5,
+                              color: context.textSecondary,
+                            ),
                           ),
                         ),
                       ],

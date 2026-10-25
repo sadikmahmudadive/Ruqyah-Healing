@@ -59,7 +59,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-        const GuidanceResultsScreen(),
+            const GuidanceResultsScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: CurvedAnimation(
@@ -67,15 +67,16 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
               curve: Curves.easeOutCubic,
             ),
             child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.025),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOutCubic,
-                ),
-              ),
+              position:
+                  Tween<Offset>(
+                    begin: const Offset(0, 0.025),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    ),
+                  ),
               child: child,
             ),
           );
@@ -92,12 +93,12 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-        isDark ? Brightness.light : Brightness.light,
+        statusBarIconBrightness: isDark ? Brightness.light : Brightness.light,
         statusBarBrightness: Brightness.dark,
         systemNavigationBarColor: context.pageBg,
-        systemNavigationBarIconBrightness:
-        isDark ? Brightness.light : Brightness.dark,
+        systemNavigationBarIconBrightness: isDark
+            ? Brightness.light
+            : Brightness.dark,
       ),
       child: Scaffold(
         backgroundColor: context.pageBg,
@@ -111,7 +112,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: const EdgeInsets.fromLTRB(18, 18, 18, 32),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,9 +191,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
       ),
       decoration: BoxDecoration(
         gradient: AppGradients.headerGradient(context),
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(22),
-        ),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(22)),
       ),
       child: Row(
         children: [
@@ -266,15 +265,9 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.10),
             borderRadius: BorderRadius.circular(13),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.12),
-            ),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
           ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 20,
-          ),
+          child: Icon(icon, color: Colors.white, size: 20),
         ),
       ),
     );
@@ -291,9 +284,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
       decoration: BoxDecoration(
         color: context.cardBg,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: context.cardBorder.withValues(alpha: 0.75),
-        ),
+        border: Border.all(color: context.cardBorder.withValues(alpha: 0.75)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,8 +303,8 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
 
           Text(
             'Tell us what you are going through. '
-                'The AI will help you explore relevant Quranic duas '
-                'and spiritual support.',
+            'The AI will help you explore relevant Quranic duas '
+            'and spiritual support.',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 12.5,
@@ -447,14 +438,9 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 13,
-              vertical: 10,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             decoration: BoxDecoration(
-              color: selected
-                  ? const Color(0xFF0B4632)
-                  : context.cardBg,
+              color: selected ? const Color(0xFF0B4632) : context.cardBg,
               borderRadius: BorderRadius.circular(13),
               border: Border.all(
                 color: selected
@@ -464,14 +450,12 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
               ),
               boxShadow: selected
                   ? [
-                BoxShadow(
-                  color: const Color(0xFF0B4632).withValues(
-                    alpha: 0.18,
-                  ),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ]
+                      BoxShadow(
+                        color: const Color(0xFF0B4632).withValues(alpha: 0.18),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ]
                   : null,
             ),
             child: Row(
@@ -489,17 +473,17 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                     border: selected
                         ? null
                         : Border.all(
-                      color: context.textSecondary.withValues(
-                        alpha: 0.35,
-                      ),
-                    ),
+                            color: context.textSecondary.withValues(
+                              alpha: 0.35,
+                            ),
+                          ),
                   ),
                   child: selected
                       ? const Icon(
-                    Icons.check_rounded,
-                    size: 12,
-                    color: Colors.white,
-                  )
+                          Icons.check_rounded,
+                          size: 12,
+                          color: Colors.white,
+                        )
                       : null,
                 ),
 
@@ -510,11 +494,8 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 11.5,
-                    fontWeight:
-                    selected ? FontWeight.w700 : FontWeight.w600,
-                    color: selected
-                        ? Colors.white
-                        : context.textPrimary,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                    color: selected ? Colors.white : context.textPrimary,
                   ),
                 ),
               ],
@@ -559,15 +540,12 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   color: context.textPrimary,
                 ),
                 decoration: InputDecoration(
-                  hintText:
-                  'Write freely about what you are experiencing...',
+                  hintText: 'Write freely about what you are experiencing...',
                   hintStyle: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,
                     height: 1.45,
-                    color: context.textSecondary.withValues(
-                      alpha: 0.55,
-                    ),
+                    color: context.textSecondary.withValues(alpha: 0.55),
                   ),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
@@ -591,7 +569,11 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                       color: Colors.white.withValues(alpha: 0.12),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.add, color: Colors.white70, size: 18),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white70,
+                      size: 18,
+                    ),
                   ),
                   const SizedBox(width: 14),
 
@@ -599,9 +581,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   const Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Center(
-                        child: _AnimatedWaveformBars(),
-                      ),
+                      child: Center(child: _AnimatedWaveformBars()),
                     ),
                   ),
 
@@ -672,16 +652,16 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                 const Spacer(),
 
                 Text(
-                  _isRecordingVoice ? 'Recording voice audio...' : 'AI assisted',
+                  _isRecordingVoice
+                      ? 'Recording voice audio...'
+                      : 'AI assisted',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                     color: _isRecordingVoice
                         ? const Color(0xFF3F51B5)
-                        : context.textSecondary.withValues(
-                      alpha: 0.60,
-                    ),
+                        : context.textSecondary.withValues(alpha: 0.60),
                   ),
                 ),
               ],
@@ -707,9 +687,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
 
           AppToast.show(
             context,
-            title: isRecording
-                ? 'Recording Stopped'
-                : 'Voice Recording Active',
+            title: isRecording ? 'Recording Stopped' : 'Voice Recording Active',
             message: isRecording
                 ? 'Voice recording saved.'
                 : 'Listening to your voice input...',
@@ -719,10 +697,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
         borderRadius: BorderRadius.circular(12),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 11,
-            vertical: 8,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
           decoration: BoxDecoration(
             color: isRecording
                 ? const Color(0xFFE05245)
@@ -740,13 +715,9 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                isRecording
-                    ? Icons.graphic_eq_rounded
-                    : Icons.mic_none_rounded,
+                isRecording ? Icons.graphic_eq_rounded : Icons.mic_none_rounded,
                 size: 17,
-                color: isRecording
-                    ? Colors.white
-                    : const Color(0xFF0B4632),
+                color: isRecording ? Colors.white : const Color(0xFF0B4632),
               ),
 
               const SizedBox(width: 6),
@@ -757,9 +728,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   fontFamily: 'PlusJakartaSans',
                   fontSize: 10.5,
                   fontWeight: FontWeight.w700,
-                  color: isRecording
-                      ? Colors.white
-                      : const Color(0xFF0B4632),
+                  color: isRecording ? Colors.white : const Color(0xFF0B4632),
                 ),
               ),
             ],
@@ -775,10 +744,7 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
 
   Widget _buildSafetyNotice() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 13,
-        vertical: 12,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
       decoration: BoxDecoration(
         color: context.isDarkMode
             ? const Color(0xFF292313)
@@ -810,8 +776,8 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
           Expanded(
             child: Text(
               'This provides spiritual guidance and Ruqyah supplications, '
-                  'not a medical diagnosis. For severe or persistent symptoms, '
-                  'please consult a qualified healthcare professional.',
+              'not a medical diagnosis. For severe or persistent symptoms, '
+              'please consult a qualified healthcare professional.',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 10.5,
@@ -858,13 +824,15 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Generate Spiritual Guidance',
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                Flexible(
+                  child: Text(
+                    'Generate Spiritual Guidance',
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
 

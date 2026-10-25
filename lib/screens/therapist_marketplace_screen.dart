@@ -551,13 +551,15 @@ class _TherapistMarketplaceScreenState
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
-          Text(
-            'Verified Only',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: context.textPrimary,
+          Flexible(
+            child: Text(
+              'Verified Only',
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: context.textPrimary,
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -588,10 +590,11 @@ class _TherapistMarketplaceScreenState
                   : Colors.white,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                  color: context.isDarkMode
-                      ? const Color(0xFF233F33)
-                      : AppColors.lightCardBorder,
-                  width: 1.0),
+                color: context.isDarkMode
+                    ? const Color(0xFF233F33)
+                    : AppColors.lightCardBorder,
+                width: 1.0,
+              ),
             ),
             child: Row(
               children: [
@@ -621,8 +624,8 @@ class _TherapistMarketplaceScreenState
         decoration: BoxDecoration(
           color: isSelected
               ? (context.isDarkMode
-                  ? const Color(0xFF182E25)
-                  : AppColors.tintMint)
+                    ? const Color(0xFF182E25)
+                    : AppColors.tintMint)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(9),
         ),
@@ -634,8 +637,8 @@ class _TherapistMarketplaceScreenState
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
             color: isSelected
                 ? (context.isDarkMode
-                    ? const Color(0xFF81C784)
-                    : const Color(0xFF0B4632))
+                      ? const Color(0xFF81C784)
+                      : const Color(0xFF0B4632))
                 : context.textSecondary,
           ),
         ),
@@ -776,29 +779,35 @@ class _TherapistMarketplaceScreenState
                                 size: 16,
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                '${therapist.rating} ',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: context.textPrimary,
+                              Flexible(
+                                child: Text(
+                                  '${therapist.rating} ',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: context.textPrimary,
+                                  ),
                                 ),
                               ),
-                              Text(
-                                '(${therapist.reviewsCount} reviews) • ',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 12,
-                                  color: context.textSecondary,
+                              Flexible(
+                                child: Text(
+                                  '(${therapist.reviewsCount} reviews) • ',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 12,
+                                    color: context.textSecondary,
+                                  ),
                                 ),
                               ),
-                              Text(
-                                therapist.experience,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 12,
-                                  color: context.textSecondary,
+                              Flexible(
+                                child: Text(
+                                  therapist.experience,
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 12,
+                                    color: context.textSecondary,
+                                  ),
                                 ),
                               ),
                             ],
@@ -825,12 +834,14 @@ class _TherapistMarketplaceScreenState
                                 size: 14,
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                '${therapist.distance} • ${therapist.languages.join(', ')}',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 11.5,
-                                  color: context.textSecondary,
+                              Flexible(
+                                child: Text(
+                                  '${therapist.distance} • ${therapist.languages.join(', ')}',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 11.5,
+                                    color: context.textSecondary,
+                                  ),
                                 ),
                               ),
                             ],

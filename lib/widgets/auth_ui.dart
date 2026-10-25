@@ -931,14 +931,18 @@ class _AuthButtonState extends State<AuthButton> {
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        widget.label,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: tonal ? 14.5 : 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.3,
-                          color: fg,
+                      Flexible(
+                        child: Text(
+                          widget.label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: tonal ? 14.5 : 16,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.3,
+                            color: fg,
+                          ),
                         ),
                       ),
                       if (widget.trailingIcon != null) ...[
@@ -967,14 +971,18 @@ class AuthDivider extends StatelessWidget {
     return Row(
       children: [
         line,
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12.5,
-              color: AuthColors.textMuted,
+        Flexible(
+          flex: 4,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 12.5,
+                color: AuthColors.textMuted,
+              ),
             ),
           ),
         ),
@@ -1014,13 +1022,15 @@ class AuthGoogleButton extends StatelessWidget {
             children: [
               const GoogleLogo(size: 20),
               const SizedBox(width: 12),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 15.5,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+              Flexible(
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

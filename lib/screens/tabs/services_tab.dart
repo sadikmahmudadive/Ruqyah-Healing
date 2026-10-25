@@ -7,6 +7,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/acupuncture_icon.dart';
 import '../../widgets/acupressure_icon.dart';
 import '../../widgets/animations/animations.dart';
+import '../../widgets/flowing_gradient.dart';
 import '../../widgets/hijama_cupping_icon.dart';
 import '../../widgets/modern_card.dart';
 import '../../widgets/ruqyah_dua_icon.dart';
@@ -57,10 +58,7 @@ class _ServicesTabState extends State<ServicesTab> {
       _ServiceEntry(
         title: context.tr('hijama_title'),
         description: context.tr('hijama_sub'),
-        customIcon: const HijamaCuppingIcon(
-          color: AppColors.warning,
-          size: 28,
-        ),
+        customIcon: const HijamaCuppingIcon(color: AppColors.warning, size: 28),
         iconBg: AppColors.tintSand,
         iconColor: AppColors.warning,
         target: const HijamaHubScreen(),
@@ -68,10 +66,7 @@ class _ServicesTabState extends State<ServicesTab> {
       _ServiceEntry(
         title: context.tr('acupuncture_title'),
         description: context.tr('acupuncture_sub'),
-        customIcon: const AcupunctureIcon(
-          color: AppColors.info,
-          size: 28,
-        ),
+        customIcon: const AcupunctureIcon(color: AppColors.info, size: 28),
         iconBg: AppColors.tintMist,
         iconColor: AppColors.info,
         target: const AcupunctureHubScreen(),
@@ -79,10 +74,7 @@ class _ServicesTabState extends State<ServicesTab> {
       _ServiceEntry(
         title: context.tr('acupressure_title'),
         description: context.tr('acupressure_sub'),
-        customIcon: const AcupressureIcon(
-          color: Color(0xFFC86D51),
-          size: 28,
-        ),
+        customIcon: const AcupressureIcon(color: Color(0xFFC86D51), size: 28),
         iconBg: AppColors.tintRose,
         iconColor: const Color(0xFFC86D51),
         target: const AcupressureHubScreen(),
@@ -98,10 +90,7 @@ class _ServicesTabState extends State<ServicesTab> {
       _ServiceEntry(
         title: context.tr('unani_title'),
         description: context.tr('unani_sub'),
-        customIcon: const UnaniTibbIcon(
-          color: Color(0xFFC59236),
-          size: 28,
-        ),
+        customIcon: const UnaniTibbIcon(color: Color(0xFFC59236), size: 28),
         iconBg: const Color(0xFFFBF4E6),
         iconColor: const Color(0xFFC59236),
         target: const UnaniHubScreen(),
@@ -109,10 +98,7 @@ class _ServicesTabState extends State<ServicesTab> {
       _ServiceEntry(
         title: context.tr('medicine_title'),
         description: context.tr('medicine_sub'),
-        customIcon: const MedicineIcon(
-          color: Color(0xFF16A085),
-          size: 28,
-        ),
+        customIcon: const MedicineIcon(color: Color(0xFF16A085), size: 28),
         iconBg: const Color(0xFFEAF5F2),
         iconColor: const Color(0xFF16A085),
         target: const MedicineHubScreen(),
@@ -202,14 +188,9 @@ class _ServicesTabState extends State<ServicesTab> {
                   FadeSlideIn(child: _buildAiBanner()),
                   const SizedBox(height: 28),
 
-                  // Main services (staggered)
-                  for (int i = 0; i < services.length; i++) ...[
-                    FadeSlideIn(
-                      delay: Duration(milliseconds: 80 + i * 60),
-                      child: _buildMainServiceCard(services[i]),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
+                  // Bento grid: one featured tile, pairs of squares, one wide
+                  // tile, then the two everyday links side by side.
+                  ..._buildBento(services),
 
                   const SizedBox(height: 120),
                 ]),
@@ -224,9 +205,9 @@ class _ServicesTabState extends State<ServicesTab> {
   Widget _buildAiBanner() {
     return PressScale(
       hapticType: HapticFeedbackType.medium,
-      onTap: () => Navigator.of(context).push(
-        AppPageRoute.sharedAxis(const AISymptomGuideScreen()),
-      ),
+      onTap: () =>
+          Navigator.of(context)
+              .push(AppPageRoute.sharedAxis(const AISymptomGuideScreen())),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Stack(
@@ -301,61 +282,308 @@ class _ServicesTabState extends State<ServicesTab> {
     );
   }
 
-  Widget _buildMainServiceCard(_ServiceEntry s) {
-    return ModernCard(
-      padding: const EdgeInsets.all(20),
-      onTap: () =>
-          Navigator.of(context).push(AppPageRoute.sharedAxis(s.target)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: context.isDarkMode
-                  ? const Color(0xFF182E25)
-                  : s.iconBg,
-              borderRadius: BorderRadius.circular(16),
+  // ─── Bento layout ──────────────────────────────────────────
+
+  static const double _gap = 14;
+
+  /// Rhythm: [0] featured, then pairs, a wide tile when one is left over, and
+  /// the last two entries (learning and shop) as a compact pair.
+  List<Widget> _buildBento(List<_ServiceEntry> all) {
+    if (all.length < 3) {
+      return [for (final e in all) _wideTile(e), const SizedBox(height: _gap)];
+    }
+    final featured = all.first;
+    final tail = all.sublist(all.length - 2);
+    final middle = all.sublist(1, all.length - 2);
+
+    var step = 0;
+    Widget stagger(Widget child) => FadeSlideIn(
+      delay: Duration(milliseconds: 60 + 50 * step++),
+      child: child,
+    );
+
+    final out = <Widget>[
+      stagger(_featuredTile(featured)),
+      const SizedBox(height: _gap),
+    ];
+    for (var i = 0; i < middle.length; i += 2) {
+      if (i + 1 < middle.length) {
+        out.add(
+          stagger(
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(child: _squareTile(middle[i])),
+                  const SizedBox(width: _gap),
+                  Expanded(child: _squareTile(middle[i + 1])),
+                ],
+              ),
             ),
-            alignment: Alignment.center,
-            child: s.customIcon ??
-                Icon(s.icon, color: s.iconColor, size: 26),
           ),
-          const SizedBox(width: 16),
+        );
+      } else {
+        out.add(stagger(_wideTile(middle[i])));
+      }
+      out.add(const SizedBox(height: _gap));
+    }
+    out.add(
+      stagger(
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: _compactTile(tail[0])),
+              const SizedBox(width: _gap),
+              Expanded(child: _compactTile(tail[1])),
+            ],
+          ),
+        ),
+      ),
+    );
+    return out;
+  }
+
+  void _open(_ServiceEntry s) =>
+      Navigator.of(context).push(AppPageRoute.sharedAxis(s.target));
+
+  Widget _iconBadge(_ServiceEntry s, {double size = 48, bool onDark = false}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: onDark
+            ? Colors.white.withValues(alpha: 0.94)
+            : (context.isDarkMode ? const Color(0xFF182E25) : s.iconBg),
+        borderRadius: BorderRadius.circular(size * 0.34),
+      ),
+      alignment: Alignment.center,
+      child: s.customIcon ?? Icon(s.icon, color: s.iconColor, size: size * 0.5),
+    );
+  }
+
+  /// The main service: a wide tile on a slowly drifting emerald gradient.
+  Widget _featuredTile(_ServiceEntry s) {
+    return PressScale(
+      onTap: () => _open(s),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: FlowingGradient(
+          colors: const [
+            Color(0xFF082F21),
+            Color(0xFF0F593D),
+            Color(0xFF127A52),
+          ],
+          child: Container(
+            padding: const EdgeInsets.all(22),
+            constraints: const BoxConstraints(minHeight: 132),
+            foregroundDecoration: const IslamicPatternDecoration(
+              opacity: 0.08,
+              cell: 60,
+            ),
+            child: Row(
+              children: [
+                _iconBadge(s, size: 60, onDark: true),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        s.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Cinzel',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.2,
+                          height: 1.15,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        s.description,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 13,
+                          height: 1.45,
+                          color: Colors.white.withValues(alpha: 0.82),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.14),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Color(0xFFE9C26F),
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// A tile in a pair: icon on top, then title and a short line.
+  Widget _squareTile(_ServiceEntry s) {
+    return ModernCard(
+      padding: const EdgeInsets.all(18),
+      radius: 26,
+      onTap: () => _open(s),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 138),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _iconBadge(s, size: 46),
+                Icon(
+                  Icons.north_east_rounded,
+                  size: 18,
+                  color: context.textMuted,
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Text(
+              s.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: 'Cinzel',
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.9,
+                height: 1.2,
+                color: context.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              s.description,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 12,
+                height: 1.4,
+                color: context.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// A wide tile for a service that has no partner in its row.
+  Widget _wideTile(_ServiceEntry s) {
+    return ModernCard(
+      padding: const EdgeInsets.all(18),
+      radius: 26,
+      onTap: () => _open(s),
+      child: Row(
+        children: [
+          _iconBadge(s, size: 50),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   s.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: 'Cinzel',
-                    fontSize: 16.5,
+                    fontSize: 15.5,
                     fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
+                    letterSpacing: 1,
                     color: context.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   s.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: 'PlusJakartaSans',
                     fontSize: 12.5,
-                    fontWeight: FontWeight.w400,
+                    height: 1.4,
                     color: context.textSecondary,
-                    height: 1.35,
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
-          Icon(
-            Icons.chevron_right_rounded,
-            color: context.textMuted,
-            size: 22,
+          Icon(Icons.north_east_rounded, size: 18, color: context.textMuted),
+        ],
+      ),
+    );
+  }
+
+  /// Everyday links (learning, shop): small, side by side.
+  Widget _compactTile(_ServiceEntry s) {
+    return ModernCard(
+      padding: const EdgeInsets.all(14),
+      radius: 22,
+      onTap: () => _open(s),
+      child: Row(
+        children: [
+          _iconBadge(s, size: 40),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  s.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                    color: context.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  s.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11.5,
+                    height: 1.3,
+                    color: context.textSecondary,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -150,7 +150,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             ),
           ),
 
-          const Text(
+          Flexible(child: Text(
             'Order Tracking',
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
@@ -158,8 +158,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
-          ),
-        ],
+          )),],
       ),
     );
   }
@@ -417,7 +416,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 children: [
                   Row(
                     children: [
-                      Text(
+                      Flexible(child: Text(
                         title,
                         style: const TextStyle(
                           fontFamily: 'PlusJakartaSans',
@@ -425,7 +424,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                           fontWeight: FontWeight.w700,
                           color: AppColors.lightTextPrimary,
                         ),
-                      ),
+                      )),
                       if (showDoneBadge) ...[
                         const SizedBox(width: 8),
                         Container(
@@ -457,8 +456,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             ],
                           ),
                         ),
-                      ],
-                    ],
+                      ],],
                   ),
                   const SizedBox(height: 3),
                   Text(
@@ -665,13 +663,12 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   AppToast.show(
                     context,
                     title: 'Request received',
-                    message:
-                        'Your return & refund request for Order #RH1024 has been submitted.',
+                    message: 'Your return & refund request for Order #RH1024 has been submitted.',
                     type: ToastType.info,
                   );
                 },
                 borderRadius: BorderRadius.circular(16),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
@@ -680,13 +677,15 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                       size: 18,
                     ),
                     SizedBox(width: 6),
-                    Text(
-                      'Return / Refund',
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF576760),
+                    Flexible(
+                      child: Text(
+                        'Return / Refund',
+                        style: TextStyle(
+                          fontFamily: 'PlusJakartaSans',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF576760),
+                        ),
                       ),
                     ),
                   ],

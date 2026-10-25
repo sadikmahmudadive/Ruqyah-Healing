@@ -35,7 +35,8 @@ class TherapistProfileScreen extends StatefulWidget {
 }
 
 class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
-  String _selectedConsultationType = 'Clinic Visit'; // 'Clinic Visit' or 'Video Call'
+  String _selectedConsultationType =
+      'Clinic Visit'; // 'Clinic Visit' or 'Video Call'
   String _selectedSlot = '10:30 AM';
   bool _isAboutExpanded = false;
 
@@ -67,7 +68,10 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               decoration: BoxDecoration(
                 color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.03),
@@ -99,14 +103,21 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   color: AppColors.lightCardBg,
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
+                  border: Border.all(
+                    color: AppColors.lightCardBorder,
+                    width: 1.0,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.03),
@@ -207,10 +218,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: const Color(0xFF0B4632),
-                width: 2.0,
-              ),
+              border: Border.all(color: const Color(0xFF0B4632), width: 2.0),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(40),
@@ -219,7 +227,11 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Container(
                   color: const Color(0xFF1E3A2F),
-                  child: const Icon(Icons.person, color: Colors.white, size: 40),
+                  child: const Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 40,
+                  ),
                 ),
               ),
             ),
@@ -231,20 +243,24 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                t.name,
-                style: const TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.lightTextPrimary,
+              Flexible(
+                child: Text(
+                  t.name,
+                  style: const TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.lightTextPrimary,
+                  ),
                 ),
               ),
               if (t.isVerified) ...[
                 const SizedBox(width: 8),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.tintSand,
                     borderRadius: BorderRadius.circular(8),
@@ -409,7 +425,9 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
           ),
         ),
         const SizedBox(height: 10),
-        Row(
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
           children: [
             _buildServiceChip(
               label: 'Ruqyah',
@@ -419,7 +437,6 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               ),
               iconColor: const Color(0xFF0B4632),
             ),
-            const SizedBox(width: 10),
             _buildServiceChip(
               label: 'Hijama',
               customIcon: const HijamaCuppingIcon(
@@ -428,7 +445,6 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               ),
               iconColor: AppColors.warning,
             ),
-            const SizedBox(width: 10),
             _buildServiceChip(
               label: 'Counseling',
               icon: Icons.show_chart_rounded,
@@ -482,13 +498,15 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
   Widget _buildLanguagesSection(Therapist t) {
     return Row(
       children: [
-        const Text(
-          'Languages:',
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            color: AppColors.lightTextPrimary,
+        Flexible(
+          child: Text(
+            'Languages:',
+            style: TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
+            ),
           ),
         ),
         const SizedBox(width: 10),
@@ -648,11 +666,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
-                    child: Icon(
-                      icon,
-                      color: const Color(0xFF0B4632),
-                      size: 22,
-                    ),
+                    child: Icon(icon, color: const Color(0xFF0B4632), size: 22),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -731,8 +745,9 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                     duration: const Duration(milliseconds: 180),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                      color:
-                          isSelected ? const Color(0xFF0B4632) : Colors.white,
+                      color: isSelected
+                          ? const Color(0xFF0B4632)
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isSelected
@@ -757,8 +772,9 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 12.5,
-                          fontWeight:
-                              isSelected ? FontWeight.w700 : FontWeight.w600,
+                          fontWeight: isSelected
+                              ? FontWeight.w700
+                              : FontWeight.w600,
                           color: isSelected
                               ? Colors.white
                               : AppColors.lightTextPrimary,
@@ -779,7 +795,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
   Widget _buildReviewsHeader(Therapist t) {
     return Row(
       children: [
-        Text(
+        Flexible(child: Text(
           'Reviews (${t.reviewsCount})',
           style: const TextStyle(
             fontFamily: 'PlusJakartaSans',
@@ -787,7 +803,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
             fontWeight: FontWeight.w700,
             color: AppColors.lightTextPrimary,
           ),
-        ),
+        )),
         const Spacer(),
         InkWell(
           onTap: () {
@@ -812,8 +828,7 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               ),
             ],
           ),
-        ),
-      ],
+        ),],
     );
   }
 
@@ -842,19 +857,19 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
                     BookAppointmentScreen(
-                  therapistName: widget.therapist.name,
-                  basePrice: widget.therapist.price,
-                ),
+                      therapistName: widget.therapist.name,
+                      basePrice: widget.therapist.price,
+                    ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
