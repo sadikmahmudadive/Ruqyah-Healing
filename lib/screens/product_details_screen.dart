@@ -76,13 +76,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 color: context.cardBg,
                 shape: BoxShape.circle,
                 border: Border.all(color: context.cardBorder, width: 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 26,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
               ),
               child: IconButton(
                 icon: Icon(
@@ -116,13 +109,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   color: context.cardBg,
                   shape: BoxShape.circle,
                   border: Border.all(color: context.cardBorder, width: 1.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 26,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: Icon(
@@ -140,7 +126,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
             // Favorite Button
             Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
               child: Container(
                 width: 40,
                 height: 40,
@@ -148,13 +138,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   color: context.cardBg,
                   shape: BoxShape.circle,
                   border: Border.all(color: context.cardBorder, width: 1.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 26,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: Icon(
@@ -222,13 +205,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF1E3A2F),
             borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 26,
-                offset: const Offset(0, 8),
-              ),
-            ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
@@ -287,13 +263,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -368,8 +337,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           if (p.isApproved) ...[
             Container(
               width: double.infinity,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
                 color: AppColors.tintSand,
                 borderRadius: BorderRadius.circular(12),
@@ -534,8 +502,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             runSpacing: 8,
             children: _boxItems.map((item) {
               return Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.tintMint,
                   borderRadius: BorderRadius.circular(12),

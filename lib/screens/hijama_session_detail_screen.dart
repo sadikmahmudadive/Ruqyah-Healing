@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/hijama_cupping_icon.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 
 class HijamaSessionDetailScreen extends StatefulWidget {
   const HijamaSessionDetailScreen({super.key});
@@ -45,13 +46,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                   color: AppColors.lightCardBorder,
                   width: 1.0,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 26,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
               ),
               child: IconButton(
                 icon: const Icon(
@@ -104,13 +98,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
                     color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 26,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: const Icon(
@@ -134,69 +121,70 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Practitioner Info Card
-              _buildPractitionerCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 0,
+                child: _buildPractitionerCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 2. Date, Time & Status Bento Row
-              _buildDateTimeStatusRow(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 1,
+                child: _buildDateTimeStatusRow(),
+              ),
               const SizedBox(height: 14),
-
-              // 3. Procedure Type Card
-              _buildProcedureTypeCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 2,
+                child: _buildProcedureTypeCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 4. Treated Points Anatomy Card
-              _buildTreatedPointsCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 3,
+                child: _buildTreatedPointsCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 5. Blood Volume Record Card
-              _buildBloodVolumeCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 4,
+                child: _buildBloodVolumeCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 6. Supplies Checklist Card
-              _buildSuppliesCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 5,
+                child: _buildSuppliesCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 7. Session Notes Card
-              _buildSessionNotesCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 6,
+                child: _buildSessionNotesCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 8. Before & After Photos Card
-              _buildBeforeAfterPhotosCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 6,
+                child: _buildBeforeAfterPhotosCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 9. Clinical Report Card
-              _buildClinicalReportCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 6,
+                child: _buildClinicalReportCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 10. Amount Input Card
-              _buildAmountInputCard(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 6,
+                child: _buildAmountInputCard(),
+              ),
               const SizedBox(height: 14),
-
-              // 11. Quick Action Bento Cards Row
-              _buildActionBentoRow(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 6,
+                child: _buildActionBentoRow(),
+              ),
               const SizedBox(height: 14),
-
-              // 12. Scheduled Follow-up Banner Card
-              _buildScheduledFollowUpBanner(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 6,
+                child: _buildScheduledFollowUpBanner(),
+              ),
               const SizedBox(height: 14),
-
-              // 13. Professional Disclaimer Banner
-              _buildProfessionalDisclaimerBanner(),
-
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 6,
+                child: _buildProfessionalDisclaimerBanner(),
+              ),
               const SizedBox(height: 24),
             ],
           ),
@@ -212,13 +200,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Row(
         children: [
@@ -331,13 +312,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 26,
-                  offset: const Offset(0, 8),
-                ),
-              ],
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,13 +349,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 26,
-                  offset: const Offset(0, 8),
-                ),
-              ],
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,13 +424,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Row(
         children: [
@@ -529,13 +489,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -690,13 +643,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -770,13 +716,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -827,13 +766,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -869,13 +801,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -992,13 +917,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -1142,13 +1060,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1235,13 +1146,6 @@ class _HijamaSessionDetailScreenState extends State<HijamaSessionDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

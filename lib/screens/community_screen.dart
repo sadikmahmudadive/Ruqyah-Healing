@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../models/community_models.dart';
 import '../theme/app_theme.dart';
+import '../widgets/empty_state.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/community/post_card.dart';
 import '../widgets/community/post_composer_bar.dart';
 import '../widgets/community/stories_carousel_bar.dart';
@@ -679,63 +681,18 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
   // 3. Empty State
   Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 24.0),
-        child: Column(
-          children: [
-            Icon(
-              Icons.forum_outlined,
-              size: 48,
-              color: context.textSecondary.withValues(alpha: 0.4),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              'No posts found in $_selectedCategory',
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: context.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'Try changing your filter or share the first reflection!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 13,
-                color: context.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 18),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0B4632),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              onPressed: () {
-                setState(() {
-                  _selectedCategory = 'All';
-                  _searchQuery = '';
-                  _searchController.clear();
-                });
-              },
-              child: const Text(
-                'Show All Posts',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return EmptyState(
+      kind: FlatIllustrationKind.community,
+      title: 'No posts found in $_selectedCategory',
+      message: 'Try changing your filter, or share the first reflection.',
+      actionLabel: 'Show all posts',
+      onAction: () {
+        setState(() {
+          _selectedCategory = 'All';
+          _searchQuery = '';
+          _searchController.clear();
+        });
+      },
     );
   }
 

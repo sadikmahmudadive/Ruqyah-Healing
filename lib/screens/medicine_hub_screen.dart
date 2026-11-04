@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/islamic_pattern.dart';
 import 'equipment_store_screen.dart';
@@ -39,15 +40,30 @@ class _MedicineHubScreenState extends State<MedicineHubScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildIntroCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 0,
+                      child: _buildIntroCard(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildRemediesSection(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 1,
+                      child: _buildRemediesSection(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildPropheticPrinciplesCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 2,
+                      child: _buildPropheticPrinciplesCard(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildStoreButton(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 3,
+                      child: _buildStoreButton(),
+                    ),
                     const SizedBox(height: 12),
-                    _buildConsultationButton(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 4,
+                      child: _buildConsultationButton(),
+                    ),
                     const SizedBox(height: 24),
                   ],
                 ),

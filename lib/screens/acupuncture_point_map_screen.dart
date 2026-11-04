@@ -871,17 +871,7 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
                     decoration: BoxDecoration(
                       color: context.cardBg.withValues(alpha: 0.94),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: context.cardBorder,
-                        width: 1.0,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 26,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
+                      border: Border.all(color: context.cardBorder, width: 1.0),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -956,13 +946,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         color: context.cardBg.withValues(alpha: 0.92),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -1001,13 +984,6 @@ class _AcupuncturePointMapScreenState extends State<AcupuncturePointMapScreen> {
         color: context.cardBg.withValues(alpha: 0.94),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Row(
         children: [

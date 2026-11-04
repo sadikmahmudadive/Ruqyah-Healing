@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/islamic_pattern.dart';
@@ -31,15 +32,27 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 16.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildIntroCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 0,
+                      child: _buildIntroCard(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildServicesSection(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 1,
+                      child: _buildServicesSection(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildBookSessionButton(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 2,
+                      child: _buildBookSessionButton(),
+                    ),
                     const SizedBox(height: 24),
                   ],
                 ),
@@ -75,7 +88,11 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded, color: Colors.white, size: 20),
+              icon: const Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.white,
+                size: 20,
+              ),
               onPressed: () => Navigator.of(context).pop(),
               padding: EdgeInsets.zero,
             ),
@@ -170,11 +187,20 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
           ),
         ),
         const SizedBox(height: 12),
-        _buildServiceTile('Full Body Health Checkup', 'Comprehensive 60+ parameter blood test panel.'),
+        _buildServiceTile(
+          'Full Body Health Checkup',
+          'Comprehensive 60+ parameter blood test panel.',
+        ),
         const SizedBox(height: 12),
-        _buildServiceTile('Hormonal & Immunity Panel', 'Detailed analysis of endocrine and immune function.'),
+        _buildServiceTile(
+          'Hormonal & Immunity Panel',
+          'Detailed analysis of endocrine and immune function.',
+        ),
         const SizedBox(height: 12),
-        _buildServiceTile('Home Sample Collection', 'Certified phlebotomist visits your home for collection.'),
+        _buildServiceTile(
+          'Home Sample Collection',
+          'Certified phlebotomist visits your home for collection.',
+        ),
       ],
     );
   }
@@ -214,7 +240,11 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: Color(0xFF90A4AE), size: 20),
+          const Icon(
+            Icons.chevron_right_rounded,
+            color: Color(0xFF90A4AE),
+            size: 20,
+          ),
         ],
       ),
     );
@@ -233,7 +263,9 @@ class _PathologyHubScreenState extends State<PathologyHubScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
           ),
           onPressed: () {
             HapticFeedback.lightImpact();

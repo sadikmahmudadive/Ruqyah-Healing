@@ -56,6 +56,15 @@ class _FadeSlideInState extends State<FadeSlideIn>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // With reduced motion the child is simply there, no slide or fade.
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
+      _ctrl.value = 1;
+    }
+  }
+
+  @override
   void dispose() {
     _ctrl.dispose();
     super.dispose();

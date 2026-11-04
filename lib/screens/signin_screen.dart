@@ -9,6 +9,7 @@ import '../localization/app_localizations.dart';
 import '../models/user_model.dart';
 import '../services/firebase_service.dart';
 import '../services/push_notification_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/auth_ui.dart';
 import '../widgets/country_code_picker.dart';
 import 'main_navigation_shell.dart';
@@ -331,45 +332,45 @@ class _SignInScreenState extends State<SignInScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF121B17),
+        backgroundColor: context.authField,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: Color(0xFF1E302A), width: 1),
+          side: BorderSide(color: context.authBorder, width: 1),
         ),
-        title: const Text(
+        title: Text(
           'Reset Password',
           style: TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontSize: 18,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: context.authText,
           ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Enter your registered email address below and we will send you a password reset link.',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 13,
-                color: Color(0xFF92A89F),
+                color: context.authMuted,
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              style: const TextStyle(fontFamily: 'Inter', color: Colors.white),
+              style: TextStyle(fontFamily: 'Inter', color: context.authText),
               decoration: InputDecoration(
                 hintText: 'Enter your email',
-                hintStyle: const TextStyle(color: Color(0xFF627870)),
+                hintStyle: TextStyle(color: context.textMuted),
                 filled: true,
-                fillColor: const Color(0xFF182E25),
+                fillColor: context.pageBg,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFF1E302A)),
+                  borderSide: BorderSide(color: context.authBorder),
                 ),
               ),
             ),
@@ -378,14 +379,15 @@ class _SignInScreenState extends State<SignInScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
+            child: Text(
               'Cancel',
-              style: TextStyle(color: Color(0xFF92A89F)),
+              style: TextStyle(color: context.authMuted),
             ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0B4632),
+              backgroundColor: context.authAccent,
+              elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -409,9 +411,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 _showSnackBar('Failed to send reset email: $e', isError: true);
               }
             },
-            child: const Text(
+            child: Text(
               'Send Link',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: context.authOnAccent),
             ),
           ),
         ],
@@ -458,7 +460,6 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return AuthScaffold(
-      backgroundAsset: 'assets/background/bg_signin.jpg',
       title: context.tr('sign_in_account'),
       subtitle: _isPhoneLogin
           ? "We'll send a verification code to your phone."
@@ -505,9 +506,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 fontFamily: 'Inter',
                 fontSize: 14.5,
                 fontWeight: FontWeight.w600,
-                color: Colors.white.withValues(alpha: 0.85),
+                color: context.authMuted,
                 decoration: TextDecoration.underline,
-                decorationColor: Colors.white.withValues(alpha: 0.5),
+                decorationColor: context.authMuted.withValues(alpha: 0.5),
               ),
             ),
           ),
@@ -516,21 +517,18 @@ class _SignInScreenState extends State<SignInScreen> {
         Center(
           child: RichText(
             text: TextSpan(
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14.5,
-                color: Colors.white70,
+                color: context.authMuted,
               ),
               children: [
-                TextSpan(
-                  text: "Don't have an account? ",
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.70)),
-                ),
+                const TextSpan(text: "Don't have an account? "),
                 TextSpan(
                   text: 'Sign Up',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: AuthColors.goldSoft,
+                    color: context.authLink,
                   ),
                   recognizer: TapGestureRecognizer()..onTap = _navigateToSignUp,
                 ),
@@ -548,23 +546,23 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontFamily: 'Inter',
                   fontSize: 12.5,
                   height: 1.4,
-                  color: Colors.white.withValues(alpha: 0.65),
+                  color: context.textMuted,
                 ),
-                children: const [
-                  TextSpan(text: 'By continuing, you agree to our '),
+                children: [
+                  const TextSpan(text: 'By continuing, you agree to our '),
                   TextSpan(
                     text: 'Terms of Service',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: context.authText,
                     ),
                   ),
-                  TextSpan(text: ' and '),
+                  const TextSpan(text: ' and '),
                   TextSpan(
                     text: 'Privacy Policy',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: context.authText,
                     ),
                   ),
                   TextSpan(text: '.'),
@@ -610,7 +608,7 @@ class _SignInScreenState extends State<SignInScreen> {
           child: TextButton(
             onPressed: _handleForgotPassword,
             style: TextButton.styleFrom(
-              foregroundColor: AuthColors.goldSoft,
+              foregroundColor: context.authLink,
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -674,7 +672,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontFamily: 'Inter',
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AuthColors.goldSoft.withValues(
+                  color: context.authLink.withValues(
                     alpha: _canResend ? 1 : 0.7,
                   ),
                 ),

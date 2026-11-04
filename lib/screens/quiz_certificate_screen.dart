@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/illustrations/ruqyah_illustrations.dart';
+
 import 'package:flutter/services.dart';
 
 import '../services/firebase_service.dart';
@@ -63,14 +65,10 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
               decoration: BoxDecoration(
                 color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 26,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
               ),
               child: IconButton(
                 icon: const Icon(
@@ -213,13 +211,6 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,13 +366,6 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -617,8 +601,8 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
               final certName = currentUser?.displayName?.isNotEmpty == true
                   ? currentUser!.displayName!
                   : (currentUser?.email?.isNotEmpty == true
-                      ? currentUser!.email!.split('@').first
-                      : 'Learner');
+                        ? currentUser!.email!.split('@').first
+                        : 'Learner');
               return Text(
                 'This is to certify that $certName has successfully completed',
                 style: const TextStyle(
@@ -753,15 +737,18 @@ class _QuizCertificateScreenState extends State<QuizCertificateScreen> {
             children: [
               Icon(Icons.download_rounded, color: Colors.white, size: 20),
               SizedBox(width: 8),
-              Flexible(child: Text(
-                'Download Certificate',
-                style: TextStyle(
-                  fontFamily: 'PlusJakartaSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              Flexible(
+                child: Text(
+                  'Download Certificate',
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
-              )),],
+              ),
+            ],
           ),
         ),
       ),

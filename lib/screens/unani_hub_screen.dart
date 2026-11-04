@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/islamic_pattern.dart';
 import 'therapist_marketplace_screen.dart';
@@ -38,13 +39,25 @@ class _UnaniHubScreenState extends State<UnaniHubScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildIntroCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 0,
+                      child: _buildIntroCard(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildServicesSection(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 1,
+                      child: _buildServicesSection(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildPrinciplesCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 2,
+                      child: _buildPrinciplesCard(),
+                    ),
                     const SizedBox(height: 20),
-                    _buildBookSessionButton(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 3,
+                      child: _buildBookSessionButton(),
+                    ),
                     const SizedBox(height: 24),
                   ],
                 ),

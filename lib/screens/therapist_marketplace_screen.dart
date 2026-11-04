@@ -4,6 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
+import '../widgets/empty_state.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import 'tabs/bookings_tab.dart';
 import 'therapist_profile_screen.dart';
 import '../widgets/islamic_pattern.dart';
@@ -258,21 +261,21 @@ class _TherapistMarketplaceScreenState
                 child: Column(
                   children: [
                     const SizedBox(height: 16),
-                    _buildCategoryRow(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 0,
+                      child: _buildCategoryRow(),
+                    ),
                     const SizedBox(height: 14),
-                    _buildFilterControlsRow(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 1,
+                      child: _buildFilterControlsRow(),
+                    ),
                     const SizedBox(height: 16),
                     if (filteredTherapists.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Text(
-                          'No specialists found matching your criteria',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 14,
-                            color: context.textSecondary,
-                          ),
-                        ),
+                      const EmptyState(
+                        kind: FlatIllustrationKind.emptySearch,
+                        title: 'No specialists found',
+                        message: 'Try another category or loosen the filters.',
                       )
                     else if (_viewMode == 'Map')
                       _buildMapView(filteredTherapists)
@@ -308,13 +311,6 @@ class _TherapistMarketplaceScreenState
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -423,13 +419,6 @@ class _TherapistMarketplaceScreenState
               color: context.cardBg,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: context.cardBorder, width: 1.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: Row(
               children: [
@@ -652,13 +641,6 @@ class _TherapistMarketplaceScreenState
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,

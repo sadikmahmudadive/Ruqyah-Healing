@@ -180,13 +180,6 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,10 +214,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
 
           const SizedBox(width: 14),
 
-          const FlatIllustration(
-            kind: FlatIllustrationKind.hijama,
-            size: 88,
-          ),
+          const FlatIllustration(kind: FlatIllustrationKind.hijama, size: 88),
         ],
       ),
     );
@@ -300,13 +290,6 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -403,11 +386,7 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.spa_outlined,
-            color: Color(0xFFB8862B),
-            size: 20,
-          ),
+          const Icon(Icons.spa_outlined, color: Color(0xFFB8862B), size: 20),
 
           const SizedBox(width: 12),
 
@@ -648,13 +627,6 @@ class _HijamaHubScreenState extends State<HijamaHubScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,

@@ -10,6 +10,8 @@ import '../theme/app_theme.dart';
 import '../widgets/animations/motion.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/flowing_gradient.dart';
+import '../widgets/empty_state.dart';
+import '../widgets/illustrations/ruqyah_illustrations.dart';
 import '../widgets/islamic_pattern.dart';
 import 'full_audio_player_screen.dart';
 
@@ -1089,38 +1091,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Column(
-          children: [
-            Icon(
-              Icons.search_off_rounded,
-              size: 48,
-              color: context.textSecondary,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'No recitations or duas found',
-              style: TextStyle(
-                fontFamily: 'PlusJakartaSans',
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: context.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Try searching for another keyword or clear filters.',
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 13,
-                color: context.textSecondary,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return const EmptyState(
+      kind: FlatIllustrationKind.emptySearch,
+      title: 'No recitations or duas found',
+      message: 'Try another keyword, or clear the filters.',
     );
   }
 }

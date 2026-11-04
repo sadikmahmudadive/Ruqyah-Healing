@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'animations/animations.dart';
 
-/// A rounded surface with the app's standard border + layered shadow,
-/// tappable with the shared [PressScale] feel.
+/// A flat rounded surface: solid fill and a hairline border, no shadow, so
+/// lists of cards stay calm. Pass [shadows] only for a card that genuinely
+/// floats. Tappable with the shared [PressScale] feel.
 ///
 /// Use this instead of a bare [Container] when you want cards to look
 /// consistent across the app.
@@ -52,7 +53,7 @@ class ModernCard extends StatelessWidget {
         gradient: gradient,
         borderRadius: BorderRadius.circular(radius),
         border: b,
-        boxShadow: shadows ?? AppElevation.card,
+        boxShadow: shadows,
       ),
       child: child,
     );
@@ -109,9 +110,6 @@ class ModernChip extends StatelessWidget {
           color: bg,
           borderRadius: BorderRadius.circular(100),
           border: Border.all(color: borderColor, width: 1),
-          boxShadow: selected
-              ? AppElevation.glow(sel, strength: 0.25)
-              : AppElevation.subtle,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

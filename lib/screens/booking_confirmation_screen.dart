@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../widgets/illustrations/ruqyah_illustrations.dart';
+
 import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../widgets/app_toast.dart';
 import 'main_navigation_shell.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 
 class BookingConfirmationScreen extends StatefulWidget {
   final String doctorName;
@@ -177,14 +180,10 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
               decoration: BoxDecoration(
                 color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 28,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
               ),
               child: IconButton(
                 icon: const Icon(
@@ -224,13 +223,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                     color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 28,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: const Icon(
@@ -274,9 +266,15 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
               // Payment Options
               _buildBKashOption(),
               const SizedBox(height: 10),
-              _buildNagadOption(),
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 0,
+                child: _buildNagadOption(),
+              ),
               const SizedBox(height: 10),
-              _buildCardOption(),
+              FadeSlideIn(
+                delay: AppMotion.staggerStep * 1,
+                child: _buildCardOption(),
+              ),
 
               const SizedBox(height: 20),
 
@@ -338,13 +336,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -547,13 +538,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 : AppColors.lightCardBorder,
             width: isSelected ? 1.8 : 1.0,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -640,13 +624,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 : AppColors.lightCardBorder,
             width: isSelected ? 1.8 : 1.0,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -731,13 +708,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
                 : AppColors.lightCardBorder,
             width: isSelected ? 1.8 : 1.0,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -917,13 +887,6 @@ class _BookingConfirmationScreenState extends State<BookingConfirmationScreen> {
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [

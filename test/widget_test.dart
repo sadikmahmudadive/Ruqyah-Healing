@@ -59,8 +59,10 @@ void main() {
 
       // 11. Tap Get Started to navigate to SignInScreen
       await tester.tap(find.text('Get Started'));
+      // The auth header's illustration floats forever, so use fixed pumps
+      // instead of pumpAndSettle from here on.
       await tester.pump(const Duration(seconds: 2));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 2));
 
       // 12. Verify SignInScreen elements
       expect(find.text('SIGN IN TO YOUR ACCOUNT'), findsOneWidget);
@@ -82,13 +84,14 @@ void main() {
 
       // 13. Ensure visible in viewport and tap Sign Up span to navigate to SignUpScreen
       await tester.ensureVisible(signUpFinder);
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
 
       final RichText richText = tester.widget(signUpFinder);
       final TextSpan text = richText.text as TextSpan;
       final TextSpan signUpSpan = text.children![1] as TextSpan;
       (signUpSpan.recognizer as TapGestureRecognizer).onTap!();
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 1));
 
       // 14. Verify SignUpScreen elements
       expect(find.text('CREATE YOUR ACCOUNT'), findsOneWidget);

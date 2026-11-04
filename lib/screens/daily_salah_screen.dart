@@ -139,12 +139,22 @@ class _DailySalahScreenState extends State<DailySalahScreen> {
             ],
           ),
         ),
-        const Expanded(
-          child: Center(
-            child: SizedBox(
-              width: 28,
-              height: 28,
-              child: CircularProgressIndicator(strokeWidth: 2.4),
+        // Placeholder cards in the shape of the content, rather than a spinner.
+        Expanded(
+          child: Semantics(
+            label: 'Loading prayer times',
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              children: const [
+                ShimmerCardSkeleton(height: 128, radius: 28),
+                SizedBox(height: 14),
+                ShimmerCardSkeleton(height: 88),
+                SizedBox(height: 14),
+                ShimmerCardSkeleton(height: 88),
+                SizedBox(height: 14),
+                ShimmerCardSkeleton(height: 88),
+              ],
             ),
           ),
         ),

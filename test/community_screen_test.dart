@@ -205,14 +205,16 @@ void main() {
           ),
         ),
       );
-      await tester.pumpAndSettle();
+      // The empty state's illustration floats forever, so settle with a fixed
+      // pump instead of pumpAndSettle.
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.text('Comments'), findsOneWidget);
       expect(find.text('No comments yet'), findsOneWidget);
 
       // Tap quick chip "🤲 Ameen"
       await tester.tap(find.text('🤲 Ameen'));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
 
       expect(added, isNotNull);
       expect(added!.text, '🤲 Ameen');

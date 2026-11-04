@@ -60,14 +60,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               decoration: BoxDecoration(
                 color: AppColors.lightCardBg,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.lightCardBorder, width: 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 26,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+                border: Border.all(
+                  color: AppColors.lightCardBorder,
+                  width: 1.0,
+                ),
               ),
               child: IconButton(
                 icon: const Icon(
@@ -94,13 +90,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 26,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: Icon(
@@ -136,13 +125,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 26,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: const Icon(
@@ -341,13 +323,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF12241F),
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
@@ -544,13 +519,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           decoration: BoxDecoration(
             color: AppColors.lightCardBg,
             borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 26,
-                offset: const Offset(0, 8),
-              ),
-            ],
           ),
           child: Column(
             children: [
@@ -712,13 +680,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           decoration: BoxDecoration(
             color: AppColors.lightCardBg,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 26,
-                offset: const Offset(0, 8),
-              ),
-            ],
           ),
           child: Column(
             children: [
@@ -939,8 +900,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '14 min',
             ),
           ],
-          overview:
-              'Comprehensive Quran learning curriculum focusing on accurate letter articulation (Makharij), core Tajweed recitation rules, and fluent practice from beginner to advanced.',
+          overview: 'Comprehensive Quran learning curriculum focusing on accurate letter articulation (Makharij), core Tajweed recitation rules, and fluent practice from beginner to advanced.',
           instructorBio:
               '${widget.instructorName} is an experienced Qari with authentic Ijazah in Hafs an Asim and extensive teaching experience in Quranic phonetics.',
         );
@@ -968,8 +928,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '15 min',
             ),
           ],
-          overview:
-              'In-depth study of prophetic traditions, principles of Hadith classification (Mustalah al-Hadith), authentic narration chains, and their medical and ethical wisdom.',
+          overview: 'In-depth study of prophetic traditions, principles of Hadith classification (Mustalah al-Hadith), authentic narration chains, and their medical and ethical wisdom.',
           instructorBio:
               '${widget.instructorName} holds advanced credentials in Hadith sciences and Islamic jurisprudence with scholarly contributions in prophetic wellness.',
         );
@@ -997,8 +956,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '15 min',
             ),
           ],
-          overview:
-              'Explore the noble life, sublime character (Akhlaq), and profound wisdom of the Prophet Muhammad (PBUH) from early Makkan struggles to the radiant Madinan society.',
+          overview: 'Explore the noble life, sublime character (Akhlaq), and profound wisdom of the Prophet Muhammad (PBUH) from early Makkan struggles to the radiant Madinan society.',
           instructorBio:
               '${widget.instructorName} is a researcher and educator specializing in Islamic history, Seerah Nabawiyyah, and classical Prophetic biography.',
         );
@@ -1026,8 +984,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '16 min',
             ),
           ],
-          overview:
-              'Authentic, Shariah-compliant course on Ruqyah Ash-Shar\'iyyah for spiritual affliction, evil eye, black magic, and holistic spiritual well-being.',
+          overview: 'Authentic, Shariah-compliant course on Ruqyah Ash-Shar\'iyyah for spiritual affliction, evil eye, black magic, and holistic spiritual well-being.',
           instructorBio:
               '${widget.instructorName} is a veteran Ruqyah practitioner and counselor specializing in Sunnah healing and spiritual psychotherapy.',
         );
@@ -1055,8 +1012,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '15 min',
             ),
           ],
-          overview:
-              'Evidence-based acupuncture certification exploring meridian mapping, vital energy balance, painless needling techniques, and pain management protocols.',
+          overview: 'Evidence-based acupuncture certification exploring meridian mapping, vital energy balance, painless needling techniques, and pain management protocols.',
           instructorBio:
               '${widget.instructorName} is a licensed acupuncturist and pain specialist registered with international integrative medicine boards.',
         );
@@ -1084,8 +1040,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '14 min',
             ),
           ],
-          overview:
-              'Non-invasive pressure point therapy to stimulate vital bodily reflexes, relieve tension headaches, manage chronic stress, and restore bodily homeostasis.',
+          overview: 'Non-invasive pressure point therapy to stimulate vital bodily reflexes, relieve tension headaches, manage chronic stress, and restore bodily homeostasis.',
           instructorBio:
               '${widget.instructorName} is an acupressure master trainer and holistic therapist focusing on non-invasive somatic restoration.',
         );
@@ -1113,8 +1068,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '16 min',
             ),
           ],
-          overview:
-              'Comprehensive study of classical homeopathy, constitutional remedies, Materia Medica therapeutics, and gentle non-toxic healing for chronic conditions.',
+          overview: 'Comprehensive study of classical homeopathy, constitutional remedies, Materia Medica therapeutics, and gentle non-toxic healing for chronic conditions.',
           instructorBio:
               '${widget.instructorName} is a seasoned Classical Homeopath (BHMS) with decades of clinical diagnosis and repertorization expertise.',
         );
@@ -1142,8 +1096,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '15 min',
             ),
           ],
-          overview:
-              'Harness the restorative power of nature through nutritional biochemistry, herbal remedies, botanical infusions, fasting therapies, and circadian rhythm alignment.',
+          overview: 'Harness the restorative power of nature through nutritional biochemistry, herbal remedies, botanical infusions, fasting therapies, and circadian rhythm alignment.',
           instructorBio:
               '${widget.instructorName} is a licensed Naturopathic Doctor (ND) passionate about lifestyle medicine, clinical herbs, and whole-body vitality.',
         );
@@ -1171,8 +1124,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '15 min',
             ),
           ],
-          overview:
-              'Master clinical lab report interpretation, biochemical biomarkers, pathology panels, and how to safely correlate medical diagnostic reports with complementary therapies.',
+          overview: 'Master clinical lab report interpretation, biochemical biomarkers, pathology panels, and how to safely correlate medical diagnostic reports with complementary therapies.',
           instructorBio:
               '${widget.instructorName} is a consultant clinical pathologist and medical educator bridging conventional laboratory diagnostics and integrative medicine.',
         );
@@ -1201,8 +1153,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               duration: '10 min',
             ),
           ],
-          overview:
-              'Comprehensive foundation course covering essential principles, hygienic sterilization techniques, and clinical application of Hijama cupping therapy.',
+          overview: 'Comprehensive foundation course covering essential principles, hygienic sterilization techniques, and clinical application of Hijama cupping therapy.',
           instructorBio:
               '${widget.instructorName} is a licensed Hijama specialist & Ruqyah consultant with over 12 years of clinical instruction experience.',
         );

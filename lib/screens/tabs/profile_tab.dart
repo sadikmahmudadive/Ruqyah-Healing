@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../widgets/illustrations/ruqyah_illustrations.dart';
+
 import 'package:flutter/services.dart';
 
 import '../../localization/app_localizations.dart';
@@ -61,13 +63,6 @@ class _ProfileTabState extends State<ProfileTab> {
                   color: context.cardBg,
                   shape: BoxShape.circle,
                   border: Border.all(color: context.cardBorder, width: 1.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: Icon(
@@ -140,9 +135,9 @@ class _ProfileTabState extends State<ProfileTab> {
                       '0';
                   final healthScore = userModel == null
                       ? '--'
-                      : (HealthIndexService.compute(
-                              userModel.healthProfile,
-                            ).score?.toString() ??
+                      : (HealthIndexService.compute(userModel.healthProfile)
+                                .score
+                                ?.toString() ??
                             '--');
                   final activeDays = userModel?.createdAt != null
                       ? '${DateTime.now().difference(userModel!.createdAt).inDays + 1}'
@@ -396,13 +391,6 @@ class _ProfileTabState extends State<ProfileTab> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -566,10 +554,7 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget _buildAuthCard() {
     return Column(
       children: [
-        const FlatIllustration(
-          kind: FlatIllustrationKind.guest,
-          size: 120,
-        ),
+        const FlatIllustration(kind: FlatIllustrationKind.guest, size: 120),
         const SizedBox(height: 4),
         Text(
           'Sign in to save your progress, bookings and health profile.',
@@ -618,15 +603,18 @@ class _ProfileTabState extends State<ProfileTab> {
               children: [
                 Icon(Icons.login_rounded, color: Colors.white, size: 20),
                 SizedBox(width: 10),
-                Flexible(child: Text(
-                  'Sign In / Register',
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                Flexible(
+                  child: Text(
+                    'Sign In / Register',
+                    style: TextStyle(
+                      fontFamily: 'PlusJakartaSans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
-                )),],
+                ),
+              ],
             ),
           ),
         ),
@@ -641,13 +629,6 @@ class _ProfileTabState extends State<ProfileTab> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,

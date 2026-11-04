@@ -72,13 +72,6 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                   color: AppColors.lightCardBorder,
                   width: 1.0,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 28,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
               ),
               child: IconButton(
                 icon: const Icon(
@@ -118,13 +111,6 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
                     color: AppColors.lightCardBorder,
                     width: 1.0,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 28,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: const Icon(
@@ -201,13 +187,6 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -467,13 +446,6 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
       decoration: BoxDecoration(
         color: AppColors.lightCardBg,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -641,13 +613,6 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               : AppColors.lightCardBorder,
           width: isSelected ? 1.8 : 1.0,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -795,15 +760,17 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
   Widget _buildReviewsHeader(Therapist t) {
     return Row(
       children: [
-        Flexible(child: Text(
-          'Reviews (${t.reviewsCount})',
-          style: const TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: AppColors.lightTextPrimary,
+        Flexible(
+          child: Text(
+            'Reviews (${t.reviewsCount})',
+            style: const TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: AppColors.lightTextPrimary,
+            ),
           ),
-        )),
+        ),
         const Spacer(),
         InkWell(
           onTap: () {
@@ -828,7 +795,8 @@ class _TherapistProfileScreenState extends State<TherapistProfileScreen> {
               ),
             ],
           ),
-        ),],
+        ),
+      ],
     );
   }
 

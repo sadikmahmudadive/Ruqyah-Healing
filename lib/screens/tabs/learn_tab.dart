@@ -433,13 +433,6 @@ class _LearnTabState extends State<LearnTab> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -919,13 +912,6 @@ class _LearnTabState extends State<LearnTab> {
           color: context.cardBg,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: context.cardBorder, width: 1.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 28,
-              offset: const Offset(0, 8),
-            ),
-          ],
         ),
         child: Column(
           children: [

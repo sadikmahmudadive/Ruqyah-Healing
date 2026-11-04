@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/app_toast.dart';
 import 'guidance_results_screen.dart';
 
@@ -117,50 +118,74 @@ class _AISymptomGuideScreenState extends State<AISymptomGuideScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildWelcomeCard(),
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 0,
+                        child: _buildWelcomeCard(),
+                      ),
 
                       const SizedBox(height: 28),
 
-                      _buildSectionHeader(
-                        title: 'How are you feeling?',
-                        subtitle: 'Select everything that feels relevant',
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 1,
+                        child: _buildSectionHeader(
+                          title: 'How are you feeling?',
+                          subtitle: 'Select everything that feels relevant',
+                        ),
                       ),
 
                       const SizedBox(height: 14),
 
-                      _buildExperienceChips(),
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 2,
+                        child: _buildExperienceChips(),
+                      ),
 
                       const SizedBox(height: 28),
 
-                      _buildSectionHeader(
-                        title: 'Tell us more',
-                        subtitle: 'Describe what you are experiencing',
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 3,
+                        child: _buildSectionHeader(
+                          title: 'Tell us more',
+                          subtitle: 'Describe what you are experiencing',
+                        ),
                       ),
 
                       const SizedBox(height: 14),
 
-                      _buildSymptomComposer(),
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 4,
+                        child: _buildSymptomComposer(),
+                      ),
 
                       const SizedBox(height: 18),
 
-                      _buildSafetyNotice(),
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 5,
+                        child: _buildSafetyNotice(),
+                      ),
 
                       const SizedBox(height: 24),
 
-                      _buildGenerateButton(),
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 6,
+                        child: _buildGenerateButton(),
+                      ),
 
                       const SizedBox(height: 10),
 
-                      Center(
-                        child: Text(
-                          'Your information is used only to personalize your guidance.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 10.5,
-                            height: 1.4,
-                            color: context.textSecondary.withValues(
-                              alpha: 0.65,
+                      FadeSlideIn(
+                        delay: AppMotion.staggerStep * 6,
+                        child: Center(
+                          child: Text(
+                            'Your information is used only to personalize your guidance.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 10.5,
+                              height: 1.4,
+                              color: context.textSecondary.withValues(
+                                alpha: 0.65,
+                              ),
                             ),
                           ),
                         ),

@@ -217,13 +217,6 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,13 +302,6 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Row(
         children: [
@@ -359,13 +345,6 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -453,13 +432,6 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
           color: context.cardBg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: context.cardBorder, width: 1.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
-          ],
         ),
         child: Column(
           children: [
@@ -706,13 +678,6 @@ class _AcupunctureHubScreenState extends State<AcupunctureHubScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Row(
         children: [

@@ -194,13 +194,6 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               color: context.cardBg,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: context.cardBorder, width: 1.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 26,
-                  offset: const Offset(0, 8),
-                ),
-              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,13 +240,6 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
               color: context.cardBg,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: context.cardBorder, width: 1.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 26,
-                  offset: const Offset(0, 8),
-                ),
-              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,13 +345,6 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -453,13 +432,6 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -542,13 +514,6 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Row(
         children: [
@@ -661,13 +626,6 @@ class _RuqyahProgressScreenState extends State<RuqyahProgressScreen> {
             color: context.cardBg,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: context.cardBorder, width: 1.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 26,
-                offset: const Offset(0, 8),
-              ),
-            ],
           ),
           child: Row(
             children: <Widget>[

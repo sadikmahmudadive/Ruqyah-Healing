@@ -1,47 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/app_theme.dart';
+import 'empty_state.dart' show FloatingIllustration;
 import 'google_logo.dart';
+import 'illustrations/ruqyah_illustrations.dart';
 import 'islamic_pattern.dart';
 
 /// Shared building blocks for the sign-in and sign-up screens.
 ///
-/// Look: a crisp night-sky painting across the top, the title sitting on it,
-/// and a dark emerald sheet rising over it that carries the form. Gold is the
-/// accent everywhere (active segment, focus ring, primary button).
-class AuthColors {
-  AuthColors._();
+/// Look: calm and minimal. A quiet page (ivory in light mode, deep green in
+/// dark), a small floating mosque illustration, a centred title, and flat
+/// fields with hairline borders. One solid accent colour does the work:
+/// emerald in light mode, gold in dark mode.
+extension AuthPalette on BuildContext {
+  Color get authBg => pageBg;
+  Color get authField => cardBg;
+  Color get authBorder => cardBorderStrong;
+  Color get authText => textPrimary;
+  Color get authMuted => textSecondary;
 
-  static const Color sheet = Color(0xFF0A130F);
-  static const Color field = Color(0xFF121E18);
-  static const Color fieldBorder = Color(0xFF223A2F);
-  static const Color emerald = Color(0xFF0F593D);
-  static const Color gold = Color(0xFFD49E35);
-  static const Color goldSoft = Color(0xFFE9C26F);
-  static const Color onGold = Color(0xFF1A1405);
-  static const Color textMuted = Color(0xFF92A89F);
+  /// The one solid accent: buttons, the selected segment, the focus ring.
+  Color get authAccent =>
+      isDarkMode ? AppColors.accentGold : AppColors.primaryGreen;
+
+  /// Text drawn on top of [authAccent].
+  Color get authOnAccent =>
+      isDarkMode ? const Color(0xFF1A1405) : Colors.white;
+
+  /// Inline links ("Forgot password?", "Sign up").
+  Color get authLink =>
+      isDarkMode ? const Color(0xFFE9C26F) : AppColors.primaryGreen;
 }
 
-/// Page frame. [children] go inside the sheet, in order, with a staggered
-/// entrance; [onBack] adds a back button over the photo.
+/// Page frame. [children] go below the header, in order, with a staggered
+/// entrance; [onBack] adds a back button above the illustration.
 class AuthScaffold extends StatefulWidget {
-  final String backgroundAsset;
   final String title;
   final String subtitle;
   final VoidCallback? onBack;
 
-  /// Share of the screen height given to the photo + title area.
-  final double heroFraction;
+  /// A smaller illustration, for long forms.
+  final bool compact;
   final List<Widget> children;
 
   const AuthScaffold({
     super.key,
-    required this.backgroundAsset,
     required this.title,
     required this.subtitle,
     required this.children,
     this.onBack,
-    this.heroFraction = 0.34,
+    this.compact = false,
   });
 
   @override
@@ -57,8 +66,20 @@ class _AuthScaffoldState extends State<AuthScaffold>
     super.initState();
     _anim = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1100),
-    )..forward();
+      duration: const Duration(milliseconds: 1000),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_anim.isAnimating || _anim.isCompleted) return;
+    // With reduced motion everything is simply there.
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
+      _anim.value = 1;
+    } else {
+      _anim.forward();
+    }
   }
 
   @override
@@ -76,7 +97,7 @@ class _AuthScaffoldState extends State<AuthScaffold>
       opacity: curve,
       child: SlideTransition(
         position: Tween<Offset>(
-          begin: const Offset(0, 0.05),
+          begin: const Offset(0, 0.04),
           end: Offset.zero,
         ).animate(curve),
         child: child,
@@ -86,67 +107,33 @@ class _AuthScaffoldState extends State<AuthScaffold>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final top = MediaQuery.of(context).padding.top;
-    final heroH = (size.height * widget.heroFraction).clamp(
-      widget.onBack != null ? 270.0 : 250.0,
-      400.0,
-    );
+    final top = MediaQuery.paddingOf(context).top;
+    final bottom = MediaQuery.paddingOf(context).bottom;
+    final illoW = widget.compact ? 124.0 : 156.0;
+    final illoH = illoW * 0.75;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: AuthColors.sheet,
-        systemNavigationBarIconBrightness: Brightness.light,
+      value: context.systemOverlayStyle.copyWith(
+        systemNavigationBarColor: context.authBg,
+        systemNavigationBarIconBrightness: context.isDarkMode
+            ? Brightness.light
+            : Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: AuthColors.sheet,
+        backgroundColor: context.authBg,
         body: Stack(
           children: [
-            // Painting, fixed behind; the sheet slides over it.
+            // A faint geometric wash behind the header, fading out.
             Positioned(
               top: 0,
               left: 0,
               right: 0,
-              height: heroH + 90,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    widget.backgroundAsset,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                    errorBuilder: (_, _, _) => const SizedBox(),
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.35),
-                          Colors.transparent,
-                          AuthColors.sheet.withValues(alpha: 0.55),
-                          AuthColors.sheet,
-                        ],
-                        stops: const [0.0, 0.3, 0.72, 1.0],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 420,
+              height: 300,
               child: IslamicPattern(
-                color: AuthColors.goldSoft,
-                opacity: 0.09,
-                cell: 76,
+                color: context.authAccent,
+                opacity: context.isDarkMode ? 0.07 : 0.05,
+                cell: 72,
+                fadeDown: true,
               ),
             ),
             CustomScrollView(
@@ -154,37 +141,54 @@ class _AuthScaffoldState extends State<AuthScaffold>
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: heroH,
-                    child: Stack(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(24, top + 12, 24, 0),
+                    child: Column(
                       children: [
-                        if (widget.onBack != null)
-                          Positioned(
-                            top: top + 8,
-                            left: 20,
-                            child: _BackButton(onTap: widget.onBack!),
+                        SizedBox(
+                          height: 44,
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: widget.onBack != null
+                                ? _BackButton(onTap: widget.onBack!)
+                                : null,
                           ),
-                        Positioned(
-                          left: 24,
-                          right: 24,
-                          bottom: 30,
-                          child: _stagger(0.0, 0.6, _buildTitleBlock()),
                         ),
+                        SizedBox(height: widget.compact ? 0 : 8),
+                        _stagger(
+                          0.0,
+                          0.55,
+                          ExcludeSemantics(
+                            child: FloatingIllustration(
+                              child: MosqueSceneIllustration(
+                                width: illoW,
+                                height: illoH,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: widget.compact ? 12 : 20),
+                        _stagger(0.08, 0.65, _buildTitleBlock(context)),
+                        SizedBox(height: widget.compact ? 20 : 28),
                       ],
                     ),
                   ),
                 ),
                 SliverFillRemaining(
                   hasScrollBody: false,
-                  child: _Sheet(
-                    children: [
-                      for (var i = 0; i < widget.children.length; i++)
-                        _stagger(
-                          (0.15 + i * 0.1).clamp(0.0, 0.7),
-                          (0.7 + i * 0.1).clamp(0.0, 1.0),
-                          widget.children[i],
-                        ),
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(24, 0, 24, 24 + bottom),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var i = 0; i < widget.children.length; i++)
+                          _stagger(
+                            (0.2 + i * 0.1).clamp(0.0, 0.7),
+                            (0.75 + i * 0.1).clamp(0.0, 1.0),
+                            widget.children[i],
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -195,56 +199,34 @@ class _AuthScaffoldState extends State<AuthScaffold>
     );
   }
 
-  Widget _buildTitleBlock() {
+  Widget _buildTitleBlock(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 36,
-          height: 3,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(2),
-            gradient: const LinearGradient(
-              colors: [AuthColors.goldSoft, AuthColors.gold],
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
         Text(
           widget.title,
-          style: const TextStyle(
+          textAlign: TextAlign.center,
+          style: TextStyle(
             fontFamily: 'Cinzel',
-            fontSize: 26,
+            fontSize: 25,
             fontWeight: FontWeight.w700,
-            letterSpacing: 1.4,
-            color: Colors.white,
+            letterSpacing: 1.2,
+            color: context.authText,
             height: 1.2,
-            shadows: [
-              Shadow(
-                offset: Offset(0, 2),
-                blurRadius: 14,
-                color: Color(0xCC000000),
-              ),
-            ],
           ),
         ),
         const SizedBox(height: 8),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
-          layoutBuilder: (current, previous) => Stack(
-            alignment: Alignment.topLeft,
-            children: [...previous, ?current],
-          ),
           child: Text(
             widget.subtitle,
             key: ValueKey(widget.subtitle),
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 14,
-              height: 1.4,
-              color: Colors.white.withValues(alpha: 0.82),
-              shadows: const [Shadow(blurRadius: 10, color: Color(0xCC000000))],
+              height: 1.45,
+              color: context.authMuted,
             ),
           ),
         ),
@@ -259,56 +241,25 @@ class _BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.black.withValues(alpha: 0.35),
-      shape: CircleBorder(
-        side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
-      ),
-      child: InkWell(
-        customBorder: const CircleBorder(),
-        onTap: onTap,
-        child: const SizedBox(
-          width: 42,
-          height: 42,
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 17,
-            color: Colors.white,
+    return Semantics(
+      button: true,
+      label: 'Back',
+      child: Material(
+        color: context.authField,
+        shape: CircleBorder(side: BorderSide(color: context.authBorder)),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: onTap,
+          child: SizedBox(
+            width: 44,
+            height: 44,
+            child: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 16,
+              color: context.authText,
+            ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// The dark panel that rises over the painting.
-class _Sheet extends StatelessWidget {
-  final List<Widget> children;
-  const _Sheet({required this.children});
-
-  @override
-  Widget build(BuildContext context) {
-    final bottom = MediaQuery.of(context).padding.bottom;
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(24, 28, 24, 28 + bottom),
-      decoration: BoxDecoration(
-        color: AuthColors.sheet,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
-        border: Border(
-          top: BorderSide(color: AuthColors.gold.withValues(alpha: 0.35)),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AuthColors.gold.withValues(alpha: 0.10),
-            blurRadius: 40,
-            offset: const Offset(0, -10),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
       ),
     );
   }
@@ -321,7 +272,7 @@ class AuthOption<T> {
   const AuthOption(this.value, this.label, this.icon);
 }
 
-/// Segmented control whose gold thumb slides between options.
+/// Segmented control whose solid thumb slides between options.
 class AuthSegmented<T> extends StatelessWidget {
   final List<AuthOption<T>> options;
   final T selected;
@@ -342,34 +293,26 @@ class AuthSegmented<T> extends StatelessWidget {
       height: 52,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AuthColors.field,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AuthColors.fieldBorder),
+        color: context.authField,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: context.authBorder),
       ),
       child: Stack(
         children: [
           AnimatedAlign(
-            duration: const Duration(milliseconds: 280),
+            duration: const Duration(milliseconds: 260),
             curve: Curves.easeOutCubic,
-            alignment: Alignment(n == 1 ? 0 : -1 + 2 * index / (n - 1), 0),
+            alignment: AlignmentDirectional(
+              n == 1 ? 0 : -1 + 2 * index / (n - 1),
+              0,
+            ),
             child: FractionallySizedBox(
               widthFactor: 1 / n,
               heightFactor: 1,
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [AuthColors.goldSoft, AuthColors.gold],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AuthColors.gold.withValues(alpha: 0.35),
-                      blurRadius: 14,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(12),
+                  color: context.authAccent,
                 ),
               ),
             ),
@@ -378,39 +321,44 @@ class AuthSegmented<T> extends StatelessWidget {
             children: [
               for (final o in options)
                 Expanded(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      if (o.value == selected) return;
-                      HapticFeedback.selectionClick();
-                      onChanged(o.value);
-                    },
-                    child: Center(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: AnimatedDefaultTextStyle(
-                          duration: const Duration(milliseconds: 200),
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: o.value == selected
-                                ? AuthColors.onGold
-                                : AuthColors.textMuted,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                o.icon,
-                                size: 18,
-                                color: o.value == selected
-                                    ? AuthColors.onGold
-                                    : AuthColors.textMuted,
-                              ),
-                              const SizedBox(width: 6),
-                              Text(o.label),
-                            ],
+                  child: Semantics(
+                    button: true,
+                    selected: o.value == selected,
+                    label: o.label,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (o.value == selected) return;
+                        HapticFeedback.selectionClick();
+                        onChanged(o.value);
+                      },
+                      child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: AnimatedDefaultTextStyle(
+                            duration: const Duration(milliseconds: 200),
+                            style: TextStyle(
+                              fontFamily: 'PlusJakartaSans',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: o.value == selected
+                                  ? context.authOnAccent
+                                  : context.authMuted,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  o.icon,
+                                  size: 18,
+                                  color: o.value == selected
+                                      ? context.authOnAccent
+                                      : context.authMuted,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(o.label),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -426,9 +374,10 @@ class AuthSegmented<T> extends StatelessWidget {
 }
 
 /// Vertical, snapping carousel for picking one of several options (the
-/// account role). The centred card is the selection and glows gold; the cards
-/// above and below peek in, shrunk and faded, so it is obvious the list
-/// scrolls and loops. Tapping a peeking card brings it to the centre.
+/// account role). The centred card is the selection and fills with the
+/// accent; the cards above and below peek in, shrunk and faded, so it is
+/// obvious the list scrolls and loops. Tapping a peeking card brings it to
+/// the centre.
 class AuthCarousel<T> extends StatefulWidget {
   final List<AuthOption<T>> options;
   final T selected;
@@ -496,6 +445,7 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final bg = context.authBg;
     return SizedBox(
       height: _itemHeight * _visible,
       child: Stack(
@@ -512,11 +462,11 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
               animation: _controller,
               builder: (context, _) {
                 final distance = (_page() - i).abs().clamp(0.0, 1.0);
-                return _card(i, distance);
+                return _card(context, i, distance);
               },
             ),
           ),
-          // Fade the peeking cards into the sheet, like a wheel.
+          // Fade the peeking cards into the page, like a wheel.
           IgnorePointer(
             child: DecoratedBox(
               decoration: BoxDecoration(
@@ -524,10 +474,10 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AuthColors.sheet.withValues(alpha: 0.5),
+                    bg.withValues(alpha: 0.7),
                     Colors.transparent,
                     Colors.transparent,
-                    AuthColors.sheet.withValues(alpha: 0.5),
+                    bg.withValues(alpha: 0.7),
                   ],
                   stops: const [0.0, 0.3, 0.7, 1.0],
                 ),
@@ -540,10 +490,10 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
     );
   }
 
-  Widget _card(int index, double distance) {
+  Widget _card(BuildContext context, int index, double distance) {
     final o = widget.options[index % widget.options.length];
     final t = 1 - distance; // 1 = centred, 0 = fully off-centre
-    final fg = Color.lerp(AuthColors.textMuted, AuthColors.onGold, t)!;
+    final fg = Color.lerp(context.authMuted, context.authOnAccent, t)!;
     return Semantics(
       button: true,
       selected: t > 0.5,
@@ -554,44 +504,21 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Transform.scale(
-            scale: 0.9 + 0.1 * t,
+            scale: 0.92 + 0.08 * t,
             child: Opacity(
               opacity: 0.7 + 0.3 * t,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  color: Color.lerp(AuthColors.field, AuthColors.gold, t),
-                  gradient: t > 0.02
-                      ? LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color.lerp(
-                              AuthColors.field,
-                              AuthColors.goldSoft,
-                              t,
-                            )!,
-                            Color.lerp(AuthColors.field, AuthColors.gold, t)!,
-                          ],
-                        )
-                      : null,
+                  borderRadius: BorderRadius.circular(16),
+                  color: Color.lerp(context.authField, context.authAccent, t),
                   border: Border.all(
                     color: Color.lerp(
-                      AuthColors.fieldBorder,
+                      context.authBorder,
                       Colors.transparent,
                       t,
                     )!,
                   ),
-                  boxShadow: t > 0.5
-                      ? [
-                          BoxShadow(
-                            color: AuthColors.gold.withValues(alpha: 0.3 * t),
-                            blurRadius: 16,
-                            offset: const Offset(0, 4),
-                          ),
-                        ]
-                      : null,
                 ),
                 child: Row(
                   children: [
@@ -601,8 +528,8 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Color.lerp(
-                          Colors.white.withValues(alpha: 0.06),
-                          AuthColors.onGold.withValues(alpha: 0.14),
+                          context.authAccent.withValues(alpha: 0.08),
+                          context.authOnAccent.withValues(alpha: 0.16),
                           t,
                         ),
                       ),
@@ -612,6 +539,8 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
                     Expanded(
                       child: Text(
                         o.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 15.5,
@@ -644,12 +573,12 @@ class AuthLabel extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8, left: 2),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: 'Inter',
           fontSize: 12.5,
           fontWeight: FontWeight.w600,
-          color: AuthColors.textMuted,
-          letterSpacing: 0.4,
+          color: context.authMuted,
+          letterSpacing: 0.3,
         ),
       ),
     );
@@ -657,7 +586,7 @@ class AuthLabel extends StatelessWidget {
 }
 
 /// Text input with a leading icon (or custom [prefix]), an optional trailing
-/// widget, a built-in show/hide toggle for passwords and a gold focus ring.
+/// widget, a built-in show/hide toggle for passwords and an accent focus ring.
 class AuthField extends StatefulWidget {
   final TextEditingController controller;
   final String hint;
@@ -711,26 +640,18 @@ class _AuthFieldState extends State<AuthField> {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = _focused ? AuthColors.goldSoft : AuthColors.textMuted;
+    final iconColor = _focused ? context.authAccent : context.authMuted;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
       height: 56,
       padding: EdgeInsets.only(left: widget.prefix != null ? 6 : 16, right: 14),
       decoration: BoxDecoration(
-        color: AuthColors.field,
+        color: context.authField,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: _focused ? AuthColors.gold : AuthColors.fieldBorder,
+          color: _focused ? context.authAccent : context.authBorder,
           width: _focused ? 1.5 : 1,
         ),
-        boxShadow: _focused
-            ? [
-                BoxShadow(
-                  color: AuthColors.gold.withValues(alpha: 0.18),
-                  blurRadius: 16,
-                ),
-              ]
-            : null,
       ),
       child: Row(
         children: [
@@ -749,20 +670,20 @@ class _AuthFieldState extends State<AuthField> {
               textInputAction: widget.textInputAction,
               onSubmitted: widget.onSubmitted,
               obscureText: widget.isPassword && _hidden,
-              cursorColor: AuthColors.goldSoft,
+              cursorColor: context.authAccent,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 15,
-                color: Colors.white,
+                color: context.authText,
                 letterSpacing: widget.letterSpacing,
               ),
               decoration: InputDecoration(
                 hintText: widget.hint,
-                hintStyle: const TextStyle(
+                hintStyle: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14.5,
                   letterSpacing: 0,
-                  color: Color(0xFF5E7268),
+                  color: context.textMuted,
                 ),
                 border: InputBorder.none,
                 isDense: true,
@@ -771,17 +692,21 @@ class _AuthFieldState extends State<AuthField> {
             ),
           ),
           if (widget.isPassword)
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => setState(() => _hidden = !_hidden),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Icon(
-                  _hidden
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
-                  size: 20,
-                  color: iconColor,
+            Semantics(
+              button: true,
+              label: _hidden ? 'Show password' : 'Hide password',
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => setState(() => _hidden = !_hidden),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Icon(
+                    _hidden
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    size: 20,
+                    color: iconColor,
+                  ),
                 ),
               ),
             )
@@ -822,31 +747,31 @@ class AuthCountryPrefix extends StatelessWidget {
                 const SizedBox(width: 6),
                 Text(
                   code,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: context.authText,
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.keyboard_arrow_down_rounded,
                   size: 20,
-                  color: AuthColors.textMuted,
+                  color: context.authMuted,
                 ),
               ],
             ),
           ),
         ),
         const SizedBox(width: 2),
-        Container(width: 1, height: 22, color: AuthColors.fieldBorder),
+        Container(width: 1, height: 22, color: context.authBorder),
         const SizedBox(width: 12),
       ],
     );
   }
 }
 
-/// Main call-to-action: a gold gradient with a soft glow. [tonal] gives the
+/// Main call-to-action: a solid accent fill, no glow. [tonal] gives the
 /// quieter outlined variant used for secondary actions such as "Send OTP".
 class AuthButton extends StatefulWidget {
   final String label;
@@ -875,82 +800,74 @@ class _AuthButtonState extends State<AuthButton> {
   Widget build(BuildContext context) {
     final enabled = widget.onPressed != null && !widget.loading;
     final tonal = widget.tonal;
-    final fg = tonal ? AuthColors.goldSoft : AuthColors.onGold;
-    return AnimatedScale(
-      scale: _down && enabled ? 0.97 : 1,
-      duration: const Duration(milliseconds: 120),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTapDown: (_) => setState(() => _down = true),
-        onTapCancel: () => setState(() => _down = false),
-        onTapUp: (_) => setState(() => _down = false),
-        onTap: enabled
-            ? () {
-                HapticFeedback.lightImpact();
-                widget.onPressed!();
-              }
-            : null,
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 150),
-          opacity: widget.onPressed == null ? 0.5 : 1,
-          child: Container(
-            width: double.infinity,
-            height: tonal ? 48 : 56,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(tonal ? 14 : 18),
-              gradient: tonal
-                  ? null
-                  : const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [AuthColors.goldSoft, AuthColors.gold],
-                    ),
-              border: tonal
-                  ? Border.all(color: AuthColors.gold.withValues(alpha: 0.6))
-                  : null,
-              boxShadow: tonal
-                  ? null
-                  : [
-                      BoxShadow(
-                        color: AuthColors.gold.withValues(alpha: 0.35),
-                        blurRadius: 22,
-                        offset: const Offset(0, 8),
+    final fg = tonal ? context.authLink : context.authOnAccent;
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: widget.label,
+      child: AnimatedScale(
+        scale: _down && enabled ? 0.98 : 1,
+        duration: const Duration(milliseconds: 120),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTapDown: (_) => setState(() => _down = true),
+          onTapCancel: () => setState(() => _down = false),
+          onTapUp: (_) => setState(() => _down = false),
+          onTap: enabled
+              ? () {
+                  HapticFeedback.lightImpact();
+                  widget.onPressed!();
+                }
+              : null,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 150),
+            opacity: widget.onPressed == null ? 0.5 : 1,
+            child: Container(
+              width: double.infinity,
+              height: tonal ? 48 : 56,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(tonal ? 14 : 16),
+                color: tonal ? null : context.authAccent,
+                border: tonal
+                    ? Border.all(
+                        color: context.authAccent.withValues(alpha: 0.5),
+                      )
+                    : null,
+              ),
+              child: widget.loading
+                  ? SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(
+                        color: fg,
+                        strokeWidth: 2.4,
                       ),
-                    ],
-            ),
-            child: widget.loading
-                ? SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                      color: fg,
-                      strokeWidth: 2.4,
-                    ),
-                  )
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          widget.label,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: tonal ? 14.5 : 16,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.3,
-                            color: fg,
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            widget.label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: tonal ? 14.5 : 16,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.2,
+                              color: fg,
+                            ),
                           ),
                         ),
-                      ),
-                      if (widget.trailingIcon != null) ...[
-                        const SizedBox(width: 8),
-                        Icon(widget.trailingIcon, size: 18, color: fg),
+                        if (widget.trailingIcon != null) ...[
+                          const SizedBox(width: 8),
+                          Icon(widget.trailingIcon, size: 18, color: fg),
+                        ],
                       ],
-                    ],
-                  ),
+                    ),
+            ),
           ),
         ),
       ),
@@ -966,7 +883,7 @@ class AuthDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final line = Expanded(
-      child: Container(height: 1, color: AuthColors.fieldBorder),
+      child: Container(height: 1, color: context.authBorder),
     );
     return Row(
       children: [
@@ -978,10 +895,10 @@ class AuthDivider extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 12.5,
-                color: AuthColors.textMuted,
+                color: context.authMuted,
               ),
             ),
           ),
@@ -1005,31 +922,39 @@ class AuthGoogleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AuthColors.field,
-      borderRadius: BorderRadius.circular(18),
+      color: context.authField,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(18),
-        splashColor: Colors.white.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
-          height: 54,
+          constraints: const BoxConstraints(minHeight: 54),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: AuthColors.fieldBorder),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: context.authBorder),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          // The label is centred on the button itself; the logo sits at the
+          // start, so the text lines up with the button above it.
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              const GoogleLogo(size: 20),
-              const SizedBox(width: 12),
-              Flexible(
+              const PositionedDirectional(
+                start: 18,
+                child: GoogleLogo(size: 20),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 52,
+                  vertical: 14,
+                ),
                 child: Text(
                   label,
-                  style: const TextStyle(
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 15.5,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: context.authText,
                   ),
                 ),
               ),

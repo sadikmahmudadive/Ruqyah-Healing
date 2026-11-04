@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import '../../models/community_models.dart';
 import '../../theme/app_gradients.dart';
 import '../../theme/app_theme.dart';
+import '../empty_state.dart';
+import '../illustrations/ruqyah_illustrations.dart';
 import '../app_toast.dart';
 
 class CommentsSheet extends StatefulWidget {
@@ -147,36 +149,12 @@ class _CommentsSheetState extends State<CommentsSheet> {
           // Comments List
           Expanded(
             child: widget.post.comments.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.chat_bubble_outline_rounded,
-                          size: 44,
-                          color: context.textSecondary.withValues(alpha: 0.4),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'No comments yet',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: context.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Be the first to share an encouraging word or du\'a.',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12.5,
-                            color: context.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
+                ? const EmptyState(
+                    kind: FlatIllustrationKind.emptyMessages,
+                    title: 'No comments yet',
+                    message: 'Be the first to share an encouraging word.',
+                    illustrationSize: 88,
+                    padding: EdgeInsets.all(16),
                   )
                 : ListView.separated(
                     controller: _scrollController,

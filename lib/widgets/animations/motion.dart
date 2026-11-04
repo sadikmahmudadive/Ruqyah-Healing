@@ -48,23 +48,18 @@ class AppElevation {
   /// Flush cards — subtle depth, almost flat.
   static List<BoxShadow> get subtle => [
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.04),
-      blurRadius: 12,
-      offset: const Offset(0, 2),
+      color: Colors.black.withValues(alpha: 0.03),
+      blurRadius: 8,
+      offset: const Offset(0, 1),
     ),
   ];
 
   /// Standard raised card.
   static List<BoxShadow> get card => [
     BoxShadow(
-      color: Colors.black.withValues(alpha: 0.035),
-      blurRadius: 28,
-      offset: const Offset(0, 8),
-    ),
-    BoxShadow(
-      color: Colors.black.withValues(alpha: 0.015),
-      blurRadius: 4,
-      offset: const Offset(0, 1),
+      color: Colors.black.withValues(alpha: 0.025),
+      blurRadius: 16,
+      offset: const Offset(0, 4),
     ),
   ];
 

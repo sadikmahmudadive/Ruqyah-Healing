@@ -442,6 +442,11 @@ enum FlatIllustrationKind {
   community,
   guest,
   premium,
+  emptySearch,
+  emptyMessages,
+  emptyAudio,
+  offline,
+  error,
 }
 
 /// One flat illustration per service hub, plus two for empty states. All are
@@ -515,6 +520,16 @@ class _FlatPainter extends CustomPainter {
         _drawGuest(canvas, p, dark);
       case FlatIllustrationKind.premium:
         _drawPremium(canvas, p, dark);
+      case FlatIllustrationKind.emptySearch:
+        _drawSearch(canvas, p);
+      case FlatIllustrationKind.emptyMessages:
+        _drawMessages(canvas, p);
+      case FlatIllustrationKind.emptyAudio:
+        _drawAudio(canvas, p);
+      case FlatIllustrationKind.offline:
+        _drawOffline(canvas, p);
+      case FlatIllustrationKind.error:
+        _drawError(canvas, p);
     }
     canvas.restore();
   }
@@ -1343,4 +1358,152 @@ void _drawPremium(Canvas canvas, _Palette p, bool dark) {
 
   _sparkle(canvas, const Offset(16, 62), 3.6, _fill(p.goldSoft));
   _sparkle(canvas, const Offset(86, 62), 3, _fill(p.gold));
+}
+
+// ───────────────────────── empty / error scenes ────────────────────────
+
+// Search: a magnifier over a few quiet lines.
+void _drawSearch(Canvas canvas, _Palette p) {
+  canvas.drawCircle(const Offset(50, 52), 44, _fill(p.tint));
+  for (final y in [34.0, 44.0, 54.0]) {
+    canvas.drawRRect(
+      RRect.fromLTRBR(
+        24,
+        y,
+        y == 44.0 ? 60 : 52,
+        y + 4,
+        const Radius.circular(2),
+      ),
+      _fill(p.ground),
+    );
+  }
+  canvas.drawCircle(
+    const Offset(56, 54),
+    17,
+    _fill(Colors.white.withValues(alpha: 0.55)),
+  );
+  canvas.drawCircle(const Offset(56, 54), 17, _stroke(p.mid, 5));
+  canvas.drawLine(
+    const Offset(68, 66),
+    const Offset(80, 78),
+    _stroke(p.deep, 7),
+  );
+  canvas.drawPath(
+    Path()
+      ..moveTo(46, 50)
+      ..quadraticBezierTo(48, 44, 54, 43),
+    _stroke(Colors.white.withValues(alpha: 0.8), 2.4),
+  );
+  _sparkle(canvas, const Offset(24, 28), 4, _fill(p.goldSoft));
+  _sparkle(canvas, const Offset(80, 36), 3.2, _fill(p.gold));
+}
+
+// Messages: two speech bubbles.
+void _drawMessages(Canvas canvas, _Palette p) {
+  canvas.drawCircle(const Offset(50, 52), 44, _fill(p.tint));
+  final a = Path()
+    ..addRRect(RRect.fromLTRBR(20, 30, 66, 58, const Radius.circular(10)))
+    ..moveTo(30, 58)
+    ..lineTo(28, 68)
+    ..lineTo(40, 58)
+    ..close();
+  canvas.drawPath(a, _fill(p.mid));
+  canvas.drawRRect(
+    RRect.fromLTRBR(27, 38, 61, 42, const Radius.circular(2)),
+    _fill(Colors.white.withValues(alpha: 0.75)),
+  );
+  canvas.drawRRect(
+    RRect.fromLTRBR(27, 46, 51, 50, const Radius.circular(2)),
+    _fill(Colors.white.withValues(alpha: 0.75)),
+  );
+  final b = Path()
+    ..addRRect(RRect.fromLTRBR(48, 50, 82, 72, const Radius.circular(9)))
+    ..moveTo(74, 72)
+    ..lineTo(77, 80)
+    ..lineTo(66, 72)
+    ..close();
+  canvas.drawPath(b, _fill(p.gold));
+  for (final x in [56.0, 65.0, 74.0]) {
+    canvas.drawCircle(Offset(x - 1, 61), 2, _fill(Colors.white));
+  }
+  _sparkle(canvas, const Offset(78, 28), 4, _fill(p.goldSoft));
+}
+
+// Audio: headphones around a crescent.
+void _drawAudio(Canvas canvas, _Palette p) {
+  canvas.drawCircle(const Offset(50, 52), 44, _fill(p.tint));
+  canvas.drawArc(
+    Rect.fromCircle(center: const Offset(50, 56), radius: 24),
+    3.14159265,
+    3.14159265,
+    false,
+    _stroke(p.mid, 6),
+  );
+  canvas.drawRRect(
+    RRect.fromLTRBR(22, 54, 34, 76, const Radius.circular(6)),
+    _fill(p.deep),
+  );
+  canvas.drawRRect(
+    RRect.fromLTRBR(66, 54, 78, 76, const Radius.circular(6)),
+    _fill(p.deep),
+  );
+  _crescent(canvas, const Offset(50, 58), 9, _fill(p.gold));
+  _sparkle(canvas, const Offset(50, 36), 4, _fill(p.goldSoft));
+  _sparkle(canvas, const Offset(82, 34), 3, _fill(p.gold));
+}
+
+// Offline: a cloud with a gold slash.
+void _drawOffline(Canvas canvas, _Palette p) {
+  canvas.drawCircle(const Offset(50, 52), 44, _fill(p.tint));
+  final cloud = Path()
+    ..addOval(Rect.fromCircle(center: const Offset(40, 54), radius: 13))
+    ..addOval(Rect.fromCircle(center: const Offset(56, 46), radius: 17))
+    ..addOval(Rect.fromCircle(center: const Offset(68, 57), radius: 11))
+    ..addRRect(RRect.fromLTRBR(30, 54, 76, 68, const Radius.circular(7)));
+  canvas.drawPath(cloud, _fill(p.mid));
+  canvas.drawLine(
+    const Offset(30, 26),
+    const Offset(72, 78),
+    _stroke(p.tint, 11),
+  );
+  canvas.drawLine(
+    const Offset(30, 26),
+    const Offset(72, 78),
+    _stroke(p.gold, 5),
+  );
+  _sparkle(canvas, const Offset(24, 62), 3.2, _fill(p.goldSoft));
+}
+
+// Error: a dimmed lantern.
+void _drawError(Canvas canvas, _Palette p) {
+  canvas.drawCircle(const Offset(50, 52), 44, _fill(p.tint));
+  canvas.drawLine(
+    const Offset(50, 18),
+    const Offset(50, 28),
+    _stroke(p.deep, 3),
+  );
+  canvas.drawRRect(
+    RRect.fromLTRBR(38, 27, 62, 33, const Radius.circular(3)),
+    _fill(p.deep),
+  );
+  final glass = Path()
+    ..moveTo(40, 33)
+    ..cubicTo(30, 44, 32, 62, 40, 71)
+    ..lineTo(60, 71)
+    ..cubicTo(68, 62, 70, 44, 60, 33)
+    ..close();
+  canvas.drawPath(glass, _fill(p.goldSoft.withValues(alpha: 0.9)));
+  canvas.drawPath(glass, _stroke(p.mid, 2.4));
+  canvas.drawLine(
+    const Offset(50, 33),
+    const Offset(50, 71),
+    _stroke(p.mid, 1.6),
+  );
+  canvas.drawRRect(
+    RRect.fromLTRBR(37, 71, 63, 77, const Radius.circular(3)),
+    _fill(p.deep),
+  );
+  canvas.drawCircle(const Offset(50, 54), 6, _fill(p.gold));
+  _sparkle(canvas, const Offset(22, 36), 4, _fill(p.goldSoft));
+  _sparkle(canvas, const Offset(80, 60), 3.2, _fill(p.gold));
 }

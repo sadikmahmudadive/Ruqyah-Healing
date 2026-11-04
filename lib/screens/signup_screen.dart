@@ -381,13 +381,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return AuthScaffold(
-      backgroundAsset: 'assets/background/bg_signup.jpg',
       title: context.tr('create_account_title'),
       subtitle: _isPhoneSignUp
           ? 'Sign up with your phone number and verify via OTP.'
           : 'Join us to start your spiritual and physical wellness journey.',
       onBack: _navigateToSignIn,
-      heroFraction: 0.28,
+      compact: true,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -500,21 +499,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Center(
           child: RichText(
             text: TextSpan(
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14.5,
-                color: Colors.white70,
+                color: context.authMuted,
               ),
               children: [
-                TextSpan(
-                  text: 'Already have an account? ',
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.70)),
-                ),
+                const TextSpan(text: 'Already have an account? '),
                 TextSpan(
                   text: 'Sign In',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: AuthColors.goldSoft,
+                    color: context.authLink,
                   ),
                   recognizer: TapGestureRecognizer()..onTap = _navigateToSignIn,
                 ),
@@ -570,7 +566,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   fontFamily: 'Inter',
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AuthColors.goldSoft.withValues(
+                  color: context.authLink.withValues(
                     alpha: _canResend ? 1 : 0.7,
                   ),
                 ),

@@ -79,8 +79,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final filteredNotifications = _selectedCategory == 'All'
         ? _allNotifications
         : _allNotifications
-            .where((n) => n.category == _selectedCategory)
-            .toList();
+              .where((n) => n.category == _selectedCategory)
+              .toList();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -157,8 +157,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         style: TextStyle(
                           fontFamily: 'PlusJakartaSans',
                           fontSize: 13.5,
-                          fontWeight:
-                              isSelected ? FontWeight.w700 : FontWeight.w500,
+                          fontWeight: isSelected
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           color: isSelected
                               ? Colors.white
                               : context.textPrimary,
@@ -202,7 +203,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   : ListView.separated(
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 8.0),
+                        horizontal: 20.0,
+                        vertical: 8.0,
+                      ),
                       itemCount: filteredNotifications.length,
                       separatorBuilder: (context, index) =>
                           const SizedBox(height: 14),
@@ -303,14 +306,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     pageBuilder: (_, __, ___) => const SettingsScreen(),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        ),
-                        child: child,
-                      );
-                    },
+                          return FadeTransition(
+                            opacity: CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut,
+                            ),
+                            child: child,
+                          );
+                        },
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
                 );
@@ -330,13 +333,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -353,14 +349,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     targetWidget,
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -380,11 +376,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Center(
-                    child: Icon(
-                      item.icon,
-                      color: item.iconColor,
-                      size: 22,
-                    ),
+                    child: Icon(item.icon, color: item.iconColor, size: 22),
                   ),
                 ),
 

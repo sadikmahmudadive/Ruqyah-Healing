@@ -114,18 +114,36 @@ class _BookingsTabState extends State<BookingsTab> {
                       builder: (context) {
                         final currentUser = FirebaseService.currentUser;
                         if (currentUser == null) {
-                          return _buildEmptyStateCard('Sign in to see your appointments here.');
+                          return _buildEmptyStateCard(
+                            'Sign in to see your appointments here.',
+                          );
                         }
 
                         return StreamBuilder<List<AppointmentModel>>(
-                          stream: FirebaseService.getPatientAppointments(currentUser.uid),
+                          stream: FirebaseService.getPatientAppointments(
+                            currentUser.uid,
+                          ),
                           builder: (context, snapshot) {
                             final appointments = snapshot.data ?? [];
                             final filtered = _selectedTab == 'Upcoming'
-                                ? appointments.where((a) => a.status != 'completed' && a.status != 'cancelled').toList()
+                                ? appointments
+                                      .where(
+                                        (a) =>
+                                            a.status != 'completed' &&
+                                            a.status != 'cancelled',
+                                      )
+                                      .toList()
                                 : (_selectedTab == 'Completed'
-                                    ? appointments.where((a) => a.status == 'completed').toList()
-                                    : appointments.where((a) => a.status == 'cancelled').toList());
+                                      ? appointments
+                                            .where(
+                                              (a) => a.status == 'completed',
+                                            )
+                                            .toList()
+                                      : appointments
+                                            .where(
+                                              (a) => a.status == 'cancelled',
+                                            )
+                                            .toList());
 
                             if (filtered.isEmpty) {
                               return _buildEmptyStateCard(
@@ -139,7 +157,10 @@ class _BookingsTabState extends State<BookingsTab> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 6.0, bottom: 8.0),
+                                  padding: const EdgeInsets.only(
+                                    top: 6.0,
+                                    bottom: 8.0,
+                                  ),
                                   child: Text(
                                     '${filtered.length} ${_selectedTab.toLowerCase()} ${filtered.length == 1 ? 'session' : 'sessions'}',
                                     style: TextStyle(
@@ -163,15 +184,26 @@ class _BookingsTabState extends State<BookingsTab> {
                                         '${app.scheduledTime.day}/${app.scheduledTime.month}/${app.scheduledTime.year} · ${app.scheduledTime.hour}:${app.scheduledTime.minute.toString().padLeft(2, '0')}';
                                     final session = AppointmentSession(
                                       id: app.appointmentId,
-                                      title: app.therapyType.replaceAll('_', ' '),
+                                      title: app.therapyType.replaceAll(
+                                        '_',
+                                        ' ',
+                                      ),
                                       doctorName: app.therapistId.isNotEmpty
                                           ? 'Therapist #${app.therapistId.substring(0, app.therapistId.length > 5 ? 5 : app.therapistId.length)}'
                                           : 'Assigned Therapist',
                                       dateTime: formattedDate,
-                                      mode: app.therapyType.contains('Online') ? 'Online Video' : 'At Clinic',
-                                      status: app.status.isNotEmpty ? app.status[0].toUpperCase() + app.status.substring(1) : 'Scheduled',
+                                      mode: app.therapyType.contains('Online')
+                                          ? 'Online Video'
+                                          : 'At Clinic',
+                                      status: app.status.isNotEmpty
+                                          ? app.status[0].toUpperCase() +
+                                                app.status.substring(1)
+                                          : 'Scheduled',
                                       accentColor: const Color(0xFF0B4632),
-                                      icon: const RuqyahDuaIcon(color: Color(0xFF0B4632), size: 22),
+                                      icon: const RuqyahDuaIcon(
+                                        color: Color(0xFF0B4632),
+                                        size: 22,
+                                      ),
                                     );
                                     return _buildSessionCard(session);
                                   },
@@ -341,13 +373,6 @@ class _BookingsTabState extends State<BookingsTab> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 28,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -373,10 +398,10 @@ class _BookingsTabState extends State<BookingsTab> {
                       color: context.isDarkMode
                           ? AppColors.darkIconCircleBg
                           : session.title.contains('Ruqyah')
-                              ? AppColors.tintMint
-                              : session.title.contains('Hijama')
-                                  ? AppColors.tintSand
-                                  : AppColors.tintMist,
+                          ? AppColors.tintMint
+                          : session.title.contains('Hijama')
+                          ? AppColors.tintSand
+                          : AppColors.tintMist,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Center(child: session.icon),
@@ -459,8 +484,8 @@ class _BookingsTabState extends State<BookingsTab> {
                           PageRouteBuilder(
                             pageBuilder: (_, __, ___) =>
                                 VideoConsultationScreen(
-                              doctorName: session.doctorName,
-                            ),
+                                  doctorName: session.doctorName,
+                                ),
                           ),
                         );
                       } else {
@@ -478,8 +503,11 @@ class _BookingsTabState extends State<BookingsTab> {
                           value: 'join',
                           child: Row(
                             children: [
-                              Icon(Icons.videocam_rounded,
-                                  color: Color(0xFF0B4632), size: 18),
+                              Icon(
+                                Icons.videocam_rounded,
+                                color: Color(0xFF0B4632),
+                                size: 18,
+                              ),
                               SizedBox(width: 8),
                               Text('Join Video Call'),
                             ],
@@ -489,8 +517,11 @@ class _BookingsTabState extends State<BookingsTab> {
                         value: 'reschedule',
                         child: Row(
                           children: [
-                            Icon(Icons.edit_calendar_rounded,
-                                color: Color(0xFF15221D), size: 18),
+                            Icon(
+                              Icons.edit_calendar_rounded,
+                              color: Color(0xFF15221D),
+                              size: 18,
+                            ),
                             SizedBox(width: 8),
                             Text('Reschedule'),
                           ],
@@ -500,8 +531,11 @@ class _BookingsTabState extends State<BookingsTab> {
                         value: 'cancel',
                         child: Row(
                           children: [
-                            Icon(Icons.cancel_outlined,
-                                color: context.textSecondary, size: 18),
+                            Icon(
+                              Icons.cancel_outlined,
+                              color: context.textSecondary,
+                              size: 18,
+                            ),
                             SizedBox(width: 8),
                             Text('Cancel Appointment'),
                           ],
@@ -692,18 +726,17 @@ class _BookingsTabState extends State<BookingsTab> {
             HapticFeedback.lightImpact();
             Navigator.of(context).push(
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    const TherapistMarketplaceScreen(),
+                pageBuilder: (_, __, ___) => const TherapistMarketplaceScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: child,
-                  );
-                },
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        ),
+                        child: child,
+                      );
+                    },
                 transitionDuration: const Duration(milliseconds: 400),
               ),
             );
@@ -713,11 +746,7 @@ class _BookingsTabState extends State<BookingsTab> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.add_rounded,
-                color: Colors.white,
-                size: 22,
-              ),
+              const Icon(Icons.add_rounded, color: Colors.white, size: 22),
               const SizedBox(width: 8),
               Text(
                 context.tr('book_new_appointment'),

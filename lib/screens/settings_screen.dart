@@ -8,6 +8,7 @@ import '../services/notification_prefs.dart';
 import 'notification_settings_screen.dart';
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/islamic_pattern.dart';
 
@@ -70,21 +71,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // Group 1: PREFERENCES
                     _buildSectionHeader(context.tr('preferences')),
                     const SizedBox(height: 8),
-                    _buildPreferencesCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 0,
+                      child: _buildPreferencesCard(),
+                    ),
 
                     const SizedBox(height: 20),
 
                     // Group 2: SECURITY & PRIVACY
                     _buildSectionHeader(context.tr('security_privacy')),
                     const SizedBox(height: 8),
-                    _buildSecurityPrivacyCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 1,
+                      child: _buildSecurityPrivacyCard(),
+                    ),
 
                     const SizedBox(height: 20),
 
                     // Group 3: ABOUT & LEGAL
                     _buildSectionHeader(context.tr('about_legal')),
                     const SizedBox(height: 8),
-                    _buildAboutLegalCard(),
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 2,
+                      child: _buildAboutLegalCard(),
+                    ),
 
                     const SizedBox(height: 24),
                   ],
@@ -167,13 +177,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -187,7 +190,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingItem(
             title: context.tr('language'),
             trailingText: AppLocalizations.getLanguageName(
-                AppLocalizations.currentLocale.languageCode),
+              AppLocalizations.currentLocale.languageCode,
+            ),
             isTrailingActive: true,
             onTap: _showLanguageDialog,
           ),
@@ -202,7 +206,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildDivider(),
           _buildSettingItem(
             title: context.tr('display'),
-            trailingText: _highContrast ? 'High Contrast On' : 'High Contrast Off',
+            trailingText: _highContrast
+                ? 'High Contrast On'
+                : 'High Contrast Off',
             onTap: () {
               HapticFeedback.selectionClick();
               setState(() => _highContrast = !_highContrast);
@@ -221,7 +227,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildSettingItem(
             title: context.tr('prayer_reminders'),
             hasActiveDot: true,
-            trailingText: NotificationPrefs.instance.prayerEnabled ? 'On' : 'Off',
+            trailingText: NotificationPrefs.instance.prayerEnabled
+                ? 'On'
+                : 'Off',
             isTrailingActive: NotificationPrefs.instance.prayerEnabled,
             onTap: () {
               HapticFeedback.selectionClick();
@@ -250,13 +258,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -331,13 +332,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -413,8 +407,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               if (badgeText != null) ...[
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: badgeBg ?? AppColors.tintMint,
                     borderRadius: BorderRadius.circular(10),
@@ -527,7 +523,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           fontFamily: 'PlusJakartaSans',
           fontSize: 15,
           fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-          color: isSelected ? const Color(0xFF0B4632) : AppColors.lightTextPrimary,
+          color: isSelected
+              ? const Color(0xFF0B4632)
+              : AppColors.lightTextPrimary,
         ),
       ),
       trailing: isSelected
@@ -559,7 +557,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 22,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0x33E6E6E6),
                   borderRadius: BorderRadius.circular(21),
@@ -567,13 +568,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: const Color(0xFFBCBCBC),
                     width: 2.0,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 26,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -589,13 +583,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildLanguageDialogCard('English', 'English', 'en', currentCode, dialogContext),
+                    _buildLanguageDialogCard(
+                      'English',
+                      'English',
+                      'en',
+                      currentCode,
+                      dialogContext,
+                    ),
                     const SizedBox(height: 10),
-                    _buildLanguageDialogCard('বাংলা', 'Bangla', 'bn', currentCode, dialogContext),
+                    _buildLanguageDialogCard(
+                      'বাংলা',
+                      'Bangla',
+                      'bn',
+                      currentCode,
+                      dialogContext,
+                    ),
                     const SizedBox(height: 10),
-                    _buildLanguageDialogCard('العربية', 'Arabic', 'ar', currentCode, dialogContext),
+                    _buildLanguageDialogCard(
+                      'العربية',
+                      'Arabic',
+                      'ar',
+                      currentCode,
+                      dialogContext,
+                    ),
                     const SizedBox(height: 10),
-                    _buildLanguageDialogCard('اردو', 'Urdu', 'ur', currentCode, dialogContext),
+                    _buildLanguageDialogCard(
+                      'اردو',
+                      'Urdu',
+                      'ur',
+                      currentCode,
+                      dialogContext,
+                    ),
                   ],
                 ),
               ),
@@ -642,7 +660,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isSelected ? const Color(0xFF082F21) : Colors.transparent,
+                color: isSelected
+                    ? const Color(0xFF082F21)
+                    : Colors.transparent,
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF082F21)
@@ -699,9 +719,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text(
           'Delete your account?',
           style: TextStyle(
@@ -739,10 +757,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 type: ToastType.warning,
               );
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: const Text('Delete', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -752,10 +767,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        height: 1,
-        color: context.cardBorder,
-      ),
+      child: Container(height: 1, color: context.cardBorder),
     );
   }
 }

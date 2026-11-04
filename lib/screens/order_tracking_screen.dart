@@ -150,15 +150,18 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             ),
           ),
 
-          Flexible(child: Text(
-            'Order Tracking',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+          Flexible(
+            child: Text(
+              'Order Tracking',
+              style: TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
             ),
-          )),],
+          ),
+        ],
       ),
     );
   }
@@ -170,13 +173,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -327,13 +323,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -416,15 +405,17 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 children: [
                   Row(
                     children: [
-                      Flexible(child: Text(
-                        title,
-                        style: const TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.lightTextPrimary,
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.lightTextPrimary,
+                          ),
                         ),
-                      )),
+                      ),
                       if (showDoneBadge) ...[
                         const SizedBox(width: 8),
                         Container(
@@ -456,7 +447,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                             ],
                           ),
                         ),
-                      ],],
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 3),
                   Text(
@@ -534,13 +526,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Row(
         children: [

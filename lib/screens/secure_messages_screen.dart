@@ -296,13 +296,6 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 26,
-                  offset: const Offset(0, 8),
-                ),
-              ],
             ),
             child: Row(
               children: [
@@ -365,13 +358,6 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Row(
         children: [
@@ -510,13 +496,6 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             bottomLeft: Radius.circular(isUser ? 18 : 4),
             bottomRight: Radius.circular(isUser ? 4 : 18),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 26,
-              offset: const Offset(0, 8),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: isUser
@@ -577,13 +556,6 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             bottomLeft: Radius.circular(4),
             bottomRight: Radius.circular(18),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 26,
-              offset: const Offset(0, 8),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -683,13 +655,6 @@ class _SecureMessagesScreenState extends State<SecureMessagesScreen> {
             bottomLeft: Radius.circular(4),
             bottomRight: Radius.circular(18),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 26,
-              offset: const Offset(0, 8),
-            ),
-          ],
         ),
         child: Row(
           children: [

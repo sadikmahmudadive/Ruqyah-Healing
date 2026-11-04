@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../services/health_index_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/acupuncture_icon.dart';
 import '../widgets/health_index_builder.dart';
 import '../widgets/hijama_cupping_icon.dart';
@@ -35,13 +36,6 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 color: context.cardBg,
                 shape: BoxShape.circle,
                 border: Border.all(color: context.cardBorder, width: 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 26,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
               ),
               child: IconButton(
                 icon: Icon(
@@ -94,13 +88,6 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   color: context.cardBg,
                   shape: BoxShape.circle,
                   border: Border.all(color: context.cardBorder, width: 1.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 26,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: IconButton(
                   icon: Icon(
@@ -148,7 +135,10 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                 _buildHealthIndexOverviewCard(health),
 
                 const SizedBox(height: 20),
-                _buildInsightsCard(health),
+                FadeSlideIn(
+                  delay: AppMotion.staggerStep * 0,
+                  child: _buildInsightsCard(health),
+                ),
 
                 const SizedBox(height: 20),
 
@@ -295,13 +285,6 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -508,13 +491,6 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -698,13 +674,6 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -767,20 +736,23 @@ class _HealthProfileDetailScreenState extends State<HealthProfileDetailScreen> {
                   ),
                 ),
               ),
-              Flexible(child: Text(
-                subtitle,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12,
-                  color: context.textSecondary,
+              Flexible(
+                child: Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    color: context.textSecondary,
+                  ),
                 ),
-              )),
+              ),
               const SizedBox(width: 6),
               const Icon(
                 Icons.chevron_right_rounded,
                 color: AppColors.lightTextMuted,
                 size: 20,
-              ),],
+              ),
+            ],
           ),
         ),
       ),

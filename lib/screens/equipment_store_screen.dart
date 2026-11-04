@@ -338,17 +338,14 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
         color: context.cardBg,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: context.cardBorder, width: 1.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 26,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: Row(
         children: [
-          const Icon(Icons.search_rounded, color: AppColors.lightTextMuted, size: 20),
+          const Icon(
+            Icons.search_rounded,
+            color: AppColors.lightTextMuted,
+            size: 20,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: TextField(
@@ -529,13 +526,6 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
               color: context.cardBg,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(color: context.cardBorder, width: 1.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 26,
-                  offset: const Offset(0, 8),
-                ),
-              ],
             ),
             child: Column(
               children: [
@@ -803,13 +793,6 @@ class _EquipmentStoreScreenState extends State<EquipmentStoreScreen> {
           color: context.cardBg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: context.cardBorder, width: 1.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 26,
-              offset: const Offset(0, 8),
-            ),
-          ],
         ),
         child: Row(
           children: [

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/app_gradients.dart';
 import '../theme/app_theme.dart';
+import '../widgets/animations/animations.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/islamic_pattern.dart';
 
@@ -56,24 +57,27 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Choose a plan that supports your healing journey.',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 13.5,
-                              color: context.textSecondary,
+                    FadeSlideIn(
+                      delay: AppMotion.staggerStep * 0,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Choose a plan that supports your healing journey.',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 13.5,
+                                color: context.textSecondary,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        const FlatIllustration(
-                          kind: FlatIllustrationKind.premium,
-                          size: 92,
-                        ),
-                      ],
+                          const SizedBox(width: 12),
+                          const FlatIllustration(
+                            kind: FlatIllustrationKind.premium,
+                            size: 92,
+                          ),
+                        ],
+                      ),
                     ),
 
                     const SizedBox(height: 24),
@@ -361,13 +365,6 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
             color: isSelected ? const Color(0xFF0B4632) : context.cardBorder,
             width: isSelected ? 2.0 : 1.0,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 26,
-              offset: const Offset(0, 8),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -510,17 +507,20 @@ class _SubscriptionPlansScreenState extends State<SubscriptionPlansScreen> {
                         size: isPremium ? 16 : 6,
                       ),
                       SizedBox(width: isPremium ? 8 : 12),
-                      Flexible(child: Text(
-                        f,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 12.5,
-                          fontWeight: isPremium
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                          color: context.textPrimary,
+                      Flexible(
+                        child: Text(
+                          f,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12.5,
+                            fontWeight: isPremium
+                                ? FontWeight.w600
+                                : FontWeight.w400,
+                            color: context.textPrimary,
+                          ),
                         ),
-                      )),],
+                      ),
+                    ],
                   ),
                 ),
               ),
