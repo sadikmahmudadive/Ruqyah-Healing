@@ -16,21 +16,29 @@ Future<void> _pumpPlayer(
   bool locked = false,
   VoidCallback? onUnlock,
   VoidCallback? onEnded,
+  double? width,
+  double textScale = 1.0,
+  bool dark = false,
+  TextDirection direction = TextDirection.ltr,
 }) async {
+  Widget player = CourseVideoPlayer(
+    url: url,
+    locked: locked,
+    priceLabel: 'BDT 500',
+    onUnlock: onUnlock,
+    onEnded: onEnded,
+    title: 'Lesson one',
+  );
+  if (width != null) player = SizedBox(width: width, child: player);
   await tester.pumpWidget(
     MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: CourseVideoPlayer(
-            url: url,
-            locked: locked,
-            priceLabel: 'BDT 500',
-            onUnlock: onUnlock,
-            onEnded: onEnded,
-            title: 'Lesson one',
-          ),
-        ),
+      theme: dark ? ThemeData.dark() : ThemeData.light(),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: TextScaler.linear(textScale)),
+        child: Directionality(textDirection: direction, child: child!),
       ),
+      home: Scaffold(body: Center(child: player)),
     ),
   );
   // Let the fake platform create the player and report `initialized`.
@@ -71,6 +79,24 @@ Future<void> _flushPlatform(WidgetTester tester) async {
 Future<void> _dispose(WidgetTester tester) async {
   await tester.pumpWidget(const SizedBox());
   await _flushPlatform(tester);
+}
+
+/// Asserts [finder] sits fully inside the player box and is a >= 44 dp target.
+void _expectInsidePlayer(WidgetTester tester, Finder finder) {
+  final player = tester.getRect(find.byType(CourseVideoPlayer));
+  final label = tester.getRect(finder);
+  expect(player.contains(label.topLeft), isTrue, reason: '$label vs $player');
+  expect(
+    player.contains(label.bottomRight),
+    isTrue,
+    reason: '$label vs $player',
+  );
+  final target = tester.getRect(
+    find.ancestor(of: finder, matching: find.byType(Container)).first,
+  );
+  expect(target.height, greaterThanOrEqualTo(43.9));
+  expect(player.contains(target.topLeft), isTrue, reason: '$target');
+  expect(player.contains(target.bottomRight), isTrue, reason: '$target');
 }
 
 void main() {
@@ -264,5 +290,76 @@ void main() {
     fake.advance(const Duration(seconds: 5));
     await tester.pump(const Duration(seconds: 1));
     expect(tester.takeException(), isNull);
+  });
+
+  group('paywall card fits inside the 16:9 player', () {
+    Future<void> checkLockedCard(
+      WidgetTester tester, {
+      double width = 328,
+      double textScale = 1.0,
+      bool dark = false,
+      TextDirection direction = TextDirection.ltr,
+    }) async {
+      await tester.binding.setSurfaceSize(const Size(360, 640));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await _pumpPlayer(
+        tester,
+        locked: true,
+        width: width,
+        textScale: textScale,
+        dark: dark,
+        direction: direction,
+      );
+      await _tapPlay(tester);
+      await _playFor(tester, fake, 10);
+
+      expect(find.byType(UnlockCard), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      _expectInsidePlayer(tester, find.textContaining('BDT 500'));
+      _expectInsidePlayer(tester, find.text(UnlockCard.replayLabel));
+
+      await _dispose(tester);
+    }
+
+    testWidgets('328 dp wide player', (tester) => checkLockedCard(tester));
+
+    testWidgets(
+      '360 dp wide player',
+      (tester) => checkLockedCard(tester, width: 360),
+    );
+
+    testWidgets(
+      'at 2x text scale',
+      (tester) => checkLockedCard(tester, textScale: 2.0),
+    );
+
+    testWidgets(
+      'dark and RTL at 2x text scale',
+      (tester) => checkLockedCard(
+        tester,
+        textScale: 2.0,
+        dark: true,
+        direction: TextDirection.rtl,
+      ),
+    );
+
+    testWidgets('empty-url message and Retry fit at 2x text scale', (
+      tester,
+    ) async {
+      await tester.binding.setSurfaceSize(const Size(360, 640));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await _pumpPlayer(tester, url: '', width: 328, textScale: 2.0);
+
+      expect(tester.takeException(), isNull);
+      _expectInsidePlayer(tester, find.text(CourseVideoPlayer.retryLabel));
+      expect(
+        tester.getRect(find.text(CourseVideoPlayer.noVideoMessage)).bottom,
+        lessThanOrEqualTo(
+          tester.getRect(find.byType(CourseVideoPlayer)).bottom,
+        ),
+      );
+
+      await _dispose(tester);
+    });
   });
 }

@@ -284,11 +284,14 @@ class _CourseVideoPlayerState extends State<CourseVideoPlayer> {
         if (_showCard && widget.locked)
           ColoredBox(
             color: Colors.black.withValues(alpha: 0.72),
-            child: Center(
-              child: UnlockCard(
-                priceLabel: widget.priceLabel ?? '',
-                onUnlock: widget.onUnlock ?? () {},
-                onReplay: _replay,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Center(
+                child: UnlockCard(
+                  priceLabel: widget.priceLabel ?? '',
+                  onUnlock: widget.onUnlock ?? () {},
+                  onReplay: _replay,
+                ),
               ),
             ),
           ),
@@ -433,57 +436,75 @@ class _InlineMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Same strategy as UnlockCard: text capped at 1.3x, and the content
+    // scales down rather than overflowing a short 16:9 box.
     return ColoredBox(
       color: context.cardBg,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.videocam_off_outlined,
-                size: 28,
-                color: context.textMuted,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: AppType.caption.copyWith(color: context.textSecondary),
-              ),
-              const SizedBox(height: 8),
-              PressScale(
-                onTap: onRetry,
-                child: Semantics(
-                  button: true,
-                  label: CourseVideoPlayer.retryLabel,
-                  excludeSemantics: true,
-                  child: Container(
-                    constraints: const BoxConstraints(
-                      minHeight: 44,
-                      minWidth: 96,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth.isFinite
+              ? constraints.maxWidth
+              : 320.0;
+          return Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: SizedBox(
+                width: width,
+                child: MediaQuery.withClampedTextScaling(
+                  maxScaleFactor: 1.3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 8,
                     ),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: context.cardBorderStrong),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      CourseVideoPlayer.retryLabel,
-                      style: AppType.body.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: context.textPrimary,
-                      ),
-                    ),
+                    child: _content(context),
                   ),
                 ),
               ),
-            ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _content(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.videocam_off_outlined, size: 24, color: context.textMuted),
+        const SizedBox(height: 6),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: AppType.caption.copyWith(color: context.textSecondary),
+        ),
+        const SizedBox(height: 8),
+        PressScale(
+          onTap: onRetry,
+          child: Semantics(
+            button: true,
+            label: CourseVideoPlayer.retryLabel,
+            excludeSemantics: true,
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 44, minWidth: 96),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                border: Border.all(color: context.cardBorderStrong),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                CourseVideoPlayer.retryLabel,
+                style: AppType.body.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: context.textPrimary,
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
