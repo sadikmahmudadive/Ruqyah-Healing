@@ -95,4 +95,69 @@ void main() {
     expect(c, kSampleCourses);
     expect(l, kSampleLearnLessons);
   });
+
+  group('silent source and error contract', () {
+    const timeout = Duration(milliseconds: 30);
+    const settle = Duration(milliseconds: 120);
+
+    test('a never-emitting source yields samples after the timeout', () async {
+      final ctrl = StreamController<List<CourseModel>>();
+      addTearDown(ctrl.close);
+      final source = LearnContentSource(
+        courses: () => ctrl.stream,
+        emptyTimeout: timeout,
+      );
+      expect(await source.courses().first, kSampleCourses);
+    });
+
+    test('real data arriving after the timeout is still emitted', () async {
+      final ctrl = StreamController<List<CourseModel>>();
+      addTearDown(ctrl.close);
+      final source = LearnContentSource(
+        courses: () => ctrl.stream,
+        emptyTimeout: timeout,
+      );
+      final events = <List<CourseModel>>[];
+      final sub = source.courses().listen(events.add);
+      addTearDown(sub.cancel);
+      await Future<void>.delayed(settle);
+      expect(events, [kSampleCourses]);
+      ctrl.add([realCourse]);
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+      expect(events, [
+        kSampleCourses,
+        [realCourse],
+      ]);
+    });
+
+    test(
+      'the timeout does not emit samples after the source emitted',
+      () async {
+        final ctrl = StreamController<List<CourseModel>>();
+        addTearDown(ctrl.close);
+        final source = LearnContentSource(
+          courses: () => ctrl.stream,
+          emptyTimeout: timeout,
+        );
+        final events = <List<CourseModel>>[];
+        final sub = source.courses().listen(events.add);
+        addTearDown(sub.cancel);
+        ctrl.add([realCourse]);
+        await Future<void>.delayed(settle);
+        expect(events, [
+          [realCourse],
+        ]);
+      },
+    );
+
+    test(
+      'after an error: samples are emitted, then the stream completes',
+      () async {
+        final source = LearnContentSource(
+          lessons: () => Stream<List<LearnLesson>>.error(StateError('boom')),
+        );
+        expect(await source.lessons().toList(), [kSampleLearnLessons]);
+      },
+    );
+  });
 }
