@@ -360,6 +360,25 @@ class FirebaseService {
         .set(enrollment.toFirestore(), SetOptions(merge: true));
   }
 
+  // The signed-in user's enrollment doc; null until they have one.
+  static Stream<CourseEnrollment?> watchCourseEnrollment(
+    String courseId,
+    String uid,
+  ) {
+    return _firestore
+        .collection('courses')
+        .doc(courseId)
+        .collection('enrollments')
+        .doc(uid)
+        .snapshots()
+        .map((doc) {
+          final data = doc.data();
+          return doc.exists && data != null
+              ? CourseEnrollment.fromMap(data)
+              : null;
+        });
+  }
+
   // 5. Orders Collection (/orders/{order_id})
   static Future<void> createOrder(OrderModel order) async {
     await _firestore
