@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../firebase_options.dart';
 import '../models/appointment_model.dart';
 import '../models/course_model.dart';
+import '../models/learn_lesson_model.dart';
 import '../models/order_model.dart';
 import '../models/therapist_model.dart';
 import '../models/wallpaper_model.dart';
@@ -345,6 +346,18 @@ class FirebaseService {
       return snapshot.docs
           .map((doc) => CourseModel.fromMap(doc.data(), doc.id))
           .toList();
+    });
+  }
+
+  // Free Learn lessons (/learn_lessons/{id}). Ordered on the device by
+  // `order`, so no Firestore index is needed.
+  static Stream<List<LearnLesson>> getLearnLessonsStream() {
+    return _firestore.collection('learn_lessons').snapshots().map((snapshot) {
+      final lessons = snapshot.docs
+          .map((doc) => LearnLesson.fromMap(doc.data(), doc.id))
+          .toList();
+      lessons.sort((a, b) => a.order.compareTo(b.order));
+      return lessons;
     });
   }
 
