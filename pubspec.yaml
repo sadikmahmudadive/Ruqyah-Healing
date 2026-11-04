@@ -55,6 +55,7 @@ dependencies:
   flutter_compass: ^0.8.1
   gal: ^2.3.3
   path_provider: ^2.1.6
+  video_player: ^2.9.2
 
 dev_dependencies:
   flutter_test:

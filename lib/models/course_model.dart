@@ -1,3 +1,10 @@
+/// How long a visitor may watch a paid course's preview video before the
+/// player stops and asks them to enrol.
+const Duration kPreviewLimit = Duration(seconds: 10);
+
+/// Minimum quiz score (percent) needed to pass a course quiz.
+const int kQuizPassPercent = 70;
+
 class CourseModel {
   final String courseId;
   final String title;
@@ -6,6 +13,14 @@ class CourseModel {
   final double priceBdt;
   final List<SyllabusModule> syllabus;
   final List<Quiz> quizzes;
+  final String categoryId;
+  final String level;
+  final String instructorName;
+  final bool isInstructorVerified;
+  final String? thumbnailUrl;
+  final double rating;
+  final int reviewCount;
+  final String? previewVideoUrl;
 
   const CourseModel({
     required this.courseId,
@@ -15,7 +30,27 @@ class CourseModel {
     required this.priceBdt,
     required this.syllabus,
     required this.quizzes,
+    this.categoryId = '',
+    this.level = '',
+    this.instructorName = '',
+    this.isInstructorVerified = false,
+    this.thumbnailUrl,
+    this.rating = 0,
+    this.reviewCount = 0,
+    this.previewVideoUrl,
   });
+
+  /// Every lesson of every module, in syllabus order.
+  List<Lesson> get allLessons => [for (final m in syllabus) ...m.lessons];
+
+  /// The video shown as the free preview: the explicit preview url, else the
+  /// first lesson's video, else an empty string.
+  String get previewUrl {
+    final explicit = previewVideoUrl;
+    if (explicit != null && explicit.isNotEmpty) return explicit;
+    final lessons = allLessons;
+    return lessons.isEmpty ? '' : lessons.first.videoUrl;
+  }
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -26,6 +61,14 @@ class CourseModel {
       'price_bdt': priceBdt,
       'syllabus': syllabus.map((e) => e.toMap()).toList(),
       'quizzes': quizzes.map((e) => e.toMap()).toList(),
+      'category_id': categoryId,
+      'level': level,
+      'instructor_name': instructorName,
+      'instructor_verified': isInstructorVerified,
+      if (thumbnailUrl != null) 'thumbnail_url': thumbnailUrl,
+      'rating': rating,
+      'review_count': reviewCount,
+      if (previewVideoUrl != null) 'preview_video_url': previewVideoUrl,
     };
   }
 
@@ -42,6 +85,14 @@ class CourseModel {
       quizzes: (map['quizzes'] as List? ?? [])
           .map((e) => Quiz.fromMap(Map<String, dynamic>.from(e)))
           .toList(),
+      categoryId: map['category_id'] ?? '',
+      level: map['level'] ?? '',
+      instructorName: map['instructor_name'] ?? '',
+      isInstructorVerified: map['instructor_verified'] ?? false,
+      thumbnailUrl: map['thumbnail_url'],
+      rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
+      reviewCount: (map['review_count'] as num?)?.toInt() ?? 0,
+      previewVideoUrl: map['preview_video_url'],
     );
   }
 }
@@ -80,11 +131,13 @@ class Lesson {
   final String lessonId;
   final String title;
   final String videoUrl; // Streamed securely via Cloudflare Stream CDN
+  final int durationSeconds;
 
   const Lesson({
     required this.lessonId,
     required this.title,
     required this.videoUrl,
+    this.durationSeconds = 0,
   });
 
   Map<String, dynamic> toMap() {
@@ -92,6 +145,7 @@ class Lesson {
       'lesson_id': lessonId,
       'title': title,
       'video_url': videoUrl,
+      'duration_seconds': durationSeconds,
     };
   }
 
@@ -100,6 +154,7 @@ class Lesson {
       lessonId: map['lesson_id'] ?? '',
       title: map['title'] ?? '',
       videoUrl: map['video_url'] ?? '',
+      durationSeconds: (map['duration_seconds'] as num?)?.toInt() ?? 0,
     );
   }
 }
@@ -173,6 +228,9 @@ class CourseEnrollment {
   final int? examScore;
   final bool certificateIssued;
   final String? certificatePdfUrl;
+  final bool paid;
+  final DateTime? purchasedAt;
+  final String? paymentRef;
 
   const CourseEnrollment({
     required this.userId,
@@ -181,6 +239,9 @@ class CourseEnrollment {
     this.examScore,
     this.certificateIssued = false,
     this.certificatePdfUrl,
+    this.paid = false,
+    this.purchasedAt,
+    this.paymentRef,
   });
 
   Map<String, dynamic> toFirestore() {
@@ -191,6 +252,10 @@ class CourseEnrollment {
       if (examScore != null) 'exam_score': examScore,
       'certificate_issued': certificateIssued,
       if (certificatePdfUrl != null) 'certificate_pdf_url': certificatePdfUrl,
+      'paid': paid,
+      // Firestore turns a DateTime into a Timestamp on write.
+      if (purchasedAt != null) 'purchased_at': purchasedAt,
+      if (paymentRef != null) 'payment_ref': paymentRef,
     };
   }
 
@@ -203,6 +268,23 @@ class CourseEnrollment {
       examScore: map['exam_score'],
       certificateIssued: map['certificate_issued'] ?? false,
       certificatePdfUrl: map['certificate_pdf_url'],
+      paid: map['paid'] ?? false,
+      purchasedAt: _readDate(map['purchased_at']),
+      paymentRef: map['payment_ref'],
     );
+  }
+}
+
+/// Reads a date that may be a DateTime, milliseconds, or a Firestore
+/// Timestamp (duck-typed through toDate() so this file stays free of the
+/// plugin and can be unit tested).
+DateTime? _readDate(Object? value) {
+  if (value == null) return null;
+  if (value is DateTime) return value;
+  if (value is int) return DateTime.fromMillisecondsSinceEpoch(value);
+  try {
+    return (value as dynamic).toDate() as DateTime;
+  } catch (_) {
+    return null;
   }
 }
