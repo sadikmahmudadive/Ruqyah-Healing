@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ruqyahhealing/models/course_model.dart';
 import 'package:ruqyahhealing/models/learn_lesson_model.dart';
 import 'package:ruqyahhealing/theme/app_theme.dart';
+import 'package:ruqyahhealing/widgets/animations/press.dart';
 import 'package:ruqyahhealing/widgets/learn/category_row.dart';
 import 'package:ruqyahhealing/widgets/learn/course_card.dart';
 import 'package:ruqyahhealing/widgets/learn/learn_switch.dart';
@@ -257,6 +258,61 @@ void main() {
         textScale: 2.0,
       );
       expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('CategoryRow in real parents', () {
+    Widget row() => CategoryRow(
+      selectedId: null,
+      onSelected: (_) {},
+      counts: const {'quran': 3},
+      countNoun: 'Lessons',
+    );
+
+    Future<void> pumpIn(WidgetTester tester, Widget body) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          home: Scaffold(body: body),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+
+    void expectCompact(WidgetTester tester) {
+      expect(tester.takeException(), isNull);
+      final chips = find.descendant(
+        of: find.byType(CategoryRow),
+        matching: find.byType(PressScale),
+      );
+      expect(chips, findsWidgets);
+      for (final e in chips.evaluate()) {
+        final h = tester.getSize(find.byElementPredicate((x) => x == e)).height;
+        expect(h, greaterThanOrEqualTo(44));
+        expect(h, lessThan(140));
+      }
+      expect(tester.getSize(find.byType(CategoryRow)).height, lessThan(140));
+    }
+
+    testWidgets('inside a Column in a SingleChildScrollView', (tester) async {
+      await pumpIn(
+        tester,
+        SingleChildScrollView(child: Column(children: [row()])),
+      );
+      expectCompact(tester);
+    });
+
+    testWidgets('inside a ListView', (tester) async {
+      await pumpIn(tester, ListView(children: [row()]));
+      expectCompact(tester);
+    });
+
+    testWidgets('inside a bounded 600 dp parent', (tester) async {
+      await pumpIn(
+        tester,
+        SizedBox(height: 600, child: Column(children: [row()])),
+      );
+      expectCompact(tester);
     });
   });
 
