@@ -7,6 +7,7 @@ import '../data/recitation_data.dart';
 import '../models/recitation.dart';
 import '../models/user_model.dart';
 import 'firebase_service.dart';
+import 'recitation_downloads.dart';
 import 'recitation_player_controller.dart';
 import 'ruqyah_api_service.dart';
 
@@ -49,7 +50,8 @@ class RecitationPlayback extends ChangeNotifier {
     bool autoplay = true,
     RecitationContent? customContent,
   }) {
-    final content = customContent ??
+    final content =
+        customContent ??
         RuqyahApiService.getTrack(trackId) ??
         kRecitationTracks[trackId] ??
         kRecitationTracks[defaultTrackId]!;
@@ -66,6 +68,7 @@ class RecitationPlayback extends ChangeNotifier {
     final created = RecitationPlayerController(
       content,
       player: _player ??= AudioPlayer(),
+      localPath: RecitationDownloads.instance.localPath,
     );
     _controller = created;
     _wasPlaying = false;

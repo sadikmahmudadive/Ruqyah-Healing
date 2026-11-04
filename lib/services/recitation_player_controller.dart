@@ -17,12 +17,19 @@ class RecitationPlayerController extends ChangeNotifier {
   /// With no [player] the controller makes, and later disposes, its own.
   /// A supplied player is shared (just_audio_background allows only one) and
   /// stays with its owner.
-  RecitationPlayerController(this.content, {AudioPlayer? player})
-    : _player = player ?? AudioPlayer(),
-      _ownsPlayer = player == null,
-      _durations = List<Duration?>.filled(content.ayahs.length, null);
+  ///
+  /// [localPath] maps an audio address to a saved copy on the phone (or null),
+  /// so downloaded recitations play offline.
+  RecitationPlayerController(
+    this.content, {
+    AudioPlayer? player,
+    this.localPath,
+  }) : _player = player ?? AudioPlayer(),
+       _ownsPlayer = player == null,
+       _durations = List<Duration?>.filled(content.ayahs.length, null);
 
   final RecitationContent content;
+  final Future<String?> Function(String url)? localPath;
   final AudioPlayer _player;
   final bool _ownsPlayer;
 
@@ -102,23 +109,36 @@ class RecitationPlayerController extends ChangeNotifier {
     _notify();
 
     try {
-      await _player.setAudioSources([
-        for (final a in content.ayahs)
-          AudioSource.uri(
-            Uri.parse(
-              a.audioUrl.isNotEmpty
-                  ? a.audioUrl
-                  : 'https://everyayah.com/data/Alafasy_128kbps/001001.mp3',
-            ),
-            // Shown in the playback notification and on the lock screen.
-            tag: MediaItem(
-              id: a.audioUrl.isNotEmpty ? a.audioUrl : '${content.id}_${a.ref}',
-              title: a.isDua ? a.surahName : '${a.surahName} ${a.ref}',
-              album: content.title,
-              artist: a.isDua ? 'Prophetic Dua' : content.reciter,
-            ),
-          ),
-      ]);
+      // Look for saved copies of every ayah at once, so a long recitation
+      // does not wait on them one by one.
+      final saved = await Future.wait(
+        content.ayahs.map((a) async {
+          try {
+            return await localPath?.call(a.playbackUrl);
+          } catch (_) {
+            return null;
+          }
+        }),
+      );
+      final sources = <AudioSource>[];
+      for (var i = 0; i < content.ayahs.length; i++) {
+        final a = content.ayahs[i];
+        // Shown in the playback notification and on the lock screen.
+        final tag = MediaItem(
+          id: a.audioUrl.isNotEmpty ? a.audioUrl : '${content.id}_${a.ref}',
+          title: a.isDua ? a.surahName : '${a.surahName} ${a.ref}',
+          album: content.title,
+          artist: a.isDua ? 'Prophetic Dua' : content.reciter,
+        );
+        // A saved copy plays with no connection.
+        final path = saved[i];
+        sources.add(
+          path != null
+              ? AudioSource.file(path, tag: tag)
+              : AudioSource.uri(Uri.parse(a.playbackUrl), tag: tag),
+        );
+      }
+      await _player.setAudioSources(sources);
       _loaded = true;
       // play() completes only when playback stops, so don't await it.
       if (autoplay) unawaited(_player.play());
@@ -251,16 +271,51 @@ class RecitationPlayerController extends ChangeNotifier {
     return playAyah(_index - 1);
   }
 
+  /// Moves the playhead by [by] across the whole recitation, so a 10 second
+  /// skip carries over into the next (or previous) ayah instead of stopping at
+  /// this ayah's edge, which is only a few seconds away in short ayahs.
   Future<void> skip(Duration by) async {
     if (!_loaded) return;
-    final target = _player.position + by;
-    final dur = _player.duration;
+    final n = content.ayahs.length;
+    final known = _durations.whereType<Duration>().toList();
+
+    // No lengths yet: all we can do is move inside this ayah.
+    if (known.isEmpty) {
+      final t = _player.position + by;
+      await _player.seek(t < Duration.zero ? Duration.zero : t);
+      return;
+    }
+
+    final avg = Duration(
+      milliseconds:
+          (known.fold(0, (a, d) => a + d.inMilliseconds) / known.length)
+              .round(),
+    );
+    final target = elapsed + by;
     if (target <= Duration.zero) {
-      await _player.seek(Duration.zero);
-    } else if (dur != null && target >= dur) {
-      if (_index < content.ayahs.length - 1) await nextAyah();
-    } else {
-      await _player.seek(target);
+      await _player.seek(Duration.zero, index: 0);
+      return;
+    }
+
+    var start = Duration.zero;
+    for (var i = 0; i < n; i++) {
+      final len = _durations[i] ?? avg;
+      final isLast = i == n - 1;
+      if (target < start + len || isLast) {
+        var within = target - start;
+        final cap = _durations[i];
+        // Never land past the end of the last ayah, or the recitation would
+        // wrap round to the start.
+        if (cap != null && within >= cap) {
+          within = cap - const Duration(milliseconds: 300);
+        }
+        if (within < Duration.zero || (cap == null && i != _index)) {
+          within = Duration.zero;
+        }
+        await _player.seek(within, index: i);
+        return;
+      }
+      start += len;
     }
   }
 

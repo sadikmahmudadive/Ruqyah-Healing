@@ -547,71 +547,66 @@ class _HomeTabState extends State<HomeTab> {
       hapticType: HapticFeedbackType.selection,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          children: [
-            // Gradient background
-            Container(
-              padding: const EdgeInsets.all(16),
-              foregroundDecoration: IslamicPatternDecoration(),
-              decoration: BoxDecoration(
-                gradient: AppGradients.emeraldGradient,
-                borderRadius: BorderRadius.circular(20),
+        // A Stack would loosen the height the row gives us, leaving this card
+        // shorter than the Health Index card beside it; a Container fills it.
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          foregroundDecoration: IslamicPatternDecoration(),
+          decoration: BoxDecoration(
+            gradient: AppGradients.emeraldGradient,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                context.tr('next_appointment'),
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.8,
+                  color: Colors.white.withValues(alpha: 0.70),
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    context.tr('next_appointment'),
-                    style: TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
-                      color: Colors.white.withValues(alpha: 0.70),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    dateText,
-                    style: const TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    timeText,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white.withValues(alpha: 0.75),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Container(
-                    height: 1,
-                    color: Colors.white.withValues(alpha: 0.15),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    doctorText,
-                    style: const TextStyle(
-                      fontFamily: 'PlusJakartaSans',
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFFD49E35),
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+              const SizedBox(height: 10),
+              Text(
+                dateText,
+                style: const TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 2),
+              Text(
+                timeText,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white.withValues(alpha: 0.75),
+                ),
+              ),
+              const SizedBox(height: 14),
+              Container(height: 1, color: Colors.white.withValues(alpha: 0.15)),
+              const SizedBox(height: 10),
+              Text(
+                doctorText,
+                style: const TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFFD49E35),
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ),
     );

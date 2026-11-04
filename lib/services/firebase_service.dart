@@ -239,10 +239,7 @@ class FirebaseService {
 
   /// Appends a daily check-in to the user's health profile and keeps the
   /// legacy `stress_level_index` in sync.
-  static Future<void> addHealthCheckIn(
-    String userId,
-    HealthCheckIn checkIn,
-  ) {
+  static Future<void> addHealthCheckIn(String userId, HealthCheckIn checkIn) {
     return _updateHealthProfile(userId, (profile) {
       final all = [...profile.checkIns, checkIn];
       final capped = all.length > _maxStoredCheckIns
@@ -258,9 +255,8 @@ class FirebaseService {
   static Future<void> logRuqyahSession(String userId, RuqyahAudioLog log) {
     return _updateHealthProfile(
       userId,
-      (profile) => profile.copyWith(
-        ruqyahAudioLogs: [...profile.ruqyahAudioLogs, log],
-      ),
+      (profile) =>
+          profile.copyWith(ruqyahAudioLogs: [...profile.ruqyahAudioLogs, log]),
     );
   }
 

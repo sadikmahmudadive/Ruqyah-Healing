@@ -222,12 +222,13 @@ class _TherapistMarketplaceScreenState
     ),
   ];
 
-  late GoogleMapController _mapController;
+  // Null until the map has been created; the screen can close before then.
+  GoogleMapController? _mapController;
 
   @override
   void dispose() {
     _searchController.dispose();
-    _mapController.dispose();
+    _mapController?.dispose();
     super.dispose();
   }
 

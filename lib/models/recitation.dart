@@ -36,8 +36,15 @@ class Ayah {
       customAudioUrl ??
       (surah > 0
           ? 'https://everyayah.com/data/Alafasy_128kbps/'
-            '${surah.toString().padLeft(3, '0')}${number.toString().padLeft(3, '0')}.mp3'
+                '${surah.toString().padLeft(3, '0')}${number.toString().padLeft(3, '0')}.mp3'
           : '');
+
+  /// What the player loads: [audioUrl], or a placeholder when there is none
+  /// so the player never gets an empty address.
+  String get playbackUrl => audioUrl.isNotEmpty ? audioUrl : fallbackAudioUrl;
+
+  static const String fallbackAudioUrl =
+      'https://everyayah.com/data/Alafasy_128kbps/001001.mp3';
 
   factory Ayah.fromJson(Map<String, dynamic> json) {
     return Ayah(

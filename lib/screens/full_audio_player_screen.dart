@@ -3,8 +3,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/recitation.dart';
+import '../services/recitation_downloads.dart';
 import '../services/recitation_playback.dart';
 import '../services/recitation_player_controller.dart';
 import '../widgets/app_toast.dart';
@@ -30,6 +32,9 @@ class FullAudioPlayerScreen extends StatefulWidget {
   /// so audio never plays with no way to control it.
   final bool continueInBackground;
 
+  /// Where offline copies are kept. Defaults to the app's own store.
+  final RecitationDownloads? downloads;
+
   const FullAudioPlayerScreen({
     super.key,
     this.title = 'SURAH AL-BAQARAH',
@@ -39,6 +44,7 @@ class FullAudioPlayerScreen extends StatefulWidget {
     this.customContent,
     this.autoplay = true,
     this.continueInBackground = false,
+    this.downloads,
   });
 
   @override
@@ -64,6 +70,10 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
 
   /// Heart on the title row (a personal favourite marker, kept per screen).
   bool _favourite = false;
+
+  /// Whether every ayah is saved on the phone, and progress while saving.
+  bool _downloaded = false;
+  ({int done, int total})? _downloading;
 
   bool _showTransliteration = true;
   bool _showMeaning = true;
@@ -97,6 +107,8 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
     _lastIndex = _controller.index;
     _lastError = _controller.error;
     _controller.addListener(_onControllerChanged);
+    _loadFavourite();
+    _checkDownloaded();
   }
 
   void _onControllerChanged() {
@@ -182,11 +194,15 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
   }
 
   void _cycleSleepTimer() {
-    _sleepTimer?.cancel();
     const durations = [15, 30, 45, 60, 0];
     final currentIndex = durations.indexOf(_sleepTimerMinutes);
-    final nextMinutes = durations[(currentIndex + 1) % durations.length];
-    _sleepTimerMinutes = nextMinutes;
+    _setSleepTimer(durations[(currentIndex + 1) % durations.length]);
+  }
+
+  void _setSleepTimer(int nextMinutes) {
+    _sleepTimer?.cancel();
+    if (nextMinutes == _sleepTimerMinutes && nextMinutes == 0) return;
+    setState(() => _sleepTimerMinutes = nextMinutes);
 
     if (nextMinutes > 0) {
       _sleepTimer = Timer(Duration(minutes: nextMinutes), () {
@@ -245,6 +261,380 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
       icon: isCurrentlyPlaying
           ? Icons.pause_circle_filled_rounded
           : Icons.play_circle_fill_rounded,
+    );
+  }
+
+  // ───────────────────────── favourite + offline ─────────────────────────
+
+  static const String _kFavourites = 'fav_recitations';
+
+  RecitationDownloads get _downloads =>
+      widget.downloads ?? RecitationDownloads.instance;
+
+  Future<void> _loadFavourite() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getStringList(_kFavourites) ?? const <String>[];
+      if (mounted) setState(() => _favourite = saved.contains(_content.id));
+    } catch (e) {
+      debugPrint('Could not read favourites: $e');
+    }
+  }
+
+  Future<void> _toggleFavourite() async {
+    HapticFeedback.selectionClick();
+    final now = !_favourite;
+    setState(() => _favourite = now);
+    _showButtonAction(
+      buttonId: 'favourite',
+      message: now ? 'Added to favourites' : 'Removed from favourites',
+      icon: now ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+    );
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = {...?prefs.getStringList(_kFavourites)};
+      if (now) {
+        saved.add(_content.id);
+      } else {
+        saved.remove(_content.id);
+      }
+      await prefs.setStringList(_kFavourites, saved.toList());
+    } catch (e) {
+      debugPrint('Could not save favourites: $e');
+    }
+  }
+
+  Future<void> _checkDownloaded() async {
+    try {
+      final done = await _downloads.isDownloaded(_content);
+      if (mounted) setState(() => _downloaded = done);
+    } catch (e) {
+      debugPrint('Could not check downloads: $e');
+    }
+  }
+
+  void _onDownloadTap() {
+    if (_downloading != null) {
+      AppToast.show(
+        context,
+        title: 'Still downloading',
+        message: 'Saving ${_downloading!.done} of ${_downloading!.total}.',
+        type: ToastType.info,
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    }
+    if (_downloaded) {
+      AppToast.show(
+        context,
+        title: 'Saved for offline listening',
+        message: 'This recitation plays without a connection.',
+        type: ToastType.success,
+        actionLabel: 'Remove',
+        onAction: _removeDownload,
+      );
+      return;
+    }
+    _startDownload();
+  }
+
+  Future<void> _startDownload() async {
+    final total = _content.ayahs.length;
+    setState(() => _downloading = (done: 0, total: total));
+    _showButtonAction(
+      buttonId: 'download',
+      message: 'Downloading for offline listening',
+      icon: Icons.downloading_rounded,
+    );
+    try {
+      await _downloads.download(
+        _content,
+        onProgress: (done, total) {
+          if (mounted) {
+            setState(() => _downloading = (done: done, total: total));
+          }
+        },
+      );
+      if (!mounted) return;
+      setState(() {
+        _downloading = null;
+        _downloaded = true;
+      });
+      AppToast.show(
+        context,
+        title: 'Saved for offline listening',
+        message: 'This recitation will play without a connection.',
+        type: ToastType.success,
+        duration: const Duration(seconds: 2),
+      );
+    } catch (e) {
+      debugPrint('Recitation download failed: $e');
+      if (!mounted) return;
+      setState(() => _downloading = null);
+      AppToast.show(
+        context,
+        title: 'Could not download',
+        message: 'Check your connection and try again.',
+        type: ToastType.error,
+        actionLabel: 'Retry',
+        onAction: _startDownload,
+      );
+    }
+  }
+
+  Future<void> _removeDownload() async {
+    await _downloads.remove(_content);
+    if (!mounted) return;
+    setState(() => _downloaded = false);
+    _showButtonAction(
+      buttonId: 'download',
+      message: 'Offline copy removed',
+      icon: Icons.delete_outline_rounded,
+    );
+  }
+
+  /// The current ayah as plain text, for copying.
+  String _currentVerseText() {
+    final a = _controller.currentAyah;
+    final ref = a.isDua ? (a.reference ?? a.ref) : '${a.surahName} ${a.ref}';
+    return [
+      a.arabic,
+      if (a.transliteration.isNotEmpty) a.transliteration,
+      if (a.meaning.isNotEmpty) a.meaning,
+      '- $ref',
+    ].join('\n');
+  }
+
+  Future<void> _copyVerse() async {
+    await Clipboard.setData(ClipboardData(text: _currentVerseText()));
+    if (!mounted) return;
+    HapticFeedback.selectionClick();
+    AppToast.show(
+      context,
+      title: 'Copied',
+      message: 'The verse is ready to paste.',
+      type: ToastType.success,
+      duration: const Duration(seconds: 2),
+    );
+  }
+
+  // ───────────────────────────── more menu ───────────────────────────
+
+  void _showMoreSheet() {
+    HapticFeedback.selectionClick();
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheet) {
+          void both(VoidCallback fn) {
+            setState(fn);
+            setSheet(() {});
+          }
+
+          Widget section(String title, Widget child) => Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2,
+                    color: Colors.white.withValues(alpha: 0.55),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                child,
+              ],
+            ),
+          );
+
+          Widget choice(String label, bool selected, VoidCallback onTap) =>
+              Semantics(
+                button: true,
+                selected: selected,
+                label: label,
+                child: InkWell(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    onTap();
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      minHeight: 40,
+                      minWidth: 52,
+                    ),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? _gold
+                          : Colors.white.withValues(alpha: 0.09),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      label,
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: selected ? _deepGreen : Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+
+          Widget switchRow(
+            String label,
+            IconData icon,
+            bool value,
+            ValueChanged<bool> onChanged,
+          ) => SwitchListTile(
+            value: value,
+            onChanged: (v) {
+              HapticFeedback.selectionClick();
+              onChanged(v);
+            },
+            activeThumbColor: _deepGreen,
+            activeTrackColor: _gold,
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+            secondary: Icon(icon, color: Colors.white70, size: 22),
+            title: Text(
+              label,
+              style: const TextStyle(
+                fontFamily: 'PlusJakartaSans',
+                fontSize: 14.5,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          );
+
+          Widget actionRow(IconData icon, String label, VoidCallback onTap) =>
+              ListTile(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.of(sheetContext).pop();
+                  onTap();
+                },
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                leading: Icon(icon, color: Colors.white70, size: 22),
+                title: Text(
+                  label,
+                  style: const TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+
+          // A Material (not a plain box), so the rows can show their ripples.
+          return Material(
+            color: const Color(0xFF0A2A1F),
+            clipBehavior: Clip.antiAlias,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            child: SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(22, 12, 22, 12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 4,
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.25),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                    section(
+                      'PLAYBACK SPEED',
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          for (final s in ([..._speeds]..sort()))
+                            choice('${s}x', _controller.speed == s, () {
+                              _controller.setSpeed(s);
+                              setSheet(() {});
+                            }),
+                        ],
+                      ),
+                    ),
+                    section(
+                      'SLEEP TIMER',
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          for (final m in const [0, 15, 30, 45, 60])
+                            choice(
+                              m == 0 ? 'Off' : '$m min',
+                              _sleepTimerMinutes == m,
+                              () {
+                                _setSleepTimer(m);
+                                setSheet(() {});
+                              },
+                            ),
+                        ],
+                      ),
+                    ),
+                    switchRow(
+                      'Repeat recitation',
+                      Icons.repeat_rounded,
+                      _controller.looping,
+                      (_) {
+                        _controller.toggleLooping();
+                        setSheet(() {});
+                      },
+                    ),
+                    switchRow(
+                      'Show transliteration',
+                      Icons.subtitles_rounded,
+                      _showTransliteration,
+                      (v) => both(() => _showTransliteration = v),
+                    ),
+                    switchRow(
+                      'Show meaning',
+                      Icons.translate_rounded,
+                      _showMeaning,
+                      (v) => both(() => _showMeaning = v),
+                    ),
+                    const Divider(color: Colors.white12, height: 24),
+                    actionRow(
+                      Icons.copy_rounded,
+                      'Copy this verse',
+                      _copyVerse,
+                    ),
+                    if (_downloaded)
+                      actionRow(
+                        Icons.delete_outline_rounded,
+                        'Remove offline copy',
+                        _removeDownload,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -469,14 +859,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
             _roundButton(
               icon: Icons.more_horiz_rounded,
               tooltip: 'More',
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                _showButtonAction(
-                  buttonId: 'more',
-                  message: 'Player Options Menu',
-                  icon: Icons.more_horiz_rounded,
-                );
-              },
+              onPressed: _showMoreSheet,
             ),
           ],
         ),
@@ -666,10 +1049,7 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
                 size: 24,
               ),
             ),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              setState(() => _favourite = !_favourite);
-            },
+            onPressed: _toggleFavourite,
           ),
         ),
       ],
@@ -984,22 +1364,18 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
           ),
           _utility(
             id: 'download',
-            icon: Icons.download_for_offline_outlined,
-            label: 'Download',
-            onTap: () {
-              _showButtonAction(
-                buttonId: 'download',
-                message: 'Downloading for Offline Listening...',
-                icon: Icons.download_rounded,
-              );
-              AppToast.show(
-                context,
-                title: 'Downloading Recitation',
-                message: 'Downloading recitation for offline playback...',
-                type: ToastType.success,
-                duration: const Duration(seconds: 2),
-              );
-            },
+            icon: _downloaded
+                ? Icons.download_done_rounded
+                : _downloading != null
+                ? Icons.downloading_rounded
+                : Icons.download_for_offline_outlined,
+            label: _downloaded
+                ? 'Saved offline'
+                : _downloading != null
+                ? 'Saving ${_downloading!.done}/${_downloading!.total}'
+                : 'Download',
+            active: _downloaded || _downloading != null,
+            onTap: _onDownloadTap,
           ),
           _utility(
             id: 'sleep',
@@ -1021,9 +1397,12 @@ class _FullAudioPlayerScreenState extends State<FullAudioPlayerScreen> {
     required IconData icon,
     required String label,
     required VoidCallback onTap,
+    bool active = false,
   }) {
     final isActive =
-        _activeButtonId == id || (id == 'sleep' && _sleepTimerMinutes > 0);
+        active ||
+        _activeButtonId == id ||
+        (id == 'sleep' && _sleepTimerMinutes > 0);
     // Equal-width slots, so four actions fit the row on any phone.
     return Expanded(
       child: Semantics(

@@ -63,8 +63,7 @@ class PrayerNotificationService {
   };
 
   static const Map<String, String> _voluntaryBody = {
-    'tahajjud':
-        'The last third of the night has begun, a quiet hour for prayer and dua.',
+    'tahajjud': 'The last third of the night has begun, a quiet hour for prayer and dua.',
     'ishraq': 'The sun has risen. A good time for two rakat of Ishraq.',
     'chast': 'The morning is well under way. A good time for Chast (Duha).',
   };
