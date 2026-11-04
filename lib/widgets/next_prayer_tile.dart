@@ -87,7 +87,6 @@ class _NextPrayerTileState extends State<NextPrayerTile> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      flex: 3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -135,35 +134,46 @@ class _NextPrayerTileState extends State<NextPrayerTile> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    Flexible(
-                      flex: 2,
-                      // Scales down instead of overflowing at huge text sizes.
+                    // Natural width, so it sits flush against the card's right
+                    // padding and the left side takes whatever remains. It is
+                    // capped, and scales down rather than overflowing, at huge
+                    // text sizes.
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.sizeOf(context).width * 0.46,
+                      ),
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              next.arabic,
-                              style: const TextStyle(
-                                fontSize: 30,
-                                height: 1.2,
-                                color: AppColors.accentGoldSoft,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  next.arabic,
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    height: 1.2,
+                                    color: AppColors.accentGoldSoft,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  SalahSchedule.clock12(next.start),
+                                  style: AppType.title.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              SalahSchedule.clock12(next.start),
-                              style: AppType.title.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
+                            const SizedBox(width: 14),
                             Container(
-                              width: 34,
-                              height: 34,
+                              width: 36,
+                              height: 36,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white.withValues(alpha: 0.14),

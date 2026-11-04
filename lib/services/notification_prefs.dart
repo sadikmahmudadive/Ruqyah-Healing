@@ -10,6 +10,7 @@ class NotificationPrefs extends ChangeNotifier {
 
   static const _kPrayer = 'notif_prayer';
   static const _kPrayerLead = 'notif_prayer_lead_min';
+  static const _kNafl = 'notif_prayer_nafl';
   static const _kAppointments = 'notif_appointments';
   static const _kMessages = 'notif_messages';
 
@@ -17,6 +18,7 @@ class NotificationPrefs extends ChangeNotifier {
   static const List<int> leadOptions = [0, 5, 10, 15];
 
   bool _prayer = true;
+  bool _nafl = true;
   int _prayerLeadMinutes = 0;
   bool _appointments = true;
   bool _messages = true;
@@ -24,6 +26,10 @@ class NotificationPrefs extends ChangeNotifier {
 
   bool get prayerEnabled => _prayer;
   int get prayerLeadMinutes => _prayerLeadMinutes;
+
+  /// Alerts for the voluntary prayers (Tahajjud, Ishraq, Chast), on top of
+  /// the five fard prayers.
+  bool get voluntaryPrayersEnabled => _nafl;
   bool get appointmentsEnabled => _appointments;
   bool get messagesEnabled => _messages;
 
@@ -33,6 +39,7 @@ class NotificationPrefs extends ChangeNotifier {
     await prefs.reload(); // a background isolate may have written since
     _prayer = prefs.getBool(_kPrayer) ?? true;
     _prayerLeadMinutes = prefs.getInt(_kPrayerLead) ?? 0;
+    _nafl = prefs.getBool(_kNafl) ?? true;
     _appointments = prefs.getBool(_kAppointments) ?? true;
     _messages = prefs.getBool(_kMessages) ?? true;
     _loaded = true;
@@ -41,6 +48,9 @@ class NotificationPrefs extends ChangeNotifier {
 
   Future<void> setPrayerEnabled(bool value) =>
       _set(_kPrayer, value, () => _prayer = value, _prayer != value);
+
+  Future<void> setVoluntaryPrayersEnabled(bool value) =>
+      _set(_kNafl, value, () => _nafl = value, _nafl != value);
 
   Future<void> setAppointmentsEnabled(bool value) => _set(
     _kAppointments,

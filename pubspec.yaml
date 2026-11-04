@@ -53,6 +53,7 @@ dependencies:
   shared_preferences: ^2.5.5
   geolocator: ^14.1.1
   flutter_compass: ^0.8.1
+  gal: ^2.3.3
 
 dev_dependencies:
   flutter_test:

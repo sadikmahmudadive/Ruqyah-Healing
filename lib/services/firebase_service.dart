@@ -11,6 +11,7 @@ import '../models/appointment_model.dart';
 import '../models/course_model.dart';
 import '../models/order_model.dart';
 import '../models/therapist_model.dart';
+import '../models/wallpaper_model.dart';
 import '../models/user_model.dart';
 import 'notification_center.dart';
 import 'push_notification_service.dart';
@@ -329,6 +330,17 @@ class FirebaseService {
               .map((doc) => AppointmentModel.fromMap(doc.data(), doc.id))
               .toList();
         });
+  }
+
+  // Wallpapers (/wallpapers/{id}), uploaded from the admin panel. Hiding and
+  // ordering happen on the device (WallpaperModel.visible), so no composite
+  // index is needed.
+  static Stream<List<WallpaperModel>> getWallpapersStream() {
+    return _firestore.collection('wallpapers').snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((doc) => WallpaperModel.fromMap(doc.data(), doc.id))
+          .toList();
+    });
   }
 
   // 4. Courses Collection (/courses/{course_id})

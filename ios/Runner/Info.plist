@@ -37,6 +37,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Ruqyah Healing saves the wallpapers you download to your photo library.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is used to show accurate prayer times for where you are.</string>
 	<!-- Keep recitation audio playing, with lock-screen controls, in background. -->

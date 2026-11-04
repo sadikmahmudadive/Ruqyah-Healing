@@ -17,6 +17,7 @@ import '../settings_screen.dart';
 import '../signin_screen.dart';
 import '../subscription_plans_screen.dart';
 import '../toast_showcase_screen.dart';
+import '../wallpapers_screen.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -430,6 +431,19 @@ class _ProfileTabState extends State<ProfileTab> {
               Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder: (_, _, _) => const SubscriptionPlansScreen(),
+                ),
+              );
+            },
+          ),
+          _buildDivider(),
+          _buildSettingsTile(
+            icon: Icons.wallpaper_rounded,
+            title: 'Islamic wallpapers',
+            onTap: () {
+              HapticFeedback.selectionClick();
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, _, _) => const WallpapersScreen(),
                 ),
               );
             },

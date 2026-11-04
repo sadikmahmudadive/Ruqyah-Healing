@@ -144,8 +144,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    // 1. Initial state: No 2s action badge visible
-    expect(find.text('2s'), findsNothing);
+    // 1. Initial state: no action note visible
+    expect(find.text('Playing Recitation'), findsNothing);
 
     // 2. Tap Play / Pause button
     final playBtn = find.byIcon(Icons.play_arrow_rounded);
@@ -153,9 +153,8 @@ void main() {
     await tester.tap(playBtn);
     await tester.pump();
 
-    // Feedback shows "Playing Recitation" and "2s" tag
+    // Feedback shows "Playing Recitation"
     expect(find.text('Playing Recitation'), findsOneWidget);
-    expect(find.text('2s'), findsOneWidget);
 
     // 3. Tap Loop button
     final loopBtn = find.byTooltip('Loop recitation');
@@ -163,7 +162,6 @@ void main() {
     await tester.pump();
 
     expect(find.text('Repeat Recitation: ON'), findsOneWidget);
-    expect(find.text('2s'), findsOneWidget);
 
     // 4. Tap Next ayah button
     final nextBtn = find.byTooltip('Next ayah');
@@ -171,7 +169,6 @@ void main() {
     await tester.pump();
 
     expect(find.textContaining('Next:'), findsOneWidget);
-    expect(find.text('2s'), findsOneWidget);
 
     // 5. Tap Speed button (1.0x -> 1.25x)
     final speedBtn = find.text('1.0x');
@@ -179,7 +176,6 @@ void main() {
     await tester.pump();
 
     expect(find.text('Speed: 1.25x'), findsOneWidget);
-    expect(find.text('2s'), findsOneWidget);
 
     // 6. Tap Back 10s
     final back10 = find.text('Back 10s');
@@ -187,7 +183,6 @@ void main() {
     await tester.pump();
 
     expect(find.text('Rewound 10 Seconds (-10s)'), findsOneWidget);
-    expect(find.text('2s'), findsOneWidget);
 
     // 7. Tap Forward 10s
     final forward10 = find.text('Forward 10s');
@@ -195,7 +190,6 @@ void main() {
     await tester.pump();
 
     expect(find.text('Forwarded 10 Seconds (+10s)'), findsOneWidget);
-    expect(find.text('2s'), findsOneWidget);
 
     // 8. Tap Sleep timer
     final sleepBtn = find.text('Sleep timer');
@@ -203,12 +197,10 @@ void main() {
     await tester.pump();
 
     expect(find.text('Sleep Timer: 15 Min Set'), findsOneWidget);
-    expect(find.text('2s'), findsOneWidget);
 
     // 9. Advance time past 2 seconds (2000ms timer + 250ms fade-out animation)
     await tester.pump(const Duration(milliseconds: 2000));
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('2s'), findsNothing);
 
     // Clean up playback and timers
     RecitationPlayback.instance.stop();

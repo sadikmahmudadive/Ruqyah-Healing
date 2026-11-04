@@ -473,11 +473,14 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
+                  // Fade to the page colour at zero alpha, not to
+                  // Colors.transparent (transparent black), which would
+                  // pass through a grey.
                   colors: [
-                    bg.withValues(alpha: 0.7),
-                    Colors.transparent,
-                    Colors.transparent,
-                    bg.withValues(alpha: 0.7),
+                    bg.withValues(alpha: 0.75),
+                    bg.withValues(alpha: 0),
+                    bg.withValues(alpha: 0),
+                    bg.withValues(alpha: 0.75),
                   ],
                   stops: const [0.0, 0.3, 0.7, 1.0],
                 ),
@@ -515,7 +518,7 @@ class _AuthCarouselState<T> extends State<AuthCarousel<T>> {
                   border: Border.all(
                     color: Color.lerp(
                       context.authBorder,
-                      Colors.transparent,
+                      context.authAccent,
                       t,
                     )!,
                   ),
@@ -885,11 +888,16 @@ class AuthDivider extends StatelessWidget {
     final line = Expanded(
       child: Container(height: 1, color: context.authBorder),
     );
+    // The text gets its natural width, capped at 60% of the row, and the two
+    // lines split what is left equally, so the text sits dead centre.
+    // (LayoutBuilder can't sit in the auth page's scroll view, so the cap
+    // comes from the screen width, which is close enough to the row's.)
+    final cap = MediaQuery.sizeOf(context).width * 0.55;
     return Row(
       children: [
         line,
-        Flexible(
-          flex: 4,
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: cap),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Text(
@@ -928,6 +936,7 @@ class AuthGoogleButton extends StatelessWidget {
         onTap: onPressed,
         borderRadius: BorderRadius.circular(16),
         child: Container(
+          width: double.infinity,
           constraints: const BoxConstraints(minHeight: 54),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),

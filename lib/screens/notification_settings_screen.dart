@@ -124,11 +124,18 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                   _card([
                     _switchRow(
                       title: 'Prayer time alerts',
-                      subtitle: 'Fajr, Dhuhr, Asr, Maghrib and Isha',
+                      subtitle: 'Every prayer, from Tahajjud to Isha',
                       value: _prefs.prayerEnabled,
                       onChanged: _prefs.setPrayerEnabled,
                     ),
                     if (_prefs.prayerEnabled) ...[
+                      _divider(),
+                      _switchRow(
+                        title: 'Voluntary prayers',
+                        subtitle: 'Tahajjud, Ishraq and Chast (Duha)',
+                        value: _prefs.voluntaryPrayersEnabled,
+                        onChanged: _prefs.setVoluntaryPrayersEnabled,
+                      ),
                       _divider(),
                       _leadTimeRow(),
                     ],

@@ -5,6 +5,7 @@ import 'package:ruqyahhealing/screens/acupressure_hub_screen.dart';
 import 'package:ruqyahhealing/screens/acupuncture_hub_screen.dart';
 import 'package:ruqyahhealing/screens/ai_symptom_guide_screen.dart';
 import 'package:ruqyahhealing/screens/audio_library_screen.dart';
+import 'package:ruqyahhealing/screens/full_audio_player_screen.dart';
 import 'package:ruqyahhealing/screens/ayurvedic_hub_screen.dart';
 import 'package:ruqyahhealing/screens/book_appointment_screen.dart';
 import 'package:ruqyahhealing/screens/community_screen.dart';
@@ -64,6 +65,9 @@ final Map<String, Widget Function()> _screens = {
   'AcupunctureHub': () => const AcupunctureHubScreen(),
   'AISymptomGuide': () => const AISymptomGuideScreen(),
   'AudioLibrary': () => const AudioLibraryScreen(),
+  // Not continueInBackground, so leaving the screen stops the player and
+  // its timers.
+  'FullAudioPlayer': () => const FullAudioPlayerScreen(autoplay: false),
   'AyurvedicHub': () => const AyurvedicHubScreen(),
   'BookAppointment': () => const BookAppointmentScreen(),
   'Community': () => const CommunityScreen(),
